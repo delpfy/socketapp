@@ -2,15 +2,15 @@
   "name": "soket_ts",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://delpfy.github.io/marketplace_soket/",
+  "homepage": "https://delpfy.github.io/socketapp/",
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fontsource/roboto": "^4.5.8",
     "@mui/icons-material": "^5.11.11",
-    "@mui/material": "^5.11.15",
+    "@mui/material": "^5.11.16",
     "@mui/styled-engine-sc": "^5.11.11",
-    "@reduxjs/toolkit": "^1.9.1",
+    "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -56,5 +56,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "description": "",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }

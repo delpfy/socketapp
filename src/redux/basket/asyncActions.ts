@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
 import { IBasketItems, IBasketItemsDisplay } from "../types";
-import { isTryStatement } from "typescript";
 
 export const getAllBasketItems = createAsyncThunk<IBasketItemsDisplay>(
   "home/getAllBasketItems",

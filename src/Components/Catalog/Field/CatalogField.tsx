@@ -5,7 +5,7 @@ import { IItems, Status } from "../../../redux/types";
 import { getItemsByCategory } from "../../../redux/home/asyncActions";
 
 
-import "./catalogfield.scss";
+
 
 import Card from "../Block/CatalogCard/Card";
 import Skeleton from "../Block/CatalogCard/Skeleton";
@@ -45,6 +45,7 @@ export const CatalogField = () => {
                 display={"flex"}
                 justifyContent={"center"}
                 alignItems={"center"}
+                paddingBottom={2}
                 xs={2}
                 sm={4}
                 md={4}
@@ -102,7 +103,13 @@ export const CatalogField = () => {
 
   function StatusHandler (status: Status) {
     switch(status){
-      case "success": return <Catalog />
+      case "success" : 
+      if(items !== undefined){
+        return <Catalog />
+      }
+      else{
+        return <CatalogSkeletons />
+      }
       case "pending": return <CatalogSkeletons />
       case "error":  return <NotFoundPage/>
       default: return <NotFoundPage/>

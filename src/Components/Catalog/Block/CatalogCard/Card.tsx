@@ -6,28 +6,38 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { IBasketItems, IItems } from "../../../../redux/types";
-import { Box, IconButton, Rating, createTheme } from "@mui/material";
+import {
+  Box,
+  ClickAwayListener,
+  IconButton,
+  Rating,
+  Tooltip,
+  createTheme,
+} from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { getItemById } from "../../../../redux/home/asyncActions";
 import { useNavigate } from "react-router-dom";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import { pink, purple } from "@mui/material/colors";
 import { addBasketItem } from "../../../../redux/basket/asyncActions";
 import { checkAuthorization } from "../../../../redux/user/asyncActions";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+
 
 export default function CatalogCard(props: IItems) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.user);
   const [active, setActive] = React.useState<boolean>(false);
+  const [open, setOpen] = React.useState<boolean>(false);
   const { status } = useAppSelector((state) => state.basket);
 
   // Redirecting to ItemPage
   function Redirect() {
     dispatch(getItemById(props._id));
-    navigate("/marketplace_soket/item");
+    navigate("/socketapp/item");
   }
 
+  // Chech auth, if authorized - add and changing active state.
   function PutInBasket() {
     dispatch(checkAuthorization());
     if (user.authorized == true) {
@@ -43,7 +53,8 @@ export default function CatalogCard(props: IItems) {
         } as IBasketItems)
       );
     } else {
-      alert("Unavailible action");
+      // Tip, dunno if i`ll use it.
+      // setOpen(true)
     }
 
     if (status == "success") {
@@ -125,12 +136,28 @@ export default function CatalogCard(props: IItems) {
         </Box>
 
         <Box>
-          <IconButton sx={{ paddind: 0 }} onClick={() => PutInBasket()}>
-            <ShoppingBasketIcon
-              sx={{ height: 30, width: 30 }}
-              color={active ? "secondary" : "disabled"}
-            />
-          </IconButton>
+          <ClickAwayListener onClickAway={() => setOpen(false)}>
+            <Box>
+              <Tooltip
+                PopperProps={{
+                  disablePortal: true,
+                }}
+                onClose={() => setOpen(false)}
+                open={open}
+                disableFocusListener
+                disableHoverListener
+                disableTouchListener
+                title="You sould be authorized"
+              >
+                <IconButton sx={{ paddind: 0 }} onClick={() => PutInBasket()}>
+                  <AddShoppingCartIcon
+                    sx={{ height: 35, width:35 }}
+                    color={active ? "secondary" : "disabled"}
+                  />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </ClickAwayListener>
         </Box>
       </CardActions>
     </Card>

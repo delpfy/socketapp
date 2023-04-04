@@ -15,9 +15,7 @@ export const CatalogTestBlock = (props: IItems) => {
   const {items} = useAppSelector((state) => state.basket);
   const dispatch = useAppDispatch();
 
-  const INC_EXPENCES = (price: number) => {
-    dispatch(IncExpences(price));
-  };
+  
 
   const PUSH_BASKET_ITEM = (id: string) => {
   };

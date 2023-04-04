@@ -19,7 +19,7 @@ export const Logo = () => {
         color={'black'}
         width={135}
         
-        onClick = {() => navigate('/marketplace_soket')}
+        onClick = {() => navigate('/socketapp')}
         sx={{ cursor: 'pointer'}}
       >
         <Typography 

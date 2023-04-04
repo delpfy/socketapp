@@ -1,32 +1,66 @@
-import { Box, Icon, IconButton, Typography } from "@mui/material";
-import ShoppingBasketTwoToneIcon from "@mui/icons-material/ShoppingBasketTwoTone";
+import { Box, IconButton, Typography } from "@mui/material";
+
 import React from "react";
-import { Link } from "react-router-dom";
-import basket_icon from "../../../assets/img/basket_icon.png";
-import { useAppSelector } from "../../../redux/hooks";
-import "./basket.scss";
-import { height } from "@mui/system";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { checkAuthorization } from "../../../redux/user/asyncActions";
+import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+
 export const Basket = () => {
-  const EXPENCES = useAppSelector((state) => state.basket.expences);
+  const { user } = useAppSelector((state) => state.user);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  function Redirect() {
+    dispatch(checkAuthorization());
+    if (user.authorized == true) {
+      navigate("/socketapp/basket");
+    } else {
+      alert("Unavailible action");
+    }
+  }
+
+  const Locker = () => {
+    if (user.authorized == true) {
+      return (
+        <AccountCircleRoundedIcon sx={{ width: 40, height: 40 }} />
+      );
+    } else {
+      return <LockPersonRoundedIcon sx={{ width: 40, height: 40 }} />;
+    }
+  };
 
   return (
-    <Link
-      to={EXPENCES !== 0 ? "/marketplace_soket/basket" : "/marketplace_soket"}
-    >
+    <>
       <Box
         display={"flex"}
         justifyContent={"space-between"}
         alignItems={"center"}
-        width={100}
+        width={200}
       >
-        <Typography variant={"h2"} component={"h2"} fontSize={35}>
-          {EXPENCES === 0 ? "" : EXPENCES + "₴"}
-        </Typography>
-        <IconButton>
-          <ShoppingBasketTwoToneIcon sx={{ width: "40px", height: "40px" }} />
-        </IconButton>
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          width={200}
+        >
+          <Typography variant={"h2"} component={"h2"} fontSize={35}>
+            {user.expences === 0 ? "" : user.expences + "₴"}
+          </Typography>
+          <IconButton onClick={() => Redirect()}>
+            <ShoppingCartIcon sx={{ width: 40, height: 40 }} />
+          </IconButton>
+        </Box>
+        <Box>
+          <IconButton onClick={() => Redirect()}>
+            <Locker />
+          </IconButton>
+        </Box>
       </Box>
-    </Link>
+    </>
   );
 };
 

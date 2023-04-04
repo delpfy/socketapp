@@ -7,10 +7,14 @@ import { checkAuthorization } from "./asyncActions";
 
 const userSlice = createSlice({
   name: "user",
-  initialState: { user : {id: '', role: '', avatar: '', name: '',authorized: false} },
+  initialState: { user : {id: '', role: '', avatar: '', name: '',authorized: false, expences: 0} },
   reducers: {
-    SetUser(state, action: PayloadAction<string>) {
-      state.user.id = action.payload;
+    IncExpences(state, action: PayloadAction<number>) {
+      state.user.expences += action.payload;
+    },
+
+    DecExpences(state, action: PayloadAction<number>) {
+      state.user.expences += action.payload;
     },
 
   },
@@ -29,11 +33,11 @@ const userSlice = createSlice({
     });
     builder.addCase(checkAuthorization.rejected, (state, action) => {
       state.user.authorized = false;
-      alert("Error: " + action.error.message)
+      console.log("Error: " + action.error.message)
     });
 
 
   }});
 
-export const {SetUser} = userSlice.actions;
+export const {IncExpences, DecExpences} = userSlice.actions;
 export default userSlice.reducer;
