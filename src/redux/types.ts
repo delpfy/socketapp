@@ -46,6 +46,19 @@ export type IUser = {
   avatarUrl: string;
 }
 
+export type IUserLogin = {
+  email : string;
+  
+  password : string;
+}
+
+export type IUserRegister = {
+  email : string;
+  fullName: string;
+  role: string;
+  password : string;
+}
+
 export type Status = 'success' | 'pending' | 'error'
 
 export interface BasketState {

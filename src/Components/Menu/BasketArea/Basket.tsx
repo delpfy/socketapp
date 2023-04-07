@@ -7,6 +7,8 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  Radio,
+  RadioGroup,
   TextField,
   Typography,
 } from "@mui/material";
@@ -15,64 +17,180 @@ import React from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { checkAuthorization } from "../../../redux/user/asyncActions";
+import {
+  Authorize,
+  Register,
+  checkAuthorization,
+} from "../../../redux/user/asyncActions";
 
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { NullifyToken } from "../../../redux/user/userSlice";
 
 export const Basket = () => {
-  const { user } = useAppSelector((state) => state.user);
+  const { user, token } = useAppSelector((state) => state.user);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [openLogin, setOpenLogin] = React.useState(false);
+  const [openRegister, setOpenRegister] = React.useState(false);
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [selectedValue, setSelectedValue] = React.useState('a');
 
-  const openLoginDialog = () => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedValue(event.target.value);
+  };
+
+  function openLoginDialog() {
+    closeRegDialog();
     setOpenLogin(true);
-  };
+  }
 
-  const closeLoginDialog = () => {
+  function closeLoginDialog() {
     setOpenLogin(false);
-  };
+  }
 
-  function Redirect() {
-    dispatch(checkAuthorization());
-    if (user.authorized == true) {
-      navigate("/socketapp/basket");
-    } else {
-      alert("Unavailible action");
+  function openRegDialog() {
+    closeLoginDialog();
+    setOpenRegister(true);
+  }
+
+  function closeRegDialog() {
+    setOpenRegister(false);
+  }
+
+  function RedirectLogin(email: string, password: string) {
+    try {
+      dispatch(
+        Authorize({
+          email: email,
+          password: password,
+        })
+      );
+      if (user.authorized === true) {
+        closeLoginDialog();
+      }
+    } catch (error) {
+      alert(error);
     }
   }
 
-  function LoginDialog() {
+  function RedirectRegister(
+    email: string,
+    fullName: string,
+    role: string,
+    password: string
+  ) {
+    try {
+      dispatch(NullifyToken());
+      dispatch(
+        Register({
+          email: email,
+          fullName: fullName,
+          role: role,
+          password: password,
+        })
+      );
+      if (token !== "") {
+        openLoginDialog();
+      }
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  function Redirect() {
+    dispatch(checkAuthorization());
+    if (user.authorized === true) {
+      navigate("/socketapp/basket");
+    } else {
+      openLoginDialog();
+    }
+  }
+
+  /* function LoginDialog() {
     return (
       <>
         <Dialog
           open={openLogin}
-          onClose={() => {
-            setOpenLogin(false);
-          }}
+          onClose={closeLoginDialog}
         >
-          <DialogTitle>Login required</DialogTitle>
+          <DialogTitle>Авторизація</DialogTitle>
           <DialogContent>
             <DialogContentText display={"flex"} flexDirection={"row"}>
-              To get access to this option, please login or
+              Ще не маєш аккаунт?
               <Typography
                 color={"#1976d2"}
+                onClick={openRegDialog}
                 sx={{
                   cursor: "pointer",
-                  paddingLeft: 0.6,
+                  paddingLeft: '0.6%',
                 }}
               >
-                register
+                Реєструйся!
               </Typography>
+              </DialogContentText>
+            <TextField
+              margin="dense"
+              label="Пошта"
+              type="email"
+              fullWidth
+              variant="standard"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            
+            <TextField
+              margin="dense"
+              id="password"
+              label="Пароль"
+              type="password"
+              fullWidth
+              variant="standard"
+              onChange={e => setPassword(e.target.value)}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeLoginDialog}>Вийти</Button>
+            <Button onClick={() => {RedirectLogin(email, password)}}>Продовжити</Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    );
+  } */
+
+  /*  function RegisterDialog() {
+    return (
+      <>
+        <Dialog
+          open={openRegister}
+          onClose={closeRegDialog}
+        >
+          <DialogTitle>Регистрація</DialogTitle>
+          <DialogContent>
+            <DialogContentText display={"flex"} flexDirection={"row"}>
+              Маєш аккаунт?
+              
+              <Typography
+                color={"#1976d2"}
+                onClick={openLoginDialog}
+               
+                sx={{
+                  cursor: "pointer",
+                  paddingLeft: '0.6%',
+                }}
+              >
+                Заходь!
+              </Typography>
+              
+              
             </DialogContentText>
             <TextField
               autoFocus
               margin="dense"
               id="email"
-              label="Email Address"
+              label="Пошта"
               type="email"
               fullWidth
               variant="standard"
@@ -81,7 +199,7 @@ export const Basket = () => {
               autoFocus
               margin="dense"
               id="fullName"
-              label="Name"
+              label="Ваше гарне ім'я"
               type="name"
               fullWidth
               variant="standard"
@@ -90,23 +208,23 @@ export const Basket = () => {
               autoFocus
               margin="dense"
               id="password"
-              label="Password"
+              label="Пароль"
               type="password"
               fullWidth
               variant="standard"
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={closeLoginDialog}>Cancel</Button>
-            <Button onClick={Redirect}>Login</Button>
+            <Button onClick={closeRegDialog}>Вийти</Button>
+            <Button onClick={Redirect}>Продовжити</Button>
           </DialogActions>
         </Dialog>
       </>
     );
-  }
+  } */
 
   const Locker = () => {
-    if (user.authorized == true) {
+    if (user.authorized === true) {
       return <AccountCircleRoundedIcon sx={{ width: 40, height: 40 }} />;
     } else {
       return <LockPersonRoundedIcon sx={{ width: 40, height: 40 }} />;
@@ -135,12 +253,129 @@ export const Basket = () => {
           </IconButton>
         </Box>
         <Box>
-          <IconButton onClick={() => openLoginDialog()}>
+          <IconButton onClick={openLoginDialog}>
             <Locker />
-            <LoginDialog />
           </IconButton>
         </Box>
       </Box>
+
+      {/*<Login Dialog>*/}
+      <Dialog open={openLogin} onClose={closeLoginDialog}>
+        <DialogTitle>Авторизація</DialogTitle>
+        <DialogContent>
+          <DialogContentText display={"flex"} flexDirection={"row"}>
+            Ще не маєш аккаунт?
+            <Typography
+              color={"#1976d2"}
+              onClick={openRegDialog}
+              sx={{
+                cursor: "pointer",
+                paddingLeft: "0.6%",
+              }}
+            >
+              Реєструйся!
+            </Typography>
+          </DialogContentText>
+          <TextField
+            margin="dense"
+            label="Пошта"
+            type="email"
+            value={email}
+            fullWidth
+            variant="standard"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <TextField
+            margin="dense"
+            label="Пароль"
+            value={password}
+            type="password"
+            fullWidth
+            variant="standard"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeLoginDialog}>Вийти</Button>
+          <Button
+            onClick={() => {
+              RedirectLogin(email, password);
+            }}
+          >
+            Продовжити
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/*</Login Dialog>*/}
+
+      {/*<Register Dialog>*/}
+      <Dialog open={openRegister} onClose={closeRegDialog}>
+        <DialogTitle>Регистрація</DialogTitle>
+        <DialogContent>
+          <DialogContentText display={"flex"} flexDirection={"row"}>
+            Маєш аккаунт?
+            <Typography
+              color={"#1976d2"}
+              onClick={openLoginDialog}
+              sx={{
+                cursor: "pointer",
+                paddingLeft: "0.6%",
+              }}
+            >
+              Заходь!
+            </Typography>
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="email"
+            label="Пошта"
+            type="email"
+            fullWidth
+            variant="standard"
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="fullName"
+            label="Ваше гарне ім'я"
+            type="name"
+            fullWidth
+            variant="standard"
+          />
+          <RadioGroup>
+            <Radio
+              checked={selectedValue === "a"}
+              onChange={handleChange}
+              value="a"
+              name="radio-buttons"
+              inputProps={{ "aria-label": "A" }}
+            />
+            <Radio
+              checked={selectedValue === "b"}
+              onChange={handleChange}
+              value="b"
+              name="radio-buttons"
+              inputProps={{ "aria-label": "B" }}
+            />
+          </RadioGroup>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="password"
+            label="Пароль"
+            type="password"
+            fullWidth
+            variant="standard"
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeRegDialog}>Вийти</Button>
+          <Button onClick={RedirectRegister}>Продовжити</Button>
+        </DialogActions>
+      </Dialog>
+      {/*</Register Dialog>*/}
     </>
   );
 };

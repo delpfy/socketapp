@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { checkAuthorization } from "./asyncActions";
+import { Authorize, checkAuthorization, Register } from "./asyncActions";
 
 
 
@@ -7,7 +7,7 @@ import { checkAuthorization } from "./asyncActions";
 
 const userSlice = createSlice({
   name: "user",
-  initialState: { user : {id: '', role: '', avatar: '', name: '',authorized: false, expences: 0} },
+  initialState: { user : {id: '', role: '', avatar: '', name: '',authorized: false, expences: 0}, token : '' },
   reducers: {
     IncExpences(state, action: PayloadAction<number>) {
       state.user.expences += action.payload;
@@ -16,6 +16,10 @@ const userSlice = createSlice({
     DecExpences(state, action: PayloadAction<number>) {
       state.user.expences += action.payload;
     },
+
+    NullifyToken(state){
+      state.token = ''
+    }
 
   },
   extraReducers: (builder) => {
@@ -37,7 +41,33 @@ const userSlice = createSlice({
     });
 
 
+    // Authorize.
+    builder.addCase(Authorize.fulfilled, (state, action) => {
+      state.user.authorized = true;
+      state.token = action.payload.token;
+    });
+    builder.addCase(Authorize.pending, (state) => {
+      state.user.authorized = false;
+    });
+    builder.addCase(Authorize.rejected, (state, action) => {
+      state.user.authorized = false;
+      console.log("Error: " + action.error.message)
+    });
+
+     // Register.
+     builder.addCase(Register.fulfilled, (state, action) => {
+      state.user.authorized = false;
+      state.token = action.payload.token;
+    });
+    builder.addCase(Register.pending, (state) => {
+      state.user.authorized = false;
+    });
+    builder.addCase(Register.rejected, (state, action) => {
+      state.user.authorized = false;
+      console.log("Error: " + action.error.message)
+    });
+
   }});
 
-export const {IncExpences, DecExpences} = userSlice.actions;
+export const {IncExpences, DecExpences, NullifyToken} = userSlice.actions;
 export default userSlice.reducer;
