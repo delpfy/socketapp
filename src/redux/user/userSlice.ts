@@ -43,6 +43,7 @@ const userSlice = createSlice({
 
     // Authorize.
     builder.addCase(Authorize.fulfilled, (state, action) => {
+      alert("Раді що ви повернулись, вітаємо!")
       state.user.authorized = true;
       state.token = action.payload.token;
     });
@@ -56,6 +57,7 @@ const userSlice = createSlice({
 
      // Register.
      builder.addCase(Register.fulfilled, (state, action) => {
+      alert("Зареєстровано, теперь увійдіть")
       state.user.authorized = false;
       state.token = action.payload.token;
     });
@@ -64,7 +66,7 @@ const userSlice = createSlice({
     });
     builder.addCase(Register.rejected, (state, action) => {
       state.user.authorized = false;
-      console.log("Error: " + action.error.message)
+      alert("Помилочка вийшла")
     });
 
   }});

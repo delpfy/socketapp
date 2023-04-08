@@ -6,6 +6,9 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
   IconButton,
   Radio,
   RadioGroup,
@@ -37,19 +40,30 @@ export const Basket = () => {
   const [openRegister, setOpenRegister] = React.useState(false);
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
-  const [selectedValue, setSelectedValue] = React.useState('a');
+  const [role, setRole] = React.useState<string>("");
+  const [fullName, setFullName] = React.useState<string>("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+    setRole(event.target.value);
   };
 
   function openLoginDialog() {
-    closeRegDialog();
-    setOpenLogin(true);
+    if(user.authorized === true){
+      alert("Ви вже увійшли")
+    }
+    else{
+      closeRegDialog();
+      setOpenLogin(true);
+    }
+    
   }
 
   function closeLoginDialog() {
-    setOpenLogin(false);
+    
+    
+      setOpenLogin(false);
+
+    
   }
 
   function openRegDialog() {
@@ -69,9 +83,9 @@ export const Basket = () => {
           password: password,
         })
       );
-      if (user.authorized === true) {
+
         closeLoginDialog();
-      }
+
     } catch (error) {
       alert(error);
     }
@@ -93,9 +107,6 @@ export const Basket = () => {
           password: password,
         })
       );
-      if (token !== "") {
-        openLoginDialog();
-      }
     } catch (error) {
       alert(error);
     }
@@ -332,8 +343,10 @@ export const Basket = () => {
             id="email"
             label="Пошта"
             type="email"
+            value={email}
             fullWidth
             variant="standard"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             autoFocus
@@ -341,38 +354,52 @@ export const Basket = () => {
             id="fullName"
             label="Ваше гарне ім'я"
             type="name"
+            value={fullName}
             fullWidth
             variant="standard"
+            onChange={(e) => setFullName(e.target.value)}
           />
-          <RadioGroup>
-            <Radio
-              checked={selectedValue === "a"}
-              onChange={handleChange}
-              value="a"
-              name="radio-buttons"
-              inputProps={{ "aria-label": "A" }}
-            />
-            <Radio
-              checked={selectedValue === "b"}
-              onChange={handleChange}
-              value="b"
-              name="radio-buttons"
-              inputProps={{ "aria-label": "B" }}
-            />
-          </RadioGroup>
+
           <TextField
             autoFocus
             margin="dense"
             id="password"
             label="Пароль"
             type="password"
+            value={password}
             fullWidth
             variant="standard"
+            onChange={(e) => setPassword(e.target.value)}
           />
+          <FormControl>
+            <FormLabel id="demo-radio-buttons-group-label">
+              Роль користувача
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="female"
+              name="radio-buttons-group"
+            >
+              <FormControlLabel
+                value="customer"
+                control={<Radio onChange={handleChange} />}
+                label="Користувач"
+              />
+              <FormControlLabel
+                value="manager"
+                control={<Radio onChange={handleChange} />}
+                label="Менеджер"
+              />
+            </RadioGroup>
+          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={closeRegDialog}>Вийти</Button>
-          <Button onClick={RedirectRegister}>Продовжити</Button>
+          <Button
+            onClick={() => RedirectRegister(email, fullName, role, password)}
+          >
+            Продовжити
+          </Button>
         </DialogActions>
       </Dialog>
       {/*</Register Dialog>*/}
