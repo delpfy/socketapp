@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseBasket } from "../../utils/InitialiseBasket";
 import { BasketState, IBasketItemsDisplay} from "../types";
-import { addBasketItem, getAllBasketItems } from "./asyncActions";
+import { addBasketItem, getAllBasketItems, getBasketItemByUser } from "./asyncActions";
 
 const initialState: BasketState = InitialiseBasket();
 
@@ -29,6 +29,20 @@ const basketSlice = createSlice({
       state.items = {} as IBasketItemsDisplay;
     });
     builder.addCase(getAllBasketItems.rejected, (state) => {
+      state.status = 'error';
+      state.items = {} as IBasketItemsDisplay;
+    });
+
+    // All items by id.
+    builder.addCase(getBasketItemByUser.fulfilled, (state, action) => {
+      state.status = 'success';
+      state.items = action.payload;
+    });
+    builder.addCase(getBasketItemByUser.pending, (state) => {
+      state.status = 'pending';
+      state.items = {} as IBasketItemsDisplay;
+    });
+    builder.addCase(getBasketItemByUser.rejected, (state) => {
       state.status = 'error';
       state.items = {} as IBasketItemsDisplay;
     });

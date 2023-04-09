@@ -113,7 +113,6 @@ export const Basket = () => {
   }
 
   function Redirect() {
-    dispatch(checkAuthorization());
     if (user.authorized === true) {
       navigate("/socketapp/basket");
     } else {

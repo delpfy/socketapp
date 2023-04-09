@@ -12,12 +12,14 @@ export const getAllBasketItems = createAsyncThunk<IBasketItemsDisplay>(
   }
 );
 
-export const getBasketItemByUser = createAsyncThunk<IBasketItems, string>(
+export const getBasketItemByUser = createAsyncThunk<IBasketItemsDisplay, string>(
   "home/getBasketItemByUser",
   async (params) => {
     console.log("DATA " + 1);
     console.log("Params " + params); // Here is id.
-    const { data } = await axios.get<IBasketItems>(`/basketitems/${params}`);
+    const { data } = await axios.get<IBasketItemsDisplay>(`/basketitems/user/${params}`, {
+      headers: {'authorization': `Bearer ${window.localStorage.getItem('token')}` }
+    });
     console.log("DATA " + data);
     return data;
   }
@@ -25,11 +27,13 @@ export const getBasketItemByUser = createAsyncThunk<IBasketItems, string>(
 
 export const addBasketItem = createAsyncThunk<"", IBasketItems>(
   "home/addBasketItem",
-  async (params, { rejectWithValue }) => {
+  async (params) => {
     console.log("DATA " + 1);
     console.log("Params " + params); // Here is item.
 
-    const { data } = await axios.post(`/basketitems`, params);
+    const { data } = await axios.post(`/basketitems`, params, {
+      headers: {'authorization': `Bearer ${window.localStorage.getItem('token')}` }
+    });
     console.log("DATA 34" + data);
     return data;
   }

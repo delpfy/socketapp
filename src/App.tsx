@@ -12,9 +12,13 @@ import { getAllItems } from "./redux/home/asyncActions";
 import "./styles/style.css";
 import MenuField from "./Components/Menu/MenuArea/MenuField";
 import AppBarMenu from "./Components/Menu/AppBar/AppBarMenu";
+import { checkAuthorization } from "./redux/user/asyncActions";
 function App() {
   
-
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(checkAuthorization());
+  })
   return (
     <>
       <AppBarMenu />

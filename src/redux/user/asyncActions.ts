@@ -6,8 +6,11 @@ import { IUserDisplay, IUserLogin, IUserRegister } from "../types";
 export const checkAuthorization = createAsyncThunk<IUserDisplay>(
     'home/checkAuthorization',
     async function (){
-        console.log("DATA " + 1);
-        const {data} = await axios.get<IUserDisplay>(`/authme`);
+
+
+        const {data} = await axios.get<IUserDisplay>(`/authme`, {headers: {
+            'authorization': `Bearer ${window.localStorage.getItem('token')}` 
+          }});
         console.log("DATA " + data);
         return data;
     }

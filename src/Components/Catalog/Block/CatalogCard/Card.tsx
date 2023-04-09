@@ -39,7 +39,6 @@ export default function CatalogCard(props: IItems) {
 
   // Chech auth, if authorized - add and changing active state.
   function PutInBasket() {
-    dispatch(checkAuthorization());
     if (user.authorized == true) {
       dispatch(
         addBasketItem({

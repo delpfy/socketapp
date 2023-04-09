@@ -31,28 +31,30 @@ const userSlice = createSlice({
       state.user.role = action.payload.user.role;
       state.user.avatar = action.payload.user.avatarUrl;
       state.user.name = action.payload.user.fullName;
+      alert("Авторизовано.")
     });
     builder.addCase(checkAuthorization.pending, (state) => {
       state.user.authorized = false;
     });
     builder.addCase(checkAuthorization.rejected, (state, action) => {
       state.user.authorized = false;
-      console.log("Error: " + action.error.message)
+      alert("Помилка з авторизацією: " + action.error.message)
     });
 
 
     // Authorize.
     builder.addCase(Authorize.fulfilled, (state, action) => {
-      alert("Раді що ви повернулись, вітаємо!")
+      alert("Раді, що ви повернулись.")
       state.user.authorized = true;
       state.token = action.payload.token;
+      window.localStorage.setItem('token', action.payload.token)
     });
     builder.addCase(Authorize.pending, (state) => {
       state.user.authorized = false;
     });
     builder.addCase(Authorize.rejected, (state, action) => {
       state.user.authorized = false;
-      console.log("Error: " + action.error.message)
+      alert("Помилочка вийшла: " + action.error.message)
     });
 
      // Register.
@@ -66,7 +68,7 @@ const userSlice = createSlice({
     });
     builder.addCase(Register.rejected, (state, action) => {
       state.user.authorized = false;
-      alert("Помилочка вийшла")
+      alert("Помилочка вийшла: " + action.error.message)
     });
 
   }});
