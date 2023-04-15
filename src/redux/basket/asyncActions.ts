@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { IBasketItems, IBasketItemsDisplay } from "../types";
+import { IBasketItemDisplay, IBasketItems, IBasketItemsDisplay } from "../types";
 
 export const getAllBasketItems = createAsyncThunk<IBasketItemsDisplay>(
   "home/getAllBasketItems",
@@ -22,6 +22,19 @@ export const getBasketItemByUser = createAsyncThunk<IBasketItemsDisplay, string>
     });
     console.log("DATA " + data);
     return data;
+  }
+);
+
+export const getBasketItemById = createAsyncThunk<IBasketItemDisplay, string>(
+  'home/getBasketItemById',
+  async (params) => {
+      console.log("DATA " + 1);
+      console.log("Params " + params) // Here is Id.
+      const {data} = await axios.get<IBasketItemDisplay>(`/basketitems/${params}`, {
+        headers: {'authorization': `Bearer ${window.localStorage.getItem('token')}` }
+      });
+      console.log("DATA " + data);
+      return data;
   }
 );
 

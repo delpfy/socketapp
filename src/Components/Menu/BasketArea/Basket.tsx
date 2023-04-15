@@ -5,6 +5,7 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
+  DialogProps,
   DialogTitle,
   FormControl,
   FormControlLabel,
@@ -25,7 +26,7 @@ import {
   Register,
   checkAuthorization,
 } from "../../../redux/user/asyncActions";
-
+import BasketPage from '../../../Pages/Basket/BasketPage'
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -33,20 +34,41 @@ import { NullifyToken } from "../../../redux/user/userSlice";
 
 export const Basket = () => {
   const { user, token } = useAppSelector((state) => state.user);
+  const { isOnItemPage } = useAppSelector((state) => state.basket);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
+  const [openBasket, setOpenBasket] = React.useState(false);
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
   const [role, setRole] = React.useState<string>("");
   const [fullName, setFullName] = React.useState<string>("");
+  const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
+  const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
+
+  React.useEffect(() => {
+    closeBasketDialog();
+  }, [isOnItemPage])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
   };
 
+  function openBasketDialog() {
+    if(user.authorized === true){
+      closeRegDialog();
+      closeLoginDialog();
+      setOpenBasket(true);
+    }else {
+      openLoginDialog();
+    }
+  }
+  function closeBasketDialog() {
+    setOpenBasket(false)
+    
+  }
   function openLoginDialog() {
     if(user.authorized === true){
       alert("Ви вже увійшли")
@@ -59,11 +81,7 @@ export const Basket = () => {
   }
 
   function closeLoginDialog() {
-    
-    
       setOpenLogin(false);
-
-    
   }
 
   function openRegDialog() {
@@ -112,13 +130,13 @@ export const Basket = () => {
     }
   }
 
-  function Redirect() {
+ /*  function Redirect() {
     if (user.authorized === true) {
       navigate("/socketapp/basket");
     } else {
       openLoginDialog();
     }
-  }
+  } */
 
   /* function LoginDialog() {
     return (
@@ -258,7 +276,7 @@ export const Basket = () => {
           <Typography variant={"h2"} component={"h2"} fontSize={35}>
             {user.expences === 0 ? "" : user.expences + "₴"}
           </Typography>
-          <IconButton onClick={() => Redirect()}>
+          <IconButton onClick={openBasketDialog}>
             <ShoppingCartIcon sx={{ width: 40, height: 40 }} />
           </IconButton>
         </Box>
@@ -402,6 +420,30 @@ export const Basket = () => {
         </DialogActions>
       </Dialog>
       {/*</Register Dialog>*/}
+      {/*<Basket Dialog>*/}
+      <Dialog
+        open={openBasket}
+        onClose={closeBasketDialog}
+        scroll={scroll}
+        maxWidth = {maxWidth}
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
+      >
+        <DialogTitle id="scroll-dialog-title">Кошик</DialogTitle>
+        <DialogContent dividers={scroll === 'paper'}>
+          <DialogContentText
+            id="scroll-dialog-description"
+
+            tabIndex={-1}
+          >
+            <BasketPage/>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeBasketDialog}>Вийти</Button>
+        </DialogActions>
+      </Dialog>
+      {/*</Basket Dialog>*/}
     </>
   );
 };

@@ -27,7 +27,7 @@ export const BasketPage = () => {
             container
             padding={"2%"}
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 8, md: 12, lg: 16, xl: 20 }}
+            columns={{ xs: 1, sm: 4, md: 8, lg: 8, xl: 10 }}
           >
             {items.map((item: IBasketItems) => (
               <Grid
@@ -61,7 +61,7 @@ export const BasketPage = () => {
             container
             padding={"2%"}
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 8, md: 12, lg: 16, xl: 20 }}
+            columns={{ xs: 1, sm: 4, md: 8, lg: 8, xl: 10 }}
           >
             {
               

@@ -4,17 +4,21 @@
 export type IItemsDisplay = {
   items: IItems[];
 };
-
-export type IUserDisplay = {
-  user: IUser
-}
-
 export type IItemDisplay = {
   items: IItems;
 };
 export type IBasketItemsDisplay = {
   items: IBasketItems[];
 };
+export type IBasketItemDisplay = {
+  items: IBasketItems;
+};
+export type IUserDisplay = {
+  user: IUser
+}
+
+
+
 
 export type IItems = {
   _id: string;
@@ -64,7 +68,9 @@ export type Status = 'success' | 'pending' | 'error'
 export interface BasketState {
   status: Status;
   items: IBasketItemsDisplay;
+  basketItemCurrent: IBasketItemDisplay;
   expences: number;
+  isOnItemPage: boolean;
 }
 
 export interface HomeState {

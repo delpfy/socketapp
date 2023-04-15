@@ -1,14 +1,25 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { IncExpences } from "../../redux/basket/basketSlice";
-import { IItems } from "../../redux/types";
+import { IncExpences, SetItemPage } from "../../redux/basket/basketSlice";
+import { IBasketItemDisplay, IItemDisplay, IItems } from "../../redux/types";
 import NotFoundPage from "../NotFound/NotFoundPage";
+import { useNavigate } from "react-router-dom";
 
 export const ItemPage = () => {
   const {itemCurrent, status} = useAppSelector((state) => state.home);
+  const {isOnItemPage, basketItemCurrent} = useAppSelector((state) => state.basket);
   const [imageIndex, setImageIndex] = useState(0);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  let currentItem: IBasketItemDisplay | IItemDisplay = itemCurrent;
 
+  React.useEffect(() => {
+    dispatch(SetItemPage(false))
+    currentItem = basketItemCurrent;
+    
+    console.log('CHanged')
+    console.log("currentItem.items.name " + currentItem.items)
+  }, [isOnItemPage, basketItemCurrent])
 
   const INC_EXPENCES = (price: number) => {
     dispatch(IncExpences(price));
@@ -35,8 +46,8 @@ export const ItemPage = () => {
           </div>
           <img
             className="item__body_image"
-            src={itemCurrent.items.image[imageIndex]}
-            alt={itemCurrent.items.name}
+            src={currentItem.items.image[imageIndex]}
+            alt={currentItem.items.name}
           ></img>
           <div
             onClick={() =>
@@ -52,16 +63,16 @@ export const ItemPage = () => {
         </div>
 
         <div className="item__body_subcontent">
-          <h1 className="item__body_subcontent_name">{itemCurrent.items.name}</h1>
-          <h1 className="item__body_subcontent_price">₴ {itemCurrent.items.price}</h1>
+          <h1 className="item__body_subcontent_name">{currentItem.items.name}</h1>
+          <h1 className="item__body_subcontent_price">₴ {currentItem.items.price}</h1>
           <p className="item__body_subcontent_description">
-            {itemCurrent.items.description}
+            {currentItem.items.description}
           </p>
 
           <div className="item__body_basketButtonBlock">
             <button
               className="item__body_basketButton"
-              onClick={() => PUSH_BASKET_ITEM(itemCurrent.items)}
+              onClick={() => PUSH_BASKET_ITEM(currentItem.items)}
             >
               Додати до кошика
             </button>

@@ -37,7 +37,7 @@ export const CatalogField = () => {
             container
             padding={"2%"}
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 8, md: 12, lg: 16, xl: 20 }}
+            columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
           >
             {items.map((item: IItems) => (
               <Grid
@@ -75,7 +75,7 @@ export const CatalogField = () => {
             container
             padding={"2%"}
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 8, md: 12, lg: 16, xl: 20 }}
+            columns={{ xs: 4, sm: 8, md: 12, lg: 16, xl: 20 }}
           >
             {
               
