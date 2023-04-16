@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { SetID } from "../../../redux/home/homeSlice";
 
-import {
-  IncExpences,
-} from "../../../redux/basket/basketSlice";
+
 
 import { IItems} from "../../../redux/types";
 import "./catalogblock.scss";

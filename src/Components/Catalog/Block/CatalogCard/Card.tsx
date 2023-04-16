@@ -29,6 +29,7 @@ import { checkAuthorization } from "../../../../redux/user/asyncActions";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 import ItemPage from "../../../../Pages/Item/ItemPage";
+import { SetExpences } from "../../../../redux/user/userSlice";
 
 export default function CatalogCard(props: IItems) {
   const { user } = useAppSelector((state) => state.user);
@@ -61,7 +62,7 @@ export default function CatalogCard(props: IItems) {
       dispatch(
         addBasketItem({
           name: props.name,
-          description: props.name,
+          description: props.description,
           category: props.category,
           price: props.price,
           rating: props.rating,
@@ -76,6 +77,7 @@ export default function CatalogCard(props: IItems) {
 
     if (status == "success") {
       setActive(!active);
+      dispatch(SetExpences(user.expences + props.price));
     }
   }
 

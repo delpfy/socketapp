@@ -9,12 +9,9 @@ const userSlice = createSlice({
   name: "user",
   initialState: { user : {id: '', role: '', avatar: '', name: '',authorized: false, expences: 0}, token : '' },
   reducers: {
-    IncExpences(state, action: PayloadAction<number>) {
-      state.user.expences += action.payload;
-    },
 
-    DecExpences(state, action: PayloadAction<number>) {
-      state.user.expences += action.payload;
+    SetExpences(state, action: PayloadAction<number>) {
+      state.user.expences = action.payload;
     },
 
     NullifyToken(state){
@@ -73,5 +70,5 @@ const userSlice = createSlice({
 
   }});
 
-export const {IncExpences, DecExpences, NullifyToken} = userSlice.actions;
+export const {SetExpences, NullifyToken} = userSlice.actions;
 export default userSlice.reducer;

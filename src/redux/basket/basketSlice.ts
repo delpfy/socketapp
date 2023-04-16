@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseBasket } from "../../utils/InitialiseBasket";
-import { BasketState, IBasketItemDisplay, IBasketItemsDisplay} from "../types";
+import { BasketState, IBasketItemDisplay, IBasketItems, IBasketItemsDisplay} from "../types";
 import { addBasketItem, getAllBasketItems, getBasketItemById, getBasketItemByUser } from "./asyncActions";
 
 const initialState: BasketState = InitialiseBasket();
@@ -9,12 +9,10 @@ const basketSlice = createSlice({
   name: "basket",
   initialState,
   reducers: {
-    IncExpences(state, action: PayloadAction<number>) {
-      state.expences += action.payload;
+    SetItemsAmount(state, action: PayloadAction<number>) {
+      state.itemsAmount = action.payload;
     },
-    DecExpences(state, action: PayloadAction<number>) {
-      state.expences -= action.payload;
-    },
+
     SetItemPage(state, action: PayloadAction<boolean>){
       state.isOnItemPage = action.payload;
     }
@@ -44,10 +42,12 @@ const basketSlice = createSlice({
     builder.addCase(getBasketItemByUser.pending, (state) => {
       state.status = 'pending';
       state.items = {} as IBasketItemsDisplay;
+      state.itemsAmount = 0 ;
     });
     builder.addCase(getBasketItemByUser.rejected, (state) => {
       state.status = 'error';
       state.items = {} as IBasketItemsDisplay;
+      state.itemsAmount = 0 ;
     });
 
     // Item by id.
@@ -83,8 +83,7 @@ const basketSlice = createSlice({
 });
 
 export const {
-  IncExpences,
-  DecExpences,
+  SetItemsAmount,
   SetItemPage,
 } = basketSlice.actions;
 export default basketSlice.reducer;

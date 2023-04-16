@@ -1,17 +1,11 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 
-import cross_sign from "../../../assets/img/cross_sign.png";
-import append_icon from "../../../assets/img/append_icon.png";
-import reduce_icon from "../../../assets/img/reduce_icon.png";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { IBasketItems, IItems } from "../../../redux/types";
-import { SetID, SetCategory } from "../../../redux/home/homeSlice";
+import { IBasketItems } from "../../../redux/types";
+
 import {
-  IncExpences,
-  DecExpences,
-  SetItemPage,
+  SetItemPage, SetItemsAmount,
 } from "../../../redux/basket/basketSlice";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -41,20 +35,17 @@ import BasketItemPage from "../../../Pages/Item/BasketItemPage";
 
 export const BasketItemBlock = (props: IBasketItems) => {
   
+  const {itemsAmount} = useAppSelector((state) => state.basket)
+
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
   const [openItem, setOpenItem] = React.useState(false);
   const dispatch = useAppDispatch();
 
-
-  const INC_EXPENCES = (price: number) => {
-    dispatch(IncExpences(price));
-  };
-
-  const DEC_EXPENCES = (price: number) => {
-    dispatch(DecExpences(price));
-  };
-
+  
+    
+  
+ 
   const POP_ITEM = (item: IBasketItems) => {};
 
   const PUSH_ITEM = (item: IBasketItems) => {};
@@ -79,6 +70,7 @@ export const BasketItemBlock = (props: IBasketItems) => {
 
   return (
     <>
+    
       <Card
         sx={{
           maxWidth: 345,

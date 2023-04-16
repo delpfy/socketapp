@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { IncExpences, SetItemPage } from "../../redux/basket/basketSlice";
+import { SetItemPage } from "../../redux/basket/basketSlice";
 import Carousel from 'react-material-ui-carousel'
 import {
   IBasketItemDisplay,
@@ -22,28 +22,56 @@ export const ItemPage = (props: IItems) => {
     dispatch(getItemById(props.id))
   }, []) */
 
-  const INC_EXPENCES = (price: number) => {
-    dispatch(IncExpences(price));
-  };
-
-  const PUSH_BASKET_ITEM = (item: IItems) => {};
+  
 
   const Item = () => {
     return (
       
       
-      <Box width={'100%'}>
+      <Box width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
         <Box >
-        <Carousel sx={{ width: "100%" }} height={700} display = {'flex'} justifyContent={'center'} alignItems={'center'} >
-        <Box display = {'flex'} justifyContent={'center'} alignItems={'center'}  >
-          <img src={props.image[0]} style={{display : 'flex' }}/>
+       
+        <Carousel sx={{ width: {
+          xs : 450,
+          md : 1125,
+          lx : 1200
+        }, height : {
+          xs : 500,
+          md : 700
+        }  , display: 'flex', alignContent: 'center', justifyContent: 'center',  flexDirection: 'column'}}  >
+        <Box sx={{width: {
+          xs : 330,
+          md : 800
+        },  paddingLeft : "20%" }}>
+          
+          <img src={props.image[0]} style={{ width: '100%', height: '100%', objectFit: 'contain' }}/>
+          
+          
         </Box>
-        <Box display = {'flex'} justifyContent={'center'} alignItems={'center'}>
-          <img src={props.image[1]} style={{display : 'flex'}}/>
+        <Box sx={{width: {
+          xs : 330,
+          md : 800
+        }, paddingLeft : "20%"  }}>
+          
+          <img src={props.image[1]} style={{ width: '100%', height: '100%', objectFit: 'contain' }}/>
+          
+          
         </Box>
-        <Box display = {'flex'} justifyContent={'center'} alignItems={'center'}>
-          <img src={props.image[2]} style={{display : 'flex'}}/>
+        <Box sx={{width: {
+          xs : 330,
+          md : 800
+        }, paddingLeft : "20%"  }}>
+          
+          <img src={props.image[2]} style={{ width: '100%', height: '100%', objectFit: 'contain' }}/>
+          
+          
         </Box>
+        {/* <Box display = {'flex'} justifyContent={'center'} alignItems={'center'} width={400}>
+          <img src={props.image[1]} style={{display : 'flex', objectFit: 'contain'}}/>
+        </Box>
+        <Box display = {'flex'} justifyContent={'center'} alignItems={'center'} width={400}>
+          <img src={props.image[2]} style={{display : 'flex', objectFit: 'contain'}}/>
+        </Box> */}
         </Carousel>
         </Box>
         
@@ -51,6 +79,7 @@ export const ItemPage = (props: IItems) => {
           <Typography
           fontFamily={"Comfortaa"}
           sx = {{paddingLeft: 0.3}}
+          fontSize={25}
           >
             {props.name}
           </Typography>

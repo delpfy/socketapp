@@ -69,7 +69,7 @@ export interface BasketState {
   status: Status;
   items: IBasketItemsDisplay;
   basketItemCurrent: IBasketItemDisplay;
-  expences: number;
+  itemsAmount: number;
   isOnItemPage: boolean;
 }
 

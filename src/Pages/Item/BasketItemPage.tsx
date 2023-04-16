@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { IncExpences, SetItemPage } from "../../redux/basket/basketSlice";
+import { SetItemPage } from "../../redux/basket/basketSlice";
 import {
   IBasketItemDisplay,
   IItemDisplay,
@@ -9,7 +9,8 @@ import {
 } from "../../redux/types";
 import NotFoundPage from "../NotFound/NotFoundPage";
 import { useNavigate } from "react-router-dom";
-import { DialogProps } from "@mui/material";
+import { Box, DialogProps, Rating, Typography } from "@mui/material";
+import Carousel from "react-material-ui-carousel";
 
 export const BasketItemPage = (props: IItems) => {
   const { status } = useAppSelector((state) => state.home);
@@ -23,62 +24,90 @@ export const BasketItemPage = (props: IItems) => {
 
  
 
-  const INC_EXPENCES = (price: number) => {
-    dispatch(IncExpences(price));
-  };
-
-  const PUSH_BASKET_ITEM = (item: IItems) => {};
+  
 
   const Item = () => {
     return (
-      <div className="item__body">
-        <div className="item__body_image_block">
-          <div
-            onClick={() =>
-              setImageIndex(imageIndex - 1 !== -1 ? imageIndex - 1 : 2)
-            }
-            className="item__body_image_changeBackward"
+      
+      
+      <Box width={'100%'} display={'flex'} justifyContent={'center'} alignItems={'center'} flexDirection={'column'}>
+        <Box >
+       
+        <Carousel sx={{ width: {
+          xs : 450,
+          md : 1125,
+          lx : 1200
+        }, height : {
+          xs : 500,
+          md : 700
+        }  , display: 'flex', alignContent: 'center', justifyContent: 'center',  flexDirection: 'column'}}  >
+        <Box sx={{width: {
+          xs : 330,
+          md : 800
+        },  paddingLeft : "20%" }}>
+          
+          <img src={props.image[0]} style={{ width: '100%', height: '100%', objectFit: 'contain' }}/>
+          
+          
+        </Box>
+        <Box sx={{width: {
+          xs : 330,
+          md : 800
+        }, paddingLeft : "20%"  }}>
+          
+          <img src={props.image[1]} style={{ width: '100%', height: '100%', objectFit: 'contain' }}/>
+          
+          
+        </Box>
+        <Box sx={{width: {
+          xs : 330,
+          md : 800
+        }, paddingLeft : "20%"  }}>
+          
+          <img src={props.image[2]} style={{ width: '100%', height: '100%', objectFit: 'contain' }}/>
+          
+          
+        </Box>
+        {/* <Box display = {'flex'} justifyContent={'center'} alignItems={'center'} width={400}>
+          <img src={props.image[1]} style={{display : 'flex', objectFit: 'contain'}}/>
+        </Box>
+        <Box display = {'flex'} justifyContent={'center'} alignItems={'center'} width={400}>
+          <img src={props.image[2]} style={{display : 'flex', objectFit: 'contain'}}/>
+        </Box> */}
+        </Carousel>
+        </Box>
+        
+        <Box display={'flex'} flexDirection={'column'} alignItems={'left'}>
+          <Typography
+          fontFamily={"Comfortaa"}
+          sx = {{paddingLeft: 0.3}}
+          fontSize={25}
           >
-            <button className="item__body_image_changeBackward_button">
-              {" "}
-              {"<"}{" "}
-            </button>
-          </div>
-          <img
-            className="item__body_image"
-            src={props.image[imageIndex]}
-            alt={props.name}
-          ></img>
-          <div
-            onClick={() =>
-              setImageIndex(imageIndex + 1 !== 3 ? imageIndex + 1 : 0)
-            }
-            className="item__body_image_changeForward"
+            {props.name}
+          </Typography>
+          <Typography
+          fontFamily={"Comfortaa"}
+          fontSize={25}
+          color = 'error'
+          sx = {{paddingLeft: 0.3}}
           >
-            <button className="item__body_image_changeForward_button">
-              {" "}
-              {">"}{" "}
-            </button>
-          </div>
-        </div>
-
-        <div className="item__body_subcontent">
-          <h1 className="item__body_subcontent_name">{props.name}</h1>
-          <h1 className="item__body_subcontent_price">₴ {props.price}</h1>
-          <p className="item__body_subcontent_description">
+            {props.price}₴
+          </Typography>
+          <Rating  name="read-only" value={props.rating} readOnly />
+          
+          <Typography
+          fontFamily={"Comfortaa"}
+          sx = {{paddingLeft: 0.3, paddingTop: 3}}
+         
+          >
             {props.description}
-          </p>
+          </Typography>
+        </Box>
+        <Box>
 
-          <div className="item__body_basketButtonBlock">
-            <button
-              className="item__body_basketButton"
-              onClick={() => PUSH_BASKET_ITEM(props)}
-            >
-              Додати до кошика
-            </button>
-          </div>
-        </div>
-      </div>
+        </Box>
+      </Box>
+      
     );
   };
 

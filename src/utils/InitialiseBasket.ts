@@ -7,7 +7,7 @@ export const InitialiseBasket = () => {
     status: '' as Status,
     items: {} as IBasketItemsDisplay,
     basketItemCurrent:  {} as IBasketItemDisplay,
-    expences: 0,
+    itemsAmount: 0,
     isOnItemPage: false
   };
 };

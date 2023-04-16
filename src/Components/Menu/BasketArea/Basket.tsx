@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   Dialog,
@@ -34,7 +35,7 @@ import { NullifyToken } from "../../../redux/user/userSlice";
 
 export const Basket = () => {
   const { user, token } = useAppSelector((state) => state.user);
-  const { isOnItemPage } = useAppSelector((state) => state.basket);
+  const { isOnItemPage, itemsAmount } = useAppSelector((state) => state.basket);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ export const Basket = () => {
   const [fullName, setFullName] = React.useState<string>("");
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("md");
+ 
 
   React.useEffect(() => {
     closeBasketDialog();
@@ -249,9 +251,21 @@ export const Basket = () => {
 
   const Locker = () => {
     if (user.authorized === true) {
-      return <AccountCircleRoundedIcon sx={{ width: 40, height: 40 }} />;
+      return <AccountCircleRoundedIcon sx={{ width: {
+        xs : 30,
+        md : 40
+      }, height: {
+        xs : 30,
+        md : 40
+      } }} />;
     } else {
-      return <LockPersonRoundedIcon sx={{ width: 40, height: 40 }} />;
+      return <LockPersonRoundedIcon sx={{ width: {
+        xs : 30,
+        md : 40
+      }, height: {
+        xs : 30,
+        md : 40
+      } }} />;
     }
   };
 
@@ -261,20 +275,31 @@ export const Basket = () => {
         display={"flex"}
         justifyContent={"space-between"}
         alignItems={"center"}
-        width={200}
+        maxWidth={200}
       >
         <Box
           display={"flex"}
           justifyContent={"space-between"}
           alignItems={"center"}
-          width={180}
+          maxWidth={180}
         >
           <Typography variant={"h2"} component={"h2"} fontSize={35}>
             {user.expences === 0 ? "" : user.expences + "₴"}
           </Typography>
+          
           <IconButton onClick={openBasketDialog}>
-            <ShoppingCartIcon sx={{ width: 40, height: 40 }} />
+          <Badge badgeContent={itemsAmount} color="secondary">
+            <ShoppingCartIcon sx={{ 
+              width: {
+              xs : 30,
+              md : 40
+            }, height: {
+              xs : 30,
+              md : 40
+            }}} />
+            </Badge>
           </IconButton>
+          
         </Box>
         <Box>
           <IconButton onClick={openLoginDialog}>
