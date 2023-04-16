@@ -1,90 +1,103 @@
 import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { IncExpences, SetItemPage } from "../../redux/basket/basketSlice";
-import { IBasketItemDisplay, IItemDisplay, IItems } from "../../redux/types";
+import Carousel from 'react-material-ui-carousel'
+import {
+  IBasketItemDisplay,
+  IItemDisplay,
+  IItems,
+  Status,
+} from "../../redux/types";
 import NotFoundPage from "../NotFound/NotFoundPage";
 import { useNavigate } from "react-router-dom";
+import { getItemById } from "../../redux/home/asyncActions";
+import { Box, Rating, Typography } from "@mui/material";
 
-export const ItemPage = () => {
-  const {itemCurrent, status} = useAppSelector((state) => state.home);
-  const {isOnItemPage, basketItemCurrent} = useAppSelector((state) => state.basket);
+export const ItemPage = (props: IItems) => {
+  const { status } = useAppSelector((state) => state.home);
   const [imageIndex, setImageIndex] = useState(0);
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  let currentItem: IBasketItemDisplay | IItemDisplay = itemCurrent;
 
-  React.useEffect(() => {
-    dispatch(SetItemPage(false))
-    currentItem = basketItemCurrent;
-    
-    console.log('CHanged')
-    console.log("currentItem.items.name " + currentItem.items)
-  }, [isOnItemPage, basketItemCurrent])
+  /*  React.useEffect(() => {
+    dispatch(getItemById(props.id))
+  }, []) */
 
   const INC_EXPENCES = (price: number) => {
     dispatch(IncExpences(price));
   };
 
-  const PUSH_BASKET_ITEM = (item: IItems) => {
-    
-  };
-  
+  const PUSH_BASKET_ITEM = (item: IItems) => {};
+
   const Item = () => {
     return (
-      <div className="item__body">
-        <div className="item__body_image_block">
-          <div
-            onClick={() =>
-              setImageIndex(imageIndex - 1 !== -1 ? imageIndex - 1 : 2)
-            }
-            className="item__body_image_changeBackward"
+      
+      
+      <Box width={'100%'}>
+        <Box >
+        <Carousel sx={{ width: "100%" }} height={700} display = {'flex'} justifyContent={'center'} alignItems={'center'} >
+        <Box display = {'flex'} justifyContent={'center'} alignItems={'center'}  >
+          <img src={props.image[0]} style={{display : 'flex' }}/>
+        </Box>
+        <Box display = {'flex'} justifyContent={'center'} alignItems={'center'}>
+          <img src={props.image[1]} style={{display : 'flex'}}/>
+        </Box>
+        <Box display = {'flex'} justifyContent={'center'} alignItems={'center'}>
+          <img src={props.image[2]} style={{display : 'flex'}}/>
+        </Box>
+        </Carousel>
+        </Box>
+        
+        <Box display={'flex'} flexDirection={'column'} alignItems={'left'}>
+          <Typography
+          fontFamily={"Comfortaa"}
+          sx = {{paddingLeft: 0.3}}
           >
-            <button className="item__body_image_changeBackward_button">
-              {" "}
-              {"<"}{" "}
-            </button>
-          </div>
-          <img
-            className="item__body_image"
-            src={currentItem.items.image[imageIndex]}
-            alt={currentItem.items.name}
-          ></img>
-          <div
-            onClick={() =>
-              setImageIndex(imageIndex + 1 !== 3 ? imageIndex + 1 : 0)
-            }
-            className="item__body_image_changeForward"
+            {props.name}
+          </Typography>
+          <Typography
+          fontFamily={"Comfortaa"}
+          fontSize={25}
+          color = 'error'
+          sx = {{paddingLeft: 0.3}}
           >
-            <button className="item__body_image_changeForward_button">
-              {" "}
-              {">"}{" "}
-            </button>
-          </div>
-        </div>
+            {props.price}₴
+          </Typography>
+          <Rating  name="read-only" value={props.rating} readOnly />
+          
+          <Typography
+          fontFamily={"Comfortaa"}
+          sx = {{paddingLeft: 0.3, paddingTop: 3}}
+         
+          >
+            {props.description}
+          </Typography>
+        </Box>
+        <Box>
 
-        <div className="item__body_subcontent">
-          <h1 className="item__body_subcontent_name">{currentItem.items.name}</h1>
-          <h1 className="item__body_subcontent_price">₴ {currentItem.items.price}</h1>
-          <p className="item__body_subcontent_description">
-            {currentItem.items.description}
-          </p>
+        </Box>
+      </Box>
+      
+    );
+  };
 
-          <div className="item__body_basketButtonBlock">
-            <button
-              className="item__body_basketButton"
-              onClick={() => PUSH_BASKET_ITEM(currentItem.items)}
-            >
-              Додати до кошика
-            </button>
-          </div>
-        </div>
-      </div>
-    )
+  function StatusHandler(status: Status) {
+    switch (status) {
+      case "success":
+        if (props !== undefined) {
+          return <Item />;
+        } else {
+          return <NotFoundPage />;
+        }
+      case "pending":
+        return <NotFoundPage />;
+      case "error":
+        return <NotFoundPage />;
+      default:
+        return <NotFoundPage />;
+    }
   }
 
-  return (
-    status === 'success' ? <Item/> : <NotFoundPage/>
-  );
+  return StatusHandler(status);
 };
 
 export default ItemPage;

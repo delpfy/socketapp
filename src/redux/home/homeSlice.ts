@@ -55,14 +55,17 @@ const homeSlice = createSlice({
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.status = 'success';
       state.itemCurrent = action.payload;
+      console.log("SUCCESS");
     });
     builder.addCase(getItemById.pending, (state) => {
       state.status = 'pending';
       state.itemCurrent = {} as IItemDisplay;
+      console.log("PENDING");
     });
     builder.addCase(getItemById.rejected, (state) => {
       state.status = 'error';
       state.itemCurrent = {} as IItemDisplay;
+      console.log("ERROR");
     });
 
   }});

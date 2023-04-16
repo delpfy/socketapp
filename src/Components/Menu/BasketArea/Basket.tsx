@@ -26,7 +26,7 @@ import {
   Register,
   checkAuthorization,
 } from "../../../redux/user/asyncActions";
-import BasketPage from '../../../Pages/Basket/BasketPage'
+import BasketPage from "../../../Pages/Basket/BasketPage";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -45,43 +45,40 @@ export const Basket = () => {
   const [password, setPassword] = React.useState<string>("");
   const [role, setRole] = React.useState<string>("");
   const [fullName, setFullName] = React.useState<string>("");
-  const [scroll, setScroll] = React.useState<DialogProps['scroll']>('paper');
-  const [maxWidth, setMaxWidth] = React.useState<DialogProps['maxWidth']>('md');
+  const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
+  const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("md");
 
   React.useEffect(() => {
     closeBasketDialog();
-  }, [isOnItemPage])
+  }, [isOnItemPage]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
   };
 
   function openBasketDialog() {
-    if(user.authorized === true){
+    if (user.authorized === true) {
       closeRegDialog();
       closeLoginDialog();
       setOpenBasket(true);
-    }else {
+    } else {
       openLoginDialog();
     }
   }
   function closeBasketDialog() {
-    setOpenBasket(false)
-    
+    setOpenBasket(false);
   }
   function openLoginDialog() {
-    if(user.authorized === true){
-      alert("Ви вже увійшли")
-    }
-    else{
+    if (user.authorized === true) {
+      alert("Ви вже увійшли");
+    } else {
       closeRegDialog();
       setOpenLogin(true);
     }
-    
   }
 
   function closeLoginDialog() {
-      setOpenLogin(false);
+    setOpenLogin(false);
   }
 
   function openRegDialog() {
@@ -102,8 +99,7 @@ export const Basket = () => {
         })
       );
 
-        closeLoginDialog();
-
+      closeLoginDialog();
     } catch (error) {
       alert(error);
     }
@@ -130,7 +126,7 @@ export const Basket = () => {
     }
   }
 
- /*  function Redirect() {
+  /*  function Redirect() {
     if (user.authorized === true) {
       navigate("/socketapp/basket");
     } else {
@@ -425,18 +421,14 @@ export const Basket = () => {
         open={openBasket}
         onClose={closeBasketDialog}
         scroll={scroll}
-        maxWidth = {maxWidth}
+        maxWidth={maxWidth}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
         <DialogTitle id="scroll-dialog-title">Кошик</DialogTitle>
-        <DialogContent dividers={scroll === 'paper'}>
-          <DialogContentText
-            id="scroll-dialog-description"
-
-            tabIndex={-1}
-          >
-            <BasketPage/>
+        <DialogContent dividers={scroll === "paper"}>
+          <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
+            <BasketPage />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
