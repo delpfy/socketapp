@@ -9,13 +9,14 @@ import { IBasketItems, Status } from "../../redux/types";
 import Skeleton from "../../Components/Catalog/Block/CatalogCard/Skeleton";
 import NotFoundPage from "../NotFound/NotFoundPage";
 import { SetItemsAmount } from "../../redux/basket/basketSlice";
+import { checkAuthorization } from "../../redux/user/asyncActions";
 export const BasketPage = () => {
   const {items} = useAppSelector((state) => state.basket.items);
-  const {status, itemsAmount} = useAppSelector((state) => state.basket);
+  const {status} = useAppSelector((state) => state.basket);
   const {user} = useAppSelector((state) => state.user);
-  let counter = 0;
   const dispatch = useAppDispatch();
   React.useEffect(() => {
+    dispatch(checkAuthorization());
     dispatch(getBasketItemByUser(user.id));
   }, []);
 
@@ -31,7 +32,7 @@ export const BasketPage = () => {
             columns={{ xs: 1, sm: 4, md: 8, lg: 8, xl: 10 }}
           >
             {items.map((item: IBasketItems) => (
-              counter += item.amount,
+              
               <Grid
                 item
                 display={"flex"}
@@ -63,7 +64,7 @@ export const BasketPage = () => {
           <Grid
             container
             padding={"2%"}
-            spacing={{ xs: 1, sm: 3, md: 4 }}
+            spacing={{ xs: 1, sm: 2, md: 4, lg: 8, xl: 10}}
             columns={{ xs: 1, sm: 4, md: 8, lg: 8, xl: 10 }}
           >
             {

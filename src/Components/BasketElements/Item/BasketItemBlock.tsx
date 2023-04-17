@@ -35,7 +35,7 @@ import BasketItemPage from "../../../Pages/Item/BasketItemPage";
 
 export const BasketItemBlock = (props: IBasketItems) => {
   
-  const {itemsAmount} = useAppSelector((state) => state.basket)
+  const {itemsAmount, items} = useAppSelector((state) => state.basket)
 
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
@@ -204,14 +204,14 @@ export const BasketItemBlock = (props: IBasketItems) => {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <DialogTitle id="scroll-dialog-title">{props.name}</DialogTitle>
+        <DialogTitle id="scroll-dialog-title" sx={{fontFamily: 'Comfortaa', fontSize: '1.25rem '}} >{props.name}</DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <BasketItemPage {...props} />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeItemDialog}>Вийти</Button>
+          <Button onClick={closeItemDialog} sx={{fontFamily: 'Comfortaa', fontSize: 15 }}>Вийти</Button>
         </DialogActions>
       </Dialog>
     </>

@@ -38,7 +38,6 @@ export const Basket = () => {
   const { isOnItemPage, itemsAmount } = useAppSelector((state) => state.basket);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
   const [openBasket, setOpenBasket] = React.useState(false);
@@ -48,7 +47,7 @@ export const Basket = () => {
   const [fullName, setFullName] = React.useState<string>("");
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("md");
- 
+  const [fullWidth, setFullWidth] = React.useState(true);
 
   React.useEffect(() => {
     closeBasketDialog();
@@ -121,6 +120,7 @@ export const Basket = () => {
           fullName: fullName,
           role: role,
           password: password,
+          expences : 0,
         })
       );
     } catch (error) {
@@ -251,21 +251,35 @@ export const Basket = () => {
 
   const Locker = () => {
     if (user.authorized === true) {
-      return <AccountCircleRoundedIcon sx={{ width: {
-        xs : 30,
-        md : 40
-      }, height: {
-        xs : 30,
-        md : 40
-      } }} />;
+      return (
+        <AccountCircleRoundedIcon
+          sx={{
+            width: {
+              xs: 30,
+              md: 40,
+            },
+            height: {
+              xs: 30,
+              md: 40,
+            },
+          }}
+        />
+      );
     } else {
-      return <LockPersonRoundedIcon sx={{ width: {
-        xs : 30,
-        md : 40
-      }, height: {
-        xs : 30,
-        md : 40
-      } }} />;
+      return (
+        <LockPersonRoundedIcon
+          sx={{
+            width: {
+              xs: 30,
+              md: 40,
+            },
+            height: {
+              xs: 30,
+              md: 40,
+            },
+          }}
+        />
+      );
     }
   };
 
@@ -283,23 +297,22 @@ export const Basket = () => {
           alignItems={"center"}
           maxWidth={180}
         >
-          <Typography variant={"h2"} component={"h2"} fontSize={35}>
-            {user.expences === 0 ? "" : user.expences + "₴"}
-          </Typography>
-          
           <IconButton onClick={openBasketDialog}>
-          <Badge badgeContent={itemsAmount} color="secondary">
-            <ShoppingCartIcon sx={{ 
-              width: {
-              xs : 30,
-              md : 40
-            }, height: {
-              xs : 30,
-              md : 40
-            }}} />
+            <Badge badgeContent={itemsAmount} color="secondary">
+              <ShoppingCartIcon
+                sx={{
+                  width: {
+                    xs: 30,
+                    md: 40,
+                  },
+                  height: {
+                    xs: 30,
+                    md: 40,
+                  },
+                }}
+              />
             </Badge>
           </IconButton>
-          
         </Box>
         <Box>
           <IconButton onClick={openLoginDialog}>
@@ -310,9 +323,15 @@ export const Basket = () => {
 
       {/*<Login Dialog>*/}
       <Dialog open={openLogin} onClose={closeLoginDialog}>
-        <DialogTitle>Авторизація</DialogTitle>
+        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
+          Авторизація
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText display={"flex"} flexDirection={"row"}>
+          <DialogContentText
+            display={"flex"}
+            flexDirection={"row"}
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+          >
             Ще не маєш аккаунт?
             <Typography
               color={"#1976d2"}
@@ -320,12 +339,15 @@ export const Basket = () => {
               sx={{
                 cursor: "pointer",
                 paddingLeft: "0.6%",
+                fontFamily: "Comfortaa",
+                fontSize: 15,
               }}
             >
               Реєструйся!
             </Typography>
           </DialogContentText>
           <TextField
+            
             margin="dense"
             label="Пошта"
             type="email"
@@ -346,8 +368,14 @@ export const Basket = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeLoginDialog}>Вийти</Button>
           <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeLoginDialog}
+          >
+            Вийти
+          </Button>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={() => {
               RedirectLogin(email, password);
             }}
@@ -360,9 +388,15 @@ export const Basket = () => {
 
       {/*<Register Dialog>*/}
       <Dialog open={openRegister} onClose={closeRegDialog}>
-        <DialogTitle>Регистрація</DialogTitle>
+        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
+          Регистрація
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText display={"flex"} flexDirection={"row"}>
+          <DialogContentText
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            display={"flex"}
+            flexDirection={"row"}
+          >
             Маєш аккаунт?
             <Typography
               color={"#1976d2"}
@@ -370,6 +404,8 @@ export const Basket = () => {
               sx={{
                 cursor: "pointer",
                 paddingLeft: "0.6%",
+                fontFamily: "Comfortaa",
+                fontSize: 15,
               }}
             >
               Заходь!
@@ -432,8 +468,14 @@ export const Basket = () => {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeRegDialog}>Вийти</Button>
           <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeRegDialog}
+          >
+            Вийти
+          </Button>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={() => RedirectRegister(email, fullName, role, password)}
           >
             Продовжити
@@ -447,17 +489,61 @@ export const Basket = () => {
         onClose={closeBasketDialog}
         scroll={scroll}
         maxWidth={maxWidth}
+        fullWidth = {fullWidth}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <DialogTitle id="scroll-dialog-title">Кошик</DialogTitle>
+        <DialogTitle
+          id="scroll-dialog-title"
+          width={"90%"}
+          display={"flex"}
+          flexDirection={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <Typography fontFamily={"Comfortaa"} fontSize={22}>
+            Кошик
+          </Typography>
+          <Box
+            sx = {{
+              width: {
+                xs : 173,
+                md : 220
+              }
+            }}
+            
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Typography sx = {{fontSize : {
+              xs : 15,
+              md : 19
+            }}} fontFamily={"Comfortaa"} >
+              Сума товарів:{" "}
+            </Typography>
+            <Typography sx = {{fontSize : {
+              xs : 15,
+              md : 19
+            }}} fontFamily={"Comfortaa"}  color={"error"}>
+              {user.expences}₴
+            </Typography>
+          </Box>
+        </DialogTitle>
+
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <BasketPage />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeBasketDialog}>Вийти</Button>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeBasketDialog}
+          >
+            Вийти
+          </Button>
         </DialogActions>
       </Dialog>
       {/*</Basket Dialog>*/}

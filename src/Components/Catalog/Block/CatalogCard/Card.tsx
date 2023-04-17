@@ -29,12 +29,11 @@ import { checkAuthorization } from "../../../../redux/user/asyncActions";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 import ItemPage from "../../../../Pages/Item/ItemPage";
-import { SetExpences } from "../../../../redux/user/userSlice";
+import { SetItemsAmount } from "../../../../redux/basket/basketSlice";
 
 export default function CatalogCard(props: IItems) {
   const { user } = useAppSelector((state) => state.user);
-  const [active, setActive] = React.useState<boolean>(false);
-  const { status } = useAppSelector((state) => state.basket);
+  const {itemsAmount, status } = useAppSelector((state) => state.basket);
 
   const [open, setOpen] = React.useState<boolean>(false);
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
@@ -43,11 +42,7 @@ export default function CatalogCard(props: IItems) {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // Redirecting to ItemPage
-  function Redirect() {
-    dispatch(getItemById(props._id));
-    navigate("/socketapp/item");
-  }
+
 
   function openItemDialog() {
     setOpenItem(true);
@@ -58,6 +53,7 @@ export default function CatalogCard(props: IItems) {
 
   // Chech auth, if authorized - add and changing active state.
   function PutInBasket() {
+    
     if (user.authorized == true) {
       dispatch(
         addBasketItem({
@@ -70,15 +66,14 @@ export default function CatalogCard(props: IItems) {
           amount: 1,
         } as IBasketItems)
       );
+      
+      dispatch(SetItemsAmount(itemsAmount + 1)) 
+       
     } else {
       // Tip, dunno if i`ll use it.
       // setOpen(true)
     }
 
-    if (status == "success") {
-      setActive(!active);
-      dispatch(SetExpences(user.expences + props.price));
-    }
   }
 
   return (
@@ -101,6 +96,7 @@ export default function CatalogCard(props: IItems) {
             minHeight: 200,
             objectFit: "contain",
             overflow: "hidden",
+            
           }}
           image={props.image[0]}
           title={props.name}
@@ -172,7 +168,7 @@ export default function CatalogCard(props: IItems) {
                   <IconButton sx={{ paddind: 0 }} onClick={() => PutInBasket()}>
                     <AddShoppingCartIcon
                       sx={{ height: 35, width: 35 }}
-                      color={active ? "secondary" : "disabled"}
+                      color={"disabled"}
                     />
                   </IconButton>
                 </Tooltip>
@@ -189,14 +185,14 @@ export default function CatalogCard(props: IItems) {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <DialogTitle id="scroll-dialog-title">{props.name}</DialogTitle>
+        <DialogTitle sx={{fontFamily: 'Comfortaa', fontSize: '1.25rem '}}  id="scroll-dialog-title">{props.name}</DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <ItemPage {...props} />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeItemDialog}>Вийти</Button>
+          <Button sx={{fontFamily: 'Comfortaa', fontSize: 15 }} onClick={closeItemDialog}>Вийти</Button>
         </DialogActions>
       </Dialog>
     </>

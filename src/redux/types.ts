@@ -47,6 +47,7 @@ export type IUser = {
   email: string;
   passwordHash: string;
   role : string;
+  expences : number;
   avatarUrl: string;
 }
 
@@ -61,6 +62,7 @@ export type IUserRegister = {
   fullName: string;
   role: string;
   password : string;
+  expences : number;
 }
 
 export type Status = 'success' | 'pending' | 'error'

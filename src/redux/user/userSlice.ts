@@ -10,9 +10,7 @@ const userSlice = createSlice({
   initialState: { user : {id: '', role: '', avatar: '', name: '',authorized: false, expences: 0}, token : '' },
   reducers: {
 
-    SetExpences(state, action: PayloadAction<number>) {
-      state.user.expences = action.payload;
-    },
+    
 
     NullifyToken(state){
       state.token = ''
@@ -27,8 +25,8 @@ const userSlice = createSlice({
       state.user.id = action.payload.user._id;
       state.user.role = action.payload.user.role;
       state.user.avatar = action.payload.user.avatarUrl;
+      state.user.expences = action.payload.user.expences
       state.user.name = action.payload.user.fullName;
-      alert("Авторизовано.")
     });
     builder.addCase(checkAuthorization.pending, (state) => {
       state.user.authorized = false;
@@ -70,5 +68,5 @@ const userSlice = createSlice({
 
   }});
 
-export const {SetExpences, NullifyToken} = userSlice.actions;
+export const { NullifyToken} = userSlice.actions;
 export default userSlice.reducer;
