@@ -1,6 +1,3 @@
-
-
-
 export type IItemsDisplay = {
   items: IItems[];
 };
@@ -14,11 +11,8 @@ export type IBasketItemDisplay = {
   items: IBasketItems;
 };
 export type IUserDisplay = {
-  user: IUser
-}
-
-
-
+  user: IUser;
+};
 
 export type IItems = {
   _id: string;
@@ -46,26 +40,26 @@ export type IUser = {
   fullName: string;
   email: string;
   passwordHash: string;
-  role : string;
-  expences : number;
+  role: string;
+  expences: number;
   avatarUrl: string;
-}
+};
 
 export type IUserLogin = {
-  email : string;
-  
-  password : string;
-}
+  email: string;
+
+  password: string;
+};
 
 export type IUserRegister = {
-  email : string;
+  email: string;
   fullName: string;
   role: string;
-  password : string;
-  expences : number;
-}
+  password: string;
+  expences: number;
+};
 
-export type Status = 'success' | 'pending' | 'error'
+export type Status = "success" | "pending" | "error";
 
 export interface BasketState {
   status: Status;
@@ -81,6 +75,6 @@ export interface HomeState {
   itemsDisplay: IItemsDisplay;
   itemsCategory: IItemsDisplay;
   itemCurrent: IItemDisplay;
-  categories: {id: number, name: string}[] ;
+  categories: { id: number; name: string }[];
   category: string;
 }

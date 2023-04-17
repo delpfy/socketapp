@@ -6,7 +6,6 @@ import { getItemsByCategory } from "../../../redux/home/asyncActions";
 
 
 
-
 import Card from "../Block/CatalogCard/Card";
 import Skeleton from "../Block/CatalogCard/Skeleton";
 import NotFoundPage from "../../../Pages/NotFound/NotFoundPage";

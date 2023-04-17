@@ -1,31 +1,32 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { Authorize, checkAuthorization, Register } from "./asyncActions";
-
-
-
-
 
 const userSlice = createSlice({
   name: "user",
-  initialState: { user : {id: '', role: '', avatar: '', name: '',authorized: false, expences: 0}, token : '' },
+  initialState: {
+    user: {
+      id: "",
+      role: "",
+      avatar: "",
+      name: "",
+      authorized: false,
+      expences: 0,
+    },
+    token: "",
+  },
   reducers: {
-
-    
-
-    NullifyToken(state){
-      state.token = ''
-    }
-
+    NullifyToken(state) {
+      state.token = "";
+    },
   },
   extraReducers: (builder) => {
-
     // Verify Authorization.
     builder.addCase(checkAuthorization.fulfilled, (state, action) => {
       state.user.authorized = true;
       state.user.id = action.payload.user._id;
       state.user.role = action.payload.user.role;
       state.user.avatar = action.payload.user.avatarUrl;
-      state.user.expences = action.payload.user.expences
+      state.user.expences = action.payload.user.expences;
       state.user.name = action.payload.user.fullName;
     });
     builder.addCase(checkAuthorization.pending, (state) => {
@@ -33,28 +34,27 @@ const userSlice = createSlice({
     });
     builder.addCase(checkAuthorization.rejected, (state, action) => {
       state.user.authorized = false;
-      alert("Помилка з авторизацією: " + action.error.message)
+      alert("Помилка з авторизацією: " + action.error.message);
     });
-
 
     // Authorize.
     builder.addCase(Authorize.fulfilled, (state, action) => {
-      alert("Раді, що ви повернулись.")
+      alert("Раді, що ви повернулись.");
       state.user.authorized = true;
       state.token = action.payload.token;
-      window.localStorage.setItem('token', action.payload.token)
+      window.localStorage.setItem("token", action.payload.token);
     });
     builder.addCase(Authorize.pending, (state) => {
       state.user.authorized = false;
     });
     builder.addCase(Authorize.rejected, (state, action) => {
       state.user.authorized = false;
-      alert("Помилочка вийшла: " + action.error.message)
+      alert("Помилочка вийшла: " + action.error.message);
     });
 
-     // Register.
-     builder.addCase(Register.fulfilled, (state, action) => {
-      alert("Зареєстровано, теперь увійдіть")
+    // Register.
+    builder.addCase(Register.fulfilled, (state, action) => {
+      alert("Зареєстровано, теперь увійдіть");
       state.user.authorized = false;
       state.token = action.payload.token;
     });
@@ -63,10 +63,10 @@ const userSlice = createSlice({
     });
     builder.addCase(Register.rejected, (state, action) => {
       state.user.authorized = false;
-      alert("Помилочка вийшла: " + action.error.message)
+      alert("Помилочка вийшла: " + action.error.message);
     });
+  },
+});
 
-  }});
-
-export const { NullifyToken} = userSlice.actions;
+export const { NullifyToken } = userSlice.actions;
 export default userSlice.reducer;

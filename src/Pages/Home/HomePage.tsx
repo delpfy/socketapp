@@ -1,15 +1,11 @@
 import React, { useEffect } from "react";
 
 import CatalogField from "../../Components/Catalog/Field/CatalogField";
-
-
-
-import "./homepage.scss";
 import { useAppDispatch } from "../../redux/hooks";
 import { getAllItems } from "../../redux/home/asyncActions";
+import { Box } from "@mui/material";
 
 export const HomePage = () => {
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -17,9 +13,11 @@ export const HomePage = () => {
   }, []);
 
   return (
-    <div className="home_body">
-      <CatalogField />
-    </div>
+    <>
+      <Box>
+        <CatalogField />
+      </Box>
+    </>
   );
 };
 

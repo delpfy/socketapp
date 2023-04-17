@@ -1,6 +1,5 @@
 import * as React from "react";
 import Card from "@mui/material/Card";
-import { IItems } from "../../../../redux/types";
 import { CircularProgress } from "@mui/material";
 
 export default function CatalogSkeleton() {
@@ -17,7 +16,7 @@ export default function CatalogSkeleton() {
         padding: "2%",
       }}
     >
-      <CircularProgress size={50}/>
+      <CircularProgress size={50} />
     </Card>
   );
 }

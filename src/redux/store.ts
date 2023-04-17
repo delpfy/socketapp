@@ -7,7 +7,7 @@ const store = configureStore({
   reducer: {
     basket: basketReduser,
     home: homeReduser,
-    user: userReduser
+    user: userReduser,
   },
 });
 
@@ -15,5 +15,3 @@ export default store;
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-

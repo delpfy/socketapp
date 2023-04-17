@@ -1,3 +1,5 @@
+import React from "react";
+
 import {
   Badge,
   Box,
@@ -18,23 +20,18 @@ import {
   Typography,
 } from "@mui/material";
 
-import React from "react";
-
-import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import {
-  Authorize,
-  Register,
-  checkAuthorization,
-} from "../../../redux/user/asyncActions";
-import BasketPage from "../../../Pages/Basket/BasketPage";
+import { Authorize, Register } from "../../../redux/user/asyncActions";
+import { NullifyToken } from "../../../redux/user/userSlice";
+
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { NullifyToken } from "../../../redux/user/userSlice";
+
+import BasketPage from "../../../Pages/Basket/BasketPage";
 
 export const Basket = () => {
-  const { user, token } = useAppSelector((state) => state.user);
+  const { user } = useAppSelector((state) => state.user);
   const { isOnItemPage, itemsAmount } = useAppSelector((state) => state.basket);
 
   const dispatch = useAppDispatch();
@@ -120,7 +117,7 @@ export const Basket = () => {
           fullName: fullName,
           role: role,
           password: password,
-          expences : 0,
+          expences: 0,
         })
       );
     } catch (error) {
@@ -347,7 +344,6 @@ export const Basket = () => {
             </Typography>
           </DialogContentText>
           <TextField
-            
             margin="dense"
             label="Пошта"
             type="email"
@@ -484,12 +480,10 @@ export const Basket = () => {
       </Dialog>
       {/*</Register Dialog>*/}
       {/*<Basket Dialog>*/}
-      <Dialog
-        open={openBasket}
-        onClose={closeBasketDialog}
+      <Dialog open={openBasket} onClose={closeBasketDialog}
         scroll={scroll}
         maxWidth={maxWidth}
-        fullWidth = {fullWidth}
+        fullWidth={fullWidth}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
@@ -505,28 +499,38 @@ export const Basket = () => {
             Кошик
           </Typography>
           <Box
-            sx = {{
+            sx={{
               width: {
-                xs : 173,
-                md : 220
-              }
+                xs: 173,
+                md: 220,
+              },
             }}
-            
             display={"flex"}
             flexDirection={"row"}
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Typography sx = {{fontSize : {
-              xs : 15,
-              md : 19
-            }}} fontFamily={"Comfortaa"} >
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: 15,
+                  md: 19,
+                },
+              }}
+              fontFamily={"Comfortaa"}
+            >
               Сума товарів:{" "}
             </Typography>
-            <Typography sx = {{fontSize : {
-              xs : 15,
-              md : 19
-            }}} fontFamily={"Comfortaa"}  color={"error"}>
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: 15,
+                  md: 19,
+                },
+              }}
+              fontFamily={"Comfortaa"}
+              color={"error"}
+            >
               {user.expences}₴
             </Typography>
           </Box>

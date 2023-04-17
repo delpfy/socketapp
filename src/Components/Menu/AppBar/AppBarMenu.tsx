@@ -1,17 +1,19 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
+
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { SetCategory } from "../../../redux/home/homeSlice";
+
 import Logo from "../LogotypeArea/Logo";
 import Basket from "../BasketArea/Basket";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { SetCategory} from "../../../redux/home/homeSlice";
+
 import {
   Divider,
+  Toolbar,
+  Box,
+  AppBar,
   List,
   ListItem,
   ListItemButton,
@@ -25,7 +27,6 @@ type Anchor = "top" | "left" | "bottom" | "right";
 export default function AppBarMenu() {
   const CATEGORIES = useAppSelector((state) => state.home.categories);
   const dispatch = useAppDispatch();
-
 
   const [active, setActive] = React.useState(false);
 
@@ -54,7 +55,9 @@ export default function AppBarMenu() {
       <List>
         {CATEGORIES.map((category) => (
           <ListItem key={category.id} disablePadding>
-            <ListItemButton onClick = {() => dispatch(SetCategory(category.name))}>
+            <ListItemButton
+              onClick={() => dispatch(SetCategory(category.name))}
+            >
               <ListItemIcon></ListItemIcon>
               <ListItemText primary={category.name} />
             </ListItemButton>
@@ -79,7 +82,7 @@ export default function AppBarMenu() {
         </SwipeableDrawer>
       </React.Fragment>
 
-      <Box sx={{ flexGrow: 1 }} position={'sticky'}>
+      <Box sx={{ flexGrow: 1 }} position={"sticky"}>
         <AppBar position="static">
           <Toolbar
             sx={{

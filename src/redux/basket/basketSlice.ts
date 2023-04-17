@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseBasket } from "../../utils/InitialiseBasket";
-import { BasketState, IBasketItemDisplay, IBasketItems, IBasketItemsDisplay} from "../types";
+import { BasketState, IBasketItemDisplay,  IBasketItemsDisplay} from "../types";
 import { addBasketItem, getAllBasketItems, getBasketItemById, getBasketItemByUser } from "./asyncActions";
-import { stat } from "fs";
 
 const initialState: BasketState = InitialiseBasket();
 

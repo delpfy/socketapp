@@ -1,22 +1,14 @@
-import React, { useState } from "react";
-
-
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { IBasketItems } from "../../../redux/types";
-
-import {
-  SetItemPage, SetItemsAmount,
-} from "../../../redux/basket/basketSlice";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import React from "react";
 
 import {
   Box,
   ClickAwayListener,
+  Typography,
+  Button,
+  CardMedia,
+  CardContent,
+  CardActions,
+  Card,
   Dialog,
   DialogActions,
   DialogContent,
@@ -26,31 +18,16 @@ import {
   IconButton,
   Rating,
   Tooltip,
-  createTheme,
 } from "@mui/material";
-import "./basketitem.scss";
-import { getItemById } from "../../../redux/home/asyncActions";
-import { getBasketItemById } from "../../../redux/basket/asyncActions";
+
+import { IBasketItems } from "../../../redux/types";
+
 import BasketItemPage from "../../../Pages/Item/BasketItemPage";
 
 export const BasketItemBlock = (props: IBasketItems) => {
-  
-  const {itemsAmount, items} = useAppSelector((state) => state.basket)
-
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
   const [openItem, setOpenItem] = React.useState(false);
-  const dispatch = useAppDispatch();
-
-  
-    
-  
- 
-  const POP_ITEM = (item: IBasketItems) => {};
-
-  const PUSH_ITEM = (item: IBasketItems) => {};
-
-  const REMOVE_ITEM = (id: string) => {};
 
   function openItemDialog() {
     setOpenItem(true);
@@ -59,18 +36,8 @@ export const BasketItemBlock = (props: IBasketItems) => {
     setOpenItem(false);
   }
 
-  // Redirecting to ItemPage
-  /* function Redirect() {
-    dispatch(SetItemPage(true));
-    dispatch(getBasketItemById(props._id));
-
-    console.log("props._id " + props._id);
-    navigate("/socketapp/item");
-  } */
-
   return (
     <>
-    
       <Card
         sx={{
           maxWidth: 345,
@@ -204,14 +171,24 @@ export const BasketItemBlock = (props: IBasketItems) => {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <DialogTitle id="scroll-dialog-title" sx={{fontFamily: 'Comfortaa', fontSize: '1.25rem '}} >{props.name}</DialogTitle>
+        <DialogTitle
+          id="scroll-dialog-title"
+          sx={{ fontFamily: "Comfortaa", fontSize: "1.25rem " }}
+        >
+          {props.name}
+        </DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <BasketItemPage {...props} />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeItemDialog} sx={{fontFamily: 'Comfortaa', fontSize: 15 }}>Вийти</Button>
+          <Button
+            onClick={closeItemDialog}
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+          >
+            Вийти
+          </Button>
         </DialogActions>
       </Dialog>
     </>

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+/* import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import cross_sign from "../../../assets/img/cross_sign.png";
-import { IItems} from "../../../redux/types";
+import { IItems } from "../../../redux/types";
 import { SetID } from "../../../redux/home/homeSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
@@ -10,7 +10,7 @@ import "./search.scss";
 
 export const Search = () => {
   const dispatch = useAppDispatch();
-  const {items} = useAppSelector((state) => state.home.itemsDisplay);
+  const { items } = useAppSelector((state) => state.home.itemsDisplay);
 
   const [searchItem, setSearchItem] = useState("");
   const [localDisplayItems, setLocalItems] = useState<IItems[]>([] as IItems[]);
@@ -48,16 +48,12 @@ export const Search = () => {
           onClick={() => setSearchItem("")}
         />
       </div>
-      <ul
-        className={
-          searchItem ? "display" : "display_invise"
-        }
-      >
+      <ul className={searchItem ? "display" : "display_invise"}>
         {localDisplayItems.map((el) => (
           <Link
             key={el.name}
             to="/marketplace_soket/item"
-            onClick={() => (setSearchItem(""))}
+            onClick={() => setSearchItem("")}
           >
             {" "}
             <div key={el._id} className="item">
@@ -71,3 +67,4 @@ export const Search = () => {
 };
 
 export default Search;
+ */

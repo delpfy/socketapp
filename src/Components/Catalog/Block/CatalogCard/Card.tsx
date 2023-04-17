@@ -1,13 +1,11 @@
 import * as React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { IBasketItems, IItems } from "../../../../redux/types";
 import {
   Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
   ClickAwayListener,
   Dialog,
   DialogActions,
@@ -18,22 +16,20 @@ import {
   IconButton,
   Rating,
   Tooltip,
-  createTheme,
+  Typography,
 } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { getItemById } from "../../../../redux/home/asyncActions";
-import { useNavigate } from "react-router-dom";
-import { pink, purple } from "@mui/material/colors";
-import { addBasketItem } from "../../../../redux/basket/asyncActions";
-import { checkAuthorization } from "../../../../redux/user/asyncActions";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
-import ItemPage from "../../../../Pages/Item/ItemPage";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { addBasketItem } from "../../../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../../../redux/basket/basketSlice";
+import { IBasketItems, IItems } from "../../../../redux/types";
+
+import ItemPage from "../../../../Pages/Item/ItemPage";
 
 export default function CatalogCard(props: IItems) {
   const { user } = useAppSelector((state) => state.user);
-  const {itemsAmount, status } = useAppSelector((state) => state.basket);
+  const { itemsAmount } = useAppSelector((state) => state.basket);
 
   const [open, setOpen] = React.useState<boolean>(false);
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
@@ -41,8 +37,6 @@ export default function CatalogCard(props: IItems) {
   const [openItem, setOpenItem] = React.useState(false);
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
 
   function openItemDialog() {
     setOpenItem(true);
@@ -53,8 +47,7 @@ export default function CatalogCard(props: IItems) {
 
   // Chech auth, if authorized - add and changing active state.
   function PutInBasket() {
-    
-    if (user.authorized == true) {
+    if (user.authorized === true) {
       dispatch(
         addBasketItem({
           name: props.name,
@@ -66,14 +59,12 @@ export default function CatalogCard(props: IItems) {
           amount: 1,
         } as IBasketItems)
       );
-      
-      dispatch(SetItemsAmount(itemsAmount + 1)) 
-       
+
+      dispatch(SetItemsAmount(itemsAmount + 1));
     } else {
       // Tip, dunno if i`ll use it.
       // setOpen(true)
     }
-
   }
 
   return (
@@ -96,7 +87,6 @@ export default function CatalogCard(props: IItems) {
             minHeight: 200,
             objectFit: "contain",
             overflow: "hidden",
-            
           }}
           image={props.image[0]}
           title={props.name}
@@ -185,14 +175,24 @@ export default function CatalogCard(props: IItems) {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <DialogTitle sx={{fontFamily: 'Comfortaa', fontSize: '1.25rem '}}  id="scroll-dialog-title">{props.name}</DialogTitle>
+        <DialogTitle
+          sx={{ fontFamily: "Comfortaa", fontSize: "1.25rem " }}
+          id="scroll-dialog-title"
+        >
+          {props.name}
+        </DialogTitle>
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <ItemPage {...props} />
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button sx={{fontFamily: 'Comfortaa', fontSize: 15 }} onClick={closeItemDialog}>Вийти</Button>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeItemDialog}
+          >
+            Вийти
+          </Button>
         </DialogActions>
       </Dialog>
     </>

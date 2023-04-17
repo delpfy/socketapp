@@ -2,19 +2,19 @@ import React from "react";
 import BasketItemBlock from "../../Components/BasketElements/Item/BasketItemBlock";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
-import "./basketpage.scss";
 import { getBasketItemByUser } from "../../redux/basket/asyncActions";
-import { Box, Card, Grid, Typography } from "@mui/material";
+import { Box, Grid,  } from "@mui/material";
 import { IBasketItems, Status } from "../../redux/types";
 import Skeleton from "../../Components/Catalog/Block/CatalogCard/Skeleton";
 import NotFoundPage from "../NotFound/NotFoundPage";
-import { SetItemsAmount } from "../../redux/basket/basketSlice";
 import { checkAuthorization } from "../../redux/user/asyncActions";
+
 export const BasketPage = () => {
   const {items} = useAppSelector((state) => state.basket.items);
   const {status} = useAppSelector((state) => state.basket);
   const {user} = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  
   React.useEffect(() => {
     dispatch(checkAuthorization());
     dispatch(getBasketItemByUser(user.id));
