@@ -8,6 +8,7 @@ import { useAppDispatch } from "./redux/hooks";
 import "./styles/style.css";
 import AppBarMenu from "./Components/Menu/AppBar/AppBarMenu";
 import { checkAuthorization } from "./redux/user/asyncActions";
+import { TestPage } from "./Pages/Home/TestPage";
 function App() {
   
   const dispatch = useAppDispatch();
@@ -16,9 +17,9 @@ function App() {
   })
   return (
     <>
-      <AppBarMenu />
+      {/* <AppBarMenu /> */}
       <Routes>
-        <Route path="/socketapp" element={<HomePage />} />
+        <Route path="/socketapp" element={<TestPage/>} />
         {/* <Route path="/socketapp/item" element={<ItemPage />} /> */}
         {/* <Route path="/socketapp/basket" element={<BasketPage />} /> */}
         <Route path="*" element={<NotFoundPage />} />

@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import socket_logo from "../../../assets/img/socket_logo.png";
-
+import ElectricalServicesIcon from '@mui/icons-material/ElectricalServices';
 
 export const Logo = () => {
   const navigate = useNavigate();
@@ -16,30 +16,20 @@ export const Logo = () => {
       color={"black"}
       width={135}
       onClick={() => navigate("/socketapp")}
-      sx={{ cursor: "pointer" }}
+      
+      sx={{ cursor: "pointer", color: "white" }}
     >
+      
+      {/* <Box width={45} height={45} paddingTop={0.3}>
+        <ElectricalServicesIcon sx = {{width : "100%", height : "100%"}}/>
+      </Box> */}
       <Typography
         variant={"h3"}
-        fontSize={35}
-        height={35}
+        fontSize={30}
+        height={30}
         fontFamily={"Comfortaa"}
       >
-        S
-      </Typography>
-      <Box width={35} height={35} paddingTop={0.3}>
-        <img
-          src={socket_logo}
-          alt="logo"
-          style={{ display: "flex", width: "100%", height: "100%" }}
-        />
-      </Box>
-      <Typography
-        variant={"h3"}
-        fontSize={35}
-        height={35}
-        fontFamily={"Comfortaa"}
-      >
-        cket
+        Socket
       </Typography>
     </Box>
   );

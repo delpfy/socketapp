@@ -250,6 +250,7 @@ export const Basket = () => {
     if (user.authorized === true) {
       return (
         <AccountCircleRoundedIcon
+         color="warning"
           sx={{
             width: {
               xs: 30,
@@ -265,6 +266,8 @@ export const Basket = () => {
     } else {
       return (
         <LockPersonRoundedIcon
+        color="warning"
+
           sx={{
             width: {
               xs: 30,
@@ -297,6 +300,7 @@ export const Basket = () => {
           <IconButton onClick={openBasketDialog}>
             <Badge badgeContent={itemsAmount} color="secondary">
               <ShoppingCartIcon
+              color="warning"
                 sx={{
                   width: {
                     xs: 30,

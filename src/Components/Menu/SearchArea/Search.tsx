@@ -1,9 +1,9 @@
-/* import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import cross_sign from "../../../assets/img/cross_sign.png";
 import { IItems } from "../../../redux/types";
-import { SetID } from "../../../redux/home/homeSlice";
+//import { SetID } from "../../../redux/home/homeSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 import "./search.scss";
@@ -67,4 +67,3 @@ export const Search = () => {
 };
 
 export default Search;
- */
