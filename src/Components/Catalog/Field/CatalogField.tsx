@@ -12,6 +12,7 @@ import NotFoundPage from "../../../Pages/NotFound/NotFoundPage";
 
 export const CatalogField = () => {
   const { category, status } = useAppSelector((state) => state.home);
+
   // IItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
   const { items } = useAppSelector((state) => state.home.itemsCategory);
@@ -55,6 +56,7 @@ export const CatalogField = () => {
                 <Card key={item._id} {...item} />
               </Grid>
             ))}
+            
           </Grid>
         </Box>
       </Box>

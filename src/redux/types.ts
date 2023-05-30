@@ -75,6 +75,6 @@ export interface HomeState {
   itemsDisplay: IItemsDisplay;
   itemsCategory: IItemsDisplay;
   itemCurrent: IItemDisplay;
-  categories: { id: number; name: string }[];
+  categories: { id: number; name: string, image: string}[];
   category: string;
 }

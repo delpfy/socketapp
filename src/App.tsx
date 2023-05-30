@@ -9,6 +9,8 @@ import "./styles/style.css";
 import AppBarMenu from "./Components/Menu/AppBar/AppBarMenu";
 import { checkAuthorization } from "./redux/user/asyncActions";
 import { TestPage } from "./Pages/Home/TestPage";
+import ItemPage from "./Pages/Item/ItemPage";
+import BasketPage from "./Pages/Basket/BasketPage";
 function App() {
   
   const dispatch = useAppDispatch();
@@ -20,8 +22,9 @@ function App() {
       {/* <AppBarMenu /> */}
       <Routes>
         <Route path="/socketapp" element={<TestPage/>} />
-        {/* <Route path="/socketapp/item" element={<ItemPage />} /> */}
-        {/* <Route path="/socketapp/basket" element={<BasketPage />} /> */}
+        <Route path="/socketapp/catalog" element={<HomePage/>} />
+         {/* <Route path="/socketapp/catalog/item" element={<ItemPage />} /> 
+         <Route path="/socketapp/catalog/basket" element={<BasketPage />} />  */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

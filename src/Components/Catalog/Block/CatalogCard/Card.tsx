@@ -50,6 +50,7 @@ export default function CatalogCard(props: IItems) {
     if (user.authorized === true) {
       dispatch(
         addBasketItem({
+          _id: user.id ,
           name: props.name,
           description: props.description,
           category: props.category,
