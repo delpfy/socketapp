@@ -1,11 +1,13 @@
-import { Box,  Grid, IconButton,  Typography } from "@mui/material";
+import { Box,  Grid, IconButton,  Slide,  Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import React from "react";
+import React, { useRef } from "react";
 import Basket from "../../Components/Menu/BasketArea/Basket";
 import Logo from "../../Components/Menu/LogotypeArea/Logo";
 import { useAppSelector } from "../../redux/hooks";
 import Skeleton from "../../Components/Catalog/Block/CatalogCard/Skeleton";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Card from "../../Components/Categories/Card";
+import './icon.css';
 
 const MenuContent = () => {
 
@@ -44,6 +46,18 @@ const MenuContent = () => {
 
 export const TestPage = () => {
   const {categories} = useAppSelector((state) => state.home)
+
+  const myRef = useRef<HTMLDivElement | null>(null);
+  const executeScroll = () => {
+    console.log("myRef.current " + myRef.current)
+    if (myRef.current) {
+      myRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  };
+
   return (
     <>
       <MenuContent />
@@ -51,9 +65,11 @@ export const TestPage = () => {
         width={"100%"}
         height={"100vh"}
         display={"flex"}
+        flexDirection={'column'}
         alignItems={"center"}
         justifyContent={"center"}
-        zIndex={-1}
+        
+        
         sx={{
           background:
             "linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url(https://static.tildacdn.com/tild3736-3037-4334-b863-353562353039/d946dbce69a24e0288d5.jpg)",
@@ -66,7 +82,7 @@ export const TestPage = () => {
           width={"60%"}
           height={"52%"}
           
-          zIndex={1}
+          
           sx={{
             color: "#fff",
 
@@ -84,6 +100,7 @@ export const TestPage = () => {
             fontSize={23}
             height={23}
             fontFamily={"Comfortaa"}
+            
           >
             Інтернет магазин сучасної техніки
           </Typography>
@@ -107,6 +124,14 @@ export const TestPage = () => {
           </Typography>
           </Box>
         </Box>
+        <Box  marginTop={10} onClick={() => executeScroll()} >
+        <div className="bouncing-icon-container" >
+        <ExpandMoreIcon   color="info" sx = {{height: 70, width: 70, animation: 'bounce 2s infinite'}} />
+
+        </div>
+        
+          
+        </Box>
       </Box>
       <Box width={"80%"} height={"1300px"} margin={"auto"} padding={"150px 50px 80px 50px"} >
         <Box width={"100%"} height={"100%"} display={"flex"} flexDirection={"column"} alignItems={"center"}   >
@@ -116,6 +141,7 @@ export const TestPage = () => {
             height={37}
             fontFamily={"Comfortaa"}
             paddingBottom={7}
+            ref={myRef}
           >
             Категорії товарів
           </Typography>
@@ -125,6 +151,7 @@ export const TestPage = () => {
             padding={"2%"}
             spacing={{ xs: 1, sm: 3, md: 4 }}
             columns={{ xs: 2, sm: 2, md: 4, lg: 4, xl: 10 }}
+            
           >
             
             {
@@ -141,7 +168,7 @@ export const TestPage = () => {
                 xl={5}
                 key={item.id}
               >
-                <Card category = {item.name} image = {item.image}/>
+                <Card  category = {item.name} image = {item.image}/>
                 
               </Grid>
               
