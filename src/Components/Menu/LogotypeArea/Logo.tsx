@@ -15,7 +15,7 @@ export const Logo = () => {
       alignItems={"center"}
       color={"black"}
       width={135}
-      onClick={() => navigate("/socketapp")}
+      onClick={() => navigate("/")}
       
       sx={{ cursor: "pointer", color: "white" }}
     >

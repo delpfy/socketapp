@@ -10,7 +10,7 @@ const navigate = useNavigate();
 
 function RedirectToCatalog ()  {
     dispatch(SetCategory(props.category));
-    navigate("/socketapp/catalog")
+    navigate("/catalog")
     console.log("NAVIGATE")
 }
 
