@@ -21,8 +21,8 @@ function App() {
     <>
       {/* <AppBarMenu /> */}
       <Routes>
-        <Route path="/socketapp" element={<TestPage/>} />
-        <Route path="/socketapp/catalog" element={<HomePage/>} />
+        <Route path="/" element={<TestPage/>} />
+        <Route path="/catalog" element={<HomePage/>} />
          {/* <Route path="/socketapp/catalog/item" element={<ItemPage />} /> 
          <Route path="/socketapp/catalog/basket" element={<BasketPage />} />  */}
         <Route path="*" element={<NotFoundPage />} />
