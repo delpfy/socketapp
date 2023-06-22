@@ -18,8 +18,15 @@ function RedirectToCatalog ()  {
     <>
     <Card
         sx={{
-          maxWidth: 560,
-          minWidth: 560,
+          maxWidth: {
+            xs : 430,
+            md : 560
+          },
+          minWidth: {
+            xs : 430,
+            md : 560
+          },
+          
           minHeight: 469,
           maxHeight: 469,
           display: "flex",

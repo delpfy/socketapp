@@ -17,6 +17,8 @@ import {
   Rating,
   Tooltip,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
@@ -34,6 +36,10 @@ export default function CatalogCard(props: IItems) {
   const [open, setOpen] = React.useState<boolean>(false);
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
+  
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  
   const [openItem, setOpenItem] = React.useState(false);
 
   const dispatch = useAppDispatch();
@@ -73,6 +79,7 @@ export default function CatalogCard(props: IItems) {
       <Card
         sx={{
           maxWidth: 345,
+          minWidth: 345,
           minHeight: 490,
           maxHeight: 490,
           display: "flex",
@@ -172,9 +179,11 @@ export default function CatalogCard(props: IItems) {
         open={openItem}
         onClose={closeItemDialog}
         scroll={scroll}
+        fullScreen={fullScreen}
         maxWidth={maxWidth}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
+        
       >
         <DialogTitle
           sx={{ fontFamily: "Comfortaa", fontSize: "1.25rem " }}

@@ -18,6 +18,8 @@ import {
   IconButton,
   Rating,
   Tooltip,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 
 import { IBasketItems } from "../../../redux/types";
@@ -27,6 +29,9 @@ import BasketItemPage from "../../../Pages/Item/BasketItemPage";
 export const BasketItemBlock = (props: IBasketItems) => {
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  
   const [openItem, setOpenItem] = React.useState(false);
 
   function openItemDialog() {
@@ -168,6 +173,7 @@ export const BasketItemBlock = (props: IBasketItems) => {
         onClose={closeItemDialog}
         scroll={scroll}
         maxWidth={maxWidth}
+        fullScreen={fullScreen}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >

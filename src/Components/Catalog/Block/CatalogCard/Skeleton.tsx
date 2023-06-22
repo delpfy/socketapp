@@ -8,8 +8,8 @@ export default function CatalogSkeleton() {
       sx={{
         maxWidth: 345,
         minWidth: 345,
-        minHeight: 450,
-        maxHeight: 450,
+        minHeight: 490,
+        maxHeight: 490,
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

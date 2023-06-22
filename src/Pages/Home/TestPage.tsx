@@ -79,13 +79,16 @@ export const TestPage = () => {
         }}
       >
         <Box
-          width={"60%"}
+          
           height={"52%"}
           
           
           sx={{
             color: "#fff",
-
+            width: {
+              xs : "95%",
+              lg : "70%"
+            },
             display: "flex",
             alignItems: "center",
             textAlign : "center",
@@ -105,7 +108,7 @@ export const TestPage = () => {
             Інтернет магазин сучасної техніки
           </Typography>
 
-          <Box height={"50%"} display={"flex"} flexDirection={"column"} justifyContent={"space-around"} >
+          <Box height={"50%"}  display={"flex"} flexDirection={"column"} justifyContent={"space-around"} >
           <Typography
             variant={"h3"}
             fontSize={57}

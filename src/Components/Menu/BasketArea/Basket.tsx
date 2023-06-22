@@ -18,6 +18,8 @@ import {
   RadioGroup,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
@@ -45,7 +47,9 @@ export const Basket = () => {
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("md");
   const [fullWidth, setFullWidth] = React.useState(true);
-
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  
   React.useEffect(() => {
     closeBasketDialog();
   }, [isOnItemPage]);
@@ -488,6 +492,7 @@ export const Basket = () => {
         scroll={scroll}
         maxWidth={maxWidth}
         fullWidth={fullWidth}
+        fullScreen={fullScreen}
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >

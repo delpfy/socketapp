@@ -82,7 +82,7 @@ export default function AppBarMenu() {
         </SwipeableDrawer>
       </React.Fragment>
 
-      <Box sx={{ flexGrow: 1 }} position={"sticky"}>
+      <Box sx={{ flexGrow: 1, backgroundAttachment: "fixed" }} position={"sticky"}>
         <AppBar position="static">
           <Toolbar
             sx={{
