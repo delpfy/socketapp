@@ -26,7 +26,13 @@ export const CatalogField = () => {
 
   const Catalog = () => {
     return (
-      <Box width={"100%"} paddingTop={"2%"}>
+      <Box width={"100%"} sx = {{
+        paddingTop: {
+          xs: "25%",
+          md: "15%",
+          lg: "10%"
+        }
+      }} >
         <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
           <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
             {category}

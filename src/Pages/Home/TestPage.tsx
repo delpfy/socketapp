@@ -136,8 +136,8 @@ export const TestPage = () => {
           
         </Box>
       </Box>
-      <Box width={"80%"} height={"1300px"} margin={"auto"} padding={"150px 50px 80px 50px"} >
-        <Box width={"100%"} height={"100%"} display={"flex"} flexDirection={"column"} alignItems={"center"}   >
+      <Box width={"80%"} height={"1300px"} margin={"auto"} padding={"150px 10px 30px "} >
+        <Box width={"100%"} height={"100%"} display={"flex"} flexDirection={"column"} alignItems={"center"} textAlign = {'center'}  >
         <Typography
             variant={"h3"}
             fontSize={37}
@@ -164,6 +164,13 @@ export const TestPage = () => {
                 display={"flex"}
                 justifyContent={"center"}
                 alignItems={"center"}
+                
+                sx={{
+                  paddingBottom: {
+                    xs: 5,
+                    md: 1
+                  }
+                }}
                 xs={2}
                 sm={2}
                 md={4}

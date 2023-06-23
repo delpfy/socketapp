@@ -68,51 +68,79 @@ export default function AppBarMenu() {
       <List></List>
     </Box>
   );
+ 
 
   return (
     <>
-      <React.Fragment>
+      <React.Fragment
+       
+      >
         <SwipeableDrawer
           anchor={"left"}
           open={active}
           onClose={toggleDrawer("left", false)}
           onOpen={toggleDrawer("left", true)}
+          
         >
           {list("left")}
         </SwipeableDrawer>
       </React.Fragment>
 
-      <Box sx={{ flexGrow: 1, backgroundAttachment: "fixed" }} position={"sticky"}>
-        <AppBar position="static">
-          <Toolbar
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+      <Box
+        width={"100%"}
+       
+        
+        position={"fixed"}
+        zIndex={1}
+        sx={{ backgroundColor: "black", backgroundAttachment: "fixed", height: {
+          xs: "10%",
+          md: "12%"
+        }}}
+      >
+        <Box
+          width={"95%"}
+          height={"90%"}
+          margin={"auto"}
+          justifySelf={"center"}
+          display={"flex"}
+          flexDirection={"row"}
+          alignItems={"center"}
+          justifyContent={"space-between"}
+        >
+          <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
               <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                sx={{ mr: 2 }}
+                sx={{ 
+                  mr: 2,
+
+                }}
+                
                 onClick={toggleDrawer("left", true)}
               >
-                <MenuIcon />
+                <MenuIcon color="info" 
+                sx={{
+
+                  height: 35,
+                  
+                  width: 35
+                  
+                }}/>
+
               </IconButton>
               <Box>
                 <Logo />
               </Box>
             </Box>
-
-            <Box>
-              <Basket />
-            </Box>
-          </Toolbar>
-        </AppBar>
+  
+          <Box>
+            <Basket />
+          </Box>
+        </Box>
       </Box>
+      
     </>
   );
 }

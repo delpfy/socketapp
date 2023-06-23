@@ -19,20 +19,34 @@ function RedirectToCatalog ()  {
     <Card
         sx={{
           maxWidth: {
-            xs : 430,
+            xs : 350,
             md : 560
           },
           minWidth: {
-            xs : 430,
+            xs : 350,
             md : 560
           },
+          /* maxWidth: 'calc(100% - 30px)',
+          minWidth: 'calc(100% - 30px)', */
           
           minHeight: 469,
           maxHeight: 469,
+
+          /* maxHeight: {
+            xs : 430,
+            md : 469
+          },
+          minHeight: {
+            xs : 430,
+            md : 469
+          }, */
+          /* minHeight: 469,
+          maxHeight: 469, */
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "2%",
+          /* padding: "2%", */
+          objectFit: 'fill'
         }}
         onClick={RedirectToCatalog}
       >
@@ -41,8 +55,10 @@ function RedirectToCatalog ()  {
             display: "flex",
             maxHeight: 369,
             minHeight: 369,
-            objectFit: "contain",
+            
+            objectFit: "fill",
             overflow: "hidden",
+            
           }}
           image={props.image}
           title={props.category}
