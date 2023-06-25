@@ -25,13 +25,16 @@ export const BasketItemPage = (props: IItems) => {
           <Carousel
             sx={{
               width: {
-                xs: 450,
-                md: 1125,
+                xs: 350,
+                md: 825,
                 lx: 1200,
               },
-              height: {
-                xs: 500,
-                md: 700,
+              
+              height:{
+                
+                  xs: 500,
+                  md: 700,
+                
               },
               display: "flex",
               alignContent: "center",
@@ -40,13 +43,7 @@ export const BasketItemPage = (props: IItems) => {
             }}
           >
             <Box
-              sx={{
-                width: {
-                  xs: 330,
-                  md: 800,
-                },
-                paddingLeft: "20%",
-              }}
+              
             >
               <img
                 src={props.image[0]}
@@ -55,13 +52,7 @@ export const BasketItemPage = (props: IItems) => {
               />
             </Box>
             <Box
-              sx={{
-                width: {
-                  xs: 330,
-                  md: 800,
-                },
-                paddingLeft: "20%",
-              }}
+              
             >
               <img
                 src={props.image[1]}
@@ -70,13 +61,7 @@ export const BasketItemPage = (props: IItems) => {
               />
             </Box>
             <Box
-              sx={{
-                width: {
-                  xs: 330,
-                  md: 800,
-                },
-                paddingLeft: "20%",
-              }}
+              
             >
               <img
                 src={props.image[2]}

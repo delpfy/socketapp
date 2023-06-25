@@ -51,13 +51,7 @@ export const ItemPage = (props: IItems) => {
             }}
           >
             <Box
-              sx={{
-                
-                display: "block",
-              alignContent: "center",
-              justifyContent: "center",
               
-              }}
               
             >
               <img
@@ -67,10 +61,7 @@ export const ItemPage = (props: IItems) => {
               />
             </Box>
             <Box
-              sx={{
-                width: '100%',
-                
-              }}
+              
             >
               <img
                 src={props.image[1]}
@@ -79,10 +70,7 @@ export const ItemPage = (props: IItems) => {
               />
             </Box>
             <Box
-              sx={{
-                width: '100%',
-                
-              }}
+              
             >
               <img
                 src={props.image[2]}
