@@ -90,10 +90,10 @@ export default function CatalogCard(props: IItems) {
       >
         <CardMedia
           sx={{
-            display: "flex",
+            
             maxHeight: 200,
             minHeight: 200,
-            objectFit: "contain",
+            objectFit: "fill",
             overflow: "hidden",
           }}
           image={props.image[0]}

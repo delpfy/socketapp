@@ -16,6 +16,7 @@ export const ItemPage = (props: IItems) => {
     return (
       <Box
         width={"100%"}
+        height={"100%"}
         display={"flex"}
         justifyContent={"center"}
         alignItems={"center"}
@@ -25,14 +26,24 @@ export const ItemPage = (props: IItems) => {
           <Carousel
             sx={{
               width: {
-                xs: 450,
-                md: 1125,
+                xs: 350,
+                md: 825,
                 lx: 1200,
               },
-              height: {
-                xs: 500,
-                md: 700,
+              
+              height:{
+                
+                  xs: 500,
+                  md: 700,
+                
               },
+
+             /*  width: 'calc(100%-30px)',
+              height: 'calc(100%-30px)', */
+
+              /* maxWidth: '100%',
+              minWidth: '100%', */
+              
               display: "flex",
               alignContent: "center",
               justifyContent: "center",
@@ -41,26 +52,24 @@ export const ItemPage = (props: IItems) => {
           >
             <Box
               sx={{
-                width: {
-                  xs: 330,
-                  md: 800,
-                },
-                paddingLeft: "20%",
+                
+                display: "block",
+              alignContent: "center",
+              justifyContent: "center",
+              
               }}
+              
             >
               <img
                 src={props.image[0]}
                 alt="img1"
-                style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                style={{ width: "100%", height: "100%", objectFit: "fill" }}
               />
             </Box>
             <Box
               sx={{
-                width: {
-                  xs: 330,
-                  md: 800,
-                },
-                paddingLeft: "20%",
+                width: '100%',
+                
               }}
             >
               <img
@@ -71,11 +80,8 @@ export const ItemPage = (props: IItems) => {
             </Box>
             <Box
               sx={{
-                width: {
-                  xs: 330,
-                  md: 800,
-                },
-                paddingLeft: "20%",
+                width: '100%',
+                
               }}
             >
               <img
