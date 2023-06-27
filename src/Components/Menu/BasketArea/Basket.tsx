@@ -38,8 +38,13 @@ export const Basket = () => {
 
   const dispatch = useAppDispatch();
   const [openLogin, setOpenLogin] = React.useState(false);
+  const [openLogout, setOpenLogout] = React.useState(false);
+  const [openError, setOpenError] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
   const [openBasket, setOpenBasket] = React.useState(false);
+
+  const [local_error, setLocalError] = React.useState<string>("")
+
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
   const [role, setRole] = React.useState<string>("");
@@ -72,11 +77,27 @@ export const Basket = () => {
   }
   function openLoginDialog() {
     if (user.authorized === true) {
-      alert("Ви вже увійшли");
+      openLogoutDialog();
     } else {
       closeRegDialog();
       setOpenLogin(true);
     }
+  }
+
+  function openLogoutDialog(){
+    setOpenLogout(true);
+  }
+
+  function closeLogoutDialog(){
+    setOpenLogout(false);
+  }
+
+  function openErrorDialog(){
+    setOpenError(true);
+  }
+
+  function closeErrorDialog(){
+    setOpenError(false);
   }
 
   function closeLoginDialog() {
@@ -93,6 +114,19 @@ export const Basket = () => {
   }
 
   function RedirectLogin(email: string, password: string) {
+
+    if (!validateEmail(email)) {
+      openErrorDialog()
+      setLocalError("Некоректный формат пошти")
+      return;
+    }
+
+    if (password.length < 5) {
+      openErrorDialog()
+      setLocalError('Пароль має бути завдовжки мінімум 5 символів')
+      return;
+    }
+
     try {
       dispatch(
         Authorize({
@@ -107,12 +141,49 @@ export const Basket = () => {
     }
   }
 
+  function validateEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
   function RedirectRegister(
     email: string,
     fullName: string,
     role: string,
     password: string
   ) {
+
+    if (!validateEmail(email)) {
+      openErrorDialog()
+      setLocalError("Некоректный формат пошти")
+      return;
+    }
+
+    
+  
+    if(!fullName){
+      openErrorDialog()
+      setLocalError('Ви не вказали ім\'я')
+      return;
+    }
+
+    
+    if (password.length < 5) {
+      openErrorDialog()
+      setLocalError('Пароль має бути завдовжки мінімум 5 символів')
+      return;
+    }
+
+    
+    const validRoles = ['customer'];
+    if (!validRoles.includes(role)) {
+      openErrorDialog()
+      setLocalError('Ви не обрали ролі')
+      return;
+    }
+  
+    
+
     try {
       dispatch(NullifyToken());
       dispatch(
@@ -127,6 +198,12 @@ export const Basket = () => {
     } catch (error) {
       alert(error);
     }
+  }
+
+  function Logout(){
+    closeLogoutDialog();
+    openLoginDialog();  
+    dispatch(NullifyToken());
   }
 
   /*  function Redirect() {
@@ -390,6 +467,71 @@ export const Basket = () => {
       </Dialog>
       {/*</Login Dialog>*/}
 
+      {/*<Logout Dialog>*/}
+      <Dialog open={openLogout} onClose={closeLogoutDialog}>
+        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
+          Логаут
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            display={"flex"}
+            flexDirection={"row"}
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+          >
+            Ви дійсно бажаете вийти з вашого акаута?
+            
+          </DialogContentText>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeLogoutDialog}
+          >
+            Ні
+          </Button>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={() => {
+              Logout();
+              
+              
+            }}
+          >
+            Так, вийти
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/*</Logout Dialog>*/}
+
+      {/*<Error Dialog>*/}
+      <Dialog open={openError} onClose={closeErrorDialog}>
+        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
+          Помилка
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            display={"flex"}
+            flexDirection={"row"}
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+          >
+            {local_error}
+            
+          </DialogContentText>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeErrorDialog}
+          >
+            Зрозуміло
+          </Button>
+          
+        </DialogActions>
+      </Dialog>
+      {/*</Error Dialog>*/}
+
       {/*<Register Dialog>*/}
       <Dialog open={openRegister} onClose={closeRegDialog}>
         <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
@@ -463,11 +605,11 @@ export const Basket = () => {
                 control={<Radio onChange={handleChange} />}
                 label="Користувач"
               />
-              <FormControlLabel
+              {/* <FormControlLabel
                 value="manager"
                 control={<Radio onChange={handleChange} />}
                 label="Менеджер"
-              />
+              /> */}
             </RadioGroup>
           </FormControl>
         </DialogContent>
@@ -487,6 +629,7 @@ export const Basket = () => {
         </DialogActions>
       </Dialog>
       {/*</Register Dialog>*/}
+
       {/*<Basket Dialog>*/}
       <Dialog open={openBasket} onClose={closeBasketDialog}
         scroll={scroll}
