@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import { Routes, Route } from "react-router-dom";
-import NotFoundPage from "./Pages/NotFound/NotFoundPage";
+import NotFoundPage from "./Pages/Additional pages/NotFoundPage";
 import HomePage from "./Pages/Home/HomePage";
 
 import { useAppDispatch } from "./redux/hooks";

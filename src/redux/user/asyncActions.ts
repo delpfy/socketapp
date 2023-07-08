@@ -24,7 +24,7 @@ export const Authorize = createAsyncThunk<
     `/authorize`,
     params
   );
-  console.log("DATA " + data);
+  
   return data;
 });
 

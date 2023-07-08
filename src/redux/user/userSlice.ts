@@ -18,6 +18,7 @@ const userSlice = createSlice({
     NullifyToken(state) {
       state.token = "";
       state.user.authorized = false;
+      localStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
@@ -35,19 +36,22 @@ const userSlice = createSlice({
     });
     builder.addCase(checkAuthorization.rejected, (state, action) => {
       state.user.authorized = false;
-      alert("Помилка з авторизацією: " + action.error.message);
     });
 
     // Authorize.
     builder.addCase(Authorize.fulfilled, (state, action) => {
       state.user.authorized = true;
       state.token = action.payload.token;
-      window.localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("token", action.payload.token);
+      console.log("ACTION " + action.meta.requestStatus)
     });
     builder.addCase(Authorize.pending, (state) => {
       state.user.authorized = false;
     });
-    
+    builder.addCase(Authorize.rejected, (state) => {
+      state.user.authorized = false;
+      
+    });
 
     // Register.
     builder.addCase(Register.fulfilled, (state, action) => {

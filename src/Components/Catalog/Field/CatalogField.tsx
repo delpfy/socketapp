@@ -8,7 +8,7 @@ import { getItemsByCategory } from "../../../redux/home/asyncActions";
 
 import Card from "../Block/CatalogCard/Card";
 import Skeleton from "../Block/CatalogCard/Skeleton";
-import NotFoundPage from "../../../Pages/NotFound/NotFoundPage";
+import NotFoundPage from "../../../Pages/Additional pages/NotFoundPage";
 
 export const CatalogField = () => {
   const { category, status } = useAppSelector((state) => state.home);
@@ -92,7 +92,7 @@ export const CatalogField = () => {
           >
             {
               
-              Array.from({ length: 10 }, () => {
+              Array.from({ length: 6 }, () => {
                 return <Grid
                 item
                 display={"flex"}
@@ -121,6 +121,7 @@ export const CatalogField = () => {
         return <Catalog />
         //return <CatalogSkeletons />
       }
+      
       else{
         return <CatalogSkeletons />
       }

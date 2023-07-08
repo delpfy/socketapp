@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Authorize, Register } from "../../../redux/user/asyncActions";
+import { Authorize, Register, checkAuthorization } from "../../../redux/user/asyncActions";
 import { NullifyToken } from "../../../redux/user/userSlice";
 
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
@@ -40,10 +40,14 @@ export const Basket = () => {
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openLogout, setOpenLogout] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
+  const [openInfo, setOpenInfo] = React.useState(false);
   const [openRegister, setOpenRegister] = React.useState(false);
   const [openBasket, setOpenBasket] = React.useState(false);
+ 
 
-  const [local_error, setLocalError] = React.useState<string>("")
+  const [local_error, setLocalError] = React.useState<string>("Unhandled error")
+  
+  const [local_info, setLocalInfo] = React.useState<string>("Some info")
 
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
@@ -52,6 +56,7 @@ export const Basket = () => {
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("md");
   const [fullWidth, setFullWidth] = React.useState(true);
+  
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   
@@ -62,6 +67,7 @@ export const Basket = () => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
   };
+
 
   function openBasketDialog() {
     if (user.authorized === true) {
@@ -82,6 +88,20 @@ export const Basket = () => {
       closeRegDialog();
       setOpenLogin(true);
     }
+  }
+
+  function closeRegAfterSuccess(){
+    setOpenRegister(false);
+    setLocalInfo("Все добре, теперь увійдіть");
+    openInfoDialog();
+  }
+  
+  function openInfoDialog(){
+    setOpenInfo(true);
+  }
+
+  function closeInfoDialog(){
+    setOpenInfo(false);
   }
 
   function openLogoutDialog(){
@@ -113,7 +133,7 @@ export const Basket = () => {
     setOpenRegister(false);
   }
 
-  function RedirectLogin(email: string, password: string) {
+  async function RedirectLogin(email: string, password: string) {
 
     if (!validateEmail(email)) {
       openErrorDialog()
@@ -127,18 +147,24 @@ export const Basket = () => {
       return;
     }
 
-    try {
-      dispatch(
+    
+      await dispatch(
         Authorize({
           email: email,
           password: password,
         })
-      );
-
-      closeLoginDialog();
-    } catch (error) {
-      alert(error);
-    }
+      ).then((result: any) => {
+        console.log("result.status " + result.meta.requestStatus)
+        if (result.meta.requestStatus === 'fulfilled') {
+            closeLoginDialog();
+        } else if (result.meta.requestStatus === 'rejected') {
+          openErrorDialog();
+            setLocalError("Схоже при реєстрації виникла помилка");
+        }
+  });
+  /* closeLoginDialog(); */
+      
+    
   }
 
   function validateEmail(email: string): boolean {
@@ -194,16 +220,27 @@ export const Basket = () => {
           password: password,
           expences: 0,
         })
-      );
-    } catch (error) {
-      alert(error);
+      ).then((result: any) => {
+        console.log("result.status " + result.meta.requestStatus)
+        if (result.meta.requestStatus === 'fulfilled') {
+          closeRegAfterSuccess();
+        } else if (result.meta.requestStatus === 'rejected') {
+          openErrorDialog();
+            setLocalError("Схоже при реєстрації виникла помилка");
+        }
+  });
+      
+      
+    } catch (error: any) {
+      openErrorDialog()
+      setLocalError(error);
     }
   }
 
   function Logout(){
     closeLogoutDialog();
-    openLoginDialog();  
     dispatch(NullifyToken());
+    
   }
 
   /*  function Redirect() {
@@ -531,6 +568,41 @@ export const Basket = () => {
         </DialogActions>
       </Dialog>
       {/*</Error Dialog>*/}
+      
+
+      {/*<Info Dialog>*/}
+      <Dialog open={openInfo} onClose={closeInfoDialog}>
+        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
+          Інформація
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            display={"flex"}
+            flexDirection={"row"}
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+          >
+            {local_info}
+            
+          </DialogContentText>
+          
+        </DialogContent>
+        <DialogActions>
+        <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={() => (closeInfoDialog(), openLoginDialog())}
+          >
+            Увійти
+          </Button>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeInfoDialog}
+          >
+            Закрити
+          </Button>
+          
+        </DialogActions>
+      </Dialog>
+      {/*</Info Dialog>*/}
 
       {/*<Register Dialog>*/}
       <Dialog open={openRegister} onClose={closeRegDialog}>

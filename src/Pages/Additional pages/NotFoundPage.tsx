@@ -22,7 +22,7 @@ export const NotFoundPage = () => {
         <ReportGmailerrorredIcon sx={{ height: 60, width: 60 }} />
 
         <Typography variant="h3" fontFamily={"Comfortaa"}>
-          Failed to load page
+          Схоже сайт не знає що вам відповісти...
         </Typography>
       </Box>
     </Box>

@@ -6,8 +6,9 @@ import { getBasketItemByUser } from "../../redux/basket/asyncActions";
 import { Box, Grid,  } from "@mui/material";
 import { IBasketItems, Status } from "../../redux/types";
 import Skeleton from "../../Components/Catalog/Block/CatalogCard/Skeleton";
-import NotFoundPage from "../NotFound/NotFoundPage";
+import NotFoundPage from "../Additional pages/NotFoundPage";
 import { checkAuthorization } from "../../redux/user/asyncActions";
+import NoItemsPage from "../Additional pages/NoItemsPage";
 
 export const BasketPage = () => {
   const {items} = useAppSelector((state) => state.basket.items);
@@ -94,8 +95,11 @@ export const BasketPage = () => {
   function StatusHandler (status: Status) {
     switch(status){
       case "success" : 
-      if(items !== undefined){
-        return <Catalog />
+      if(items.length === 0){
+        return <NoItemsPage />
+        
+      }else if (items !== undefined){
+         return <Catalog />
       }
       else{
         return <CatalogSkeletons />

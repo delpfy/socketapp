@@ -41,8 +41,19 @@ export default function CatalogCard(props: IItems) {
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   
   const [openItem, setOpenItem] = React.useState(false);
+  const [openInfo, setOpenInfo] = React.useState(false);
+  const [local_info, setLocalInfo] = React.useState<string>("Some info")
+  
 
   const dispatch = useAppDispatch();
+
+  function openInfoDialog(){
+    setOpenInfo(true);
+  }
+
+  function closeInfoDialog(){
+    setOpenInfo(false);
+  }
 
   function openItemDialog() {
     setOpenItem(true);
@@ -69,6 +80,8 @@ export default function CatalogCard(props: IItems) {
 
       dispatch(SetItemsAmount(itemsAmount + 1));
     } else {
+      setLocalInfo("Не так швидко...\nСпочатку увійдіть -_-")
+      openInfoDialog();
       // Tip, dunno if i`ll use it.
       // setOpen(true)
     }
@@ -175,9 +188,38 @@ export default function CatalogCard(props: IItems) {
           </Box>
         </CardActions>
       </Card>
-      <Dialog
-        open={openItem}
-        onClose={closeItemDialog}
+     
+
+      {/*<Info Dialog>*/}
+      <Dialog open={openInfo} onClose={closeInfoDialog}>
+        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
+          Інформація
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            display={"flex"}
+            flexDirection={"row"}
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+          >
+            {local_info}
+            
+          </DialogContentText>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeInfoDialog}
+          >
+            Зрозуміло
+          </Button>
+          
+        </DialogActions>
+      </Dialog>
+      {/*</Info Dialog>*/}
+
+      {/*<Item Dialog>*/}
+      <Dialog open={openItem} onClose={closeItemDialog}
         scroll={scroll}
         fullScreen={fullScreen}
         maxWidth={maxWidth}
@@ -195,8 +237,18 @@ export default function CatalogCard(props: IItems) {
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <ItemPage {...props} />
           </DialogContentText>
+          <Box>
+          
+                  
+          </Box>
         </DialogContent>
         <DialogActions>
+        <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15, backgroundColor: "#acc0f3" }}
+            onClick={() => PutInBasket()}
+          >
+            Покласти у кошик
+          </Button>
           <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={closeItemDialog}
@@ -205,6 +257,7 @@ export default function CatalogCard(props: IItems) {
           </Button>
         </DialogActions>
       </Dialog>
+      {/*</Item Dialog>*/}
     </>
   );
 }
