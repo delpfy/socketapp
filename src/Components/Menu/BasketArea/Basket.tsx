@@ -37,6 +37,10 @@ export const Basket = () => {
   const { isOnItemPage, itemsAmount } = useAppSelector((state) => state.basket);
 
   const dispatch = useAppDispatch();
+
+  const [cartSelected, setCartSelected] = React.useState(false)
+  const [personSelected, setPersonSelected] = React.useState(false)
+
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openLogout, setOpenLogout] = React.useState(false);
   const [openError, setOpenError] = React.useState(false);
@@ -70,21 +74,27 @@ export const Basket = () => {
 
 
   function openBasketDialog() {
+    
     if (user.authorized === true) {
       closeRegDialog();
       closeLoginDialog();
       setOpenBasket(true);
+      setCartSelected(true);
+      console.log("CART " + cartSelected)
     } else {
       openLoginDialog();
     }
   }
   function closeBasketDialog() {
     setOpenBasket(false);
+    setCartSelected(false);
   }
   function openLoginDialog() {
+    
     if (user.authorized === true) {
       openLogoutDialog();
     } else {
+      setPersonSelected(true)
       closeRegDialog();
       setOpenLogin(true);
     }
@@ -105,10 +115,12 @@ export const Basket = () => {
   }
 
   function openLogoutDialog(){
+    setPersonSelected(true)
     setOpenLogout(true);
   }
 
   function closeLogoutDialog(){
+    setPersonSelected(false)
     setOpenLogout(false);
   }
 
@@ -121,15 +133,18 @@ export const Basket = () => {
   }
 
   function closeLoginDialog() {
+    setPersonSelected(false)
     setOpenLogin(false);
   }
 
   function openRegDialog() {
+    setPersonSelected(true)
     closeLoginDialog();
     setOpenRegister(true);
   }
 
   function closeRegDialog() {
+    setPersonSelected(false)
     setOpenRegister(false);
   }
 
@@ -368,33 +383,21 @@ export const Basket = () => {
     if (user.authorized === true) {
       return (
         <AccountCircleRoundedIcon
-         color="warning"
+        color = {personSelected ? 'info' : 'warning'} 
           sx={{
-            width: {
-              xs: 30,
-              md: 40,
-            },
-            height: {
-              xs: 30,
-              md: 40,
-            },
+            width: 45,
+            height: 45
           }}
         />
       );
     } else {
       return (
         <LockPersonRoundedIcon
-        color="warning"
+        color = {personSelected ? 'info' : 'warning'} 
 
           sx={{
-            width: {
-              xs: 30,
-              md: 40,
-            },
-            height: {
-              xs: 30,
-              md: 40,
-            },
+            width: 45,
+            height: 45
           }}
         />
       );
@@ -415,19 +418,14 @@ export const Basket = () => {
           alignItems={"center"}
           maxWidth={180}
         >
-          <IconButton onClick={openBasketDialog}>
-            <Badge badgeContent={itemsAmount} color="secondary">
+          <IconButton onClick={openBasketDialog} >
+            <Badge badgeContent={itemsAmount} color="warning">
               <ShoppingCartIcon
-              color="warning"
+              color = {cartSelected ? 'info' : 'warning'} 
+              
                 sx={{
-                  width: {
-                    xs: 30,
-                    md: 40,
-                  },
-                  height: {
-                    xs: 30,
-                    md: 40,
-                  },
+                  width: 40,
+                  height: 40,
                 }}
               />
             </Badge>

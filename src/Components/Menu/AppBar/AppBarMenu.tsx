@@ -72,9 +72,7 @@ export default function AppBarMenu() {
 
   return (
     <>
-      <React.Fragment
-       
-      >
+      <React.Fragment>
         <SwipeableDrawer
           anchor={"left"}
           open={active}
@@ -88,14 +86,11 @@ export default function AppBarMenu() {
 
       <Box
         width={"100%"}
-       
+        height={'12vh'}
         
         position={"fixed"}
         zIndex={1}
-        sx={{ backgroundColor: "black", backgroundAttachment: "fixed", height: {
-          xs: "10%",
-          md: "12%"
-        }}}
+        sx={{ backgroundColor: "black", backgroundAttachment: "fixed"}}
       >
         <Box
           width={"95%"}

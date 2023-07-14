@@ -17,7 +17,7 @@ const MenuContent = () => {
   return (
     <Box
       width={"100%"}
-      height={"12%"}
+      height={"12vh"}
       position={"fixed"}
       zIndex={1}
       sx={{ backgroundColor: "black", backgroundAttachment: "fixed" }}
