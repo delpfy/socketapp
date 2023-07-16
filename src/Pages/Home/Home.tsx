@@ -1,19 +1,14 @@
 import { Box,  Grid, IconButton,  Slide,  Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useRef } from "react";
-import Basket from "../../Components/Menu/BasketArea/Basket";
-import Logo from "../../Components/Menu/LogotypeArea/Logo";
+import Basket from "../../Components/menu/basket/Basket";
+import Logo from "../../Components/menu/logotype/Logo";
 import { useAppSelector } from "../../redux/hooks";
-import Skeleton from "../../Components/Catalog/Block/CatalogCard/Skeleton";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Card from "../../Components/Categories/Card";
+import Card from "../../Components/categories/Tile";
 import './icon.css';
 
 const MenuContent = () => {
-
-  
-
-
   return (
     <Box
       width={"100%"}
@@ -44,10 +39,11 @@ const MenuContent = () => {
   );
 };
 
-export const TestPage = () => {
+export const Home = () => {
   const {categories} = useAppSelector((state) => state.home)
 
   const myRef = useRef<HTMLDivElement | null>(null);
+
   const executeScroll = () => {
     console.log("myRef.current " + myRef.current)
     if (myRef.current) {
@@ -68,7 +64,6 @@ export const TestPage = () => {
         flexDirection={'column'}
         alignItems={"center"}
         justifyContent={"center"}
-        
         
         sx={{
           background:

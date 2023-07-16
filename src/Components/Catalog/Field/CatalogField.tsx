@@ -6,9 +6,10 @@ import { getItemsByCategory } from "../../../redux/home/asyncActions";
 
 
 
-import Card from "../Block/CatalogCard/Card";
-import Skeleton from "../Block/CatalogCard/Skeleton";
-import NotFoundPage from "../../../Pages/Additional pages/NotFoundPage";
+
+import NotFoundPage from "../../../Pages/PageAbsence";
+import Card from "../block/Card";
+import Skeleton from "../block/Skeleton";
 
 export const CatalogField = () => {
   const { category, status } = useAppSelector((state) => state.home);

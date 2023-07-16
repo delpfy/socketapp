@@ -30,7 +30,7 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-import BasketPage from "../../../Pages/Basket/BasketPage";
+import BasketPage from "../../../Pages/cart/Cart";
 
 export const Basket = () => {
   const { user } = useAppSelector((state) => state.user);

@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppSelector } from "../../redux/hooks";
 import { IItems, Status } from "../../redux/types";
-import NotFoundPage from "../Additional pages/NotFoundPage";
+import NotFoundPage from "../PageAbsence";
 import { Box, Rating, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 

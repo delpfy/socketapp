@@ -6,8 +6,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { SetCategory } from "../../../redux/home/homeSlice";
 
-import Logo from "../LogotypeArea/Logo";
-import Basket from "../BasketArea/Basket";
+import Logo from "../logotype/Logo";
+import Basket from "../basket/Basket";
 
 import {
   Divider,

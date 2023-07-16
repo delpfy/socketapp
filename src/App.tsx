@@ -1,32 +1,30 @@
-import React, { useEffect } from "react";
-
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import NotFoundPage from "./Pages/Additional pages/NotFoundPage";
-import HomePage from "./Pages/Home/HomePage";
-
+import NotFoundPage from "./Pages/PageAbsence";
+import Catalog from "./Pages/home/Catalog";
 import { useAppDispatch } from "./redux/hooks";
 import "./styles/style.css";
-import AppBarMenu from "./Components/Menu/AppBar/AppBarMenu";
 import { checkAuthorization } from "./redux/user/asyncActions";
-import { TestPage } from "./Pages/Home/TestPage";
-import ItemPage from "./Pages/Item/ItemPage";
-import BasketPage from "./Pages/Basket/BasketPage";
+import { Home } from "./Pages/home/Home";
+import Footer from "./Components/Footer";
+
 function App() {
   
   const dispatch = useAppDispatch();
-  useEffect(() => {
+  React.useEffect(() => {
     dispatch(checkAuthorization());
   })
   return (
     <>
       {/* <AppBarMenu /> */}
       <Routes>
-        <Route path="/" element={<TestPage/>} />
-        <Route path="/catalog" element={<HomePage/>} />
+        <Route path="/" element={<Home/>} />
+        <Route path="/catalog" element={<Catalog/>} />
          {/* <Route path="/socketapp/catalog/item" element={<ItemPage />} /> 
          <Route path="/socketapp/catalog/basket" element={<BasketPage />} />  */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <Footer/>
     </>
   );
 }

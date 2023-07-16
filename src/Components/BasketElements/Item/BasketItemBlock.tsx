@@ -24,7 +24,7 @@ import {
 
 import { IBasketItems } from "../../../redux/types";
 
-import BasketItemPage from "../../../Pages/Item/BasketItemPage";
+import BasketItemPage from "../../../Pages/item/BasketItemPage";
 
 export const BasketItemBlock = (props: IBasketItems) => {
   const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");

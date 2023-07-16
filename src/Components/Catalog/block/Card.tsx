@@ -21,13 +21,13 @@ import {
   useTheme,
 } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { addBasketItem } from "../../../redux/basket/asyncActions";
+import { IBasketItems, IItems } from "../../../redux/types";
+import { SetItemsAmount } from "../../../redux/basket/basketSlice";
+import ItemPage from "../../../Pages/item/ItemPage";
 
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { addBasketItem } from "../../../../redux/basket/asyncActions";
-import { SetItemsAmount } from "../../../../redux/basket/basketSlice";
-import { IBasketItems, IItems } from "../../../../redux/types";
 
-import ItemPage from "../../../../Pages/Item/ItemPage";
 
 export default function CatalogCard(props: IItems) {
   const { user } = useAppSelector((state) => state.user);
