@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { Items, Status } from "../../../redux/types";
 import { getItemsByCategory } from "../../../redux/home/asyncActions";
 
-import NotFoundPage from "../../../pages/PageAbsence";
+import NotFoundPage from "../../../Pages/PageAbsence";
 import Card from "../block/CatalogCard";
 import Skeleton from "../block/CatalogSkeleton";
 

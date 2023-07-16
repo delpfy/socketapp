@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 
 import { ShippingItems } from "../../../redux/types";
-import BasketItemPage from "../../../pages/items/CartItemPage";
+import BasketItemPage from "../../../Pages/items/CartItemPage";
 
 export const BasketItemBlock = (props: ShippingItems) => {
   const [scroll] = React.useState<DialogProps["scroll"]>("paper");

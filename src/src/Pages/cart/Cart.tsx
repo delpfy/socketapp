@@ -9,8 +9,8 @@ import { ShippingItems, Status } from "../../redux/types";
 import { checkAuthorization } from "../../redux/user/asyncActions";
 import NoItemsPage from "../ItemsAbsence";
 import NotFoundPage from "../PageAbsence";
-import CatalogSkeleton from "../../components/catalog/block/CatalogSkeleton";
-import CartItemCard from "../../components/cart/block/CartItemCard";
+import CatalogSkeleton from "../../Components/Catalog/block/CatalogSkeleton";
+import CartItemCard from "../../Components/cart/block/CartItemCard";
 
 
 export const BasketPage = () => {

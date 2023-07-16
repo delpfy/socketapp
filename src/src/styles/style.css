@@ -1,0 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+  position: relative;
+
+  text-decoration: none !important;
+}
+h1 {
+  font-size: 25px;
+  padding-top: 15px;
+}

@@ -6,23 +6,22 @@ import {
   DialogContentText,
   Button,
 } from "@mui/material";
-import React from "react";
 
 type Props = {
-  openError: boolean;
-  closeErrorDialog: () => void;
-  errorMessage: string;
+  openInfo: boolean;
+  closeInfoDialog: () => void;
+  infoMessage: string;
 };
 
-export default function ErrorDialog({
-  openError,
-  closeErrorDialog,
-  errorMessage,
+export default function InfoDialog({
+  openInfo,
+  closeInfoDialog,
+  infoMessage,
 }: Props) {
   return (
-    <Dialog open={openError} onClose={closeErrorDialog}>
+    <Dialog open={openInfo} onClose={closeInfoDialog}>
       <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
-        Помилка
+        Інформація
       </DialogTitle>
       <DialogContent>
         <DialogContentText
@@ -30,13 +29,13 @@ export default function ErrorDialog({
           flexDirection={"row"}
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
         >
-          {errorMessage}
+          {infoMessage}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={closeErrorDialog}
+          onClick={closeInfoDialog}
         >
           Зрозуміло
         </Button>
