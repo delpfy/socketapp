@@ -86,7 +86,7 @@ export default function AppBarMenu() {
 
       <Box
         width={"100%"}
-        height={'12vh'}
+        height={'10vh'}
         
         position={"fixed"}
         zIndex={1}
