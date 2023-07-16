@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseHome } from "../../utils/InitialiseHome";
-import { IItemsDisplay, HomeState, IItemDisplay } from "../types";
+import { ItemsDisplay, HomeState, ItemDisplay } from "../types";
 import { getAllItems, getItemById, getItemsByCategory } from "./asyncActions";
 
 const initialState: HomeState = InitialiseHome();
@@ -21,11 +21,11 @@ const homeSlice = createSlice({
     });
     builder.addCase(getAllItems.pending, (state) => {
       state.status = "pending";
-      state.itemsDisplay = {} as IItemsDisplay;
+      state.itemsDisplay = {} as ItemsDisplay;
     });
     builder.addCase(getAllItems.rejected, (state) => {
       state.status = "error";
-      state.itemsDisplay = {} as IItemsDisplay;
+      state.itemsDisplay = {} as ItemsDisplay;
     });
 
     // Items by category.
@@ -35,11 +35,11 @@ const homeSlice = createSlice({
     });
     builder.addCase(getItemsByCategory.pending, (state) => {
       state.status = "pending";
-      state.itemsCategory = {} as IItemsDisplay;
+      state.itemsCategory = {} as ItemsDisplay;
     });
     builder.addCase(getItemsByCategory.rejected, (state) => {
       state.status = "error";
-      state.itemsCategory = {} as IItemsDisplay;
+      state.itemsCategory = {} as ItemsDisplay;
     });
 
     // Item by id.
@@ -50,12 +50,12 @@ const homeSlice = createSlice({
     });
     builder.addCase(getItemById.pending, (state) => {
       state.status = "pending";
-      state.itemCurrent = {} as IItemDisplay;
+      state.itemCurrent = {} as ItemDisplay;
       console.log("PENDING");
     });
     builder.addCase(getItemById.rejected, (state) => {
       state.status = "error";
-      state.itemCurrent = {} as IItemDisplay;
+      state.itemCurrent = {} as ItemDisplay;
       console.log("ERROR");
     });
   },

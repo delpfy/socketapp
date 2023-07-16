@@ -1,20 +1,20 @@
-export type IItemsDisplay = {
-  items: IItems[];
+export type ItemsDisplay = {
+  items: Items[];
 };
-export type IItemDisplay = {
-  items: IItems;
+export type ItemDisplay = {
+  items: Items;
 };
-export type IBasketItemsDisplay = {
-  items: IBasketItems[];
+export type ShippingItemsDisplay = {
+  items: ShippingItems[];
 };
-export type IBasketItemDisplay = {
-  items: IBasketItems;
+export type ShippingItemDisplay = {
+  items: ShippingItems;
 };
-export type IUserDisplay = {
-  user: IUser;
+export type UserDisplay = {
+  user: User;
 };
 
-export type IItems = {
+export type Items = {
   _id: string;
   category: string;
   name: string;
@@ -24,7 +24,7 @@ export type IItems = {
   description: string;
 };
 
-export type IBasketItems = {
+export type ShippingItems = {
   _id: string;
   category: string;
   name: string;
@@ -35,7 +35,7 @@ export type IBasketItems = {
   description: string;
 };
 
-export type IUser = {
+export type User = {
   _id: string;
   fullName: string;
   email: string;
@@ -45,13 +45,13 @@ export type IUser = {
   avatarUrl: string;
 };
 
-export type IUserLogin = {
+export type UserLogin = {
   email: string;
 
   password: string;
 };
 
-export type IUserRegister = {
+export type UserRegister = {
   email: string;
   fullName: string;
   role: string;
@@ -63,8 +63,8 @@ export type Status = "success" | "pending" | "error";
 
 export interface BasketState {
   status: Status;
-  items: IBasketItemsDisplay;
-  basketItemCurrent: IBasketItemDisplay;
+  items: ShippingItemsDisplay;
+  basketItemCurrent: ShippingItemDisplay;
   itemsAmount: number;
   isOnItemPage: boolean;
 }
@@ -72,9 +72,9 @@ export interface BasketState {
 export interface HomeState {
   status: Status;
   id: number;
-  itemsDisplay: IItemsDisplay;
-  itemsCategory: IItemsDisplay;
-  itemCurrent: IItemDisplay;
+  itemsDisplay: ItemsDisplay;
+  itemsCategory: ItemsDisplay;
+  itemCurrent: ItemDisplay;
   categories: { id: number; name: string, image: string}[];
   category: string;
 }

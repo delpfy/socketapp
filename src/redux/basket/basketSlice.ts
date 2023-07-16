@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseBasket } from "../../utils/InitialiseBasket";
-import { BasketState, IBasketItemDisplay,  IBasketItemsDisplay} from "../types";
+import { BasketState, ShippingItemDisplay,  ShippingItemsDisplay} from "../types";
 import { addBasketItem, getAllBasketItems, getBasketItemById, getBasketItemByUser } from "./asyncActions";
 
 const initialState: BasketState = InitialiseBasket();
@@ -27,11 +27,11 @@ const basketSlice = createSlice({
     });
     builder.addCase(getAllBasketItems.pending, (state) => {
       state.status = 'pending';
-      state.items = {} as IBasketItemsDisplay;
+      state.items = {} as ShippingItemsDisplay;
     });
     builder.addCase(getAllBasketItems.rejected, (state) => {
       state.status = 'error';
-      state.items = {} as IBasketItemsDisplay;
+      state.items = {} as ShippingItemsDisplay;
     });
 
     // All items by id.
@@ -42,12 +42,12 @@ const basketSlice = createSlice({
     });
     builder.addCase(getBasketItemByUser.pending, (state) => {
       state.status = 'pending';
-      state.items = {} as IBasketItemsDisplay;
+      state.items = {} as ShippingItemsDisplay;
       state.itemsAmount = 0 ;
     });
     builder.addCase(getBasketItemByUser.rejected, (state) => {
       state.status = 'error';
-      state.items = {} as IBasketItemsDisplay;
+      state.items = {} as ShippingItemsDisplay;
       state.itemsAmount = 0 ;
     });
 
@@ -58,11 +58,11 @@ const basketSlice = createSlice({
     });
     builder.addCase(getBasketItemById.pending, (state) => {
       state.status = 'pending';
-      state.basketItemCurrent = {} as IBasketItemDisplay;
+      state.basketItemCurrent = {} as ShippingItemDisplay;
     });
     builder.addCase(getBasketItemById.rejected, (state) => {
       state.status = 'error';
-      state.basketItemCurrent = {} as IBasketItemDisplay;
+      state.basketItemCurrent = {} as ShippingItemDisplay;
     });
 
     // Post item.

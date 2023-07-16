@@ -23,19 +23,20 @@ import {
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { addBasketItem } from "../../../redux/basket/asyncActions";
-import { IBasketItems, IItems } from "../../../redux/types";
+import { ShippingItems, Items } from "../../../redux/types";
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
-import ItemPage from "../../../Pages/item/ItemPage";
+import ItemPage from "../../../pages/items/CatalogItemPage";
 
 
 
-export default function CatalogCard(props: IItems) {
+
+export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
   const { itemsAmount } = useAppSelector((state) => state.basket);
 
   const [open, setOpen] = React.useState<boolean>(false);
-  const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
-  const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
+  const [scroll] = React.useState<DialogProps["scroll"]>("paper");
+  const [maxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
   
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
@@ -75,7 +76,7 @@ export default function CatalogCard(props: IItems) {
           rating: props.rating,
           image: props.image,
           amount: 1,
-        } as IBasketItems)
+        } as ShippingItems)
       );
 
       dispatch(SetItemsAmount(itemsAmount + 1));
@@ -244,11 +245,22 @@ export default function CatalogCard(props: IItems) {
         </DialogContent>
         <DialogActions>
         <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15, backgroundColor: "#acc0f3" }}
-            onClick={() => PutInBasket()}
+        onClick={() => PutInBasket()}
+            sx={{
+              width: {
+                xs: 210,
+                md: 225,
+              },
+              fontSize: {
+                xs: 12,
+                md: 14,
+              },
+            }}
+            variant="contained"
           >
             Покласти у кошик
           </Button>
+       
           <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={closeItemDialog}

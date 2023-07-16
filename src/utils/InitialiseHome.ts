@@ -1,4 +1,4 @@
-import { IItemDisplay, IItemsDisplay, Status } from "../redux/types";
+import { ItemDisplay, ItemsDisplay, Status } from "../redux/types";
 
 export const InitialiseHome = () => {
   const categories = [
@@ -10,9 +10,9 @@ export const InitialiseHome = () => {
   return {
     id: 0,
     status: "" as Status,
-    itemsDisplay: {} as IItemsDisplay,
-    itemsCategory: {} as IItemsDisplay,
-    itemCurrent: {} as IItemDisplay,
+    itemsDisplay: {} as ItemsDisplay,
+    itemsCategory: {} as ItemsDisplay,
+    itemCurrent: {} as ItemDisplay,
     categories,
     category: "Монітори",
   };

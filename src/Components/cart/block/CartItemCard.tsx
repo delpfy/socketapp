@@ -2,7 +2,6 @@ import React from "react";
 
 import {
   Box,
-  ClickAwayListener,
   Typography,
   Button,
   CardMedia,
@@ -15,23 +14,20 @@ import {
   DialogContentText,
   DialogProps,
   DialogTitle,
-  IconButton,
   Rating,
-  Tooltip,
   useTheme,
   useMediaQuery,
 } from "@mui/material";
 
-import { IBasketItems } from "../../../redux/types";
+import { ShippingItems } from "../../../redux/types";
+import BasketItemPage from "../../../pages/items/CartItemPage";
 
-import BasketItemPage from "../../../Pages/item/BasketItemPage";
-
-export const BasketItemBlock = (props: IBasketItems) => {
-  const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
-  const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
+export const BasketItemBlock = (props: ShippingItems) => {
+  const [scroll] = React.useState<DialogProps["scroll"]>("paper");
+  const [maxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
   const [openItem, setOpenItem] = React.useState(false);
 
   function openItemDialog() {
@@ -126,45 +122,6 @@ export const BasketItemBlock = (props: IBasketItems) => {
                 {props.amount}
               </Typography>
             </Box>
-            <Box sx={{ paddingTop: 1 }}>
-              <Button
-                sx={{
-                  width: {
-                    xs: 210,
-                    md: 225,
-                  },
-                  fontSize: {
-                    xs: 12,
-                    md: 14,
-                  },
-                }}
-                variant="contained"
-              >
-                Оформити замовлення
-              </Button>
-            </Box>
-            {/*  <ClickAwayListener onClickAway={() => setOpen(false)}>
-            <Box>
-              <Tooltip
-                PopperProps={{
-                  disablePortal: true,
-                }}
-                onClose={() => setOpen(false)}
-                open={open}
-                disableFocusListener
-                disableHoverListener
-                disableTouchListener
-                title="You sould be authorized"
-              >
-                <IconButton sx={{ paddind: 0 }} onClick={() => PutInBasket()}>
-                  <AddShoppingCartIcon
-                    sx={{ height: 35, width:35 }}
-                    color={active ? "secondary" : "disabled"}
-                  />
-                </IconButton>
-              </Tooltip>
-            </Box>
-          </ClickAwayListener>*/}
           </Box>
         </CardActions>
       </Card>
@@ -189,6 +146,7 @@ export const BasketItemBlock = (props: IBasketItems) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+        
           <Button
             onClick={closeItemDialog}
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}

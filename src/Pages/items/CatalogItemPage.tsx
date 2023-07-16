@@ -1,11 +1,11 @@
 import React from "react";
 import { useAppSelector } from "../../redux/hooks";
 import Carousel from "react-material-ui-carousel";
-import { IItems, Status } from "../../redux/types";
+import { Items, Status } from "../../redux/types";
 import NotFoundPage from "../PageAbsence";
 import { Box, Rating, Typography } from "@mui/material";
 
-export const ItemPage = (props: IItems) => {
+export const ItemPage = (props: Items) => {
   const { status } = useAppSelector((state) => state.home);
 
   /*  React.useEffect(() => {

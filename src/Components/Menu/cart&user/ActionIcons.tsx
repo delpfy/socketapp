@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 
 import {
   Badge,
@@ -23,64 +23,59 @@ import {
 } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Authorize, Register, checkAuthorization } from "../../../redux/user/asyncActions";
+import { Authorize, Register } from "../../../redux/user/asyncActions";
 import { NullifyToken } from "../../../redux/user/userSlice";
 
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-import BasketPage from "../../../Pages/cart/Cart";
+import BasketPage from "../../../pages/cart/Cart";
 
-export const Basket = () => {
+export const ActionIcons = () => {
   const { user } = useAppSelector((state) => state.user);
   const { isOnItemPage, itemsAmount } = useAppSelector((state) => state.basket);
 
   const dispatch = useAppDispatch();
 
-  const [cartSelected, setCartSelected] = React.useState(false)
-  const [personSelected, setPersonSelected] = React.useState(false)
+  const [cartSelected, setCartSelected] = useState(false);
+  const [personSelected, setPersonSelected] = useState(false);
 
-  const [openLogin, setOpenLogin] = React.useState(false);
-  const [openLogout, setOpenLogout] = React.useState(false);
-  const [openError, setOpenError] = React.useState(false);
-  const [openInfo, setOpenInfo] = React.useState(false);
-  const [openRegister, setOpenRegister] = React.useState(false);
-  const [openBasket, setOpenBasket] = React.useState(false);
- 
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openLogout, setOpenLogout] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const [openInfo, setOpenInfo] = useState(false);
+  const [openRegister, setOpenRegister] = useState(false);
+  const [openBasket, setOpenBasket] = useState(false);
 
-  const [local_error, setLocalError] = React.useState<string>("Unhandled error")
-  
-  const [local_info, setLocalInfo] = React.useState<string>("Some info")
+  const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
-  const [email, setEmail] = React.useState<string>("");
-  const [password, setPassword] = React.useState<string>("");
-  const [role, setRole] = React.useState<string>("");
-  const [fullName, setFullName] = React.useState<string>("");
-  const [scroll, setScroll] = React.useState<DialogProps["scroll"]>("paper");
-  const [maxWidth, setMaxWidth] = React.useState<DialogProps["maxWidth"]>("md");
-  const [fullWidth, setFullWidth] = React.useState(true);
-  
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  
-  React.useEffect(() => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [role, setRole] = useState<string>("");
+  const [fullName, setFullName] = useState<string>("");
+  const [scroll] = useState<DialogProps["scroll"]>("paper");
+  const [maxWidth] = useState<DialogProps["maxWidth"]>("md");
+  const [fullWidth] = useState(true);
+
+  const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
+
+  useEffect(() => {
     closeBasketDialog();
   }, [isOnItemPage]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
   };
 
-
   function openBasketDialog() {
-    
     if (user.authorized === true) {
       closeRegDialog();
       closeLoginDialog();
       setOpenBasket(true);
       setCartSelected(true);
-      console.log("CART " + cartSelected)
+      console.log("CART " + cartSelected);
     } else {
       openLoginDialog();
     }
@@ -90,96 +85,90 @@ export const Basket = () => {
     setCartSelected(false);
   }
   function openLoginDialog() {
-    
     if (user.authorized === true) {
       openLogoutDialog();
     } else {
-      setPersonSelected(true)
+      setPersonSelected(true);
       closeRegDialog();
       setOpenLogin(true);
     }
   }
 
-  function closeRegAfterSuccess(){
+  function closeRegAfterSuccess() {
     setOpenRegister(false);
-    setLocalInfo("Все добре, теперь увійдіть");
+    setInfoMessage("Все добре, теперь увійдіть");
     openInfoDialog();
   }
-  
-  function openInfoDialog(){
+
+  function openInfoDialog() {
     setOpenInfo(true);
   }
 
-  function closeInfoDialog(){
+  function closeInfoDialog() {
     setOpenInfo(false);
   }
 
-  function openLogoutDialog(){
-    setPersonSelected(true)
+  function openLogoutDialog() {
+    setPersonSelected(true);
     setOpenLogout(true);
   }
 
-  function closeLogoutDialog(){
-    setPersonSelected(false)
+  function closeLogoutDialog() {
+    setPersonSelected(false);
     setOpenLogout(false);
   }
 
-  function openErrorDialog(){
+  function openErrorDialog() {
     setOpenError(true);
   }
 
-  function closeErrorDialog(){
+  function closeErrorDialog() {
     setOpenError(false);
   }
 
   function closeLoginDialog() {
-    setPersonSelected(false)
+    setPersonSelected(false);
     setOpenLogin(false);
   }
 
   function openRegDialog() {
-    setPersonSelected(true)
+    setPersonSelected(true);
     closeLoginDialog();
     setOpenRegister(true);
   }
 
   function closeRegDialog() {
-    setPersonSelected(false)
+    setPersonSelected(false);
     setOpenRegister(false);
   }
 
   async function RedirectLogin(email: string, password: string) {
-
     if (!validateEmail(email)) {
-      openErrorDialog()
-      setLocalError("Некоректный формат пошти")
+      openErrorDialog();
+      setErrorMessage("Некоректный формат пошти");
       return;
     }
 
     if (password.length < 5) {
-      openErrorDialog()
-      setLocalError('Пароль має бути завдовжки мінімум 5 символів')
+      openErrorDialog();
+      setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
       return;
     }
 
-    
-      await dispatch(
-        Authorize({
-          email: email,
-          password: password,
-        })
-      ).then((result: any) => {
-        console.log("result.status " + result.meta.requestStatus)
-        if (result.meta.requestStatus === 'fulfilled') {
-            closeLoginDialog();
-        } else if (result.meta.requestStatus === 'rejected') {
-          openErrorDialog();
-            setLocalError("Схоже при реєстрації виникла помилка");
-        }
-  });
-  /* closeLoginDialog(); */
-      
-    
+    await dispatch(
+      Authorize({
+        email: email,
+        password: password,
+      })
+    ).then((result: any) => {
+      console.log("result.status " + result.meta.requestStatus);
+      if (result.meta.requestStatus === "fulfilled") {
+        closeLoginDialog();
+      } else if (result.meta.requestStatus === "rejected") {
+        openErrorDialog();
+        setErrorMessage("Схоже при реєстрації виникла помилка");
+      }
+    });
   }
 
   function validateEmail(email: string): boolean {
@@ -193,37 +182,30 @@ export const Basket = () => {
     role: string,
     password: string
   ) {
-
     if (!validateEmail(email)) {
-      openErrorDialog()
-      setLocalError("Некоректный формат пошти")
+      openErrorDialog();
+      setErrorMessage("Некоректный формат пошти");
       return;
     }
 
-    
-  
-    if(!fullName){
-      openErrorDialog()
-      setLocalError('Ви не вказали ім\'я')
+    if (!fullName) {
+      openErrorDialog();
+      setErrorMessage("Ви не вказали ім'я");
       return;
     }
 
-    
     if (password.length < 5) {
-      openErrorDialog()
-      setLocalError('Пароль має бути завдовжки мінімум 5 символів')
+      openErrorDialog();
+      setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
       return;
     }
 
-    
-    const validRoles = ['customer'];
+    const validRoles = ["customer"];
     if (!validRoles.includes(role)) {
-      openErrorDialog()
-      setLocalError('Ви не обрали ролі')
+      openErrorDialog();
+      setErrorMessage("Ви не обрали ролі");
       return;
     }
-  
-    
 
     try {
       dispatch(NullifyToken());
@@ -236,168 +218,43 @@ export const Basket = () => {
           expences: 0,
         })
       ).then((result: any) => {
-        console.log("result.status " + result.meta.requestStatus)
-        if (result.meta.requestStatus === 'fulfilled') {
+        console.log("result.status " + result.meta.requestStatus);
+        if (result.meta.requestStatus === "fulfilled") {
           closeRegAfterSuccess();
-        } else if (result.meta.requestStatus === 'rejected') {
+        } else if (result.meta.requestStatus === "rejected") {
           openErrorDialog();
-            setLocalError("Схоже при реєстрації виникла помилка");
+          setErrorMessage("Схоже при реєстрації виникла помилка");
         }
-  });
-      
-      
+      });
     } catch (error: any) {
-      openErrorDialog()
-      setLocalError(error);
+      openErrorDialog();
+      setErrorMessage(error);
     }
   }
 
-  function Logout(){
+  function Logout() {
     closeLogoutDialog();
     dispatch(NullifyToken());
-    
   }
-
-  /*  function Redirect() {
-    if (user.authorized === true) {
-      navigate("/socketapp/basket");
-    } else {
-      openLoginDialog();
-    }
-  } */
-
-  /* function LoginDialog() {
-    return (
-      <>
-        <Dialog
-          open={openLogin}
-          onClose={closeLoginDialog}
-        >
-          <DialogTitle>Авторизація</DialogTitle>
-          <DialogContent>
-            <DialogContentText display={"flex"} flexDirection={"row"}>
-              Ще не маєш аккаунт?
-              <Typography
-                color={"#1976d2"}
-                onClick={openRegDialog}
-                sx={{
-                  cursor: "pointer",
-                  paddingLeft: '0.6%',
-                }}
-              >
-                Реєструйся!
-              </Typography>
-              </DialogContentText>
-            <TextField
-              margin="dense"
-              label="Пошта"
-              type="email"
-              fullWidth
-              variant="standard"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            
-            <TextField
-              margin="dense"
-              id="password"
-              label="Пароль"
-              type="password"
-              fullWidth
-              variant="standard"
-              onChange={e => setPassword(e.target.value)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closeLoginDialog}>Вийти</Button>
-            <Button onClick={() => {RedirectLogin(email, password)}}>Продовжити</Button>
-          </DialogActions>
-        </Dialog>
-      </>
-    );
-  } */
-
-  /*  function RegisterDialog() {
-    return (
-      <>
-        <Dialog
-          open={openRegister}
-          onClose={closeRegDialog}
-        >
-          <DialogTitle>Регистрація</DialogTitle>
-          <DialogContent>
-            <DialogContentText display={"flex"} flexDirection={"row"}>
-              Маєш аккаунт?
-              
-              <Typography
-                color={"#1976d2"}
-                onClick={openLoginDialog}
-               
-                sx={{
-                  cursor: "pointer",
-                  paddingLeft: '0.6%',
-                }}
-              >
-                Заходь!
-              </Typography>
-              
-              
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="email"
-              label="Пошта"
-              type="email"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="fullName"
-              label="Ваше гарне ім'я"
-              type="name"
-              fullWidth
-              variant="standard"
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="password"
-              label="Пароль"
-              type="password"
-              fullWidth
-              variant="standard"
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closeRegDialog}>Вийти</Button>
-            <Button onClick={Redirect}>Продовжити</Button>
-          </DialogActions>
-        </Dialog>
-      </>
-    );
-  } */
 
   const Locker = () => {
     if (user.authorized === true) {
       return (
         <AccountCircleRoundedIcon
-        color = {personSelected ? 'info' : 'warning'} 
+          color={personSelected ? "info" : "warning"}
           sx={{
             width: 45,
-            height: 45
+            height: 45,
           }}
         />
       );
     } else {
       return (
         <LockPersonRoundedIcon
-        color = {personSelected ? 'info' : 'warning'} 
-
+          color={personSelected ? "info" : "warning"}
           sx={{
             width: 45,
-            height: 45
+            height: 45,
           }}
         />
       );
@@ -418,11 +275,10 @@ export const Basket = () => {
           alignItems={"center"}
           maxWidth={180}
         >
-          <IconButton onClick={openBasketDialog} >
+          <IconButton onClick={openBasketDialog}>
             <Badge badgeContent={itemsAmount} color="warning">
               <ShoppingCartIcon
-              color = {cartSelected ? 'info' : 'warning'} 
-              
+                color={cartSelected ? "info" : "warning"}
                 sx={{
                   width: 40,
                   height: 40,
@@ -514,9 +370,7 @@ export const Basket = () => {
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
           >
             Ви дійсно бажаете вийти з вашого акаута?
-            
           </DialogContentText>
-          
         </DialogContent>
         <DialogActions>
           <Button
@@ -529,8 +383,6 @@ export const Basket = () => {
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={() => {
               Logout();
-              
-              
             }}
           >
             Так, вийти
@@ -550,10 +402,8 @@ export const Basket = () => {
             flexDirection={"row"}
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
           >
-            {local_error}
-            
+            {errorMessage}
           </DialogContentText>
-          
         </DialogContent>
         <DialogActions>
           <Button
@@ -562,11 +412,9 @@ export const Basket = () => {
           >
             Зрозуміло
           </Button>
-          
         </DialogActions>
       </Dialog>
       {/*</Error Dialog>*/}
-      
 
       {/*<Info Dialog>*/}
       <Dialog open={openInfo} onClose={closeInfoDialog}>
@@ -579,15 +427,16 @@ export const Basket = () => {
             flexDirection={"row"}
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
           >
-            {local_info}
-            
+            {infoMessage}
           </DialogContentText>
-          
         </DialogContent>
         <DialogActions>
-        <Button
+          <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={() => (closeInfoDialog(), openLoginDialog())}
+            onClick={() => {
+              closeInfoDialog();
+              openLoginDialog();
+            }}
           >
             Увійти
           </Button>
@@ -597,7 +446,6 @@ export const Basket = () => {
           >
             Закрити
           </Button>
-          
         </DialogActions>
       </Dialog>
       {/*</Info Dialog>*/}
@@ -701,7 +549,9 @@ export const Basket = () => {
       {/*</Register Dialog>*/}
 
       {/*<Basket Dialog>*/}
-      <Dialog open={openBasket} onClose={closeBasketDialog}
+      <Dialog
+        open={openBasket}
+        onClose={closeBasketDialog}
         scroll={scroll}
         maxWidth={maxWidth}
         fullWidth={fullWidth}
@@ -765,6 +615,21 @@ export const Basket = () => {
         </DialogContent>
         <DialogActions>
           <Button
+            sx={{
+              width: {
+                xs: 210,
+                md: 225,
+              },
+              fontSize: {
+                xs: 12,
+                md: 14,
+              },
+            }}
+            variant="contained"
+          >
+            Оформити замовлення
+          </Button>
+          <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={closeBasketDialog}
           >
@@ -777,4 +642,4 @@ export const Basket = () => {
   );
 };
 
-export default Basket;
+export default ActionIcons;

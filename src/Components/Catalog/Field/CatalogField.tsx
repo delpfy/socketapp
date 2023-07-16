@@ -1,20 +1,17 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { IItems, Status } from "../../../redux/types";
+import { Items, Status } from "../../../redux/types";
 import { getItemsByCategory } from "../../../redux/home/asyncActions";
 
-
-
-
-import NotFoundPage from "../../../Pages/PageAbsence";
-import Card from "../block/Card";
-import Skeleton from "../block/Skeleton";
+import NotFoundPage from "../../../pages/PageAbsence";
+import Card from "../block/CatalogCard";
+import Skeleton from "../block/CatalogSkeleton";
 
 export const CatalogField = () => {
   const { category, status } = useAppSelector((state) => state.home);
 
-  // IItemsDisplay has {items: [{...}]} field in it, so we trying to get
+  // ItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
   const { items } = useAppSelector((state) => state.home.itemsCategory);
 
@@ -23,7 +20,7 @@ export const CatalogField = () => {
   // Trying to make request to get items from same category.
   useEffect(() => {
     dispatch(getItemsByCategory(category));
-  }, [category]);
+  }, [category, dispatch]);
 
   const Catalog = () => {
     return (
@@ -46,7 +43,7 @@ export const CatalogField = () => {
             spacing={{ xs: 1, sm: 3, md: 4 }}
             columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
           >
-            {items.map((item: IItems) => (
+            {items.map((item: Items) => (
               <Grid
                 item
                 display={"flex"}

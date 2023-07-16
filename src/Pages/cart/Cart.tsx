@@ -1,16 +1,16 @@
 import React from "react";
-import BasketItemBlock from "../../Components/BasketElements/item/BasketItemBlock";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import { getBasketItemByUser } from "../../redux/basket/asyncActions";
 import { Box, Grid,  } from "@mui/material";
-import { IBasketItems, Status } from "../../redux/types";
+import { ShippingItems, Status } from "../../redux/types";
 
 
 import { checkAuthorization } from "../../redux/user/asyncActions";
 import NoItemsPage from "../ItemsAbsence";
 import NotFoundPage from "../PageAbsence";
-import Skeleton from "../../Components/Catalog/block/Skeleton";
+import CatalogSkeleton from "../../components/catalog/block/CatalogSkeleton";
+import CartItemCard from "../../components/cart/block/CartItemCard";
 
 
 export const BasketPage = () => {
@@ -22,7 +22,7 @@ export const BasketPage = () => {
   React.useEffect(() => {
     dispatch(checkAuthorization());
     dispatch(getBasketItemByUser(user.id));
-  }, []);
+  }, [dispatch, user.id]);
 
   const Catalog = () => {
     return (
@@ -35,7 +35,7 @@ export const BasketPage = () => {
             spacing={{ xs: 1, sm: 3, md: 4 }}
             columns={{ xs: 1, sm: 4, md: 8, lg: 8, xl: 10 }}
           >
-            {items.map((item: IBasketItems) => (
+            {items.map((item: ShippingItems) => (
               
               <Grid
                 item
@@ -50,7 +50,7 @@ export const BasketPage = () => {
                 xl={5}
                 key={item._id}
               >
-                <BasketItemBlock key={item._id} {...item} />
+                <CartItemCard key={item._id} {...item} />
               </Grid>
             ))}
           </Grid>
@@ -85,7 +85,7 @@ export const BasketPage = () => {
                 lg={4}
                 xl={5}
               >
-                <Skeleton />
+                <CatalogSkeleton />
               </Grid>
               })
             }

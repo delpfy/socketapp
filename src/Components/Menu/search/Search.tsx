@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import cross_sign from "../../../assets/img/cross_sign.png";
-import { IItems } from "../../../redux/types";
+import { Items } from "../../../redux/types";
 //import { SetID } from "../../../redux/home/homeSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
@@ -13,7 +13,7 @@ export const Search = () => {
   const { items } = useAppSelector((state) => state.home.itemsDisplay);
 
   const [searchItem, setSearchItem] = useState("");
-  const [localDisplayItems, setLocalItems] = useState<IItems[]>([] as IItems[]);
+  const [localDisplayItems, setLocalItems] = useState<Items[]>([] as Items[]);
 
   const filterSearch = (entry: string) => {
     if (!entry) {

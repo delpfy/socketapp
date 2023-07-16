@@ -1,5 +1,5 @@
-import { Box, Card, CardActions, CardContent, CardMedia, Typography } from '@mui/material'
 import React from 'react'
+import { Card, CardContent, CardMedia, Typography } from '@mui/material'
 import { useAppDispatch } from '../../redux/hooks';
 import { SetCategory } from '../../redux/home/homeSlice';
 import { useNavigate } from 'react-router-dom';

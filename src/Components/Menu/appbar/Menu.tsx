@@ -7,13 +7,11 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { SetCategory } from "../../../redux/home/homeSlice";
 
 import Logo from "../logotype/Logo";
-import Basket from "../basket/Basket";
+import Basket from "../cart&user/ActionIcons";
 
 import {
   Divider,
-  Toolbar,
   Box,
-  AppBar,
   List,
   ListItem,
   ListItemButton,

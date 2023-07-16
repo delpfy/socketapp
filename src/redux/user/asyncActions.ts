@@ -1,11 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { IUserDisplay, IUserLogin, IUserRegister } from "../types";
+import { UserDisplay, UserLogin, UserRegister } from "../types";
 
-export const checkAuthorization = createAsyncThunk<IUserDisplay>(
+export const checkAuthorization = createAsyncThunk<UserDisplay>(
   "home/checkAuthorization",
   async function () {
-    const { data } = await axios.get<IUserDisplay>(`/authme`, {
+    const { data } = await axios.get<UserDisplay>(`/authme`, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
       },
@@ -17,7 +17,7 @@ export const checkAuthorization = createAsyncThunk<IUserDisplay>(
 
 export const Authorize = createAsyncThunk<
   { success: string; token: string },
-  IUserLogin
+  UserLogin
 >("home/Authorize", async function (params) {
   console.log("DATA " + 1);
   const { data } = await axios.post<{ success: string; token: string }>(
@@ -30,7 +30,7 @@ export const Authorize = createAsyncThunk<
 
 export const Register = createAsyncThunk<
   { success: string; token: string },
-  IUserRegister
+  UserRegister
 >("home/Register", async function (params) {
   console.log("DATA " + 1);
   const { data } = await axios.post<{ success: string; token: string }>(

@@ -1,28 +1,28 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
 import {
-  IBasketItemDisplay,
-  IBasketItems,
-  IBasketItemsDisplay,
+  ShippingItemDisplay,
+  ShippingItems,
+  ShippingItemsDisplay,
 } from "../types";
 
-export const getAllBasketItems = createAsyncThunk<IBasketItemsDisplay>(
+export const getAllBasketItems = createAsyncThunk<ShippingItemsDisplay>(
   "home/getAllBasketItems",
   async function () {
     console.log("DATA " + 1);
-    const { data } = await axios.get<IBasketItemsDisplay>(`/basketitems`);
+    const { data } = await axios.get<ShippingItemsDisplay>(`/basketitems`);
     console.log("DATA " + data);
     return data;
   }
 );
 
 export const getBasketItemByUser = createAsyncThunk<
-  IBasketItemsDisplay,
+  ShippingItemsDisplay,
   string
 >("home/getBasketItemByUser", async (params) => {
   console.log("DATA " + 1);
   console.log("Params " + params); // Here is id.
-  const { data } = await axios.get<IBasketItemsDisplay>(
+  const { data } = await axios.get<ShippingItemsDisplay>(
     `/basketitems/user/${params}`,
     {
       headers: {
@@ -34,12 +34,12 @@ export const getBasketItemByUser = createAsyncThunk<
   return data;
 });
 
-export const getBasketItemById = createAsyncThunk<IBasketItemDisplay, string>(
+export const getBasketItemById = createAsyncThunk<ShippingItemDisplay, string>(
   "home/getBasketItemById",
   async (params) => {
     console.log("DATA " + 1);
     console.log("Params " + params); // Here is Id.
-    const { data } = await axios.get<IBasketItemDisplay>(
+    const { data } = await axios.get<ShippingItemDisplay>(
       `/basketitems/${params}`,
       {
         headers: {
@@ -52,7 +52,7 @@ export const getBasketItemById = createAsyncThunk<IBasketItemDisplay, string>(
   }
 );
 
-export const addBasketItem = createAsyncThunk<"", IBasketItems>(
+export const addBasketItem = createAsyncThunk<"", ShippingItems>(
   "home/addBasketItem",
   async (params) => {
     console.log("DATA " + 1);

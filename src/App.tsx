@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import NotFoundPage from "./Pages/PageAbsence";
-import Catalog from "./Pages/home/Catalog";
+import NotFoundPage from "./pages/PageAbsence";
+import Catalog from "./pages/home/Catalog";
 import { useAppDispatch } from "./redux/hooks";
 import "./styles/style.css";
 import { checkAuthorization } from "./redux/user/asyncActions";
-import { Home } from "./Pages/home/Home";
-import Footer from "./Components/Footer";
+import { Home } from "./pages/home/Home";
+import Footer from "./components/Footer";
 
 function App() {
   
