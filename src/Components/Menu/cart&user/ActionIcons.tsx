@@ -31,6 +31,9 @@ import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 import BasketPage from "../../../pages/cart/Cart";
+import InfoDialog from "../../dialogs/InfoDialog";
+import ErrorDialog from "../../dialogs/ErrorDialog";
+import LoginDialog from "../../dialogs/LoginDialog";
 
 export const ActionIcons = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -142,34 +145,7 @@ export const ActionIcons = () => {
     setOpenRegister(false);
   }
 
-  async function RedirectLogin(email: string, password: string) {
-    if (!validateEmail(email)) {
-      openErrorDialog();
-      setErrorMessage("Некоректный формат пошти");
-      return;
-    }
-
-    if (password.length < 5) {
-      openErrorDialog();
-      setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
-      return;
-    }
-
-    await dispatch(
-      Authorize({
-        email: email,
-        password: password,
-      })
-    ).then((result: any) => {
-      console.log("result.status " + result.meta.requestStatus);
-      if (result.meta.requestStatus === "fulfilled") {
-        closeLoginDialog();
-      } else if (result.meta.requestStatus === "rejected") {
-        openErrorDialog();
-        setErrorMessage("Схоже при реєстрації виникла помилка");
-      }
-    });
-  }
+  
 
   function validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -294,69 +270,17 @@ export const ActionIcons = () => {
         </Box>
       </Box>
 
-      {/*<Login Dialog>*/}
-      <Dialog open={openLogin} onClose={closeLoginDialog}>
-        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
-          Авторизація
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            display={"flex"}
-            flexDirection={"row"}
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          >
-            Ще не маєш аккаунт?
-            <Typography
-              color={"#1976d2"}
-              onClick={openRegDialog}
-              sx={{
-                cursor: "pointer",
-                paddingLeft: "0.6%",
-                fontFamily: "Comfortaa",
-                fontSize: 15,
-              }}
-            >
-              Реєструйся!
-            </Typography>
-          </DialogContentText>
-          <TextField
-            margin="dense"
-            label="Пошта"
-            type="email"
-            value={email}
-            fullWidth
-            variant="standard"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-
-          <TextField
-            margin="dense"
-            label="Пароль"
-            value={password}
-            type="password"
-            fullWidth
-            variant="standard"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={closeLoginDialog}
-          >
-            Вийти
-          </Button>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={() => {
-              RedirectLogin(email, password);
-            }}
-          >
-            Продовжити
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/*</Login Dialog>*/}
+      
+      <LoginDialog
+        openLogin={openLogin}
+        closeLoginDialog={closeLoginDialog}
+        openErrorDialog={setOpenError}
+        openRegisterDialog={setOpenRegister}
+        openLoginDialog={setOpenLogin}
+        setPersonSelected={setPersonSelected}
+        setErrorMessage={setErrorMessage}
+      />
+      
 
       {/*<Logout Dialog>*/}
       <Dialog open={openLogout} onClose={closeLogoutDialog}>
@@ -375,80 +299,32 @@ export const ActionIcons = () => {
         <DialogActions>
           <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={closeLogoutDialog}
-          >
-            Ні
-          </Button>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={() => {
               Logout();
             }}
           >
             Так, вийти
           </Button>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeLogoutDialog}
+          >
+            Ні
+          </Button>
         </DialogActions>
       </Dialog>
       {/*</Logout Dialog>*/}
 
-      {/*<Error Dialog>*/}
-      <Dialog open={openError} onClose={closeErrorDialog}>
-        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
-          Помилка
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            display={"flex"}
-            flexDirection={"row"}
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          >
-            {errorMessage}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={closeErrorDialog}
-          >
-            Зрозуміло
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/*</Error Dialog>*/}
-
-      {/*<Info Dialog>*/}
-      <Dialog open={openInfo} onClose={closeInfoDialog}>
-        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
-          Інформація
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            display={"flex"}
-            flexDirection={"row"}
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          >
-            {infoMessage}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={() => {
-              closeInfoDialog();
-              openLoginDialog();
-            }}
-          >
-            Увійти
-          </Button>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={closeInfoDialog}
-          >
-            Закрити
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/*</Info Dialog>*/}
+      <ErrorDialog
+        openError={openError}
+        closeErrorDialog={closeErrorDialog}
+        errorMessage={errorMessage}
+      />
+      <InfoDialog
+        openInfo={openInfo}
+        closeInfoDialog={closeInfoDialog}
+        infoMessage={infoMessage}
+      />
 
       {/*<Register Dialog>*/}
       <Dialog open={openRegister} onClose={closeRegDialog}>
@@ -534,15 +410,15 @@ export const ActionIcons = () => {
         <DialogActions>
           <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={closeRegDialog}
-          >
-            Вийти
-          </Button>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={() => RedirectRegister(email, fullName, role, password)}
           >
             Продовжити
+          </Button>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={closeRegDialog}
+          >
+            Вийти
           </Button>
         </DialogActions>
       </Dialog>

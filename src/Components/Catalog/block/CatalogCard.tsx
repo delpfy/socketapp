@@ -1,58 +1,43 @@
 import * as React from "react";
 import {
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
   CardMedia,
   ClickAwayListener,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogProps,
-  DialogTitle,
   IconButton,
   Rating,
   Tooltip,
   Typography,
-  useMediaQuery,
-  useTheme,
+
 } from "@mui/material";
+
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { addBasketItem } from "../../../redux/basket/asyncActions";
 import { ShippingItems, Items } from "../../../redux/types";
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
-import ItemPage from "../../../pages/items/CatalogItemPage";
-
-
-
+import InfoDialog from "../../dialogs/InfoDialog";
+import ItemDialog from "../../dialogs/ItemDialog";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
   const { itemsAmount } = useAppSelector((state) => state.basket);
 
   const [open, setOpen] = React.useState<boolean>(false);
-  const [scroll] = React.useState<DialogProps["scroll"]>("paper");
-  const [maxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
-  
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  
+
   const [openItem, setOpenItem] = React.useState(false);
   const [openInfo, setOpenInfo] = React.useState(false);
-  const [local_info, setLocalInfo] = React.useState<string>("Some info")
-  
+  const [infoMessage, setInfoMessage] = React.useState<string>("Some info");
 
   const dispatch = useAppDispatch();
 
-  function openInfoDialog(){
+  function openInfoDialog() {
     setOpenInfo(true);
   }
 
-  function closeInfoDialog(){
+  function closeInfoDialog() {
     setOpenInfo(false);
   }
 
@@ -68,7 +53,7 @@ export default function CatalogCard(props: Items) {
     if (user.authorized === true) {
       dispatch(
         addBasketItem({
-          _id: user.id ,
+          _id: user.id,
           name: props.name,
           description: props.description,
           category: props.category,
@@ -81,7 +66,7 @@ export default function CatalogCard(props: Items) {
 
       dispatch(SetItemsAmount(itemsAmount + 1));
     } else {
-      setLocalInfo("Не так швидко...\nСпочатку увійдіть -_-")
+      setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
       openInfoDialog();
       // Tip, dunno if i`ll use it.
       // setOpen(true)
@@ -104,7 +89,6 @@ export default function CatalogCard(props: Items) {
       >
         <CardMedia
           sx={{
-            
             maxHeight: 200,
             minHeight: 200,
             objectFit: "fill",
@@ -189,87 +173,22 @@ export default function CatalogCard(props: Items) {
           </Box>
         </CardActions>
       </Card>
-     
 
-      {/*<Info Dialog>*/}
-      <Dialog open={openInfo} onClose={closeInfoDialog}>
-        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
-          Інформація
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            display={"flex"}
-            flexDirection={"row"}
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          >
-            {local_info}
-            
-          </DialogContentText>
-          
-        </DialogContent>
-        <DialogActions>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={closeInfoDialog}
-          >
-            Зрозуміло
-          </Button>
-          
-        </DialogActions>
-      </Dialog>
-      {/*</Info Dialog>*/}
+      {/* information */}
+      <InfoDialog
+        openInfo={openInfo}
+        closeInfoDialog={closeInfoDialog}
+        infoMessage={infoMessage}
+      />
 
-      {/*<Item Dialog>*/}
-      <Dialog open={openItem} onClose={closeItemDialog}
-        scroll={scroll}
-        fullScreen={fullScreen}
-        maxWidth={maxWidth}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-        
-      >
-        <DialogTitle
-          sx={{ fontFamily: "Comfortaa", fontSize: "1.25rem " }}
-          id="scroll-dialog-title"
-        >
-          {props.name}
-        </DialogTitle>
-        <DialogContent dividers={scroll === "paper"}>
-          <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-            <ItemPage {...props} />
-          </DialogContentText>
-          <Box>
-          
-                  
-          </Box>
-        </DialogContent>
-        <DialogActions>
-        <Button
-        onClick={() => PutInBasket()}
-            sx={{
-              width: {
-                xs: 210,
-                md: 225,
-              },
-              fontSize: {
-                xs: 12,
-                md: 14,
-              },
-            }}
-            variant="contained"
-          >
-            Покласти у кошик
-          </Button>
-       
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={closeItemDialog}
-          >
-            Вийти
-          </Button>
-        </DialogActions>
-      </Dialog>
-      {/*</Item Dialog>*/}
+      {/* item */}
+      <ItemDialog
+        item={props}
+        openItem={openItem}
+        closeItemDialog={closeItemDialog}
+        openInfoDialog={setOpenInfo}
+        setInfoMessage={setInfoMessage}
+      />
     </>
   );
 }
