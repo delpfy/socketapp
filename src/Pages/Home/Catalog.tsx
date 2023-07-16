@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import CatalogField from "../../Components/catalog/field/CatalogField";
+import CatalogField from "../../Components/Catalog/field/CatalogField";
 import { useAppDispatch } from "../../redux/hooks";
 import { getAllItems } from "../../redux/home/asyncActions";
 import { Box } from "@mui/material";

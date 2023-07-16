@@ -9,7 +9,7 @@ import { ShippingItems, Status } from "../../redux/types";
 import { checkAuthorization } from "../../redux/user/asyncActions";
 import NoItemsPage from "../ItemsAbsence";
 import NotFoundPage from "../PageAbsence";
-import CatalogSkeleton from "../../Components/catalog/block/CatalogSkeleton";
+import CatalogSkeleton from "../../Components/Catalog/block/CatalogSkeleton";
 import CartItemCard from "../../Components/cart/block/CartItemCard";
 
 
