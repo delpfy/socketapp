@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Items, ShippingItems } from "../../redux/types";
 import React, { Dispatch, SetStateAction } from "react";
-import ItemPage from "../../pages/items/CatalogItemPage";
+import ItemPage from "../../Pages/items/CatalogItemPage";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addBasketItem } from "../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../redux/basket/basketSlice";
@@ -32,7 +32,6 @@ export default function ItemDialog({
   openItem,
   item,
 }: Props) {
-
   const { user } = useAppSelector((state) => state.user);
   const { itemsAmount } = useAppSelector((state) => state.basket);
 

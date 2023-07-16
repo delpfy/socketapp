@@ -8,12 +8,16 @@ import {
 } from "@mui/material";
 
 type Props = {
-    openInfo: boolean,
-    closeInfoDialog: () => void
-    infoMessage: string
-}
+  openInfo: boolean;
+  closeInfoDialog: () => void;
+  infoMessage: string;
+};
 
-export default function InfoDialog({openInfo, closeInfoDialog, infoMessage}: Props) {
+export default function InfoDialog({
+  openInfo,
+  closeInfoDialog,
+  infoMessage,
+}: Props) {
   return (
     <Dialog open={openInfo} onClose={closeInfoDialog}>
       <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>

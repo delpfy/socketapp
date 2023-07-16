@@ -13,22 +13,28 @@ import { Authorize } from "../../redux/user/asyncActions";
 import { useAppDispatch } from "../../redux/hooks";
 
 type Props = {
-    openErrorDialog: Dispatch<SetStateAction<any>>;
-    openRegisterDialog: Dispatch<SetStateAction<any>>;
-    openLoginDialog: Dispatch<SetStateAction<any>>;
-    setPersonSelected: Dispatch<SetStateAction<any>>;
-    setErrorMessage: (message: string) => void;
-    openLogin: boolean;
-    closeLoginDialog: () => void;
+  openErrorDialog: Dispatch<SetStateAction<any>>;
+  openRegisterDialog: Dispatch<SetStateAction<any>>;
+  openLoginDialog: Dispatch<SetStateAction<any>>;
+  setPersonSelected: Dispatch<SetStateAction<any>>;
+  setErrorMessage: (message: string) => void;
+  openLogin: boolean;
+  closeLoginDialog: () => void;
 };
 
-export default function LoginDialog({openErrorDialog, openRegisterDialog, setErrorMessage, openLoginDialog, setPersonSelected, openLogin, closeLoginDialog}: Props) {
-    
+export default function LoginDialog({
+  openErrorDialog,
+  openRegisterDialog,
+  setErrorMessage,
+  openLoginDialog,
+  setPersonSelected,
+  openLogin,
+  closeLoginDialog,
+}: Props) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
   const dispatch = useAppDispatch();
-
 
   function validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
