@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import cross_sign from "../../../assets/img/cross_sign.png";
+/* import cross_sign from "../../../assets/img/cross_sign.png"; */
 import { Items } from "../../../redux/types";
 //import { SetID } from "../../../redux/home/homeSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
@@ -43,7 +43,7 @@ export const Search = () => {
         />
         <img
           className="logo"
-          src={cross_sign}
+          /* src={cross_sign} */
           alt="searchLogo"
           onClick={() => setSearchItem("")}
         />

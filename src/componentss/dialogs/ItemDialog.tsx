@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { Items, ShippingItems } from "../../redux/types";
 import React, { Dispatch, SetStateAction } from "react";
-import ItemPage from "../../Pages/items/CatalogItemPage";
+import ItemPage from "../../pagess/items/CatalogItemPage";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { addBasketItem } from "../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../redux/basket/basketSlice";

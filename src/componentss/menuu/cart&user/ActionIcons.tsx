@@ -30,7 +30,7 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-import BasketPage from "../../../Pages/cart/Cart";
+import BasketPage from "../../../pagess/cart/Cart";
 import InfoDialog from "../../dialogs/InfoDialog";
 import ErrorDialog from "../../dialogs/ErrorDialog";
 import LoginDialog from "../../dialogs/LoginDialog";

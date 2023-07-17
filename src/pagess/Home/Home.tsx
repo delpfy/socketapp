@@ -1,10 +1,10 @@
 import { Box,  Grid,  Typography } from "@mui/material";
 import React, { useRef } from "react";
-import Basket from "../../Components/Menu/cart&user/ActionIcons";
-import Logo from "../../Components/Menu/logotype/Logo";
+import Basket from "../../componentss/menuu/cart&user/ActionIcons";
+import Logo from "../../componentss/menuu/logotype/Logo";
 import { useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Card from "../../Components/categories/CategoryTile";
+import Card from "../../componentss/categories/CategoryTile";
 import './icon.css';
 
 const MenuContent = () => {
