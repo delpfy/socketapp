@@ -1,5 +1,7 @@
 import React from "react";
-
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {
   Box,
   Typography,
@@ -17,6 +19,7 @@ import {
   Rating,
   useTheme,
   useMediaQuery,
+  IconButton,
 } from "@mui/material";
 
 import { ShippingItems } from "../../../redux/types";
@@ -46,7 +49,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
           maxHeight: 490,
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           padding: "2%",
         }}
       >
@@ -79,7 +82,9 @@ export const BasketItemBlock = (props: ShippingItems) => {
           </Typography>
         </CardContent>
         <CardActions
+        
           sx={{
+            height: '100%',
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -89,7 +94,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
             paddingRight: "16px",
           }}
         >
-          <Box display={"flex"} flexDirection={"column"} width={138}>
+          <Box display={"flex"} flexDirection={"column"}  >
             <Typography
               paddingLeft={0.3}
               fontSize={22}
@@ -121,9 +126,37 @@ export const BasketItemBlock = (props: ShippingItems) => {
               >
                 {props.amount}
               </Typography>
+              
             </Box>
           </Box>
+          
         </CardActions>
+        <Box display={'flex'} width={'80%'} alignSelf={'center'}  justifyContent={'space-between'} alignItems={'flex-end'} flexDirection={'row'} >
+              <Box display={'flex'} width={'55%'}  justifyContent={'space-between'} alignItems={'flex-end'} flexDirection={'row'} >
+              <IconButton>
+              <AddCircleIcon
+              color="info"
+              sx={{width: 40, height: 40}}
+            />
+              </IconButton>
+              <IconButton>
+              <RemoveCircleIcon
+              color="info"
+              sx={{width: 40, height: 40,}}
+              />
+              </IconButton>
+           
+              </Box>
+              
+              <IconButton>
+              <DeleteForeverIcon
+              color="error"
+              sx={{width: 40, height: 40,}}
+            />
+              </IconButton>
+            
+
+            </Box>
       </Card>
       <Dialog
         open={openItem}
@@ -140,13 +173,14 @@ export const BasketItemBlock = (props: ShippingItems) => {
         >
           {props.name}
         </DialogTitle>
+
         <DialogContent dividers={scroll === "paper"}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <BasketItemPage {...props} />
           </DialogContentText>
         </DialogContent>
+
         <DialogActions>
-        
           <Button
             onClick={closeItemDialog}
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}

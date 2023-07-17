@@ -110,7 +110,7 @@ export default function ItemDialog({
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
           onClick={closeItemDialog}
         >
-          Вийти
+          Продовжити покупки
         </Button>
       </DialogActions>
     </Dialog>

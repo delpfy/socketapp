@@ -101,7 +101,7 @@ import BasketPage from "../../pagess/cart/Cart";
           <Button
             sx={{
               width: {
-                xs: 210,
+                xs: 170,
                 md: 225,
               },
               fontSize: {
@@ -117,7 +117,7 @@ import BasketPage from "../../pagess/cart/Cart";
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={closeBasketDialog}
           >
-            Вийти
+            Продовжити покупки
           </Button>
         </DialogActions>
       </Dialog>

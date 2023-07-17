@@ -13,9 +13,9 @@ export default function Footer() {
         justifyContent: "center",
       }}
     >
-      <Typography fontFamily={"Comfortaa"} color="white">
+      <Typography fontFamily={"Comfortaa"} color="white" >
         Created by
-        <Link href="https://github.com/delpfy" fontFamily={"Comfortaa"}>
+        <Link href="https://github.com/delpfy" >
           {" "}
           &copy;Delpfy
         </Link>
