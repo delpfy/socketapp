@@ -9,7 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Authorize } from "../../redux/user/asyncActions";
+import { Authorize, checkAuthorization } from "../../redux/user/asyncActions";
 import { useAppDispatch } from "../../redux/hooks";
 
 type Props = {
@@ -64,6 +64,7 @@ export default function LoginDialog({
       if (result.meta.requestStatus === "fulfilled") {
         openLoginDialog(false);
         setPersonSelected(false);
+        dispatch(checkAuthorization());
       } else if (result.meta.requestStatus === "rejected") {
         openErrorDialog(true);
         setErrorMessage("Схоже при реєстрації виникла помилка");

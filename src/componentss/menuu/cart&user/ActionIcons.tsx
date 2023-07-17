@@ -3,17 +3,8 @@ import React, { useEffect, useState } from "react";
 import {
   Badge,
   Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogProps,
-  DialogTitle,
   IconButton,
   Typography,
-  useMediaQuery,
-  useTheme,
 } from "@mui/material";
 
 import {  useAppSelector } from "../../../redux/hooks";
@@ -22,13 +13,13 @@ import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
-import BasketPage from "../../../pagess/cart/Cart";
 import InfoDialog from "../../dialogs/InfoDialog";
 import ErrorDialog from "../../dialogs/ErrorDialog";
 import LoginDialog from "../../dialogs/LoginDialog";
 import LogoutDialog from "../../dialogs/LogoutDialog";
 import RegisterDialog from "../../dialogs/RegisterDialog";
 import BasketDialog from "../../dialogs/BasketDialog";
+import { checkAuthorization } from "../../../redux/user/asyncActions";
 
 export const ActionIcons = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -48,11 +39,6 @@ export const ActionIcons = () => {
   const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
-  const [scroll] = useState<DialogProps["scroll"]>("paper");
-  const [maxWidth] = useState<DialogProps["maxWidth"]>("md");
-  const [fullWidth] = useState(true);
-
-  const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
 
   useEffect(() => {
     closeBasketDialog();
@@ -127,16 +113,14 @@ export const ActionIcons = () => {
 
 
 
-  const Locker = () => {
+   const Locker = () => {
+    console.log("LOCKER " + user.name)
     if (user.authorized === true) {
-      return (
-        <AccountCircleRoundedIcon
-          color={personSelected ? "info" : "warning"}
-          sx={{
-            width: 45,
-            height: 45,
-          }}
-        />
+     return (
+        <>
+         <Typography sx = {{color: '#fff'}} fontFamily={'Comfortaa'}>{user.name}</Typography>
+       
+        </>
       );
     } else {
       return (

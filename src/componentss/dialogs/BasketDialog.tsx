@@ -13,7 +13,6 @@ import {
   } from "@mui/material";
 import { useState } from "react";
 import BasketPage from "../../pagess/cart/Cart";
-import { User } from "../../redux/types";
   
   type Props = {
     openBasket: boolean;

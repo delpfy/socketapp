@@ -18,6 +18,7 @@ const userSlice = createSlice({
     NullifyToken(state) {
       state.token = "";
       state.user.authorized = false;
+      state.user.name = '';
       localStorage.removeItem("token");
     },
   },
@@ -30,6 +31,8 @@ const userSlice = createSlice({
       state.user.avatar = action.payload.user.avatarUrl;
       state.user.expences = action.payload.user.expences;
       state.user.name = action.payload.user.fullName;
+
+      console.log("USER AUTH");
     });
     builder.addCase(checkAuthorization.pending, (state) => {
       state.user.authorized = false;
