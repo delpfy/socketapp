@@ -1,13 +1,13 @@
 import React from "react";
 import { useAppSelector } from "../../redux/hooks";
-import { Items, Status } from "../../redux/types";
+import { ShippingItems, Status } from "../../redux/types";
 
 import { Box, Rating, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import NotFoundPage from "../PageAbsence";
 
-export const BasketItemPage = (props: Items) => {
-  const { status } = useAppSelector((state) => state.home);
+export const BasketItemPage = (props: ShippingItems) => {
+  const { status } = useAppSelector((state) => state.basket);
 
   /*  React.useEffect(() => {
       dispatch(getItemById(props.id))
@@ -30,12 +30,10 @@ export const BasketItemPage = (props: Items) => {
                 md: 825,
                 lx: 1200,
               },
-              
-              height:{
-                
-                  xs: 500,
-                  md: 700,
-                
+
+              height: {
+                xs: 500,
+                md: 700,
               },
               display: "flex",
               alignContent: "center",
@@ -43,27 +41,21 @@ export const BasketItemPage = (props: Items) => {
               flexDirection: "column",
             }}
           >
-            <Box
-              
-            >
+            <Box>
               <img
                 src={props.image[0]}
                 alt="img1"
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
             </Box>
-            <Box
-              
-            >
+            <Box>
               <img
                 src={props.image[1]}
                 alt="img2"
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
             </Box>
-            <Box
-              
-            >
+            <Box>
               <img
                 src={props.image[2]}
                 alt="img2"
