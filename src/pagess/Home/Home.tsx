@@ -130,7 +130,7 @@ export const Home = () => {
           
         </Box>
       </Box>
-      <Box width={"80%"} height={"1300px"} margin={"auto"} padding={"150px 10px 30px "} >
+      <Box width={"80%"}  margin={"auto"} padding={"150px 10px 30px "} >
         <Box width={"100%"} height={"100%"} display={"flex"} flexDirection={"column"} alignItems={"center"} textAlign = {'center'}  >
         <Typography
             variant={"h3"}

@@ -3,6 +3,7 @@ import { Box, Link, Typography } from "@mui/material";
 export default function Footer() {
   return (
     <Box
+    bottom={0}
       width="100%"
       height="6vh"
       sx={{

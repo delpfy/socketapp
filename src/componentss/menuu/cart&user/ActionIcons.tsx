@@ -23,7 +23,7 @@ import {
 } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { Authorize, Register } from "../../../redux/user/asyncActions";
+import {  Register } from "../../../redux/user/asyncActions";
 import { NullifyToken } from "../../../redux/user/userSlice";
 
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
@@ -134,11 +134,6 @@ export const ActionIcons = () => {
     setOpenLogin(false);
   }
 
-  function openRegDialog() {
-    setPersonSelected(true);
-    closeLoginDialog();
-    setOpenRegister(true);
-  }
 
   function closeRegDialog() {
     setPersonSelected(false);
