@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseBasket } from "../../utils/InitialiseBasket";
 import { BasketState, ShippingItemDisplay,  ShippingItemsDisplay} from "../types";
-import { addBasketItem, getAllBasketItems, getBasketItemById, getBasketItemByUser } from "./asyncActions";
+import { addBasketItem, deleteBasketItem, getAllBasketItems, getBasketItemById, getBasketItemsByUser, removeBasketItem } from "./asyncActions";
 
 const initialState: BasketState = InitialiseBasket();
 
@@ -35,17 +35,17 @@ const basketSlice = createSlice({
     });
 
     // All items by id.
-    builder.addCase(getBasketItemByUser.fulfilled, (state, action) => {
+    builder.addCase(getBasketItemsByUser.fulfilled, (state, action) => {
       state.status = 'success';
       state.items = action.payload;
       
     });
-    builder.addCase(getBasketItemByUser.pending, (state) => {
+    builder.addCase(getBasketItemsByUser.pending, (state) => {
       state.status = 'pending';
       state.items = {} as ShippingItemsDisplay;
       state.itemsAmount = 0 ;
     });
-    builder.addCase(getBasketItemByUser.rejected, (state) => {
+    builder.addCase(getBasketItemsByUser.rejected, (state) => {
       state.status = 'error';
       state.items = {} as ShippingItemsDisplay;
       state.itemsAmount = 0 ;
@@ -68,15 +68,47 @@ const basketSlice = createSlice({
     // Post item.
     builder.addCase(addBasketItem.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log("PAYLOAD success " + action.payload)
+      console.log("PAYLOAD addBasketItem success " + action.payload)
 
     });
     builder.addCase(addBasketItem.pending, (state, action) => {
       state.status = 'pending';
-      console.log("PAYLOAD pending " + action.payload)
+      console.log("PAYLOAD addBasketItem pending " + action.payload)
 
     });
     builder.addCase(addBasketItem.rejected, (state, action) => {
+      state.status = 'error';
+      alert(action.error.message)
+    });
+
+    // Remove item.
+    builder.addCase(removeBasketItem.fulfilled, (state, action) => {
+      state.status = 'success';
+      console.log("PAYLOAD success " + action.payload)
+
+    });
+    builder.addCase(removeBasketItem.pending, (state, action) => {
+      state.status = 'pending';
+      console.log("PAYLOAD pending " + action.payload)
+
+    });
+    builder.addCase(removeBasketItem.rejected, (state, action) => {
+      state.status = 'error';
+      alert(action.error.message)
+    });
+
+    // Delete item.
+    builder.addCase(deleteBasketItem.fulfilled, (state, action) => {
+      state.status = 'success';
+      console.log("PAYLOAD success " + action.payload)
+
+    });
+    builder.addCase(deleteBasketItem.pending, (state, action) => {
+      state.status = 'pending';
+      console.log("PAYLOAD pending " + action.payload)
+
+    });
+    builder.addCase(deleteBasketItem.rejected, (state, action) => {
       state.status = 'error';
       alert(action.error.message)
     });

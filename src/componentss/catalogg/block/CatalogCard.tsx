@@ -49,7 +49,7 @@ export default function CatalogCard(props: Items) {
   }
 
   // Chech auth, if authorized - add and changing active state.
-  function PutInBasket() {
+  function basketItem_APPEND() {
     if (user.authorized === true) {
       dispatch(
         addBasketItem({
@@ -161,7 +161,7 @@ export default function CatalogCard(props: Items) {
                   disableTouchListener
                   title="You sould be authorized"
                 >
-                  <IconButton sx={{ paddind: 0 }} onClick={() => PutInBasket()}>
+                  <IconButton sx={{ paddind: 0 }} onClick={() => basketItem_APPEND()}>
                     <AddShoppingCartIcon
                       sx={{ height: 35, width: 35 }}
                       color={"disabled"}

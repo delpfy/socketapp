@@ -42,7 +42,7 @@ export default function ItemDialog({
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
 
   // Chech auth, if authorized - add and changing active state.
-  function PutInBasket() {
+  function basketItem_APPEND() {
     if (user.authorized === true) {
       dispatch(
         addBasketItem({
@@ -90,7 +90,7 @@ export default function ItemDialog({
       </DialogContent>
       <DialogActions>
         <Button
-          onClick={() => PutInBasket()}
+          onClick={() => basketItem_APPEND()}
           sx={{
             width: {
               xs: 210,

@@ -1,7 +1,7 @@
-import React from "react";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import React, { useEffect } from "react";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {
   Box,
   Typography,
@@ -24,8 +24,15 @@ import {
 
 import { ShippingItems } from "../../../redux/types";
 import BasketItemPage from "../../../pagess/items/CartItemPage";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { addBasketItem, deleteBasketItem, getBasketItemsByUser, removeBasketItem } from "../../../redux/basket/asyncActions";
+import { SetItemsAmount } from "../../../redux/basket/basketSlice";
+import InfoDialog from "../../dialogs/InfoDialog";
 
 export const BasketItemBlock = (props: ShippingItems) => {
+  const { user } = useAppSelector((state) => state.user);
+  const { itemsAmount } = useAppSelector((state) => state.basket);
+
   const [scroll] = React.useState<DialogProps["scroll"]>("paper");
   const [maxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
   const theme = useTheme();
@@ -40,6 +47,60 @@ export const BasketItemBlock = (props: ShippingItems) => {
     setOpenItem(false);
   }
 
+ 
+
+  const dispatch = useAppDispatch();
+
+  async function basketItem_APPEND() {
+    await dispatch(
+      addBasketItem({
+        _id: user.id,
+        name: props.name,
+        description: props.description,
+        category: props.category,
+        price: props.price,
+        rating: props.rating,
+        image: props.image,
+        amount: 1,
+      } as ShippingItems)
+    );
+
+    dispatch(SetItemsAmount(itemsAmount + 1));
+  }
+
+  async function basketItem_REDUCE() {
+    await dispatch(
+      removeBasketItem({
+        _id: props._id,
+        name: props.name,
+        description: props.description,
+        category: props.category,
+        price: props.price,
+        rating: props.rating,
+        image: props.image,
+        amount: props.amount,
+      } as ShippingItems)
+    );
+
+    dispatch(SetItemsAmount(itemsAmount - 1));
+  }
+
+  async function basketItem_DELETE() {
+    await dispatch(
+      deleteBasketItem({
+        _id: props._id,
+        name: props.name,
+        description: props.description,
+        category: props.category,
+        price: props.price,
+        rating: props.rating,
+        image: props.image,
+        amount: props.amount,
+      } as ShippingItems)
+    );
+
+    dispatch(SetItemsAmount(itemsAmount - props.amount));
+  }
   return (
     <>
       <Card
@@ -82,9 +143,8 @@ export const BasketItemBlock = (props: ShippingItems) => {
           </Typography>
         </CardContent>
         <CardActions
-        
           sx={{
-            height: '100%',
+            height: "100%",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -94,7 +154,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
             paddingRight: "16px",
           }}
         >
-          <Box display={"flex"} flexDirection={"column"}  >
+          <Box display={"flex"} flexDirection={"column"}>
             <Typography
               paddingLeft={0.3}
               fontSize={22}
@@ -126,37 +186,38 @@ export const BasketItemBlock = (props: ShippingItems) => {
               >
                 {props.amount}
               </Typography>
-              
             </Box>
           </Box>
-          
         </CardActions>
-        <Box display={'flex'} width={'80%'} alignSelf={'center'}  justifyContent={'space-between'} alignItems={'flex-end'} flexDirection={'row'} >
-              <Box display={'flex'} width={'55%'}  justifyContent={'space-between'} alignItems={'flex-end'} flexDirection={'row'} >
-              <IconButton>
-              <AddCircleIcon
-              color="info"
-              sx={{width: 40, height: 40}}
-            />
-              </IconButton>
-              <IconButton>
-              <RemoveCircleIcon
-              color="info"
-              sx={{width: 40, height: 40,}}
-              />
-              </IconButton>
-           
-              </Box>
-              
-              <IconButton>
-              <DeleteForeverIcon
-              color="error"
-              sx={{width: 40, height: 40,}}
-            />
-              </IconButton>
-            
+        <Box
+          display={"flex"}
+          width={"80%"}
+          alignSelf={"center"}
+          justifyContent={"space-between"}
+          alignItems={"flex-end"}
+          flexDirection={"row"}
+        >
+          <Box
+            display={"flex"}
+            width={"55%"}
+            justifyContent={"space-between"}
+            alignItems={"flex-end"}
+            flexDirection={"row"}
+          >
+            <IconButton onClick={basketItem_APPEND}>
 
-            </Box>
+              <AddCircleIcon color="info" sx={{ width: 40, height: 40 }} />
+
+            </IconButton>
+            <IconButton onClick = {basketItem_REDUCE}>
+              <RemoveCircleIcon color="info" sx={{ width: 40, height: 40 }} />
+            </IconButton>
+          </Box>
+
+          <IconButton onClick={basketItem_DELETE}>
+            <DeleteForeverIcon color="error" sx={{ width: 40, height: 40 }} />
+          </IconButton>
+        </Box>
       </Card>
       <Dialog
         open={openItem}

@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
-import { getBasketItemByUser } from "../../redux/basket/asyncActions";
+import { getBasketItemsByUser } from "../../redux/basket/asyncActions";
 import { Box, Grid,  } from "@mui/material";
 import { ShippingItems, Status } from "../../redux/types";
 
@@ -15,14 +15,14 @@ import CartItemCard from "../../componentss/cart/block/CartItemCard";
 
 export const BasketPage = () => {
   const {items} = useAppSelector((state) => state.basket.items);
-  const {status} = useAppSelector((state) => state.basket);
+  const {status, itemsAmount} = useAppSelector((state) => state.basket);
   const {user} = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   
   React.useEffect(() => {
     dispatch(checkAuthorization());
-    dispatch(getBasketItemByUser(user.id));
-  }, [dispatch, user.id]);
+    dispatch(getBasketItemsByUser(user.id));
+  }, [dispatch, user.id, itemsAmount]);
 
   const Catalog = () => {
     return (

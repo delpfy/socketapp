@@ -16,10 +16,10 @@ export const getAllBasketItems = createAsyncThunk<ShippingItemsDisplay>(
   }
 );
 
-export const getBasketItemByUser = createAsyncThunk<
+export const getBasketItemsByUser = createAsyncThunk<
   ShippingItemsDisplay,
   string
->("home/getBasketItemByUser", async (params) => {
+>("home/getBasketItemsByUser", async (params) => {
   console.log("DATA " + 1);
   console.log("Params " + params); // Here is id.
   const { data } = await axios.get<ShippingItemsDisplay>(
@@ -59,6 +59,38 @@ export const addBasketItem = createAsyncThunk<"", ShippingItems>(
     console.log("Params " + params); // Here is item.
 
     const { data } = await axios.post(`/basketitems`, params, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
+    console.log("DATA 34" + data);
+    return data;
+  }
+);
+
+export const removeBasketItem = createAsyncThunk<"", ShippingItems>(
+  "home/removeBasketItem",
+  async (params) => {
+    console.log("DATA " + 1);
+    console.log("Params " + params); // Here is item.
+
+    const { data } = await axios.delete(`/basketitems/${params._id}`, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
+    console.log("DATA 34" + data);
+    return data;
+  }
+);
+
+export const deleteBasketItem = createAsyncThunk<"", ShippingItems>(
+  "home/deleteBasketItem",
+  async (params) => {
+    console.log("DATA " + 1);
+    console.log("Params " + params); // Here is item.
+
+    const { data } = await axios.delete(`/basketitems/remove/${params._id}`, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
       },
