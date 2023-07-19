@@ -98,11 +98,15 @@ export const BasketPage = () => {
   function StatusHandler (status: Status) {
     switch(status){
       case "success" : 
-      if(items.length === 0){
-        return <NoItemsPage />
-        
-      }else if (items !== undefined){
-         return <Catalog />
+      if (items !== undefined){
+        if(items.length === 0){
+          return <NoItemsPage />
+          
+        }
+        else{
+          return <Catalog />
+        }
+         
       }
       else{
         return <CatalogSkeletons />

@@ -67,7 +67,7 @@ export default function LoginDialog({
         dispatch(checkAuthorization());
       } else if (result.meta.requestStatus === "rejected") {
         openErrorDialog(true);
-        setErrorMessage("Схоже при реєстрації виникла помилка");
+        setErrorMessage("Схоже при авторизації виникла помилка");
       }
     });
   }
