@@ -62,7 +62,7 @@ export const ActionIcons = () => {
   function closeBasketDialog() {
     setOpenBasket(false);
     setCartSelected(false);
-    navigate('/')
+   
   }
   function openLoginDialog() {
     if (user.authorized === true) {
