@@ -61,6 +61,14 @@ export const ItemPage = () => {
 
   const Item = () => {
     return (
+      <>
+     < Button
+          sx={{ fontFamily: "Comfortaa", marginTop: 15, fontSize: 15 }}
+          onClick={() => navigate('/catalog')}
+          variant="contained"
+        >
+          Каталог
+        </Button>
       <Box
         width={"100%"}
         height={"100%"}
@@ -69,6 +77,7 @@ export const ItemPage = () => {
         alignItems={"center"}
         flexDirection={"column"}
       >
+        
         <Box>
           <Carousel
             sx={{
@@ -191,6 +200,8 @@ export const ItemPage = () => {
         infoMessage={infoMessage}
       />
       </Box>
+      </>
+      
     );
   };
 
