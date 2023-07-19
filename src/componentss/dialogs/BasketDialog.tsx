@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import BasketPage from "../../pagess/cart/Cart";
 import {  useAppSelector } from "../../redux/hooks";
+import { useNavigate } from "react-router-dom";
   
   type Props = {
     openBasket: boolean;
@@ -28,7 +29,7 @@ import {  useAppSelector } from "../../redux/hooks";
   }: Props) {
 
     const {itemCurrent} = useAppSelector(state => state.home)
-
+    const navigate = useNavigate();
     const [scroll] = useState<DialogProps["scroll"]>("paper");
     const [maxWidth] = useState<DialogProps["maxWidth"]>("md");
     const [fullWidth] = useState(true);
@@ -38,6 +39,12 @@ import {  useAppSelector } from "../../redux/hooks";
     useEffect(() => {
       closeBasketDialog()
     }, [itemCurrent])
+
+
+    function handleContinue(){
+      closeBasketDialog();
+      navigate('/');
+    }
 
     return (
         <Dialog
@@ -122,7 +129,7 @@ import {  useAppSelector } from "../../redux/hooks";
           </Button>
           <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={closeBasketDialog}
+            onClick={handleContinue}
           >
             Продовжити покупки
           </Button>
