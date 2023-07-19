@@ -20,11 +20,13 @@ import LogoutDialog from "../../dialogs/LogoutDialog";
 import RegisterDialog from "../../dialogs/RegisterDialog";
 import BasketDialog from "../../dialogs/BasketDialog";
 import { checkAuthorization } from "../../../redux/user/asyncActions";
+import { useNavigate } from "react-router-dom";
 
 export const ActionIcons = () => {
   const { user } = useAppSelector((state) => state.user);
   const { isOnItemPage, itemsAmount } = useAppSelector((state) => state.basket);
 
+  const navigate = useNavigate();
 
   const [cartSelected, setCartSelected] = useState(false);
   const [personSelected, setPersonSelected] = useState(false);
@@ -52,7 +54,7 @@ export const ActionIcons = () => {
       closeLoginDialog();
       setOpenBasket(true);
       setCartSelected(true);
-      console.log("CART " + cartSelected);
+      navigate('/')
     } else {
       openLoginDialog();
     }

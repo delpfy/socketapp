@@ -179,7 +179,7 @@ export const ItemPage = () => {
 
         <Button
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={() => navigate('/catalog')}
+          onClick={() => navigate('/')}
         >
           Продовжити покупки
         </Button>
