@@ -73,7 +73,7 @@ export const BasketPage = () => {
           >
             {
               
-              Array.from({ length: 10 }, () => {
+              Array.from({ length: 5 }, () => {
                 return <Grid
                 item
                 display={"flex"}

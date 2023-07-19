@@ -20,20 +20,6 @@ const basketSlice = createSlice({
   },
   extraReducers: (builder) => {
 
-    // All items.
-    builder.addCase(getAllBasketItems.fulfilled, (state, action) => {
-      state.status = 'success';
-      state.items = action.payload;
-    });
-    builder.addCase(getAllBasketItems.pending, (state) => {
-      state.status = 'pending';
-      state.items = {} as ShippingItemsDisplay;
-    });
-    builder.addCase(getAllBasketItems.rejected, (state) => {
-      state.status = 'error';
-      state.items = {} as ShippingItemsDisplay;
-    });
-
     // All items by id.
     builder.addCase(getBasketItemsByUser.fulfilled, (state, action) => {
       state.status = 'success';
@@ -51,19 +37,6 @@ const basketSlice = createSlice({
       state.itemsAmount = 0 ;
     });
 
-    // Item by id.
-    builder.addCase(getBasketItemById.fulfilled, (state, action) => {
-      state.status = 'success';
-      state.basketItemCurrent = action.payload;
-    });
-    builder.addCase(getBasketItemById.pending, (state) => {
-      state.status = 'pending';
-      state.basketItemCurrent = {} as ShippingItemDisplay;
-    });
-    builder.addCase(getBasketItemById.rejected, (state) => {
-      state.status = 'error';
-      state.basketItemCurrent = {} as ShippingItemDisplay;
-    });
 
     // Post item.
     builder.addCase(addBasketItem.fulfilled, (state, action) => {

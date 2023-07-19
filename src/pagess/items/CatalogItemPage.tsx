@@ -1,17 +1,63 @@
-import React from "react";
-import { useAppSelector } from "../../redux/hooks";
+import React, { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Carousel from "react-material-ui-carousel";
-import { Items, Status } from "../../redux/types";
+import { ShippingItems, Status } from "../../redux/types";
 
-import { Box, Rating, Typography } from "@mui/material";
+import { Box, Button, Rating, Typography } from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
+import { addBasketItem } from "../../redux/basket/asyncActions";
+import { SetItemsAmount } from "../../redux/basket/basketSlice";
+import InfoDialog from "../../componentss/dialogs/InfoDialog";
+import { useNavigate } from "react-router-dom";
 
-export const ItemPage = (props: Items) => {
-  const { status } = useAppSelector((state) => state.home);
+
+export const ItemPage = () => {
+  
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const { status, itemCurrent } = useAppSelector((state) => state.home);
+  const { user } = useAppSelector((state) => state.user);
+  const { itemsAmount } = useAppSelector((state) => state.basket);
+  const [openInfo, setOpenInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>("Unhandled error");
+
+  function closeInfoDialog() {
+    setOpenInfo(false);
+  }
+
+  function openInfoDialog() {
+    setOpenInfo(false);
+  }
 
   /*  React.useEffect(() => {
     dispatch(getItemById(props.id))
   }, []) */
+
+  
+  function basketItem_APPEND() {
+    if (user.authorized === true) {
+      dispatch(
+        addBasketItem({
+          _id: user.id,
+          name: itemCurrent.name,
+          description: itemCurrent.description,
+          category: itemCurrent.category,
+          price: itemCurrent.price,
+          rating: itemCurrent.rating,
+          image: itemCurrent.image,
+          amount: 1,
+        } as ShippingItems)
+      );
+
+      dispatch(SetItemsAmount(itemsAmount + 1));
+    } else {
+      setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
+      openInfoDialog();
+      // Tip, dunno if i`ll use it.
+      // setOpen(true)
+    }
+  }
 
   const Item = () => {
     return (
@@ -56,7 +102,7 @@ export const ItemPage = (props: Items) => {
               
             >
               <img
-                src={props.image[0]}
+                src={itemCurrent.image[0]}
                 alt="img1"
                 style={{ width: "100%", height: "100%", objectFit: "fill" }}
               />
@@ -65,7 +111,7 @@ export const ItemPage = (props: Items) => {
               
             >
               <img
-                src={props.image[1]}
+                src={itemCurrent.image[1]}
                 alt="img2"
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
@@ -74,7 +120,7 @@ export const ItemPage = (props: Items) => {
               
             >
               <img
-                src={props.image[2]}
+                src={itemCurrent.image[2]}
                 alt="img3"
                 style={{ width: "100%", height: "100%", objectFit: "contain" }}
               />
@@ -94,7 +140,7 @@ export const ItemPage = (props: Items) => {
             sx={{ paddingLeft: 0.3 }}
             fontSize={25}
           >
-            {props.name}
+            {itemCurrent.name}
           </Typography>
           <Typography
             fontFamily={"Comfortaa"}
@@ -102,18 +148,48 @@ export const ItemPage = (props: Items) => {
             color="error"
             sx={{ paddingLeft: 0.3 }}
           >
-            {props.price}₴
+            {itemCurrent.price}₴
           </Typography>
-          <Rating name="read-only" value={props.rating} readOnly />
+          <Rating name="read-only" value={itemCurrent.rating} readOnly />
 
           <Typography
             fontFamily={"Comfortaa"}
             sx={{ paddingLeft: 0.3, paddingTop: 3 }}
           >
-            {props.description}
+            {itemCurrent.description}
           </Typography>
         </Box>
-        <Box></Box>
+        <Box>
+        <Button
+          onClick={() => basketItem_APPEND()}
+          sx={{
+            width: {
+              xs: 210,
+              md: 225,
+            },
+            fontSize: {
+              xs: 12,
+              md: 14,
+            },
+          }}
+          variant="contained"
+        >
+          Покласти у кошик
+        </Button>
+
+        <Button
+          sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+          onClick={() => navigate('/catalog')}
+        >
+          Продовжити покупки
+        </Button>
+        </Box>
+        
+        <InfoDialog
+        openInfo={openInfo}
+        closeInfoDialog={closeInfoDialog}
+        infoMessage={infoMessage}
+      />
       </Box>
     );
   };
@@ -121,14 +197,17 @@ export const ItemPage = (props: Items) => {
   function StatusHandler(status: Status) {
     switch (status) {
       case "success":
-        if (props !== undefined) {
+        console.log("ITEM_CURRENT " + itemCurrent)
+        if (itemCurrent !== undefined) {
           return <Item />;
         } else {
           return <NotFoundPage />;
         }
       case "pending":
+        console.log("ITEM_CURRENT " + itemCurrent)
         return <NotFoundPage />;
       case "error":
+        console.log("ITEM_CURRENT " + itemCurrent)
         return <NotFoundPage />;
       default:
         return <NotFoundPage />;

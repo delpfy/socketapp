@@ -74,7 +74,7 @@ export interface HomeState {
   id: number;
   itemsDisplay: ItemsDisplay;
   itemsCategory: ItemsDisplay;
-  itemCurrent: ItemDisplay;
+  itemCurrent: ShippingItems | Items;
   categories: { id: number; name: string, image: string}[];
   category: string;
 }

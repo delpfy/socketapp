@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseHome } from "../../utils/InitialiseHome";
-import { ItemsDisplay, HomeState, ItemDisplay } from "../types";
-import { getAllItems, getItemById, getItemsByCategory } from "./asyncActions";
+import { ItemsDisplay, HomeState, ShippingItems, Items } from "../types";
+import { getAllItems, getItemsByCategory } from "./asyncActions";
 
 const initialState: HomeState = InitialiseHome();
 
@@ -12,6 +12,11 @@ const homeSlice = createSlice({
     SetCategory(state, action: PayloadAction<string>) {
       state.category = action.payload;
     },
+
+    setCurrentItem(state, action: PayloadAction<ShippingItems | Items>){
+      state.itemCurrent = action.payload;
+      state.status = 'success';
+    }
   },
   extraReducers: (builder) => {
     // All items.
@@ -42,7 +47,7 @@ const homeSlice = createSlice({
       state.itemsCategory = {} as ItemsDisplay;
     });
 
-    // Item by id.
+    /* // Item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.status = "success";
       state.itemCurrent = action.payload;
@@ -57,9 +62,9 @@ const homeSlice = createSlice({
       state.status = "error";
       state.itemCurrent = {} as ItemDisplay;
       console.log("ERROR");
-    });
+    }); */
   },
 });
 
-export const { SetCategory } = homeSlice.actions;
+export const { SetCategory, setCurrentItem } = homeSlice.actions;
 export default homeSlice.reducer;

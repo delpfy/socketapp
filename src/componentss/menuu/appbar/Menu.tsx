@@ -87,7 +87,7 @@ export default function AppBarMenu() {
         height={'10vh'}
         
         position={"fixed"}
-        zIndex={1}
+        zIndex={2}
         sx={{ backgroundColor: "black", backgroundAttachment: "fixed"}}
       >
         <Box

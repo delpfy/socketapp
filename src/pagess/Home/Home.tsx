@@ -1,13 +1,11 @@
 import { Box,  Grid,  Typography } from "@mui/material";
 import React, { useRef } from "react";
-import Basket from "../../componentss/menuu/cart&user/ActionIcons";
-import Logo from "../../componentss/menuu/logotype/Logo";
 import { useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Card from "../../componentss/categories/CategoryTile";
 import './icon.css';
 
-const MenuContent = () => {
+/* const MenuContent = () => {
   return (
     <Box
       width={"100%"}
@@ -36,7 +34,7 @@ const MenuContent = () => {
       </Box>
     </Box>
   );
-};
+}; */
 
 export const Home = () => {
   const {categories} = useAppSelector((state) => state.home)
@@ -55,7 +53,6 @@ export const Home = () => {
 
   return (
     <>
-      <MenuContent />
       <Box
         width={"100%"}
         height={"100vh"}

@@ -42,6 +42,7 @@ export default function ItemDialog({
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
 
   // Chech auth, if authorized - add and changing active state.
+  
   function basketItem_APPEND() {
     if (user.authorized === true) {
       dispatch(
@@ -84,7 +85,7 @@ export default function ItemDialog({
       </DialogTitle>
       <DialogContent dividers={scroll === "paper"}>
         <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-          <ItemPage {...item} />
+          <ItemPage  />
         </DialogContentText>
         <Box></Box>
       </DialogContent>

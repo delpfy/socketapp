@@ -11,8 +11,9 @@ import {
     Typography,
     Box
   } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BasketPage from "../../pagess/cart/Cart";
+import {  useAppSelector } from "../../redux/hooks";
   
   type Props = {
     openBasket: boolean;
@@ -26,11 +27,17 @@ import BasketPage from "../../pagess/cart/Cart";
     user
   }: Props) {
 
+    const {itemCurrent} = useAppSelector(state => state.home)
+
     const [scroll] = useState<DialogProps["scroll"]>("paper");
     const [maxWidth] = useState<DialogProps["maxWidth"]>("md");
     const [fullWidth] = useState(true);
   
     const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
+
+    useEffect(() => {
+      closeBasketDialog()
+    }, [itemCurrent])
 
     return (
         <Dialog

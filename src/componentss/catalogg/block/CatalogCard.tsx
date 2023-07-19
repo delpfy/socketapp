@@ -19,7 +19,8 @@ import { addBasketItem } from "../../../redux/basket/asyncActions";
 import { ShippingItems, Items } from "../../../redux/types";
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
 import InfoDialog from "../../dialogs/InfoDialog";
-import ItemDialog from "../../dialogs/ItemDialog";
+import { useNavigate } from "react-router-dom";
+import { setCurrentItem } from "../../../redux/home/homeSlice";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
@@ -27,12 +28,11 @@ export default function CatalogCard(props: Items) {
 
   const [open, setOpen] = React.useState<boolean>(false);
 
-  const [openItem, setOpenItem] = React.useState(false);
   const [openInfo, setOpenInfo] = React.useState(false);
   const [infoMessage, setInfoMessage] = React.useState<string>("Some info");
 
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   function openInfoDialog() {
     setOpenInfo(true);
   }
@@ -41,11 +41,10 @@ export default function CatalogCard(props: Items) {
     setOpenInfo(false);
   }
 
-  function openItemDialog() {
-    setOpenItem(true);
-  }
-  function closeItemDialog() {
-    setOpenItem(false);
+  function getCurrentItem(){
+    dispatch(setCurrentItem(props))
+    navigate('/catalog/item');
+
   }
 
   // Chech auth, if authorized - add and changing active state.
@@ -96,7 +95,7 @@ export default function CatalogCard(props: Items) {
           }}
           image={props.image[0]}
           title={props.name}
-          onClick={openItemDialog}
+          onClick={getCurrentItem}
         />
 
         <CardContent sx={{ paddingBottom: 2 }}>
@@ -181,14 +180,7 @@ export default function CatalogCard(props: Items) {
         infoMessage={infoMessage}
       />
 
-      {/* item */}
-      <ItemDialog
-        item={props}
-        openItem={openItem}
-        closeItemDialog={closeItemDialog}
-        openInfoDialog={setOpenInfo}
-        setInfoMessage={setInfoMessage}
-      />
+      
     </>
   );
 }

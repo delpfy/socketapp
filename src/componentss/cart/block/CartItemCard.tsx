@@ -1,55 +1,39 @@
-import React, { useEffect } from "react";
+import React from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {
   Box,
   Typography,
-  Button,
   CardMedia,
   CardContent,
   CardActions,
   Card,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogProps,
-  DialogTitle,
   Rating,
-  useTheme,
-  useMediaQuery,
   IconButton,
 } from "@mui/material";
 
 import { ShippingItems } from "../../../redux/types";
-import BasketItemPage from "../../../pagess/items/CartItemPage";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { addBasketItem, deleteBasketItem, getBasketItemsByUser, removeBasketItem } from "../../../redux/basket/asyncActions";
+import { addBasketItem, deleteBasketItem, removeBasketItem } from "../../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
-import InfoDialog from "../../dialogs/InfoDialog";
+import { useNavigate } from "react-router-dom";
+import { setCurrentItem } from "../../../redux/home/homeSlice";
 
 export const BasketItemBlock = (props: ShippingItems) => {
+  const dispatch = useAppDispatch();
+
   const { user } = useAppSelector((state) => state.user);
   const { itemsAmount } = useAppSelector((state) => state.basket);
 
-  const [scroll] = React.useState<DialogProps["scroll"]>("paper");
-  const [maxWidth] = React.useState<DialogProps["maxWidth"]>("lg");
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
-  const [openItem, setOpenItem] = React.useState(false);
 
-  function openItemDialog() {
-    setOpenItem(true);
-  }
-  function closeItemDialog() {
-    setOpenItem(false);
+  function getCurrentItem(){
+    dispatch(setCurrentItem(props))
+    navigate('/catalog/item');
   }
 
- 
-
-  const dispatch = useAppDispatch();
 
   async function basketItem_APPEND() {
     await dispatch(
@@ -124,7 +108,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
           }}
           image={props.image[0]}
           title={props.name}
-          onClick={openItemDialog}
+          onClick={getCurrentItem}
         />
 
         <CardContent sx={{ paddingBottom: 1 }}>
@@ -219,37 +203,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
           </IconButton>
         </Box>
       </Card>
-      <Dialog
-        open={openItem}
-        onClose={closeItemDialog}
-        scroll={scroll}
-        maxWidth={maxWidth}
-        fullScreen={fullScreen}
-        aria-labelledby="scroll-dialog-title"
-        aria-describedby="scroll-dialog-description"
-      >
-        <DialogTitle
-          id="scroll-dialog-title"
-          sx={{ fontFamily: "Comfortaa", fontSize: "1.25rem " }}
-        >
-          {props.name}
-        </DialogTitle>
 
-        <DialogContent dividers={scroll === "paper"}>
-          <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-            <BasketItemPage {...props} />
-          </DialogContentText>
-        </DialogContent>
-
-        <DialogActions>
-          <Button
-            onClick={closeItemDialog}
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          >
-            Вийти
-          </Button>
-        </DialogActions>
-      </Dialog>
     </>
   );
 };
