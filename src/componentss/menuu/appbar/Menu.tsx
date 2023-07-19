@@ -19,14 +19,26 @@ import {
   ListItemText,
   SwipeableDrawer,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 type Anchor = "top" | "left" | "bottom" | "right";
+
+type Catgory = {
+  id: number,
+   name: string,
+    image: string
+}
 
 export default function AppBarMenu() {
   const CATEGORIES = useAppSelector((state) => state.home.categories);
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const [active, setActive] = React.useState(false);
+
+  function handleCategoryChange(category: Catgory){
+    dispatch(SetCategory(category.name))
+    navigate('/catalog')
+  }
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -54,7 +66,7 @@ export default function AppBarMenu() {
         {CATEGORIES.map((category) => (
           <ListItem key={category.id} disablePadding>
             <ListItemButton
-              onClick={() => dispatch(SetCategory(category.name))}
+              onClick={() => handleCategoryChange(category)}
             >
               <ListItemIcon></ListItemIcon>
               <ListItemText primary={category.name} />
