@@ -12,14 +12,15 @@ import AppBarMenu from "./componentss/menuu/appbar/Menu";
 
 function App() {
   const dispatch = useAppDispatch();
+  if (!localStorage.getItem("recentlyReviewed")) {
+    localStorage.setItem(
+      "recentlyReviewed",
+      JSON.stringify([[]])
+    );
+  }
   React.useEffect(() => {
     dispatch(checkAuthorization());
-    if (!localStorage.getItem("recentlyReviewed")) {
-      localStorage.setItem(
-        "recentlyReviewed",
-        JSON.stringify([[]])
-      );
-    }
+    
   }, []);
   return (
     <>

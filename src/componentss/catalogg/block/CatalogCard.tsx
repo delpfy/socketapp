@@ -49,29 +49,32 @@ export default function CatalogCard(props: Items) {
       localStorage.getItem("recentlyReviewed") || "{}"
     );
 
-    const itemIndex = recentlyReviewed.flat(1).findIndex((item: Items) => item.name === props.name);
+    if(recentlyReviewed !== undefined){
+      const itemIndex = recentlyReviewed.flat(1).findIndex((item: Items) => item.name === props.name);
     
-    if(itemIndex === -1){
-      console.log("recentlyReviewed " + recentlyReviewed)
-      let isAdded = false;
-      if(recentlyReviewed.length === 0){
-        recentlyReviewed.push([props])
-      }
-      else{
-        recentlyReviewed.map((items: Items[]) => {
-          if(items.length < 3){
-            items.push(props);
-            isAdded = true;
-          }
-        })
-        if(!isAdded){
+      if(itemIndex === -1){
+        console.log("recentlyReviewed " + recentlyReviewed)
+        let isAdded = false;
+        if(recentlyReviewed.length === 0){
           recentlyReviewed.push([props])
         }
+        else{
+          recentlyReviewed.map((items: Items[]) => {
+            if(items.length < 3){
+              items.push(props);
+              isAdded = true;
+            }
+          })
+          if(!isAdded){
+            recentlyReviewed.push([props])
+          }
+        }
+        
       }
       
+      localStorage.setItem('recentlyReviewed', JSON.stringify(recentlyReviewed))
     }
     
-    localStorage.setItem('recentlyReviewed', JSON.stringify(recentlyReviewed))
 
   }
 

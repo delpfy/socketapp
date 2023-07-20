@@ -19,7 +19,11 @@ export default function RecentlyReviewed() {
             paddingTop: 3,
           }}
         >
-          {recentlyReviewed.map((items: Items[]) => {
+          {
+            
+
+            
+          recentlyReviewed.map((items: Items[]) => {
             return (
               <Grid
                 container
@@ -46,7 +50,10 @@ export default function RecentlyReviewed() {
                 ))}
               </Grid>
             );
-          })}
+          })
+
+
+        }
         </Carousel>
       </Box>
     </>

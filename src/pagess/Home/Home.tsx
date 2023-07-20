@@ -134,7 +134,7 @@ export const Home = () => {
           <Box width={"100%"} >
 
          
-      {recentlyReviewed.flat(1).length === 0 ? (
+      {recentlyReviewed === undefined || recentlyReviewed.flat(1).length === 0 ? (
         <></>
       ) : (
         <>
