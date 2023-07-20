@@ -11,22 +11,27 @@ import ItemPage from "./pagess/items/CatalogItemPage";
 import AppBarMenu from "./componentss/menuu/appbar/Menu";
 
 function App() {
-  
   const dispatch = useAppDispatch();
   React.useEffect(() => {
     dispatch(checkAuthorization());
-  })
+    if (!localStorage.getItem("recentlyReviewed")) {
+      localStorage.setItem(
+        "recentlyReviewed",
+        JSON.stringify([[]])
+      );
+    }
+  }, []);
   return (
     <>
-      <AppBarMenu /> 
+      <AppBarMenu />
       <Routes>
-        <Route path="/" element={<Home/>} />
-        <Route path="/catalog" element={<Catalog/>} />
-        <Route path="/catalog/item" element={<ItemPage />} /> 
+        <Route path="/" element={<Home />} />
+        <Route path="/catalog" element={<Catalog />} />
+        <Route path="/catalog/item" element={<ItemPage />} />
         {/*  <Route path="/socketapp/catalog/basket" element={<BasketPage />} />   */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      <Footer/>
+      <Footer />
     </>
   );
 }
