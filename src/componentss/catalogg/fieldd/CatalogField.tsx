@@ -23,6 +23,10 @@ export const CatalogField = () => {
     dispatch(getItemsByCategory(category));
   }, [category, dispatch]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+  
   const Catalog = () => {
     return (
       <Box width={"100%"}  >

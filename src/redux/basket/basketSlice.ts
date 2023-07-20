@@ -28,7 +28,6 @@ const basketSlice = createSlice({
     });
     builder.addCase(getBasketItemsByUser.pending, (state) => {
       state.status = 'pending';
-      state.items = {} as ShippingItemsDisplay;
       state.itemsAmount = 0 ;
     });
     builder.addCase(getBasketItemsByUser.rejected, (state) => {

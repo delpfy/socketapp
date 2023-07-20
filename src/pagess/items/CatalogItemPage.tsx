@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Carousel from "react-material-ui-carousel";
 import { ShippingItems, Status } from "../../redux/types";
@@ -58,6 +58,10 @@ export const ItemPage = () => {
       // setOpen(true)
     }
   }
+  
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   const Item = () => {
     return (

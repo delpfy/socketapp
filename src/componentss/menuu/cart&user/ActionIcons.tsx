@@ -21,10 +21,11 @@ import RegisterDialog from "../../dialogs/RegisterDialog";
 import BasketDialog from "../../dialogs/BasketDialog";
 import { checkAuthorization } from "../../../redux/user/asyncActions";
 import { useNavigate } from "react-router-dom";
+import { ShippingItems, ShippingItemsDisplay } from "../../../redux/types";
 
 export const ActionIcons = () => {
   const { user } = useAppSelector((state) => state.user);
-  const { isOnItemPage, itemsAmount } = useAppSelector((state) => state.basket);
+  const { isOnItemPage, itemsAmount, items } = useAppSelector((state) => state.basket);
 
   const navigate = useNavigate();
 
@@ -153,7 +154,14 @@ export const ActionIcons = () => {
           maxWidth={180}
         >
           <IconButton onClick={openBasketDialog}>
-            <Badge badgeContent={itemsAmount} color="warning">
+            {
+             <>{console.log("ITEMS ITEMS ITEMS " + items.items)}</>
+            },
+            {
+              
+
+              items.items === undefined
+              ? <Badge badgeContent={'пусто'} color="warning">
               <ShoppingCartIcon
                 color={cartSelected ? "info" : "warning"}
                 sx={{
@@ -161,7 +169,19 @@ export const ActionIcons = () => {
                   height: 40,
                 }}
               />
+             </Badge>
+             : <Badge badgeContent={items.items.length} color="warning">
+             <ShoppingCartIcon
+               color={cartSelected ? "info" : "warning"}
+               sx={{
+                 width: 40,
+                 height: 40,
+               }}
+             />
             </Badge>
+              
+            }
+            
           </IconButton>
         </Box>
         <Box>

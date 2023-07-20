@@ -20,6 +20,7 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { getBasketItemsByUser } from "../../../redux/basket/asyncActions";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -31,6 +32,7 @@ type Catgory = {
 
 export default function AppBarMenu() {
   const CATEGORIES = useAppSelector((state) => state.home.categories);
+  const {user} = useAppSelector(state => state.user)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [active, setActive] = React.useState(false);
@@ -40,6 +42,9 @@ export default function AppBarMenu() {
     navigate('/catalog')
   }
 
+  React.useEffect(() => {
+    dispatch(getBasketItemsByUser(user.id))
+  }, [user])
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {

@@ -1,5 +1,5 @@
 import { Box, Grid, Typography } from "@mui/material";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Card from "../../componentss/categories/CategoryTile";
@@ -53,6 +53,10 @@ export const Home = () => {
       });
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <>
@@ -134,7 +138,7 @@ export const Home = () => {
           <Box width={"100%"} >
 
          
-      {recentlyReviewed === undefined || recentlyReviewed.flat(1).length === 0 ? (
+      {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
         <></>
       ) : (
         <>
@@ -143,6 +147,7 @@ export const Home = () => {
             fontSize={37}
             fontFamily={"Comfortaa"}
             paddingTop={7}
+            paddingBottom={4}
             textAlign={"center"}
           >
             Недавно переглянуті
