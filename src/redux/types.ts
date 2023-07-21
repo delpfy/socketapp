@@ -45,6 +45,14 @@ export type User = {
   avatarUrl: string;
 };
 
+export type UserUpdate = {
+  fullName: string;
+  email: string;
+  password: string;
+  role: string;
+  avatarUrl: string;
+};
+
 export type UserLogin = {
   email: string;
 
@@ -57,6 +65,7 @@ export type UserRegister = {
   role: string;
   password: string;
   expences: number;
+  avatarUrl: string;
 };
 
 export type Status = "success" | "pending" | "error";

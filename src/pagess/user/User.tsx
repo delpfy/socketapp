@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   FormControl,
@@ -8,20 +9,28 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import LogoutDialog from "../../componentss/dialogs/LogoutDialog";
 import ErrorDialog from "../../componentss/dialogs/ErrorDialog";
+import { Update, checkAuthorization } from "../../redux/user/asyncActions";
+import InfoDialog from "../../componentss/dialogs/InfoDialog";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
 
-  const [email, setEmail] = useState<string>("");
+  const dispatch = useAppDispatch();
+
+  const [email, setEmail] = useState<string>(user.email);
   const [password, setPassword] = useState<string>("");
-  const [fullName, setFullName] = useState<string>("");
+  const [image, setImage] = useState<string>(user.avatar);
+  const [fullName, setFullName] = useState<string>(user.name);
 
   const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
+
   const [openLogout, setOpenLogout] = useState(false);
   const [openError, setOpenError] = useState(false);
+  const [openInfo, setOpenInfo] = useState(false);
 
   function openLogoutDialog() {
     setOpenLogout(true);
@@ -38,16 +47,27 @@ export default function User() {
     setOpenError(true);
   }
 
+  function closeInfoDialog() {
+    setOpenInfo(false);
+  }
+  function openInfoDialog() {
+    setOpenInfo(true);
+  }
+
+  function handleImageChange(e: any){
+    setImage(e.target.files[0]);
+    console.log("e.target.files[0] " + e.target.files[0])
+  }
+
+
+
+
   function validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
 
-  function handleUserChanges(
-    email: string,
-    fullName: string,
-    password: string
-  ) {
+  function handleUserChanges() {
     
 
     if (fullName.length < 3) {
@@ -67,6 +87,32 @@ export default function User() {
       setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
       return;
     }
+
+    try {
+      dispatch(Update(
+        {
+          email: email,
+          fullName: fullName,
+          role: user.role,
+          password: password,
+          avatarUrl: image,
+        }
+      )).then((result: any) => {
+        console.log("result.status " + result.meta.requestStatus);
+        if (result.meta.requestStatus === "fulfilled") {
+          openInfoDialog();
+          setInfoMessage("Дані було оновлено");
+          dispatch(checkAuthorization())
+        } else if (result.meta.requestStatus === "rejected") {
+          openErrorDialog();
+          setErrorMessage("Схоже при оновленні данних виникла помилка");
+        }
+      });
+    } catch (error: any) {
+      openErrorDialog();
+      setErrorMessage(error);
+    }
+    
   }
 
   return (
@@ -80,6 +126,24 @@ export default function User() {
         </Typography>
 
         <Box padding={3}>
+          <Box padding={3} display={'flex'} alignItems={'center'} flexDirection={'column'} height={200} justifyContent={'space-around'}>
+            {
+              user.avatar === undefined 
+              ? <Avatar sx = {{width: 100, height: 100}}/>
+              : <img src={user.avatar} alt="user_avatar" style = {{width: 100, height: 100}} />
+              
+            }
+            
+            <Input color='warning' type="file" onChange={handleImageChange}/>
+            <Button
+              color="warning"
+              variant="contained"
+              sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+              
+            >
+              Змінити аватар
+            </Button>
+          </Box>
           <Box padding={3}>
             <InputLabel>Iм'я</InputLabel>
             <Input value={fullName} onChange={(e) => setFullName(e.target.value)} />
@@ -87,10 +151,7 @@ export default function User() {
               Наразі ви - {user.name}
             </FormHelperText>
           </Box>
-          <Box padding={3}>
-            <InputLabel>Аватар</InputLabel>
-            <Input />
-          </Box>
+          
           <Box padding={3}>
             <InputLabel>Пошта</InputLabel>
             <Input value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -123,7 +184,7 @@ export default function User() {
               variant="contained"
               color="warning"
               sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-              onClick={() => handleUserChanges(fullName, email, password)}
+              onClick={handleUserChanges}
             >
               Зберігти зміни
             </Button>
@@ -147,6 +208,11 @@ export default function User() {
           closeErrorDialog={closeErrorDialog}
           errorMessage={errorMessage}
         />
+        <InfoDialog
+        openInfo={openInfo}
+        closeInfoDialog={closeInfoDialog}
+        infoMessage={infoMessage}
+      />
       </Box>
     </>
   );

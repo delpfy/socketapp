@@ -90,6 +90,7 @@ export default function LoginDialog({
           fullName: fullName,
           role: role,
           password: password,
+          avatarUrl: '',
           expences: 0,
         })
       ).then((result: any) => {

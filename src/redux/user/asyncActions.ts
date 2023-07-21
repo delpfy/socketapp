@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { UserDisplay, UserLogin, UserRegister } from "../types";
+import { User, UserDisplay, UserLogin, UserRegister, UserUpdate } from "../types";
 
 export const checkAuthorization = createAsyncThunk<UserDisplay>(
   "home/checkAuthorization",
@@ -14,6 +14,25 @@ export const checkAuthorization = createAsyncThunk<UserDisplay>(
     return data;
   }
 );
+
+export const Update = createAsyncThunk<
+  { success: string;},
+  UserUpdate
+>("home/Update", async function (params) {
+  console.log("DATA " + 1);
+  const { data } = await axios.patch<{ success: string }>(
+    `/update`,
+      params,
+     {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    },
+    
+  );
+  
+  return data;
+});
 
 export const Authorize = createAsyncThunk<
   { success: string; token: string },

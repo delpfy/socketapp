@@ -108,12 +108,11 @@ export const ActionIcons = () => {
 
    const Locker = () => {
     if (user.authorized === true) {
-     return (
-        <>
-         <Typography sx = {{color: '#fff'}} fontFamily={'Comfortaa'}>{user.name}</Typography>
+     
+        return user.avatar === undefined 
+        ? <Typography sx = {{color: '#fff'}} fontFamily={'Comfortaa'}>{user.name}</Typography>
+        : <img src={user.avatar} alt={user.name} style = {{width: 50, height: 50}}/>
        
-        </>
-      );
     } else {
       return (
         <LockPersonRoundedIcon

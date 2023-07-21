@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { Authorize, checkAuthorization, Register } from "./asyncActions";
+import { createSlice,  } from "@reduxjs/toolkit";
+import { Authorize, checkAuthorization, Register, Update } from "./asyncActions";
 
 const userSlice = createSlice({
   name: "user",
@@ -9,6 +9,7 @@ const userSlice = createSlice({
       role: "",
       avatar: "",
       name: "",
+      email: "",
       authorized: false,
       expences: 0,
     },
@@ -27,6 +28,7 @@ const userSlice = createSlice({
     builder.addCase(checkAuthorization.fulfilled, (state, action) => {
       state.user.authorized = true;
       state.user.id = action.payload.user._id;
+      state.user.email = action.payload.user.email;
       state.user.role = action.payload.user.role;
       state.user.avatar = action.payload.user.avatarUrl;
       state.user.expences = action.payload.user.expences;
@@ -34,6 +36,7 @@ const userSlice = createSlice({
 
       console.log("USER AUTH");
     });
+    
     builder.addCase(checkAuthorization.pending, (state) => {
       state.user.authorized = false;
     });
@@ -68,6 +71,17 @@ const userSlice = createSlice({
     builder.addCase(Register.rejected, (state, action) => {
       state.user.authorized = false;
       
+    });
+
+    // Update.
+    builder.addCase(Update.fulfilled, (state, action) => {
+      
+    });
+    builder.addCase(Update.pending, (state) => {
+
+    });
+    builder.addCase(Update.rejected, (state, action) => {
+
     });
   },
 });
