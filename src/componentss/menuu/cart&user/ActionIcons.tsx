@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import {  useAppSelector } from "../../../redux/hooks";
+import {  useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
@@ -26,7 +26,8 @@ import { ShippingItems, ShippingItemsDisplay } from "../../../redux/types";
 export const ActionIcons = () => {
   const { user } = useAppSelector((state) => state.user);
   const { isOnItemPage, itemsAmount, items } = useAppSelector((state) => state.basket);
-
+  
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [cartSelected, setCartSelected] = useState(false);
@@ -47,9 +48,10 @@ export const ActionIcons = () => {
     closeBasketDialog();
   }, [isOnItemPage]);
 
-
+  useEffect(() => {dispatch(checkAuthorization())}, [])
 
   function openBasketDialog() {
+    dispatch(checkAuthorization());
     if (user.authorized === true) {
       closeRegDialog();
       closeLoginDialog();

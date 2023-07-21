@@ -1,5 +1,6 @@
 import { createSlice,  } from "@reduxjs/toolkit";
-import { Authorize, checkAuthorization, Register, Update } from "./asyncActions";
+import { Authorize, checkAuthorization, Register, Update, UploadAvatar } from "./asyncActions";
+import { UserDisplay } from "../types";
 
 const userSlice = createSlice({
   name: "user",
@@ -14,6 +15,7 @@ const userSlice = createSlice({
       expences: 0,
     },
     token: "",
+    avatarFile: {} as any
   },
   reducers: {
     NullifyToken(state) {
@@ -27,7 +29,7 @@ const userSlice = createSlice({
     // Verify Authorization.
     builder.addCase(checkAuthorization.fulfilled, (state, action) => {
       state.user.authorized = true;
-      state.user.id = action.payload.user._id;
+      state.user.id = action.payload.user._id ;
       state.user.email = action.payload.user.email;
       state.user.role = action.payload.user.role;
       state.user.avatar = action.payload.user.avatarUrl;
@@ -49,14 +51,26 @@ const userSlice = createSlice({
       state.user.authorized = true;
       state.token = action.payload.token;
       localStorage.setItem("token", action.payload.token);
-      console.log("ACTION " + action.meta.requestStatus)
+      console.log("ACTION " + action.payload.success)
     });
     builder.addCase(Authorize.pending, (state) => {
       state.user.authorized = false;
     });
-    builder.addCase(Authorize.rejected, (state) => {
+    builder.addCase(Authorize.rejected, (state, action) => {
       state.user.authorized = false;
-      
+    });
+
+    // Upload avatar.
+    builder.addCase(UploadAvatar.fulfilled, (state, action) => {
+
+      state.avatarFile = action.payload.url;
+      console.log("action.payload.url " + action.payload.url)
+    });
+    builder.addCase(UploadAvatar.pending, (state) => {
+
+    });
+    builder.addCase(UploadAvatar.rejected, (state, action) => {
+
     });
 
     // Register.

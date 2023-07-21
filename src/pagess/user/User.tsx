@@ -8,12 +8,14 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { MutableRefObject, useRef, useState } from "react";
+
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import LogoutDialog from "../../componentss/dialogs/LogoutDialog";
 import ErrorDialog from "../../componentss/dialogs/ErrorDialog";
-import { Update, checkAuthorization } from "../../redux/user/asyncActions";
+import { Update, UploadAvatar, checkAuthorization } from "../../redux/user/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
+import axios from "axios";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
@@ -31,6 +33,8 @@ export default function User() {
   const [openLogout, setOpenLogout] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
+
+  const avatarFileRef = useRef<HTMLInputElement | null>(null);
 
   function openLogoutDialog() {
     setOpenLogout(true);
@@ -54,9 +58,21 @@ export default function User() {
     setOpenInfo(true);
   }
 
-  function handleImageChange(e: any){
+  async function handleImageChange(e: any){
     setImage(e.target.files[0]);
-    console.log("e.target.files[0] " + e.target.files[0])
+    console.log("typeof e.target.files[0] " + typeof e.target.files[0])
+    try {
+
+      const formData = new FormData();
+      formData.append('image', e.target.files[0])
+      dispatch(UploadAvatar(formData))
+
+      
+    } catch (error: any) {
+      openErrorDialog();
+      setErrorMessage(error.message);
+    }
+
   }
 
 
@@ -115,6 +131,13 @@ export default function User() {
     
   }
 
+  function handleLoadImageClick(){
+    if(avatarFileRef.current){
+      avatarFileRef.current.click();
+      console.log("CLICKED!!!")
+    }
+  }
+
   return (
     <>
       <Box
@@ -134,12 +157,12 @@ export default function User() {
               
             }
             
-            <Input color='warning' type="file" onChange={handleImageChange}/>
+            <input hidden  ref = {avatarFileRef} color='warning' type="file" onChange={handleImageChange} />
             <Button
               color="warning"
               variant="contained"
               sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-              
+              onClick={handleLoadImageClick}
             >
               Змінити аватар
             </Button>

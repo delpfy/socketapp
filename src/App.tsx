@@ -13,7 +13,7 @@ import { getBasketItemsByUser } from "./redux/basket/asyncActions";
 import User from "./pagess/user/User";
 
 function App() {
-  
+  const {itemsAmount} = useAppSelector(state => state.basket);
   const dispatch = useAppDispatch();
   if (!localStorage.getItem("recentlyReviewed")) {
     localStorage.setItem(
@@ -23,7 +23,7 @@ function App() {
   }
   useEffect(() => {
     dispatch(checkAuthorization());
-  }, [dispatch]);
+  }, [itemsAmount, dispatch]);
 
   
   return (

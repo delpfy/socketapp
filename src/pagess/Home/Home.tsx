@@ -150,7 +150,7 @@ export const Home = () => {
             paddingBottom={4}
             textAlign={"center"}
           >
-            Недавно переглянуті
+            Було переглянуто
           </Typography>
           <RecentlyReviewed />
         </>
