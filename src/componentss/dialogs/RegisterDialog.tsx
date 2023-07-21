@@ -164,6 +164,7 @@ export default function LoginDialog({
           value={password}
           fullWidth
           variant="standard"
+          
           onChange={(e) => setPassword(e.target.value)}
         />
         <FormControl>

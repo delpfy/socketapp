@@ -9,6 +9,7 @@ import {
   import React from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { NullifyToken } from "../../redux/user/userSlice";
+import { useNavigate } from "react-router-dom";
   
   type Props = {
     openLogout: boolean;
@@ -22,10 +23,11 @@ import { NullifyToken } from "../../redux/user/userSlice";
   }: Props) {
 
     const dispatch = useAppDispatch();
-
+    const navigate = useNavigate();
     function Logout() {
         closeLogoutDialog();
         dispatch(NullifyToken());
+        navigate('/')
     }
 
     return (

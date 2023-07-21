@@ -20,7 +20,6 @@ export const BasketPage = () => {
   const dispatch = useAppDispatch();
   
   React.useEffect(() => {
-    dispatch(checkAuthorization());
     dispatch(getBasketItemsByUser(user.id));
   }, [dispatch, user.id, itemsAmount]);
 

@@ -33,7 +33,7 @@ export const ActionIcons = () => {
   const [personSelected, setPersonSelected] = useState(false);
 
   const [openLogin, setOpenLogin] = useState(false);
-  const [openLogout, setOpenLogout] = useState(false);
+ 
   const [openError, setOpenError] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
@@ -67,9 +67,8 @@ export const ActionIcons = () => {
   }
   function openLoginDialog() {
     if (user.authorized === true) {
-      openLogoutDialog();
+      navigate('/user')
     } else {
-      setPersonSelected(true);
       closeRegDialog();
       setOpenLogin(true);
     }
@@ -89,15 +88,7 @@ export const ActionIcons = () => {
     setOpenInfo(false);
   }
 
-  function openLogoutDialog() {
-    setPersonSelected(true);
-    setOpenLogout(true);
-  }
-
-  function closeLogoutDialog() {
-    setPersonSelected(false);
-    setOpenLogout(false);
-  }
+  
 
 
   function closeErrorDialog() {
@@ -105,12 +96,10 @@ export const ActionIcons = () => {
   }
 
   function closeLoginDialog() {
-    setPersonSelected(false);
     setOpenLogin(false);
   }
 
   function closeRegDialog() {
-    setPersonSelected(false);
     setOpenRegister(false);
   }
 
@@ -118,7 +107,6 @@ export const ActionIcons = () => {
 
 
    const Locker = () => {
-    console.log("LOCKER " + user.name)
     if (user.authorized === true) {
      return (
         <>
@@ -129,7 +117,7 @@ export const ActionIcons = () => {
     } else {
       return (
         <LockPersonRoundedIcon
-          color={personSelected ? "info" : "warning"}
+          color="warning"
           sx={{
             width: 45,
             height: 45,
@@ -154,9 +142,6 @@ export const ActionIcons = () => {
           maxWidth={180}
         >
           <IconButton onClick={openBasketDialog}>
-            {
-             <>{console.log("ITEMS ITEMS ITEMS " + items.items)}</>
-            },
             {
               
 
@@ -197,14 +182,10 @@ export const ActionIcons = () => {
         openErrorDialog={setOpenError}
         openRegisterDialog={setOpenRegister}
         openLoginDialog={setOpenLogin}
-        setPersonSelected={setPersonSelected}
         setErrorMessage={setErrorMessage}
       />
 
-      <LogoutDialog
-        openLogout={openLogout}
-        closeLogoutDialog={closeLogoutDialog}
-      />
+      
 
       <ErrorDialog
         openError={openError}

@@ -15,7 +15,7 @@ import {
 
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { addBasketItem } from "../../../redux/basket/asyncActions";
+import { addBasketItem, getBasketItemsByUser } from "../../../redux/basket/asyncActions";
 import { ShippingItems, Items } from "../../../redux/types";
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
 import InfoDialog from "../../dialogs/InfoDialog";
@@ -81,6 +81,7 @@ export default function CatalogCard(props: Items) {
       );
 
       dispatch(SetItemsAmount(itemsAmount + 1));
+
     } else {
       setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
       openInfoDialog();

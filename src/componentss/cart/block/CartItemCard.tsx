@@ -13,7 +13,7 @@ import {
   IconButton,
 } from "@mui/material";
 
-import { ShippingItems } from "../../../redux/types";
+import { Items, ShippingItems } from "../../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { addBasketItem, deleteBasketItem, removeBasketItem } from "../../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
@@ -32,6 +32,22 @@ export const BasketItemBlock = (props: ShippingItems) => {
   function getCurrentItem(){
     dispatch(setCurrentItem(props))
     navigate('/catalog/item');
+
+    const recentlyReviewed = JSON.parse(
+      localStorage.getItem("recentlyReviewed") || "{}"
+    );
+
+    if(recentlyReviewed !== undefined){
+      const itemIndex = recentlyReviewed.findIndex((item: Items) => item.name === props.name);
+    
+      if(itemIndex === -1){
+       
+        recentlyReviewed.push(props)
+        localStorage.setItem('recentlyReviewed', JSON.stringify(recentlyReviewed))
+      }
+      
+      
+    }
   }
 
 

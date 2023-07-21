@@ -33,6 +33,7 @@ type Catgory = {
 export default function AppBarMenu() {
   const CATEGORIES = useAppSelector((state) => state.home.categories);
   const {user} = useAppSelector(state => state.user)
+  const {itemsAmount} = useAppSelector(state => state.basket)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [active, setActive] = React.useState(false);
@@ -44,7 +45,8 @@ export default function AppBarMenu() {
 
   React.useEffect(() => {
     dispatch(getBasketItemsByUser(user.id))
-  }, [user])
+  }, [user,itemsAmount])
+  
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {

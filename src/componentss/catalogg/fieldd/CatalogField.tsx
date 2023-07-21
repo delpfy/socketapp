@@ -29,13 +29,13 @@ export const CatalogField = () => {
   
   const Catalog = () => {
     return (
-      <Box width={"100%"}  >
-        <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
+      <Box width={"100%"} >
+        <Box display={"flex"} justifyContent={"center"} alignItems={"center"} sx = {{paddingTop: {xs: "25%",md: "15%",lg: "10%"}}}>
           <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
             {category}
           </Typography>
         </Box>
-        <Box>
+        <Box >
           <Grid
             container
             padding={"2%"}

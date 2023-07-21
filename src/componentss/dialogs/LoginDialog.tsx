@@ -16,7 +16,6 @@ type Props = {
   openErrorDialog: Dispatch<SetStateAction<any>>;
   openRegisterDialog: Dispatch<SetStateAction<any>>;
   openLoginDialog: Dispatch<SetStateAction<any>>;
-  setPersonSelected: Dispatch<SetStateAction<any>>;
   setErrorMessage: (message: string) => void;
   openLogin: boolean;
   closeLoginDialog: () => void;
@@ -27,7 +26,6 @@ export default function LoginDialog({
   openRegisterDialog,
   setErrorMessage,
   openLoginDialog,
-  setPersonSelected,
   openLogin,
   closeLoginDialog,
 }: Props) {
@@ -63,7 +61,6 @@ export default function LoginDialog({
       console.log("result.status " + result.meta.requestStatus);
       if (result.meta.requestStatus === "fulfilled") {
         openLoginDialog(false);
-        setPersonSelected(false);
         dispatch(checkAuthorization());
       } else if (result.meta.requestStatus === "rejected") {
         openErrorDialog(true);

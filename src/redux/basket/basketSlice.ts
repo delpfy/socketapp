@@ -24,7 +24,7 @@ const basketSlice = createSlice({
     builder.addCase(getBasketItemsByUser.fulfilled, (state, action) => {
       state.status = 'success';
       state.items = action.payload;
-      
+      console.log("ITEMS ITEMS ITEMS BASKET !!!")
     });
     builder.addCase(getBasketItemsByUser.pending, (state) => {
       state.status = 'pending';

@@ -18,15 +18,7 @@ export const HomePage = () => {
   return (
     <>
     <AppBarMenu/>
-      <Box>
-      < Button
-
-          sx={{ fontFamily: "Comfortaa",  marginTop: {xs: "25%",md: "15%",lg: "10%"},fontSize: 15 }}
-          onClick={() => navigate('/')}
-          variant="contained"
-        >
-          На головну
-        </Button>
+      <Box >
         <CatalogField />
       </Box>
     </>
