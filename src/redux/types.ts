@@ -19,6 +19,7 @@ export type Items = {
   category: string;
   name: string;
   price: number;
+  sale: number;
   rating: number;
   image: string[];
   description: string;
@@ -29,6 +30,7 @@ export type ShippingItems = {
   category: string;
   name: string;
   price: number;
+  sale: number;
   rating: number;
   amount: number;
   image: string[];

@@ -15,7 +15,11 @@ import {
 
 import { Items, ShippingItems } from "../../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { addBasketItem, deleteBasketItem, removeBasketItem } from "../../../redux/basket/asyncActions";
+import {
+  addBasketItem,
+  deleteBasketItem,
+  removeBasketItem,
+} from "../../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
@@ -28,28 +32,28 @@ export const BasketItemBlock = (props: ShippingItems) => {
 
   const navigate = useNavigate();
 
-
-  function getCurrentItem(){
-    dispatch(setCurrentItem(props))
-    navigate('/catalog/item');
+  function getCurrentItem() {
+    dispatch(setCurrentItem(props));
+    navigate("/catalog/item");
 
     const recentlyReviewed = JSON.parse(
       localStorage.getItem("recentlyReviewed") || "{}"
     );
 
-    if(recentlyReviewed !== undefined){
-      const itemIndex = recentlyReviewed.findIndex((item: Items) => item.name === props.name);
-    
-      if(itemIndex === -1){
-       
-        recentlyReviewed.push(props)
-        localStorage.setItem('recentlyReviewed', JSON.stringify(recentlyReviewed))
+    if (recentlyReviewed !== undefined) {
+      const itemIndex = recentlyReviewed.findIndex(
+        (item: Items) => item.name === props.name
+      );
+
+      if (itemIndex === -1) {
+        recentlyReviewed.push(props);
+        localStorage.setItem(
+          "recentlyReviewed",
+          JSON.stringify(recentlyReviewed)
+        );
       }
-      
-      
     }
   }
-
 
   async function basketItem_APPEND() {
     await dispatch(
@@ -59,6 +63,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         description: props.description,
         category: props.category,
         price: props.price,
+        sale: props.sale,
         rating: props.rating,
         image: props.image,
         amount: 1,
@@ -76,6 +81,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         description: props.description,
         category: props.category,
         price: props.price,
+        sale: props.price,
         rating: props.rating,
         image: props.image,
         amount: props.amount,
@@ -93,6 +99,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         description: props.description,
         category: props.category,
         price: props.price,
+        sale: props.sale,
         rating: props.rating,
         image: props.image,
         amount: props.amount,
@@ -114,6 +121,15 @@ export const BasketItemBlock = (props: ShippingItems) => {
           padding: "2%",
         }}
       >
+        {props.sale ? (
+          <img
+            style={{ position: "absolute", paddingBottom: 425, zIndex: 2, height: 70, width: 70 }}
+            src="https://www.svgrepo.com/show/250306/percentage-percent.svg"
+            alt=""
+          />
+        ) : (
+          <></>
+        )}
         <CardMedia
           sx={{
             display: "flex",
@@ -155,14 +171,41 @@ export const BasketItemBlock = (props: ShippingItems) => {
           }}
         >
           <Box display={"flex"} flexDirection={"column"}>
-            <Typography
-              paddingLeft={0.3}
-              fontSize={22}
-              fontFamily={"Comfortaa"}
-              color={"error"}
+            <Box
+              display={"flex"}
+              justifyContent={"space-between"}
+              flexDirection={"row"}
             >
-              {props.price}₴
-            </Typography>
+              <Typography
+                paddingLeft={0.3}
+                fontFamily={"Comfortaa"}
+                color={props.sale ? "info" : "error"}
+                sx={
+                  props.sale
+                    ? {
+                        fontSize: 17,
+                        textDecoration: "line-through !important",
+                      }
+                    : { fontSize: 22 }
+                }
+              >
+                {props.price}₴
+              </Typography>
+              {
+              props.sale 
+              ? 
+                <Typography
+                  paddingLeft={0.3}
+                  fontSize={22}
+                  fontFamily={"Comfortaa"}
+                  color={"error"}
+                >
+                  {props.price - Math.round((props.price * props.sale) / 100)}₴
+                </Typography>
+               : 
+                <></>
+              }
+            </Box>
 
             <Rating name="read-only" value={props.rating} readOnly />
             <Box
@@ -205,11 +248,9 @@ export const BasketItemBlock = (props: ShippingItems) => {
             flexDirection={"row"}
           >
             <IconButton onClick={basketItem_APPEND}>
-
               <AddCircleIcon color="info" sx={{ width: 40, height: 40 }} />
-
             </IconButton>
-            <IconButton onClick = {basketItem_REDUCE}>
+            <IconButton onClick={basketItem_REDUCE}>
               <RemoveCircleIcon color="info" sx={{ width: 40, height: 40 }} />
             </IconButton>
           </Box>
@@ -219,7 +260,6 @@ export const BasketItemBlock = (props: ShippingItems) => {
           </IconButton>
         </Box>
       </Card>
-
     </>
   );
 };

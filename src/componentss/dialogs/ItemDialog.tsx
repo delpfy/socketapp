@@ -52,6 +52,7 @@ export default function ItemDialog({
           description: item.description,
           category: item.category,
           price: item.price,
+          sale: item.sale,
           rating: item.rating,
           image: item.image,
           amount: 1,

@@ -10,12 +10,15 @@ import {
   Rating,
   Tooltip,
   Typography,
-
+  withStyles,
 } from "@mui/material";
 
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { addBasketItem, getBasketItemsByUser } from "../../../redux/basket/asyncActions";
+import {
+  addBasketItem,
+  getBasketItemsByUser,
+} from "../../../redux/basket/asyncActions";
 import { ShippingItems, Items } from "../../../redux/types";
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
 import InfoDialog from "../../dialogs/InfoDialog";
@@ -33,6 +36,7 @@ export default function CatalogCard(props: Items) {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   function openInfoDialog() {
     setOpenInfo(true);
   }
@@ -41,27 +45,27 @@ export default function CatalogCard(props: Items) {
     setOpenInfo(false);
   }
 
-  function getCurrentItem(){
-    dispatch(setCurrentItem(props))
-    navigate('/catalog/item');
+  function getCurrentItem() {
+    dispatch(setCurrentItem(props));
+    navigate("/catalog/item");
 
     const recentlyReviewed = JSON.parse(
       localStorage.getItem("recentlyReviewed") || "{}"
     );
 
-    if(recentlyReviewed !== undefined){
-      const itemIndex = recentlyReviewed.findIndex((item: Items) => item.name === props.name);
-    
-      if(itemIndex === -1){
-       
-        recentlyReviewed.push(props)
-        localStorage.setItem('recentlyReviewed', JSON.stringify(recentlyReviewed))
-      }
-      
-      
-    }
-    
+    if (recentlyReviewed !== undefined) {
+      const itemIndex = recentlyReviewed.findIndex(
+        (item: Items) => item.name === props.name
+      );
 
+      if (itemIndex === -1) {
+        recentlyReviewed.push(props);
+        localStorage.setItem(
+          "recentlyReviewed",
+          JSON.stringify(recentlyReviewed)
+        );
+      }
+    }
   }
 
   // Chech auth, if authorized - add and changing active state.
@@ -74,6 +78,7 @@ export default function CatalogCard(props: Items) {
           description: props.description,
           category: props.category,
           price: props.price,
+          sale: props.sale,
           rating: props.rating,
           image: props.image,
           amount: 1,
@@ -81,7 +86,6 @@ export default function CatalogCard(props: Items) {
       );
 
       dispatch(SetItemsAmount(itemsAmount + 1));
-
     } else {
       setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
       openInfoDialog();
@@ -104,6 +108,15 @@ export default function CatalogCard(props: Items) {
           padding: "2%",
         }}
       >
+        {props.sale ? (
+          <img
+            style={{ position: "absolute", zIndex: 1, height: 70, width: 70 }}
+            src="https://www.svgrepo.com/show/250306/percentage-percent.svg"
+            alt=""
+          />
+        ) : (
+          <></>
+        )}
         <CardMedia
           sx={{
             maxHeight: 200,
@@ -153,14 +166,40 @@ export default function CatalogCard(props: Items) {
           }}
         >
           <Box display={"flex"} flexDirection={"column"}>
-            <Typography
-              paddingLeft={0.3}
-              fontSize={22}
-              fontFamily={"Comfortaa"}
-              color={"error"}
+            <Box
+              display={"flex"}
+              justifyContent={"space-between"}
+              flexDirection={"row"}
             >
-              {props.price}₴
-            </Typography>
+              <Typography
+                paddingLeft={0.3}
+                fontFamily={"Comfortaa"}
+                color={props.sale ? "info" : "error"}
+                sx={
+                  props.sale
+                    ? {
+                        fontSize: 17,
+                        textDecoration: "line-through !important",
+                      }
+                    : { fontSize: 22 }
+                }
+              >
+                {props.price}₴
+              </Typography>
+              {props.sale ? (
+                <Typography
+                  paddingLeft={0.3}
+                  fontSize={22}
+                  fontFamily={"Comfortaa"}
+                  color={"error"}
+                >
+                  {props.price - Math.round((props.price * props.sale) / 100)}₴
+                </Typography>
+              ) : (
+                <></>
+              )}
+            </Box>
+
             <Rating name="read-only" value={props.rating} readOnly />
           </Box>
 
@@ -178,7 +217,10 @@ export default function CatalogCard(props: Items) {
                   disableTouchListener
                   title="You sould be authorized"
                 >
-                  <IconButton sx={{ paddind: 0 }} onClick={() => basketItem_APPEND()}>
+                  <IconButton
+                    sx={{ paddind: 0 }}
+                    onClick={() => basketItem_APPEND()}
+                  >
                     <AddShoppingCartIcon
                       sx={{ height: 35, width: 35 }}
                       color={"disabled"}
@@ -197,8 +239,6 @@ export default function CatalogCard(props: Items) {
         closeInfoDialog={closeInfoDialog}
         infoMessage={infoMessage}
       />
-
-      
     </>
   );
 }

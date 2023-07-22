@@ -7,10 +7,14 @@ import {
   Button,
   Typography,
   TextField,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Authorize, checkAuthorization } from "../../redux/user/asyncActions";
 import { useAppDispatch } from "../../redux/hooks";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
 
 type Props = {
   openErrorDialog: Dispatch<SetStateAction<any>>;
@@ -31,6 +35,7 @@ export default function LoginDialog({
 }: Props) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [passVisible, setPassVisible] = useState(true);
 
   const dispatch = useAppDispatch();
 
@@ -69,6 +74,10 @@ export default function LoginDialog({
     });
   }
 
+  function handleClickShowPassword() {
+    setPassVisible((passVisible) => !passVisible);
+  }
+
   return (
     <Dialog open={openLogin} onClose={closeLoginDialog}>
       <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
@@ -104,15 +113,29 @@ export default function LoginDialog({
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <TextField
+        <OutlinedInput
+          autoFocus
           margin="dense"
-          label="Пароль"
+          id="password"
+          sx={{ marginTop: 2, marginBottom: 2 }}
+          placeholder="Пароль"
           value={password}
-          type="password"
           fullWidth
-          variant="standard"
+          type={passVisible ? "password" : "text"}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                edge="end"
+              >
+                {passVisible ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
           onChange={(e) => setPassword(e.target.value)}
         />
+
       </DialogContent>
       <DialogActions>
         <Button

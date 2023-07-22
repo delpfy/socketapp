@@ -56,28 +56,23 @@ const basketSlice = createSlice({
     // Remove item.
     builder.addCase(removeBasketItem.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log("PAYLOAD success " + action.payload)
 
     });
     builder.addCase(removeBasketItem.pending, (state, action) => {
       state.status = 'pending';
-      console.log("PAYLOAD pending " + action.payload)
 
     });
     builder.addCase(removeBasketItem.rejected, (state, action) => {
       state.status = 'error';
-      alert(action.error.message)
     });
 
     // Delete item.
     builder.addCase(deleteBasketItem.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log("PAYLOAD success " + action.payload)
 
     });
     builder.addCase(deleteBasketItem.pending, (state, action) => {
       state.status = 'pending';
-      console.log("PAYLOAD pending " + action.payload)
 
     });
     builder.addCase(deleteBasketItem.rejected, (state, action) => {

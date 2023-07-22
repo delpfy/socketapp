@@ -12,11 +12,17 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Input,
+  InputAdornment,
+  IconButton,
+  OutlinedInput,
+  InputLabel,
 } from "@mui/material";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Register } from "../../redux/user/asyncActions";
 import { useAppDispatch } from "../../redux/hooks";
 import { NullifyToken } from "../../redux/user/userSlice";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 type Props = {
   openErrorDialog: Dispatch<SetStateAction<any>>;
@@ -39,7 +45,8 @@ export default function LoginDialog({
   const [password, setPassword] = useState<string>("");
   const [role, setRole] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
-
+  const [passVisible, setPassVisible] = useState(true);
+  
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
   };
@@ -108,6 +115,12 @@ export default function LoginDialog({
     }
   }
 
+  
+  function handleClickShowPassword (){
+    setPassVisible((passVisible) => !passVisible);
+  } 
+
+
   return (
     <Dialog open={openRegister} onClose={closeRegisterDialog}>
       <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
@@ -156,16 +169,26 @@ export default function LoginDialog({
           onChange={(e) => setFullName(e.target.value)}
         />
 
-        <TextField
+        <OutlinedInput
           autoFocus
           margin="dense"
           id="password"
-          label="Пароль"
-          type="password"
+          sx = {{marginTop: 2, marginBottom: 2}}
+          placeholder="Пароль"
           value={password}
           fullWidth
-          variant="standard"
-          
+          type = {passVisible ? 'password' : 'text'}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {passVisible ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
           onChange={(e) => setPassword(e.target.value)}
         />
         <FormControl>

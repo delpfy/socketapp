@@ -56,7 +56,7 @@ export const addBasketItem = createAsyncThunk<"", ShippingItems>(
   "home/addBasketItem",
   async (params) => {
     console.log("DATA " + 1);
-    console.log("Params " + params); // Here is item.
+    console.log("Params !!!! " + params.sale); // Here is item.
 
     const { data } = await axios.post(`/basketitems`, params, {
       headers: {

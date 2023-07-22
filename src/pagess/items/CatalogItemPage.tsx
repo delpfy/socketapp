@@ -41,6 +41,7 @@ export const ItemPage = () => {
           description: itemCurrent.description,
           category: itemCurrent.category,
           price: itemCurrent.price,
+          sale: itemCurrent.sale,
           rating: itemCurrent.rating,
           image: itemCurrent.image,
           amount: 1,
@@ -63,13 +64,15 @@ export const ItemPage = () => {
   const Item = () => {
     return (
       <>
-        <Button
-          sx={{ fontFamily: "Comfortaa", marginTop: 15, fontSize: 15 }}
-          onClick={() => navigate("/catalog")}
-          variant="contained"
-        >
-          Каталог
-        </Button>
+
+          <Button
+            sx={{ fontFamily: "Comfortaa", marginTop: 15, fontSize: 15 }}
+            onClick={() => navigate("/catalog")}
+            variant="contained"
+          >
+            Каталог
+          </Button>
+
         <Box
           width={"100%"}
           height={"100%"}
@@ -150,14 +153,42 @@ export const ItemPage = () => {
             >
               {itemCurrent.name}
             </Typography>
-            <Typography
-              fontFamily={"Comfortaa"}
-              fontSize={25}
-              color="error"
-              sx={{ paddingLeft: 0.3 }}
+            <Box
+              display={"flex"}
+              width={100}
+              justifyContent={"space-between"}
+              flexDirection={"row"}
             >
-              {itemCurrent.price}₴
-            </Typography>
+              <Typography
+                paddingLeft={0.3}
+                fontFamily={"Comfortaa"}
+                color={itemCurrent.sale ? "info" : "error"}
+                sx={
+                  itemCurrent.sale
+                    ? {
+                        fontSize: 17,
+                        textDecoration: "line-through !important",
+                      }
+                    : { fontSize: 22 }
+                }
+              >
+                {itemCurrent.price}₴
+              </Typography>
+              {itemCurrent.sale ? (
+                <Typography
+                  paddingLeft={0.3}
+                  fontSize={22}
+                  fontFamily={"Comfortaa"}
+                  color={"error"}
+                >
+                  {itemCurrent.price -
+                    Math.round((itemCurrent.price * itemCurrent.sale) / 100)}
+                  ₴
+                </Typography>
+              ) : (
+                <></>
+              )}
+            </Box>
             <Rating name="read-only" value={itemCurrent.rating} readOnly />
 
             <Typography
@@ -218,7 +249,7 @@ export const ItemPage = () => {
         console.log("ITEM_CURRENT " + itemCurrent);
         return <NotFoundPage />;
       default:
-        navigate("/catalog")
+        navigate("/catalog");
         return <NotFoundPage />;
     }
   }

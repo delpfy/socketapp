@@ -2,13 +2,14 @@ import {
   Avatar,
   Box,
   Button,
-  FormControl,
   FormHelperText,
+  IconButton,
   Input,
+  InputAdornment,
   InputLabel,
   Typography,
 } from "@mui/material";
-import React, { MutableRefObject, useRef, useState } from "react";
+import React, {  useRef, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import LogoutDialog from "../../componentss/dialogs/LogoutDialog";
@@ -16,6 +17,7 @@ import ErrorDialog from "../../componentss/dialogs/ErrorDialog";
 import { Update, UploadAvatar, checkAuthorization } from "../../redux/user/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import axios from "axios";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
@@ -26,6 +28,7 @@ export default function User() {
   const [password, setPassword] = useState<string>("");
   const [image, setImage] = useState<string>(user.avatar);
   const [fullName, setFullName] = useState<string>(user.name);
+  const [passVisible, setPassVisible] = useState(true);
 
   const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
@@ -60,7 +63,6 @@ export default function User() {
 
   async function handleImageChange(e: any){
     setImage(e.target.files[0]);
-    console.log("typeof e.target.files[0] " + typeof e.target.files[0])
     try {
 
       const formData = new FormData();
@@ -75,7 +77,9 @@ export default function User() {
 
   }
 
-
+  function handleClickShowPassword (){
+    setPassVisible((passVisible) => !passVisible);
+  } 
 
 
   function validateEmail(email: string): boolean {
@@ -134,7 +138,6 @@ export default function User() {
   function handleLoadImageClick(){
     if(avatarFileRef.current){
       avatarFileRef.current.click();
-      console.log("CLICKED!!!")
     }
   }
 
@@ -183,9 +186,22 @@ export default function User() {
             </FormHelperText>
           </Box>
           <Box padding={3}>
-            <InputLabel>Пароль</InputLabel>
+            <InputLabel >Пароль</InputLabel>
             <Input
+            
               value={password}
+              type = {passVisible ? 'password' : 'text'}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {passVisible ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
               onChange={(e) => setPassword(e.target.value)}
             />
             <FormHelperText sx={{ fontSize: 15 }}>
