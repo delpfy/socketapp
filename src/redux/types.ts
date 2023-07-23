@@ -10,8 +10,19 @@ export type ShippingItemsDisplay = {
 export type ShippingItemDisplay = {
   items: ShippingItems;
 };
+export type ReviewsDisplay = {
+  reviews: IReview[];
+};
 export type UserDisplay = {
   user: User;
+};
+
+export type IReview = {
+  item: string,
+  description: string,
+  rating: number,
+  advantages: string,
+  disadvantages: string
 };
 
 export type Items = {

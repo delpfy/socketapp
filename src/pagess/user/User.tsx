@@ -36,6 +36,7 @@ export default function User() {
   const [openLogout, setOpenLogout] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
+  
 
   const avatarFileRef = useRef<HTMLInputElement | null>(null);
 

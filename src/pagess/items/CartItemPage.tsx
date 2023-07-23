@@ -5,6 +5,7 @@ import { ShippingItems, Status } from "../../redux/types";
 import { Box, Rating, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import NotFoundPage from "../PageAbsence";
+import Review from "../../componentss/Review";
 
 export const BasketItemPage = (props: ShippingItems) => {
   const { status } = useAppSelector((state) => state.basket);
@@ -96,7 +97,9 @@ export const BasketItemPage = (props: ShippingItems) => {
             {props.description}
           </Typography>
         </Box>
-        <Box></Box>
+        <Box>
+        
+        </Box>
       </Box>
     );
   };

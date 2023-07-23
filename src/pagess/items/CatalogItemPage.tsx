@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Carousel from "react-material-ui-carousel";
-import { ShippingItems, Status } from "../../redux/types";
+import { ShippingItems, Status, IReview } from "../../redux/types";
 
 import { Box, Button, Rating, Typography } from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
@@ -9,6 +9,9 @@ import { addBasketItem } from "../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../redux/basket/basketSlice";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
+import Review from "../../componentss/Review";
+import ReviewForm from "../../componentss/ReviewForm";
+import { getItemReviews } from "../../redux/review/asyncActions";
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
@@ -16,6 +19,8 @@ export const ItemPage = () => {
 
   const { status, itemCurrent } = useAppSelector((state) => state.home);
   const { user } = useAppSelector((state) => state.user);
+  const { reviews, status_review} = useAppSelector(state => state.review);
+
   const { itemsAmount } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Unhandled error");
@@ -28,9 +33,11 @@ export const ItemPage = () => {
     setOpenInfo(true);
   }
 
-  /*  React.useEffect(() => {
-    dispatch(getItemById(props.id))
-  }, []) */
+   React.useEffect(() => {
+    dispatch(getItemReviews(itemCurrent._id))
+  }, [dispatch])
+
+
 
   function basketItem_APPEND() {
     if (user.authorized === true) {
@@ -64,14 +71,13 @@ export const ItemPage = () => {
   const Item = () => {
     return (
       <>
-
-          <Button
-            sx={{ fontFamily: "Comfortaa", marginTop: 15, fontSize: 15 }}
-            onClick={() => navigate("/catalog")}
-            variant="contained"
-          >
-            Каталог
-          </Button>
+        <Button
+          sx={{ fontFamily: "Comfortaa", marginTop: 15, fontSize: 15 }}
+          onClick={() => navigate("/catalog")}
+          variant="contained"
+        >
+          Каталог
+        </Button>
 
         <Box
           width={"100%"}
@@ -223,6 +229,26 @@ export const ItemPage = () => {
               Продовжити покупки
             </Button>
           </Box>
+          <Box paddingTop={10}>
+            <Typography
+              fontFamily={"Comfortaa"}
+              sx={{ textAlign: "center" }}
+              fontSize={25}
+            >
+              Відгуки
+            </Typography>
+            <ReviewForm itemId = {itemCurrent._id}/>
+            <Box>
+              {
+                status_review === 'success' 
+                ? reviews.reviews.map((review) => {
+                  return (<Review {...review}/>)
+                })
+                : ''
+              }
+
+            </Box>
+          </Box>
         </Box>
         <InfoDialog
           openInfo={openInfo}
@@ -233,7 +259,7 @@ export const ItemPage = () => {
     );
   };
 
-  function StatusHandler(status: Status) {
+  function StatusItemHandler(status: Status) {
     switch (status) {
       case "success":
         console.log("ITEM_CURRENT " + itemCurrent);
@@ -254,7 +280,7 @@ export const ItemPage = () => {
     }
   }
 
-  return StatusHandler(status);
+  return StatusItemHandler(status);
 };
 
 export default ItemPage;
