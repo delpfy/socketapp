@@ -38,7 +38,14 @@ export const ItemPage = () => {
     window.scrollTo(0, 0);
   }, [dispatch])
 
-  
+  function adjustPrice(){
+    if(itemCurrent.sale === 0){
+      return itemCurrent.price
+    }
+    else{
+      return itemCurrent.price - Math.round((itemCurrent.price * itemCurrent.sale) / 100)
+    }
+  }
 
   function basketItem_APPEND() {
     if (user.authorized === true) {
@@ -48,7 +55,7 @@ export const ItemPage = () => {
           name: itemCurrent.name,
           description: itemCurrent.description,
           category: itemCurrent.category,
-          price: itemCurrent.price,
+          price: adjustPrice(),
           sale: itemCurrent.sale,
           rating: itemCurrent.rating,
           image: itemCurrent.image,

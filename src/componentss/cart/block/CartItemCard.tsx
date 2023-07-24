@@ -55,6 +55,15 @@ export const BasketItemBlock = (props: ShippingItems) => {
     }
   }
 
+  function adjustPrice(){
+    if(props.sale === 0){
+      return props.price
+    }
+    else{
+      return props.price - Math.round((props.price * props.sale) / 100)
+    }
+  }
+
   async function basketItem_APPEND() {
     await dispatch(
       addBasketItem({
@@ -62,7 +71,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         name: props.name,
         description: props.description,
         category: props.category,
-        price: props.price,
+        price: adjustPrice(),
         sale: props.sale,
         rating: props.rating,
         image: props.image,
@@ -80,7 +89,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         name: props.name,
         description: props.description,
         category: props.category,
-        price: props.price,
+        price: adjustPrice(),
         sale: props.price,
         rating: props.rating,
         image: props.image,
@@ -98,7 +107,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         name: props.name,
         description: props.description,
         category: props.category,
-        price: props.price,
+        price: adjustPrice(),
         sale: props.sale,
         rating: props.rating,
         image: props.image,
