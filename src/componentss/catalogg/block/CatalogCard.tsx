@@ -77,7 +77,7 @@ export default function CatalogCard(props: Items) {
       return props.price
     }
     else{
-      return props.price - Math.round((props.price * props.sale) / 100)
+      return (props.price - Math.round((props.price * props.sale) / 100))
     }
   }
 

@@ -43,7 +43,7 @@ export const ItemPage = () => {
       return itemCurrent.price
     }
     else{
-      return itemCurrent.price - Math.round((itemCurrent.price * itemCurrent.sale) / 100)
+      return (itemCurrent.price - Math.round((itemCurrent.price * itemCurrent.sale) / 100))
     }
   }
 
