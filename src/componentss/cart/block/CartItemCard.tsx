@@ -55,14 +55,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
     }
   }
 
-  function adjustPrice(){
-    if(props.sale === 0){
-      return props.price
-    }
-    else{
-      return (props.price - Math.round((props.price * props.sale) / 100))
-    }
-  }
+
 
   async function basketItem_APPEND() {
     await dispatch(
@@ -71,7 +64,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         name: props.name,
         description: props.description,
         category: props.category,
-        price: adjustPrice(),
+        price: props.price,
         sale: props.sale,
         rating: props.rating,
         image: props.image,
@@ -89,7 +82,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         name: props.name,
         description: props.description,
         category: props.category,
-        price: adjustPrice(),
+        price: props.price,
         sale: props.price,
         rating: props.rating,
         image: props.image,
@@ -107,7 +100,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         name: props.name,
         description: props.description,
         category: props.category,
-        price: adjustPrice(),
+        price: props.price,
         sale: props.sale,
         rating: props.rating,
         image: props.image,
@@ -185,35 +178,19 @@ export const BasketItemBlock = (props: ShippingItems) => {
               justifyContent={"space-between"}
               flexDirection={"row"}
             >
-              <Typography
-                paddingLeft={0.3}
-                fontFamily={"Comfortaa"}
-                color={props.sale ? "info" : "error"}
-                sx={
-                  props.sale
-                    ? {
-                        fontSize: 17,
-                        textDecoration: "line-through !important",
-                      }
-                    : { fontSize: 22 }
-                }
-              >
-                {props.price}₴
-              </Typography>
-              {
-              props.sale 
-              ? 
+              
+                
+              
+             
                 <Typography
                   paddingLeft={0.3}
                   fontSize={22}
                   fontFamily={"Comfortaa"}
                   color={"error"}
                 >
-                  {props.price - Math.round((props.price * props.sale) / 100)}₴
+                  {props.price }₴
                 </Typography>
-               : 
-                <></>
-              }
+              
             </Box>
 
             <Rating name="read-only" value={props.rating} readOnly />
