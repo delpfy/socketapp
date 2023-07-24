@@ -72,6 +72,14 @@ export default function CatalogCard(props: Items) {
     }
   }
 
+  function adjustPrice(){
+    if(props.sale === 0){
+      return props.price
+    }
+    else{
+      return (props.price - Math.round((props.price * props.sale) / 100))
+    }
+  }
 
   // Chech auth, if authorized - add and changing active state.
   function basketItem_APPEND() {
@@ -83,7 +91,7 @@ export default function CatalogCard(props: Items) {
           name: props.name,
           description: props.description,
           category: props.category,
-          price: props.price,
+          price: adjustPrice(),
           sale: props.sale,
           rating: props.rating,
           image: props.image,
