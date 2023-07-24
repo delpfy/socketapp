@@ -70,9 +70,9 @@ export default function LoginDialog({
       return;
     }
 
-    if (fullName.length < 3) {
+    if (fullName.length < 3 || fullName.length > 20) {
       openErrorDialog(true);
-      setErrorMessage("Ім'я має бути завдовжки мінімум 3 символа");
+      setErrorMessage("Ім'я має бути завдовжки мінімум 3 символа та максимум 20");
       return;
     }
 
@@ -94,7 +94,7 @@ export default function LoginDialog({
       dispatch(
         Register({
           email: email,
-          fullName: fullName,
+          fullName: fullName.replace(/\s+/g, ' '),
           role: role,
           password: password,
           avatarUrl: '',

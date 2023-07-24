@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Carousel from "react-material-ui-carousel";
-import { ShippingItems, Status, IReview } from "../../redux/types";
+import { IReviewGET, ShippingItems, Status } from "../../redux/types";
 
 import { Box, Button, Rating, Typography } from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
@@ -11,7 +11,8 @@ import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
 import Review from "../../componentss/Review";
 import ReviewForm from "../../componentss/ReviewForm";
-import { getItemReviews } from "../../redux/review/asyncActions";
+import { getItemReviews, updateReview } from "../../redux/review/asyncActions";
+import { set_status_PROCESS_review } from "../../redux/review/reviewSlice";
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +20,7 @@ export const ItemPage = () => {
 
   const { status, itemCurrent } = useAppSelector((state) => state.home);
   const { user } = useAppSelector((state) => state.user);
-  const { reviews, status_review} = useAppSelector(state => state.review);
+  const { reviews, status_review, status_PROCESS_review} = useAppSelector(state => state.review);
 
   const { itemsAmount } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);
@@ -33,11 +34,11 @@ export const ItemPage = () => {
     setOpenInfo(true);
   }
 
-   React.useEffect(() => {
-    dispatch(getItemReviews(itemCurrent._id))
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
   }, [dispatch])
 
-
+  
 
   function basketItem_APPEND() {
     if (user.authorized === true) {
@@ -64,9 +65,8 @@ export const ItemPage = () => {
     }
   }
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  
+
 
   const Item = () => {
     return (
@@ -240,11 +240,7 @@ export const ItemPage = () => {
             <ReviewForm itemId = {itemCurrent._id}/>
             <Box>
               {
-                status_review === 'success' 
-                ? reviews.reviews.map((review) => {
-                  return (<Review {...review}/>)
-                })
-                : ''
+                StatusReviewHandler(status_review)
               }
 
             </Box>
@@ -258,6 +254,30 @@ export const ItemPage = () => {
       </>
     );
   };
+
+  function StatusReviewHandler(status_review: Status) {
+    switch (status_review) {
+      case "success":
+        console.log("StatusReviewHandler success")
+        if (reviews !== undefined) {
+          return (reviews.reviews.map((review) => {
+            return (<Review {...review}/>)
+          }));
+        } else {
+          console.log("StatusReviewHandler else")
+          return ''
+        }
+      case "pending":
+        console.log("StatusReviewHandler pending")
+        return ''
+      case "error":
+        console.log("StatusReviewHandler error")
+        return ''
+      default:
+        console.log("StatusReviewHandler default")
+        return ''
+  }
+}
 
   function StatusItemHandler(status: Status) {
     switch (status) {

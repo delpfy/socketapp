@@ -11,18 +11,33 @@ export type ShippingItemDisplay = {
   items: ShippingItems;
 };
 export type ReviewsDisplay = {
-  reviews: IReview[];
+  reviews: IReviewGET[];
 };
 export type UserDisplay = {
   user: User;
 };
 
-export type IReview = {
+export type IReviewGET = {
+  _id: string,
   item: string,
+  user: string,
+  userName: string,
   description: string,
   rating: number,
   advantages: string,
-  disadvantages: string
+  disadvantages: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type IReviewPOST = {
+  _id: string
+  item: string,
+  userName: string,
+  description: string,
+  rating: number,
+  advantages: string,
+  disadvantages: string,
 };
 
 export type Items = {

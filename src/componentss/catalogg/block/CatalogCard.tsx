@@ -24,11 +24,12 @@ import { SetItemsAmount } from "../../../redux/basket/basketSlice";
 import InfoDialog from "../../dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
+import { getItemReviews, updateReview } from "../../../redux/review/asyncActions";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
   const { itemsAmount } = useAppSelector((state) => state.basket);
-
+  const {reviews, status_review} = useAppSelector((state) => state.review);
   const [open, setOpen] = React.useState<boolean>(false);
 
   const [openInfo, setOpenInfo] = React.useState(false);
@@ -45,8 +46,11 @@ export default function CatalogCard(props: Items) {
     setOpenInfo(false);
   }
 
+
+
   function getCurrentItem() {
     dispatch(setCurrentItem(props));
+    dispatch(getItemReviews(props._id))
     navigate("/catalog/item");
 
     const recentlyReviewed = JSON.parse(
@@ -71,6 +75,7 @@ export default function CatalogCard(props: Items) {
   // Chech auth, if authorized - add and changing active state.
   function basketItem_APPEND() {
     if (user.authorized === true) {
+      console.log("sale: " + props.sale)
       dispatch(
         addBasketItem({
           _id: user.id,

@@ -9,15 +9,22 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material";
-import React, {  useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import LogoutDialog from "../../componentss/dialogs/LogoutDialog";
 import ErrorDialog from "../../componentss/dialogs/ErrorDialog";
-import { Update, UploadAvatar, checkAuthorization } from "../../redux/user/asyncActions";
+import {
+  Update,
+  UploadAvatar,
+  checkAuthorization,
+} from "../../redux/user/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import axios from "axios";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { getItemReviews, updateAllUserReviews, updateReview } from "../../redux/review/asyncActions";
+import { IReviewGET } from "../../redux/types";
+import { set_status_PROCESS_review } from "../../redux/review/reviewSlice";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
@@ -36,7 +43,6 @@ export default function User() {
   const [openLogout, setOpenLogout] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
-  
 
   const avatarFileRef = useRef<HTMLInputElement | null>(null);
 
@@ -62,38 +68,35 @@ export default function User() {
     setOpenInfo(true);
   }
 
-  async function handleImageChange(e: any){
+  async function handleImageChange(e: any) {
     setImage(e.target.files[0]);
     try {
-
       const formData = new FormData();
-      formData.append('image', e.target.files[0])
-      dispatch(UploadAvatar(formData))
-
-      
+      formData.append("image", e.target.files[0]);
+      dispatch(UploadAvatar(formData));
     } catch (error: any) {
       openErrorDialog();
       setErrorMessage(error.message);
     }
-
   }
 
-  function handleClickShowPassword (){
+  function handleClickShowPassword() {
     setPassVisible((passVisible) => !passVisible);
-  } 
-
+  }
 
   function validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
 
-  function handleUserChanges() {
-    
+ 
 
-    if (fullName.length < 3) {
+  function handleUserChanges() {
+    if (fullName.length < 3 || fullName.length > 20) {
       openErrorDialog();
-      setErrorMessage("Ім'я має бути завдовжки мінімум 3 символа");
+      setErrorMessage(
+        "Ім'я має бути завдовжки мінімум 3 символа та максимум 20"
+      );
       return;
     }
 
@@ -110,20 +113,24 @@ export default function User() {
     }
 
     try {
-      dispatch(Update(
-        {
+      dispatch(
+        Update({
           email: email,
-          fullName: fullName,
+          fullName: fullName.replace(/\s+/g, " "),
           role: user.role,
           password: password,
           avatarUrl: image,
-        }
-      )).then((result: any) => {
+        })
+      ).then((result: any) => {
         console.log("result.status " + result.meta.requestStatus);
         if (result.meta.requestStatus === "fulfilled") {
+          console.log("fullName.replace()" + fullName.replace(/\s+/g, " "));
+          dispatch(updateAllUserReviews({userName: fullName.replace(/\s+/g, " ")}));
           openInfoDialog();
           setInfoMessage("Дані було оновлено");
-          dispatch(checkAuthorization())
+          dispatch(checkAuthorization());
+          
+          
         } else if (result.meta.requestStatus === "rejected") {
           openErrorDialog();
           setErrorMessage("Схоже при оновленні данних виникла помилка");
@@ -133,11 +140,10 @@ export default function User() {
       openErrorDialog();
       setErrorMessage(error);
     }
-    
   }
 
-  function handleLoadImageClick(){
-    if(avatarFileRef.current){
+  function handleLoadImageClick() {
+    if (avatarFileRef.current) {
       avatarFileRef.current.click();
     }
   }
@@ -153,15 +159,31 @@ export default function User() {
         </Typography>
 
         <Box padding={3}>
-          <Box padding={3} display={'flex'} alignItems={'center'} flexDirection={'column'} height={200} justifyContent={'space-around'}>
-            {
-              user.avatar === undefined 
-              ? <Avatar sx = {{width: 100, height: 100}}/>
-              : <img src={user.avatar} alt="user_avatar" style = {{width: 100, height: 100}} />
-              
-            }
-            
-            <input hidden  ref = {avatarFileRef} color='warning' type="file" onChange={handleImageChange} />
+          <Box
+            padding={3}
+            display={"flex"}
+            alignItems={"center"}
+            flexDirection={"column"}
+            height={200}
+            justifyContent={"space-around"}
+          >
+            {user.avatar === undefined ? (
+              <Avatar sx={{ width: 100, height: 100 }} />
+            ) : (
+              <img
+                src={user.avatar}
+                alt="user_avatar"
+                style={{ width: 100, height: 100 }}
+              />
+            )}
+
+            <input
+              hidden
+              ref={avatarFileRef}
+              color="warning"
+              type="file"
+              onChange={handleImageChange}
+            />
             <Button
               color="warning"
               variant="contained"
@@ -173,12 +195,15 @@ export default function User() {
           </Box>
           <Box padding={3}>
             <InputLabel>Iм'я</InputLabel>
-            <Input value={fullName} onChange={(e) => setFullName(e.target.value)} />
+            <Input
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+            />
             <FormHelperText sx={{ fontSize: 15 }}>
               Наразі ви - {user.name}
             </FormHelperText>
           </Box>
-          
+
           <Box padding={3}>
             <InputLabel>Пошта</InputLabel>
             <Input value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -187,11 +212,10 @@ export default function User() {
             </FormHelperText>
           </Box>
           <Box padding={3}>
-            <InputLabel >Пароль</InputLabel>
+            <InputLabel>Пароль</InputLabel>
             <Input
-            
               value={password}
-              type = {passVisible ? 'password' : 'text'}
+              type={passVisible ? "password" : "text"}
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
@@ -249,10 +273,10 @@ export default function User() {
           errorMessage={errorMessage}
         />
         <InfoDialog
-        openInfo={openInfo}
-        closeInfoDialog={closeInfoDialog}
-        infoMessage={infoMessage}
-      />
+          openInfo={openInfo}
+          closeInfoDialog={closeInfoDialog}
+          infoMessage={infoMessage}
+        />
       </Box>
     </>
   );

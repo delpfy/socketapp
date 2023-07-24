@@ -1,16 +1,18 @@
 import { Box, Button, Rating, TextField, Typography } from "@mui/material";
 import { useState } from "react";
-import { useAppDispatch } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { checkAuthorization } from "../redux/user/asyncActions";
 import { createReview, getItemReviews } from "../redux/review/asyncActions";
 import ErrorDialog from "./dialogs/ErrorDialog";
 import InfoDialog from "./dialogs/InfoDialog";
 
 type ReviewFormProps = {
-  itemId: string
-}
+  itemId: string;
+};
 
-export default function ReviewForm({itemId}: ReviewFormProps) {
+export default function ReviewForm({ itemId }: ReviewFormProps) {
+  const { user } = useAppSelector((state) => state.user);
+
   const [description, setDescription] = useState<string>("");
   const [advantages, setAdvantages] = useState<string>("");
   const [disadvantages, setDisadvantages] = useState<string>("");
@@ -42,44 +44,32 @@ export default function ReviewForm({itemId}: ReviewFormProps) {
     setRating(e.target.value);
   }
 
- 
-
   async function review_POST() {
-    if (description === "") {
-      openErrorDialog();
-      setErrorMessage("Ви не додали опису");
-      return;
-    }
-
     if (rating === 0) {
       openErrorDialog();
-      setErrorMessage("Ви не обрали кількість зірок");
-      return;
-    }
-    if (advantages === "") {
-      openErrorDialog();
-      setErrorMessage("Ви не додали опису переваг");
-      return;
-    }
-    if (disadvantages === "") {
-      openErrorDialog();
-      setErrorMessage("Ви не додали опису недоліків");
+      setErrorMessage("Оберіть кількість зірок");
       return;
     }
 
-    await dispatch(createReview({
-      item: itemId,
-      description: description,
-      rating: rating,
-      advantages: advantages,
-      disadvantages: disadvantages
-    })).then((result: any) => {
+    await dispatch(
+      createReview({
+        _id: "",
+        item: itemId,
+        userName: user.name,
+        description: description.replace(/\s+/g, " "),
+        rating: rating,
+        advantages: advantages.replace(/\s+/g, " "),
+        disadvantages: disadvantages.replace(/\s+/g, " "),
+      })
+    ).then((result: any) => {
       console.log("result.status " + result.meta.requestStatus);
       if (result.meta.requestStatus === "fulfilled") {
+        
         openInfoDialog();
         setInfoMessage("Дякуємо за відгук");
         dispatch(checkAuthorization());
-        dispatch(getItemReviews(itemId))
+        dispatch(getItemReviews(itemId));
+
       } else if (result.meta.requestStatus === "rejected") {
         openErrorDialog();
         setErrorMessage("Схоже при авторизації виникла помилка");

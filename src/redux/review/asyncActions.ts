@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
 import {
-  IReview, ReviewsDisplay,
+  IReviewPOST, ReviewsDisplay,
 } from "../types";
 
 
-export const createReview = createAsyncThunk<"", IReview>(
-  "reviews/create",
+export const createReview = createAsyncThunk<"", IReviewPOST>(
+  "reviews/createReview",
   async (params) => {
     const { data } = await axios.post(`/reviews`, params, {
       headers: {
@@ -16,6 +16,44 @@ export const createReview = createAsyncThunk<"", IReview>(
     return data;
   }
 );
+
+export const updateReview = createAsyncThunk<"", IReviewPOST>(
+  "reviews/updateReview",
+  async (params) => {
+    const { data } = await axios.patch(`/reviews/${params._id}`, params, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
+export const deleteReview = createAsyncThunk<"", {_id: string}>(
+  "reviews/deleteReview",
+  async (item) => {
+    const { data } = await axios.delete(`/reviews/${item._id}`, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
+export const updateAllUserReviews = createAsyncThunk<"", {userName: string}>(
+  "reviews/updateAllUserReviews",
+  async (params) => {
+    const { data } = await axios.patch(`/reviews/user/...`, params, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
+
 
 export const getItemReviews = createAsyncThunk<ReviewsDisplay, string>(
   "reviews/getItemReviews",
