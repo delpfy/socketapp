@@ -123,7 +123,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
       >
         {props.sale ? (
           <img
-            style={{ position: "absolute", paddingBottom: 425, zIndex: 2, height: 70, width: 70 }}
+            style={{ position: "absolute", marginBottom: 425, zIndex: 2, height: 70, width: 70 }}
             src="https://www.svgrepo.com/show/250306/percentage-percent.svg"
             alt=""
           />
@@ -247,15 +247,15 @@ export const BasketItemBlock = (props: ShippingItems) => {
             alignItems={"flex-end"}
             flexDirection={"row"}
           >
-            <IconButton onClick={basketItem_APPEND}>
-              <AddCircleIcon color="info" sx={{ width: 40, height: 40 }} />
+            <IconButton onClick={basketItem_APPEND}  >
+              <AddCircleIcon color="info"  sx={{ width: 40, height: 40 }}/>
             </IconButton>
-            <IconButton onClick={basketItem_REDUCE}>
-              <RemoveCircleIcon color="info" sx={{ width: 40, height: 40 }} />
+            <IconButton onClick={basketItem_REDUCE} >
+              <RemoveCircleIcon color="info"  sx={{ width: 40, height: 40 }} />
             </IconButton>
           </Box>
 
-          <IconButton onClick={basketItem_DELETE}>
+          <IconButton onClick={basketItem_DELETE} >
             <DeleteForeverIcon color="error" sx={{ width: 40, height: 40 }} />
           </IconButton>
         </Box>
