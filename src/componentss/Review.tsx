@@ -91,6 +91,7 @@ export default function Review(props: IReviewGET) {
   }
 
   function handleDeleteCall() {
+    
     dispatch(deleteReview({ _id: props._id })).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(setTotalRating({prevStars: props.rating, stars: props.rating, func: 'reduce'}))

@@ -8,7 +8,6 @@ import {
   updateReview,
 } from "./asyncActions";
 
-
 const reviewSlice = createSlice({
   name: "reviews",
   initialState: {
@@ -37,44 +36,55 @@ const reviewSlice = createSlice({
       state,
       action: PayloadAction<{ prevStars: number; stars: number; func: string }>
     ) {
-    
       switch (action.payload.func) {
         case "append":
           state.item_reviewsAmount += 1;
           state.item_ratingAmount += parseInt(action.payload.stars.toString());
-          state.item_totalRating = Math.round(parseInt(state.item_ratingAmount.toString()) / state.item_reviewsAmount);
-        
+          state.item_totalRating = Math.round(
+            parseInt(state.item_ratingAmount.toString()) /
+              state.item_reviewsAmount
+          );
+
           break;
         case "reduce":
           state.item_reviewsAmount -= 1;
           state.item_ratingAmount -= parseInt(action.payload.stars.toString());
-          state.item_totalRating = Math.round(parseInt(state.item_ratingAmount.toString()) / state.item_reviewsAmount);
-          if(state.item_ratingAmount === 0 && state.item_reviewsAmount === 0){
+          state.item_totalRating = Math.round(
+            parseInt(state.item_ratingAmount.toString()) /
+              state.item_reviewsAmount
+          );
+          if (state.item_ratingAmount === 0 && state.item_reviewsAmount === 0) {
             state.item_totalRating = 0;
           }
+
           break;
         case "change":
-          state.item_ratingAmount -= parseInt(action.payload.prevStars.toString());
+          state.item_ratingAmount -= parseInt(
+            action.payload.prevStars.toString()
+          );
           state.item_ratingAmount += parseInt(action.payload.stars.toString());
-          state.item_totalRating = Math.round(parseInt(state.item_ratingAmount.toString()) / state.item_reviewsAmount);
-        
+          state.item_totalRating = Math.round(
+            parseInt(state.item_ratingAmount.toString()) /
+              state.item_reviewsAmount
+          );
+
           break;
       }
-       console.log("item_totalRating " + state.item_totalRating)
     },
 
-    setRatingAmount(state,
-      action: PayloadAction<number>){
-        state.item_ratingAmount = action.payload;
-        console.log(" item_ratingAmount " + action.payload )
+    nullifyTotalRating(state) {
+      state.item_totalRating = 0;
     },
 
-    setReviewsAmount(state,
-      action: PayloadAction<number>){
-        state.item_reviewsAmount = action.payload;
-        console.log(" item_reviewsAmount " + action.payload )
-    }
+    setRatingAmount(state, action: PayloadAction<number>) {
+      state.item_ratingAmount = action.payload;
+      console.log(" item_ratingAmount " + action.payload);
+    },
 
+    setReviewsAmount(state, action: PayloadAction<number>) {
+      state.item_reviewsAmount = action.payload;
+      console.log(" item_reviewsAmount " + action.payload);
+    },
   },
   extraReducers: (builder) => {
     // Post review.
@@ -123,5 +133,10 @@ const reviewSlice = createSlice({
   },
 });
 
-export const { setTotalRating, setRatingAmount, setReviewsAmount } = reviewSlice.actions;
+export const {
+  setTotalRating,
+  setRatingAmount,
+  setReviewsAmount,
+  nullifyTotalRating,
+} = reviewSlice.actions;
 export default reviewSlice.reducer;

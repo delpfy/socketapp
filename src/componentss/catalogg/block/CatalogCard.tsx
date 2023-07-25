@@ -47,12 +47,34 @@ export default function CatalogCard(props: Items) {
   }
 
 
+  function compareObjects(obj1: any, obj2: any) {
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
+      throw new Error('Both parameters should be non-null objects.');
+    }
+  
+    console.log("obj1.name " + obj1.name)
+    console.log("obj2.name " + obj2.name)
+    
+    for (const key in obj1) {
+      console.log("KEY" + key)
+      if (obj1.hasOwnProperty(key)) {
+        if (obj1[key] !== obj2[key]) {
+          console.log("obj2[key] 1" + obj2[key])
+          obj2[key] = obj1[key];
+          console.log("obj2[key] 2" + obj2[key])
+        }
+      }
+    }
+  
+    for (const key in obj2) {
+      if (obj2.hasOwnProperty(key) && !obj1.hasOwnProperty(key)) {
+        delete obj2[key];
+      }
+    }
+  
+  }
 
-  function getCurrentItem() {
-    dispatch(setCurrentItem(props));
-    dispatch(getItemReviews(props._id))
-    navigate("/catalog/item");
-
+  function setAsRecentlyReviewed(){
     const recentlyReviewed = JSON.parse(
       localStorage.getItem("recentlyReviewed") || "{}"
     );
@@ -64,12 +86,24 @@ export default function CatalogCard(props: Items) {
 
       if (itemIndex === -1) {
         recentlyReviewed.push(props);
-        localStorage.setItem(
-          "recentlyReviewed",
-          JSON.stringify(recentlyReviewed)
-        );
       }
+      else{
+        compareObjects(props, recentlyReviewed[itemIndex])
+      }
+      localStorage.setItem(
+        "recentlyReviewed",
+        JSON.stringify(recentlyReviewed)
+      );
     }
+  }
+
+
+  function getCurrentItem() {
+    dispatch(setCurrentItem(props));
+    dispatch(getItemReviews(props._id))
+    navigate("/catalog/item");
+    setAsRecentlyReviewed();
+    
   }
 
   function adjustPrice(){

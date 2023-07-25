@@ -264,9 +264,12 @@ export const ItemPage = () => {
       case "success":
         if (reviews !== undefined) {
           let countRatingAmount = 0;
-          dispatch(setReviewsAmount(reviews.reviews.length));
+          dispatch(setReviewsAmount(parseInt(reviews.reviews.length.toString())));
+          if(reviews.reviews.length === 0){
+            dispatch(setRatingAmount(0));
+          }
           return (reviews.reviews.map((review, index) => {
-            countRatingAmount += review.rating;
+            countRatingAmount = parseInt(countRatingAmount.toString()) + parseInt(review.rating.toString());
             if(index === reviews.reviews.length-1){
               dispatch(setRatingAmount(countRatingAmount));
             }

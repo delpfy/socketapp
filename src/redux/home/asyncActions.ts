@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { ItemDisplay, ItemsDisplay } from "../types";
+import { ItemDisplay, Items, ItemsDisplay } from "../types";
 
 export const getAllItems = createAsyncThunk<ItemsDisplay>(
   "home/getAllItems",
@@ -20,10 +20,10 @@ export const getItemsByCategory = createAsyncThunk<ItemsDisplay, string>(
   }
 );
 
-export const getItemById = createAsyncThunk<ItemDisplay, string>(
+export const getItemById = createAsyncThunk<Items, string>(
   "home/getItemById",
   async (params) => {
-    const { data } = await axios.get<ItemDisplay>(`/items/${params}`);
+    const { data } = await axios.get<Items>(`/items/${params}`);
     return data;
   }
 );

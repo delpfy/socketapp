@@ -5,7 +5,7 @@ import { checkAuthorization } from "../redux/user/asyncActions";
 import { createReview, getItemReviews } from "../redux/review/asyncActions";
 import ErrorDialog from "./dialogs/ErrorDialog";
 import InfoDialog from "./dialogs/InfoDialog";
-import { setTotalRating } from "../redux/review/reviewSlice";
+import { nullifyTotalRating, setTotalRating } from "../redux/review/reviewSlice";
 import { updateItem } from "../redux/home/asyncActions";
 
 type ReviewFormProps = {
@@ -51,10 +51,12 @@ export default function ReviewForm({ itemId }: ReviewFormProps) {
     if(item_totalRating !== 0){
       dispatch(updateItem({itemId: itemId, params: {rating: item_totalRating, reviewsAmount: item_reviewsAmount}}))
     }
+    dispatch(nullifyTotalRating());
   }, [item_totalRating])
  
 
   async function review_POST() {
+    
     if (rating === 0) {
       openErrorDialog();
       setErrorMessage("Оберіть кількість зірок");
