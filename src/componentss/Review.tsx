@@ -23,7 +23,6 @@ import { updateItem } from "../redux/home/asyncActions";
 
 export default function Review(props: IReviewGET) {
   const { user } = useAppSelector((state) => state.user);
-  const { item_totalRating, item_reviewsAmount } = useAppSelector((state) => state.review);
   const [editMode, setEditMode] = useState(false);
 
   const [description, setDescription] = useState<string>(props.description);

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { ItemDisplay, Items, ItemsDisplay } from "../types";
+import { ItemDisplay, Items, ItemsDisplay, ShippingItems, ShippingItemsDisplay } from "../types";
 
 export const getAllItems = createAsyncThunk<ItemsDisplay>(
   "home/getAllItems",
@@ -28,10 +28,10 @@ export const getItemById = createAsyncThunk<Items, string>(
   }
 );
 
-export const updateItem = createAsyncThunk<"", {itemId: string, params: {}}>(
+export const updateItem = createAsyncThunk<{item: Items} | {item: ShippingItems}, {itemId: string, params: {}}>(
   "home/updateItem",
   async (params) => {
-    const { data } = await axios.patch(`/items/${params.itemId}`, params.params, {
+    const { data } = await axios.patch<{item: Items} | {item: ShippingItems}>(`/items/${params.itemId}`, params.params, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
       },

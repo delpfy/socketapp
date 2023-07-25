@@ -29,6 +29,7 @@ const reviewSlice = createSlice({
     item_reviewsAmount: 0,
     item_ratingAmount: 0,
     item_totalRating: 0,
+    item_noMoreReviews: false
   },
 
   reducers: {
@@ -53,8 +54,11 @@ const reviewSlice = createSlice({
             parseInt(state.item_ratingAmount.toString()) /
               state.item_reviewsAmount
           );
+          console.log("state.item_ratingAmount " + state.item_ratingAmount)
+          console.log("state.item_reviewsAmount " + state.item_reviewsAmount)
           if (state.item_ratingAmount === 0 && state.item_reviewsAmount === 0) {
             state.item_totalRating = 0;
+            state.item_noMoreReviews = true;
           }
 
           break;
@@ -74,6 +78,10 @@ const reviewSlice = createSlice({
 
     nullifyTotalRating(state) {
       state.item_totalRating = 0;
+    },
+
+    disableNoMoreReviews(state){
+      state.item_noMoreReviews = false;
     },
 
     setRatingAmount(state, action: PayloadAction<number>) {
@@ -138,5 +146,6 @@ export const {
   setRatingAmount,
   setReviewsAmount,
   nullifyTotalRating,
+  disableNoMoreReviews,
 } = reviewSlice.actions;
 export default reviewSlice.reducer;

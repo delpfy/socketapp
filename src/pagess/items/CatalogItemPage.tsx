@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Carousel from "react-material-ui-carousel";
 import { IReviewGET, ShippingItems, Status } from "../../redux/types";
 
-import { Box, Button, Rating, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Rating, Typography } from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
 import { addBasketItem } from "../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../redux/basket/basketSlice";
@@ -241,7 +241,7 @@ export const ItemPage = () => {
             >
               Відгуки
             </Typography>
-            <ReviewForm itemId = {itemCurrent._id}/>
+            <ReviewForm {...itemCurrent}/>
             <Box>
               {
                 StatusReviewHandler(status_review)
@@ -278,14 +278,21 @@ export const ItemPage = () => {
           
         } else {
 
-          return ''
+          return (<Typography fontFamily={"Comfortaa"} fontSize={20}>
+          Пусто...
+        </Typography>)
         }
       case "pending":
+        <CircularProgress />
         return ''
       case "error":
-        return ''
+        return (<Typography fontFamily={"Comfortaa"} fontSize={20}>
+        Пусто...
+      </Typography>)
       default:
-        return ''
+        return (<Typography fontFamily={"Comfortaa"} fontSize={20}>
+        Пусто...
+      </Typography>)
   }
 }
 

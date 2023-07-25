@@ -5,16 +5,24 @@ import { checkAuthorization } from "../redux/user/asyncActions";
 import { createReview, getItemReviews } from "../redux/review/asyncActions";
 import ErrorDialog from "./dialogs/ErrorDialog";
 import InfoDialog from "./dialogs/InfoDialog";
-import { nullifyTotalRating, setTotalRating } from "../redux/review/reviewSlice";
+import {
+  disableNoMoreReviews,
+  nullifyTotalRating,
+  setTotalRating,
+} from "../redux/review/reviewSlice";
 import { updateItem } from "../redux/home/asyncActions";
+import { Items, ShippingItems } from "../redux/types";
+import { setCurrentItem } from "../redux/home/homeSlice";
 
 type ReviewFormProps = {
   itemId: string;
 };
 
-export default function ReviewForm({ itemId }: ReviewFormProps) {
+export default function ReviewForm(props: Items | ShippingItems) {
   const { user } = useAppSelector((state) => state.user);
-  const { item_totalRating, item_reviewsAmount, status_PROCESS_item } = useAppSelector((state) => state.review);
+ 
+  const { item_totalRating, item_reviewsAmount, item_noMoreReviews } =
+    useAppSelector((state) => state.review);
 
   const [description, setDescription] = useState<string>("");
   const [advantages, setAdvantages] = useState<string>("");
@@ -48,15 +56,27 @@ export default function ReviewForm({ itemId }: ReviewFormProps) {
   }
 
   useEffect(() => {
-    if(item_totalRating !== 0){
-      dispatch(updateItem({itemId: itemId, params: {rating: item_totalRating, reviewsAmount: item_reviewsAmount}}))
+    console.log("UPDATE")
+    if (item_totalRating !== 0 || item_noMoreReviews) {
+      dispatch(
+        updateItem({
+          itemId: props._id,
+          params: {
+            rating: item_totalRating,
+            reviewsAmount: item_reviewsAmount,
+          },
+        })
+      )
+      dispatch(disableNoMoreReviews());
     }
+
     dispatch(nullifyTotalRating());
-  }, [item_totalRating])
- 
+    
+  }, [item_totalRating]);
+
+
 
   async function review_POST() {
-    
     if (rating === 0) {
       openErrorDialog();
       setErrorMessage("Оберіть кількість зірок");
@@ -66,7 +86,7 @@ export default function ReviewForm({ itemId }: ReviewFormProps) {
     await dispatch(
       createReview({
         _id: "",
-        item: itemId,
+        item: props._id,
         userName: user.name,
         description: description.replace(/\s+/g, " "),
         rating: rating,
@@ -76,19 +96,26 @@ export default function ReviewForm({ itemId }: ReviewFormProps) {
     ).then((result: any) => {
       console.log("result.status " + result.meta.requestStatus);
       if (result.meta.requestStatus === "fulfilled") {
-        
         openInfoDialog();
         setInfoMessage("Дякуємо за відгук");
         dispatch(checkAuthorization());
-        dispatch(getItemReviews(itemId));
-        dispatch(setTotalRating({prevStars: 0, stars: rating, func: 'append'}))
-        
-        
+        dispatch(getItemReviews(props._id));
+        dispatch(
+          setTotalRating({ prevStars: 0, stars: rating, func: "append" })
+        );
       } else if (result.meta.requestStatus === "rejected") {
         openErrorDialog();
         setErrorMessage("Схоже при обробці запиту виникла помилка");
       }
     });
+  }
+
+  function compareObjects(obj1: any, obj2: any) {
+    
+  }
+
+  function setAsRecentlyReviewed() {
+   
   }
 
   return (

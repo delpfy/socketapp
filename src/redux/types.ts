@@ -64,6 +64,8 @@ export type ShippingItems = {
   description: string;
 };
 
+export type CombinedItems = Items | ShippingItems;
+
 export type User = {
   _id: string;
   fullName: string;
