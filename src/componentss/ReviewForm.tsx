@@ -1,10 +1,12 @@
 import { Box, Button, Rating, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { checkAuthorization } from "../redux/user/asyncActions";
 import { createReview, getItemReviews } from "../redux/review/asyncActions";
 import ErrorDialog from "./dialogs/ErrorDialog";
 import InfoDialog from "./dialogs/InfoDialog";
+import { setTotalRating } from "../redux/review/reviewSlice";
+import { updateItem } from "../redux/home/asyncActions";
 
 type ReviewFormProps = {
   itemId: string;
@@ -12,6 +14,7 @@ type ReviewFormProps = {
 
 export default function ReviewForm({ itemId }: ReviewFormProps) {
   const { user } = useAppSelector((state) => state.user);
+  const { item_totalRating, item_reviewsAmount, status_PROCESS_item } = useAppSelector((state) => state.review);
 
   const [description, setDescription] = useState<string>("");
   const [advantages, setAdvantages] = useState<string>("");
@@ -44,6 +47,13 @@ export default function ReviewForm({ itemId }: ReviewFormProps) {
     setRating(e.target.value);
   }
 
+  useEffect(() => {
+    if(item_totalRating !== 0){
+      dispatch(updateItem({itemId: itemId, params: {rating: item_totalRating, reviewsAmount: item_reviewsAmount}}))
+    }
+  }, [item_totalRating])
+ 
+
   async function review_POST() {
     if (rating === 0) {
       openErrorDialog();
@@ -69,10 +79,12 @@ export default function ReviewForm({ itemId }: ReviewFormProps) {
         setInfoMessage("Дякуємо за відгук");
         dispatch(checkAuthorization());
         dispatch(getItemReviews(itemId));
-
+        dispatch(setTotalRating({prevStars: 0, stars: rating, func: 'append'}))
+        
+        
       } else if (result.meta.requestStatus === "rejected") {
         openErrorDialog();
-        setErrorMessage("Схоже при авторизації виникла помилка");
+        setErrorMessage("Схоже при обробці запиту виникла помилка");
       }
     });
   }

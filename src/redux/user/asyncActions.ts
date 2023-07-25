@@ -16,7 +16,6 @@ export const checkAuthorization = createAsyncThunk<UserDisplay>(
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
       },
     });
-    console.log("DATA " + data);
     return data;
   }
 );
@@ -24,7 +23,6 @@ export const checkAuthorization = createAsyncThunk<UserDisplay>(
 export const Update = createAsyncThunk<{ success: string }, UserUpdate>(
   "home/Update",
   async function (params) {
-    console.log("DATA " + 1);
     const { data } = await axios.patch<{ success: string }>(`/update`, params, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -38,7 +36,6 @@ export const Update = createAsyncThunk<{ success: string }, UserUpdate>(
 export const UploadAvatar = createAsyncThunk<{ url: string }, any>(
   "home/UploadAvatar",
   async function (params) {
-    console.log("DATA " + 1);
     const { data } = await axios.post<{ url: string }>(`/upload`, params, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -53,7 +50,7 @@ export const Authorize = createAsyncThunk<
   { success: string; token: string },
   UserLogin
 >("home/Authorize", async function (params) {
-  console.log("DATA " + 1);
+
 
   const { data } = await axios.post<{ success: string; token: string }>(
     `/authorize`,
@@ -66,11 +63,11 @@ export const Register = createAsyncThunk<
   { success: string; token: string },
   UserRegister
 >("home/Register", async function (params) {
-  console.log("DATA " + 1);
+  
   const { data } = await axios.post<{ success: string; token: string }>(
     `/register`,
     params
   );
-  console.log("DATA " + data);
+ 
   return data;
 });

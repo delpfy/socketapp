@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseHome } from "../../utils/InitialiseHome";
 import { ItemsDisplay, HomeState, ShippingItems, Items } from "../types";
-import { getAllItems, getItemsByCategory } from "./asyncActions";
+import { getAllItems, getItemsByCategory, updateItem } from "./asyncActions";
 
 const initialState: HomeState = InitialiseHome();
 
@@ -46,6 +46,16 @@ const homeSlice = createSlice({
       state.status = "error";
       state.itemsCategory = {} as ItemsDisplay;
     });
+
+    // update.
+    builder.addCase(updateItem.fulfilled, (state, action) => {
+    });
+    builder.addCase(updateItem.pending, (state) => {
+    });
+    builder.addCase(updateItem.rejected, (state) => {
+    });
+
+    
 
     /* // Item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {

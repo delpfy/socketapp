@@ -18,9 +18,12 @@ import {
   getItemReviews,
   updateReview,
 } from "../redux/review/asyncActions";
+import { setTotalRating } from "../redux/review/reviewSlice";
+import { updateItem } from "../redux/home/asyncActions";
 
 export default function Review(props: IReviewGET) {
   const { user } = useAppSelector((state) => state.user);
+  const { item_totalRating, item_reviewsAmount } = useAppSelector((state) => state.review);
   const [editMode, setEditMode] = useState(false);
 
   const [description, setDescription] = useState<string>(props.description);
@@ -80,6 +83,8 @@ export default function Review(props: IReviewGET) {
       } as IReviewPOST)
     ).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
+        dispatch(setTotalRating({prevStars: props.rating, stars: rating, func: 'change'}))
+       
         dispatch(getItemReviews(props.item));
       }
     });
@@ -88,9 +93,11 @@ export default function Review(props: IReviewGET) {
   function handleDeleteCall() {
     dispatch(deleteReview({ _id: props._id })).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
+        dispatch(setTotalRating({prevStars: props.rating, stars: props.rating, func: 'reduce'}))
         dispatch(getItemReviews(props.item));
       }
     });
+    
   }
 
   function handleRatingChange(e: any) {

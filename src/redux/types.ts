@@ -47,6 +47,7 @@ export type Items = {
   price: number;
   sale: number;
   rating: number;
+  reviewsAmount: number;
   image: string[];
   description: string;
 };

@@ -24,7 +24,6 @@ const basketSlice = createSlice({
     builder.addCase(getBasketItemsByUser.fulfilled, (state, action) => {
       state.status = 'success';
       state.items = action.payload;
-      console.log("ITEMS ITEMS ITEMS BASKET !!!")
     });
     builder.addCase(getBasketItemsByUser.pending, (state) => {
       state.status = 'pending';
@@ -40,12 +39,10 @@ const basketSlice = createSlice({
     // Post item.
     builder.addCase(addBasketItem.fulfilled, (state, action) => {
       state.status = 'success';
-      console.log("PAYLOAD addBasketItem success " + action.payload)
 
     });
     builder.addCase(addBasketItem.pending, (state, action) => {
       state.status = 'pending';
-      console.log("PAYLOAD addBasketItem pending " + action.payload)
 
     });
     builder.addCase(addBasketItem.rejected, (state, action) => {

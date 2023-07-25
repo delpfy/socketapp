@@ -84,7 +84,6 @@ export default function CatalogCard(props: Items) {
   // Chech auth, if authorized - add and changing active state.
   function basketItem_APPEND() {
     if (user.authorized === true) {
-      console.log("sale: " + props.sale)
       dispatch(
         addBasketItem({
           _id: user.id,

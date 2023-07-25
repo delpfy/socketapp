@@ -24,7 +24,6 @@ import axios from "axios";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { getItemReviews, updateAllUserReviews, updateReview } from "../../redux/review/asyncActions";
 import { IReviewGET } from "../../redux/types";
-import { set_status_PROCESS_review } from "../../redux/review/reviewSlice";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);

@@ -58,10 +58,7 @@ export const updateAllUserReviews = createAsyncThunk<"", {userName: string}>(
 export const getItemReviews = createAsyncThunk<ReviewsDisplay, string>(
   "reviews/getItemReviews",
   async (params) => {
-    console.log("DATA " + 1);
-    console.log("Params " + params); // Here is Id.
     const { data } = await axios.get<ReviewsDisplay>(`/reviews/${params}`);
-    console.log("DATA " + data);
     return data;
   }
 );

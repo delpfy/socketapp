@@ -11,8 +11,8 @@ import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
 import Review from "../../componentss/Review";
 import ReviewForm from "../../componentss/ReviewForm";
-import { getItemReviews, updateReview } from "../../redux/review/asyncActions";
-import { set_status_PROCESS_review } from "../../redux/review/reviewSlice";
+import { setReviewsAmount, setRatingAmount} from "../../redux/review/reviewSlice";
+
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +20,7 @@ export const ItemPage = () => {
 
   const { status, itemCurrent } = useAppSelector((state) => state.home);
   const { user } = useAppSelector((state) => state.user);
-  const { reviews, status_review, status_PROCESS_review} = useAppSelector(state => state.review);
+  const { reviews, status_review, status_PROCESS_item} = useAppSelector(state => state.review);
 
   const { itemsAmount } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);
@@ -72,7 +72,9 @@ export const ItemPage = () => {
     }
   }
 
-  
+  function handleBackToCatalog(){
+    navigate("/catalog")
+  }
 
 
   const Item = () => {
@@ -80,7 +82,7 @@ export const ItemPage = () => {
       <>
         <Button
           sx={{ fontFamily: "Comfortaa", marginTop: 15, fontSize: 15 }}
-          onClick={() => navigate("/catalog")}
+          onClick={handleBackToCatalog}
           variant="contained"
         >
           Каталог
@@ -229,12 +231,7 @@ export const ItemPage = () => {
               Покласти у кошик
             </Button>
 
-            <Button
-              sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-              onClick={() => navigate("/")}
-            >
-              Продовжити покупки
-            </Button>
+
           </Box>
           <Box paddingTop={10}>
             <Typography
@@ -265,23 +262,26 @@ export const ItemPage = () => {
   function StatusReviewHandler(status_review: Status) {
     switch (status_review) {
       case "success":
-        console.log("StatusReviewHandler success")
         if (reviews !== undefined) {
-          return (reviews.reviews.map((review) => {
+          let countRatingAmount = 0;
+          dispatch(setReviewsAmount(reviews.reviews.length));
+          return (reviews.reviews.map((review, index) => {
+            countRatingAmount += review.rating;
+            if(index === reviews.reviews.length-1){
+              dispatch(setRatingAmount(countRatingAmount));
+            }
             return (<Review {...review}/>)
           }));
+          
         } else {
-          console.log("StatusReviewHandler else")
+
           return ''
         }
       case "pending":
-        console.log("StatusReviewHandler pending")
         return ''
       case "error":
-        console.log("StatusReviewHandler error")
         return ''
       default:
-        console.log("StatusReviewHandler default")
         return ''
   }
 }
@@ -289,17 +289,14 @@ export const ItemPage = () => {
   function StatusItemHandler(status: Status) {
     switch (status) {
       case "success":
-        console.log("ITEM_CURRENT " + itemCurrent);
         if (itemCurrent !== undefined) {
           return <Item />;
         } else {
           return <NotFoundPage />;
         }
       case "pending":
-        console.log("ITEM_CURRENT " + itemCurrent);
         return <NotFoundPage />;
       case "error":
-        console.log("ITEM_CURRENT " + itemCurrent);
         return <NotFoundPage />;
       default:
         navigate("/catalog");

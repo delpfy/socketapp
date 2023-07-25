@@ -36,7 +36,6 @@ const userSlice = createSlice({
       state.user.expences = action.payload.user.expences;
       state.user.name = action.payload.user.fullName;
 
-      console.log("USER AUTH");
     });
     
     builder.addCase(checkAuthorization.pending, (state) => {
@@ -51,7 +50,6 @@ const userSlice = createSlice({
       state.user.authorized = true;
       state.token = action.payload.token;
       localStorage.setItem("token", action.payload.token);
-      console.log("ACTION " + action.payload.success)
     });
     builder.addCase(Authorize.pending, (state) => {
       state.user.authorized = false;
