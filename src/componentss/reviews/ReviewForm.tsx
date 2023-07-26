@@ -1,18 +1,18 @@
 import { Box, Button, Rating, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { checkAuthorization } from "../redux/user/asyncActions";
-import { createReview, getItemReviews } from "../redux/review/asyncActions";
-import ErrorDialog from "./dialogs/ErrorDialog";
-import InfoDialog from "./dialogs/InfoDialog";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { checkAuthorization } from "../../redux/user/asyncActions";
+import { createReview, getItemReviews } from "../../redux/review/asyncActions";
+import ErrorDialog from "../dialogs/ErrorDialog";
+import InfoDialog from "../dialogs/InfoDialog";
 import {
   disableNoMoreReviews,
   nullifyTotalRating,
   setTotalRating,
-} from "../redux/review/reviewSlice";
-import { updateItem } from "../redux/home/asyncActions";
-import { Items, ShippingItems } from "../redux/types";
-import { setCurrentItem } from "../redux/home/homeSlice";
+} from "../../redux/review/reviewSlice";
+import { updateItem } from "../../redux/home/asyncActions";
+import { Items, ShippingItems } from "../../redux/types";
+import { setCurrentItem } from "../../redux/home/homeSlice";
 
 type ReviewFormProps = {
   itemId: string;
@@ -90,6 +90,7 @@ export default function ReviewForm(props: Items | ShippingItems) {
         userName: user.name,
         description: description.replace(/\s+/g, " "),
         rating: rating,
+        answers: [],
         advantages: advantages.replace(/\s+/g, " "),
         disadvantages: disadvantages.replace(/\s+/g, " "),
       })

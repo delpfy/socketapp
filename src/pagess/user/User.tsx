@@ -115,7 +115,7 @@ export default function User() {
       dispatch(
         Update({
           email: email,
-          fullName: fullName.replace(/\s+/g, " "),
+          fullName: fullName,
           role: user.role,
           password: password,
           avatarUrl: image,
@@ -196,7 +196,7 @@ export default function User() {
             <InputLabel>Iм'я</InputLabel>
             <Input
               value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              onChange={(e) => setFullName(e.target.value.replace(/\s+/g, " "))}
             />
             <FormHelperText sx={{ fontSize: 15 }}>
               Наразі ви - {user.name}
@@ -205,7 +205,7 @@ export default function User() {
 
           <Box padding={3}>
             <InputLabel>Пошта</InputLabel>
-            <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+            <Input value={email} onChange={(e) => setEmail(e.target.value.replace(/\s+/g, ""))} />
             <FormHelperText sx={{ fontSize: 15 }}>
               Ми ніколи не розголошуватимемо вашу електронну пошту.
             </FormHelperText>

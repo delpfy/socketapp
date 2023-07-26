@@ -24,6 +24,7 @@ export type IReviewGET = {
   userName: string,
   description: string,
   rating: number,
+  answers: IAnswerGET[],
   advantages: string,
   disadvantages: string,
   createdAt: string,
@@ -37,8 +38,11 @@ export type IReviewPOST = {
   description: string,
   rating: number,
   advantages: string,
+  answers: IAnswerPOST[],
   disadvantages: string,
 };
+
+export type CombinedAnswer = IAnswerGET | IAnswerPOST;
 
 export type Items = {
   _id: string;
@@ -65,6 +69,21 @@ export type ShippingItems = {
 };
 
 export type CombinedItems = Items | ShippingItems;
+
+export type IAnswerPOST = {
+  user: string,
+  userName: string,
+  description: string,
+}
+
+export type IAnswerGET = {
+  _id: string,
+  user: string,
+  userName: string,
+  description: string,
+}
+
+
 
 export type User = {
   _id: string;

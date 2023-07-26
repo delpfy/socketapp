@@ -9,8 +9,8 @@ import { addBasketItem } from "../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../redux/basket/basketSlice";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
-import Review from "../../componentss/Review";
-import ReviewForm from "../../componentss/ReviewForm";
+import Review from "../../componentss/reviews/Review";
+import ReviewForm from "../../componentss/reviews/ReviewForm";
 import { setReviewsAmount, setRatingAmount} from "../../redux/review/reviewSlice";
 
 

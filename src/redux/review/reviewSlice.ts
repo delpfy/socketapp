@@ -19,6 +19,7 @@ const reviewSlice = createSlice({
       userName: "",
       description: "",
       rating: 0,
+      answers: [],
       advantages: "",
       disadvantages: "",
       updatedAt: "",
