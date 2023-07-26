@@ -2,24 +2,23 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
 import {
   ShippingItemDisplay,
-  ShippingItems,
-  ShippingItemsDisplay,
+  TShippingItems,
+  TShippingItemsDisplay,
 } from "../types";
 
-export const getAllBasketItems = createAsyncThunk<ShippingItemsDisplay>(
+export const getAllBasketItems = createAsyncThunk<TShippingItemsDisplay>(
   "home/getAllBasketItems",
   async function () {
-    const { data } = await axios.get<ShippingItemsDisplay>(`/basketitems`);
+    const { data } = await axios.get<TShippingItemsDisplay>(`/basketitems`);
     return data;
   }
 );
 
 export const getBasketItemsByUser = createAsyncThunk<
-  ShippingItemsDisplay,
+  TShippingItemsDisplay,
   string
 >("home/getBasketItemsByUser", async (params) => {
-
-  const { data } = await axios.get<ShippingItemsDisplay>(
+  const { data } = await axios.get<TShippingItemsDisplay>(
     `/basketitems/user/${params}`,
     {
       headers: {
@@ -45,7 +44,7 @@ export const getBasketItemById = createAsyncThunk<ShippingItemDisplay, string>(
   }
 );
 
-export const addBasketItem = createAsyncThunk<"", ShippingItems>(
+export const addBasketItem = createAsyncThunk<"", TShippingItems>(
   "home/addBasketItem",
   async (params) => {
     const { data } = await axios.post(`/basketitems`, params, {
@@ -58,11 +57,9 @@ export const addBasketItem = createAsyncThunk<"", ShippingItems>(
   }
 );
 
-export const removeBasketItem = createAsyncThunk<"", ShippingItems>(
+export const removeBasketItem = createAsyncThunk<"", TShippingItems>(
   "home/removeBasketItem",
   async (params) => {
-
-
     const { data } = await axios.delete(`/basketitems/${params._id}`, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -72,10 +69,9 @@ export const removeBasketItem = createAsyncThunk<"", ShippingItems>(
   }
 );
 
-export const deleteBasketItem = createAsyncThunk<"", ShippingItems>(
+export const deleteBasketItem = createAsyncThunk<"", TShippingItems>(
   "home/deleteBasketItem",
   async (params) => {
-
     const { data } = await axios.delete(`/basketitems/remove/${params._id}`, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,

@@ -12,11 +12,9 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
-  Input,
   InputAdornment,
   IconButton,
   OutlinedInput,
-  InputLabel,
 } from "@mui/material";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Register } from "../../redux/user/asyncActions";
@@ -25,18 +23,18 @@ import { NullifyToken } from "../../redux/user/userSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 type Props = {
-  openErrorDialog: Dispatch<SetStateAction<any>>;
+  ErrorDialog_open: Dispatch<SetStateAction<any>>;
   setErrorMessage: (message: string) => void;
   openRegister: boolean;
   closeRegisterDialog: () => void;
-  closeRegAfterSuccess: () => void
-  openLoginDialog: () => void;
+  closeRegAfterSuccess: () => void;
+  LoginDialog_open: () => void;
 };
 
 export default function LoginDialog({
-  openErrorDialog,
+  ErrorDialog_open,
   setErrorMessage,
-  openLoginDialog,
+  LoginDialog_open,
   openRegister,
   closeRegisterDialog,
   closeRegAfterSuccess,
@@ -46,7 +44,7 @@ export default function LoginDialog({
   const [role, setRole] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [passVisible, setPassVisible] = useState(true);
-  
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
   };
@@ -65,26 +63,28 @@ export default function LoginDialog({
     password: string
   ) {
     if (!validateEmail(email)) {
-      openErrorDialog(true);
+      ErrorDialog_open(true);
       setErrorMessage("Некоректний формат пошти");
       return;
     }
 
     if (fullName.length < 3 || fullName.length > 20) {
-      openErrorDialog(true);
-      setErrorMessage("Ім'я має бути завдовжки мінімум 3 символа та максимум 20");
+      ErrorDialog_open(true);
+      setErrorMessage(
+        "Ім'я має бути завдовжки мінімум 3 символа та максимум 20"
+      );
       return;
     }
 
     if (password.length < 5) {
-      openErrorDialog(true);
+      ErrorDialog_open(true);
       setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
       return;
     }
 
     const validRoles = ["customer"];
     if (!validRoles.includes(role)) {
-      openErrorDialog(true);
+      ErrorDialog_open(true);
       setErrorMessage("Ви не обрали ролі");
       return;
     }
@@ -94,10 +94,10 @@ export default function LoginDialog({
       dispatch(
         Register({
           email: email,
-          fullName: fullName.replace(/\s+/g, ' '),
+          fullName: fullName.replace(/\s+/g, " "),
           role: role,
           password: password,
-          avatarUrl: '',
+          avatarUrl: "",
           expences: 0,
         })
       ).then((result: any) => {
@@ -105,21 +105,19 @@ export default function LoginDialog({
         if (result.meta.requestStatus === "fulfilled") {
           closeRegAfterSuccess();
         } else if (result.meta.requestStatus === "rejected") {
-          openErrorDialog(true);
+          ErrorDialog_open(true);
           setErrorMessage("Схоже при реєстрації виникла помилка");
         }
       });
     } catch (error: any) {
-      openErrorDialog(true);
+      ErrorDialog_open(true);
       setErrorMessage(error);
     }
   }
 
-  
-  function handleClickShowPassword (){
+  function handleClickShowPassword() {
     setPassVisible((passVisible) => !passVisible);
-  } 
-
+  }
 
   return (
     <Dialog open={openRegister} onClose={closeRegisterDialog}>
@@ -135,7 +133,7 @@ export default function LoginDialog({
           Маєш аккаунт?
           <Typography
             color={"#1976d2"}
-            onClick={openLoginDialog}
+            onClick={LoginDialog_open}
             sx={{
               cursor: "pointer",
               paddingLeft: "0.6%",
@@ -173,22 +171,22 @@ export default function LoginDialog({
           autoFocus
           margin="dense"
           id="password"
-          sx = {{marginTop: 2, marginBottom: 2}}
+          sx={{ marginTop: 2, marginBottom: 2 }}
           placeholder="Пароль"
           value={password}
           fullWidth
-          type = {passVisible ? 'password' : 'text'}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    edge="end"
-                  >
-                    {passVisible ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
+          type={passVisible ? "password" : "text"}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                edge="end"
+              >
+                {passVisible ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
           onChange={(e) => setPassword(e.target.value)}
         />
         <FormControl>

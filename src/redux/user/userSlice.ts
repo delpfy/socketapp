@@ -1,5 +1,11 @@
-import { createSlice,  } from "@reduxjs/toolkit";
-import { Authorize, checkAuthorization, Register, Update, UploadAvatar } from "./asyncActions";
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  Authorize,
+  checkAuthorization,
+  Register,
+  Update,
+  UploadAvatar,
+} from "./asyncActions";
 import { UserDisplay } from "../types";
 
 const userSlice = createSlice({
@@ -15,13 +21,13 @@ const userSlice = createSlice({
       expences: 0,
     },
     token: "",
-    avatarFile: {} as any
+    avatarFile: {} as any,
   },
   reducers: {
     NullifyToken(state) {
       state.token = "";
       state.user.authorized = false;
-      state.user.name = '';
+      state.user.name = "";
       localStorage.removeItem("token");
     },
   },
@@ -29,15 +35,14 @@ const userSlice = createSlice({
     // Verify Authorization.
     builder.addCase(checkAuthorization.fulfilled, (state, action) => {
       state.user.authorized = true;
-      state.user.id = action.payload.user._id ;
+      state.user.id = action.payload.user._id;
       state.user.email = action.payload.user.email;
       state.user.role = action.payload.user.role;
       state.user.avatar = action.payload.user.avatarUrl;
       state.user.expences = action.payload.user.expences;
       state.user.name = action.payload.user.fullName;
-
     });
-    
+
     builder.addCase(checkAuthorization.pending, (state) => {
       state.user.authorized = false;
     });
@@ -60,20 +65,14 @@ const userSlice = createSlice({
 
     // Upload avatar.
     builder.addCase(UploadAvatar.fulfilled, (state, action) => {
-
       state.avatarFile = action.payload.url;
-      console.log("action.payload.url " + action.payload.url)
+      console.log("action.payload.url " + action.payload.url);
     });
-    builder.addCase(UploadAvatar.pending, (state) => {
-
-    });
-    builder.addCase(UploadAvatar.rejected, (state, action) => {
-
-    });
+    builder.addCase(UploadAvatar.pending, (state) => {});
+    builder.addCase(UploadAvatar.rejected, (state, action) => {});
 
     // Register.
     builder.addCase(Register.fulfilled, (state, action) => {
-      
       state.user.authorized = false;
       state.token = action.payload.token;
     });
@@ -82,19 +81,12 @@ const userSlice = createSlice({
     });
     builder.addCase(Register.rejected, (state, action) => {
       state.user.authorized = false;
-      
     });
 
     // Update.
-    builder.addCase(Update.fulfilled, (state, action) => {
-      
-    });
-    builder.addCase(Update.pending, (state) => {
-
-    });
-    builder.addCase(Update.rejected, (state, action) => {
-
-    });
+    builder.addCase(Update.fulfilled, (state, action) => {});
+    builder.addCase(Update.pending, (state) => {});
+    builder.addCase(Update.rejected, (state, action) => {});
   },
 });
 

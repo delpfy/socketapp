@@ -4,11 +4,11 @@ export type ItemsDisplay = {
 export type ItemDisplay = {
   items: Items;
 };
-export type ShippingItemsDisplay = {
-  items: ShippingItems[];
+export type TShippingItemsDisplay = {
+  items: TShippingItems[];
 };
 export type ShippingItemDisplay = {
-  items: ShippingItems;
+  items: TShippingItems;
 };
 export type ReviewsDisplay = {
   reviews: IReviewGET[];
@@ -18,31 +18,31 @@ export type UserDisplay = {
 };
 
 export type IReviewGET = {
-  _id: string,
-  item: string,
-  user: string,
-  userName: string,
-  description: string,
-  rating: number,
-  answers: IAnswerGET[],
-  advantages: string,
-  disadvantages: string,
-  createdAt: string,
-  updatedAt: string,
+  _id: string;
+  item: string;
+  user: string;
+  userName: string;
+  description: string;
+  rating: number;
+  replies: TReplyGET[];
+  advantages: string;
+  disadvantages: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type IReviewPOST = {
-  _id: string
-  item: string,
-  userName: string,
-  description: string,
-  rating: number,
-  advantages: string,
-  answers: IAnswerPOST[],
-  disadvantages: string,
+  _id: string;
+  item: string;
+  userName: string;
+  description: string;
+  rating: number;
+  advantages: string;
+  replies: TReplyPOST[];
+  disadvantages: string;
 };
 
-export type CombinedAnswer = IAnswerGET | IAnswerPOST;
+export type Combinedreply = TReplyGET | TReplyPOST;
 
 export type Items = {
   _id: string;
@@ -56,7 +56,7 @@ export type Items = {
   description: string;
 };
 
-export type ShippingItems = {
+export type TShippingItems = {
   _id: string;
   category: string;
   name: string;
@@ -68,22 +68,20 @@ export type ShippingItems = {
   description: string;
 };
 
-export type CombinedItems = Items | ShippingItems;
+export type CombinedItems = Items | TShippingItems;
 
-export type IAnswerPOST = {
-  user: string,
-  userName: string,
-  description: string,
-}
+export type TReplyPOST = {
+  user: string;
+  userName: string;
+  description: string;
+};
 
-export type IAnswerGET = {
-  _id: string,
-  user: string,
-  userName: string,
-  description: string,
-}
-
-
+export type TReplyGET = {
+  _id: string;
+  user: string;
+  userName: string;
+  description: string;
+};
 
 export type User = {
   _id: string;
@@ -122,7 +120,7 @@ export type Status = "success" | "pending" | "error";
 
 export interface BasketState {
   status: Status;
-  items: ShippingItemsDisplay;
+  items: TShippingItemsDisplay;
   basketItemCurrent: ShippingItemDisplay;
   itemsAmount: number;
   isOnItemPage: boolean;
@@ -133,7 +131,7 @@ export interface HomeState {
   id: number;
   itemsDisplay: ItemsDisplay;
   itemsCategory: ItemsDisplay;
-  itemCurrent: ShippingItems | Items;
-  categories: { id: number; name: string, image: string}[];
+  itemCurrent: TShippingItems | Items;
+  categories: { id: number; name: string; image: string }[];
   category: string;
 }

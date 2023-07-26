@@ -55,8 +55,8 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
@@ -135,27 +135,25 @@ export const Home = () => {
           </div>
         </Box>
       </Box>
-          <Box width={"100%"} >
-
-         
-      {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
-        <></>
-      ) : (
-        <>
-          <Typography
-            variant={"h3"}
-            fontSize={37}
-            fontFamily={"Comfortaa"}
-            paddingTop={7}
-            paddingBottom={4}
-            textAlign={"center"}
-          >
-            Було переглянуто
-          </Typography>
-          <RecentlyReviewed />
-        </>
-      )}
-       </Box>
+      <Box width={"100%"}>
+        {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
+          <></>
+        ) : (
+          <>
+            <Typography
+              variant={"h3"}
+              fontSize={37}
+              fontFamily={"Comfortaa"}
+              paddingTop={7}
+              paddingBottom={4}
+              textAlign={"center"}
+            >
+              Було переглянуто
+            </Typography>
+            <RecentlyReviewed />
+          </>
+        )}
+      </Box>
       <Box width={"80%"} margin={"auto"} padding={"100px 10px 30px "}>
         <Box
           width={"100%"}

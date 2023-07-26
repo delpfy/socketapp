@@ -10,7 +10,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Items, ShippingItems } from "../../redux/types";
+import { Items, TShippingItems } from "../../redux/types";
 import React, { Dispatch, SetStateAction } from "react";
 import ItemPage from "../../pagess/items/CatalogItemPage";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -19,15 +19,15 @@ import { SetItemsAmount } from "../../redux/basket/basketSlice";
 
 type Props = {
   openItem: boolean;
-  closeItemDialog: () => void;
+  ItemDialog_close: () => void;
   item: Items;
-  openInfoDialog: Dispatch<SetStateAction<any>>;
+  InfoDialog_open: Dispatch<SetStateAction<any>>;
   setInfoMessage: (message: string) => void;
 };
 
 export default function ItemDialog({
-  closeItemDialog,
-  openInfoDialog,
+  ItemDialog_close,
+  InfoDialog_open,
   setInfoMessage,
   openItem,
   item,
@@ -42,7 +42,7 @@ export default function ItemDialog({
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
 
   // Chech auth, if authorized - add and changing active state.
-  
+
   function basketItem_APPEND() {
     if (user.authorized === true) {
       dispatch(
@@ -56,13 +56,13 @@ export default function ItemDialog({
           rating: item.rating,
           image: item.image,
           amount: 1,
-        } as ShippingItems)
+        } as TShippingItems)
       );
 
       dispatch(SetItemsAmount(itemsAmount + 1));
     } else {
       setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
-      openInfoDialog(true);
+      InfoDialog_open(true);
       // Tip, dunno if i`ll use it.
       // setOpen(true)
     }
@@ -71,7 +71,7 @@ export default function ItemDialog({
   return (
     <Dialog
       open={openItem}
-      onClose={closeItemDialog}
+      onClose={ItemDialog_close}
       scroll={scroll}
       fullScreen={fullScreen}
       maxWidth={maxWidth}
@@ -86,7 +86,7 @@ export default function ItemDialog({
       </DialogTitle>
       <DialogContent dividers={scroll === "paper"}>
         <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-          <ItemPage  />
+          <ItemPage />
         </DialogContentText>
         <Box></Box>
       </DialogContent>
@@ -110,7 +110,7 @@ export default function ItemDialog({
 
         <Button
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={closeItemDialog}
+          onClick={ItemDialog_close}
         >
           Продовжити покупки
         </Button>

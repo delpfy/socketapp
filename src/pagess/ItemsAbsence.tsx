@@ -1,5 +1,5 @@
 import React from "react";
-import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import ProductionQuantityLimitsIcon from "@mui/icons-material/ProductionQuantityLimits";
 import { Box, Typography } from "@mui/material";
 
 export const NoItemsPage = () => {

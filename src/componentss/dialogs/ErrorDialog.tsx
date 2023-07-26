@@ -10,17 +10,17 @@ import React from "react";
 
 type Props = {
   openError: boolean;
-  closeErrorDialog: () => void;
+  ErrorDialog_close: () => void;
   errorMessage: string;
 };
 
 export default function ErrorDialog({
   openError,
-  closeErrorDialog,
+  ErrorDialog_close,
   errorMessage,
 }: Props) {
   return (
-    <Dialog open={openError} onClose={closeErrorDialog}>
+    <Dialog open={openError} onClose={ErrorDialog_close}>
       <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
         Помилка
       </DialogTitle>
@@ -36,7 +36,7 @@ export default function ErrorDialog({
       <DialogActions>
         <Button
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={closeErrorDialog}
+          onClick={ErrorDialog_close}
         >
           Зрозуміло
         </Button>

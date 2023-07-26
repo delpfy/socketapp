@@ -25,28 +25,28 @@ import { getBasketItemsByUser } from "../../../redux/basket/asyncActions";
 type Anchor = "top" | "left" | "bottom" | "right";
 
 type Catgory = {
-  id: number,
-   name: string,
-    image: string
-}
+  id: number;
+  name: string;
+  image: string;
+};
 
 export default function AppBarMenu() {
   const CATEGORIES = useAppSelector((state) => state.home.categories);
-  const {user} = useAppSelector(state => state.user)
-  const {itemsAmount} = useAppSelector(state => state.basket)
+  const { user } = useAppSelector((state) => state.user);
+  const { itemsAmount } = useAppSelector((state) => state.basket);
+  const [active, setActive] = React.useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [active, setActive] = React.useState(false);
 
-  function handleCategoryChange(category: Catgory){
-    dispatch(SetCategory(category.name))
-    navigate('/catalog')
+  function handleCategoryChange(category: Catgory) {
+    dispatch(SetCategory(category.name));
+    navigate("/catalog");
   }
 
   React.useEffect(() => {
-    dispatch(getBasketItemsByUser(user.id))
-  }, [user,itemsAmount])
-  
+    dispatch(getBasketItemsByUser(user.id));
+  }, [user, itemsAmount]);
+
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -72,9 +72,7 @@ export default function AppBarMenu() {
       <List>
         {CATEGORIES.map((category) => (
           <ListItem key={category.id} disablePadding>
-            <ListItemButton
-              onClick={() => handleCategoryChange(category)}
-            >
+            <ListItemButton onClick={() => handleCategoryChange(category)}>
               <ListItemIcon></ListItemIcon>
               <ListItemText primary={category.name} />
             </ListItemButton>
@@ -85,7 +83,6 @@ export default function AppBarMenu() {
       <List></List>
     </Box>
   );
- 
 
   return (
     <>
@@ -95,7 +92,6 @@ export default function AppBarMenu() {
           open={active}
           onClose={toggleDrawer("left", false)}
           onOpen={toggleDrawer("left", true)}
-          
         >
           {list("left")}
         </SwipeableDrawer>
@@ -103,11 +99,10 @@ export default function AppBarMenu() {
 
       <Box
         width={"100%"}
-        height={'10vh'}
-        
+        height={"10vh"}
         position={"fixed"}
         zIndex={2}
-        sx={{ backgroundColor: "black", backgroundAttachment: "fixed"}}
+        sx={{ backgroundColor: "black", backgroundAttachment: "fixed" }}
       >
         <Box
           width={"95%"}
@@ -120,39 +115,35 @@ export default function AppBarMenu() {
           justifyContent={"space-between"}
         >
           <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ 
-                  mr: 2,
-
-                }}
-                
-                onClick={toggleDrawer("left", true)}
-              >
-                <MenuIcon color="info" 
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{
+                mr: 2,
+              }}
+              onClick={toggleDrawer("left", true)}
+            >
+              <MenuIcon
+                color="info"
                 sx={{
-
                   height: 35,
-                  
-                  width: 35
-                  
-                }}/>
 
-              </IconButton>
-              <Box>
-                <Logo />
-              </Box>
+                  width: 35,
+                }}
+              />
+            </IconButton>
+            <Box>
+              <Logo />
             </Box>
-  
+          </Box>
+
           <Box>
             <Basket />
           </Box>
         </Box>
       </Box>
-      
     </>
   );
 }

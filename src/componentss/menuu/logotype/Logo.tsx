@@ -3,7 +3,6 @@ import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-
 export const Logo = () => {
   const navigate = useNavigate();
   return (
@@ -15,10 +14,8 @@ export const Logo = () => {
       color={"black"}
       width={135}
       onClick={() => navigate("/")}
-      
       sx={{ cursor: "pointer", color: "white" }}
     >
-      
       <Typography
         variant={"h3"}
         fontSize={30}

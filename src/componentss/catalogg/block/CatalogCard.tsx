@@ -10,26 +10,21 @@ import {
   Rating,
   Tooltip,
   Typography,
-  withStyles,
 } from "@mui/material";
 
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import {
-  addBasketItem,
-  getBasketItemsByUser,
-} from "../../../redux/basket/asyncActions";
-import { ShippingItems, Items } from "../../../redux/types";
+import { addBasketItem } from "../../../redux/basket/asyncActions";
+import { TShippingItems, Items } from "../../../redux/types";
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
 import InfoDialog from "../../dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
-import { getItemReviews, updateReview } from "../../../redux/review/asyncActions";
+import { getItemReviews } from "../../../redux/review/asyncActions";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
   const { itemsAmount } = useAppSelector((state) => state.basket);
-  const {reviews, status_review} = useAppSelector((state) => state.review);
   const [open, setOpen] = React.useState<boolean>(false);
 
   const [openInfo, setOpenInfo] = React.useState(false);
@@ -38,43 +33,32 @@ export default function CatalogCard(props: Items) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  function openInfoDialog() {
+  function InfoDialog_open() {
     setOpenInfo(true);
   }
 
-  function closeInfoDialog() {
+  function InfoDialog_close() {
     setOpenInfo(false);
   }
 
-
   function compareObjects(obj1: any, obj2: any) {
-    if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
-      throw new Error('Both parameters should be non-null objects.');
-    }
   
-    console.log("obj1.name " + obj1.name)
-    console.log("obj2.name " + obj2.name)
-    
     for (const key in obj1) {
-      console.log("KEY" + key)
       if (obj1.hasOwnProperty(key)) {
         if (obj1[key] !== obj2[key]) {
-          console.log("obj2[key] 1" + obj2[key])
           obj2[key] = obj1[key];
-          console.log("obj2[key] 2" + obj2[key])
         }
       }
     }
-  
+
     for (const key in obj2) {
       if (obj2.hasOwnProperty(key) && !obj1.hasOwnProperty(key)) {
         delete obj2[key];
       }
     }
-  
   }
 
-  function setAsRecentlyReviewed(){
+  function setAsRecentlyReviewed() {
     const recentlyReviewed = JSON.parse(
       localStorage.getItem("recentlyReviewed") || "{}"
     );
@@ -86,9 +70,8 @@ export default function CatalogCard(props: Items) {
 
       if (itemIndex === -1) {
         recentlyReviewed.push(props);
-      }
-      else{
-        compareObjects(props, recentlyReviewed[itemIndex])
+      } else {
+        compareObjects(props, recentlyReviewed[itemIndex]);
       }
       localStorage.setItem(
         "recentlyReviewed",
@@ -97,21 +80,18 @@ export default function CatalogCard(props: Items) {
     }
   }
 
-
   function getCurrentItem() {
     dispatch(setCurrentItem(props));
-    dispatch(getItemReviews(props._id))
+    dispatch(getItemReviews(props._id));
     navigate("/catalog/item");
     setAsRecentlyReviewed();
-    
   }
 
-  function adjustPrice(){
-    if(props.sale === 0){
-      return props.price
-    }
-    else{
-      return (props.price - Math.round((props.price * props.sale) / 100))
+  function adjustPrice() {
+    if (props.sale === 0) {
+      return props.price;
+    } else {
+      return props.price - Math.round((props.price * props.sale) / 100);
     }
   }
 
@@ -129,13 +109,13 @@ export default function CatalogCard(props: Items) {
           rating: props.rating,
           image: props.image,
           amount: 1,
-        } as ShippingItems)
+        } as TShippingItems)
       );
 
       dispatch(SetItemsAmount(itemsAmount + 1));
     } else {
       setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
-      openInfoDialog();
+      InfoDialog_open();
       // Tip, dunno if i`ll use it.
       // setOpen(true)
     }
@@ -283,7 +263,7 @@ export default function CatalogCard(props: Items) {
       {/* information */}
       <InfoDialog
         openInfo={openInfo}
-        closeInfoDialog={closeInfoDialog}
+        InfoDialog_close={InfoDialog_close}
         infoMessage={infoMessage}
       />
     </>

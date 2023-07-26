@@ -17,21 +17,21 @@ import { useAppDispatch } from "../../redux/hooks";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 
 type Props = {
-  openErrorDialog: Dispatch<SetStateAction<any>>;
-  openRegisterDialog: Dispatch<SetStateAction<any>>;
-  openLoginDialog: Dispatch<SetStateAction<any>>;
+  ErrorDialog_open: Dispatch<SetStateAction<any>>;
+  RegisterDialog_open: Dispatch<SetStateAction<any>>;
+  LoginDialog_open: Dispatch<SetStateAction<any>>;
   setErrorMessage: (message: string) => void;
   openLogin: boolean;
-  closeLoginDialog: () => void;
+  LoginDialog_close: () => void;
 };
 
 export default function LoginDialog({
-  openErrorDialog,
-  openRegisterDialog,
+  ErrorDialog_open,
+  RegisterDialog_open,
   setErrorMessage,
-  openLoginDialog,
+  LoginDialog_open,
   openLogin,
-  closeLoginDialog,
+  LoginDialog_close,
 }: Props) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -46,13 +46,13 @@ export default function LoginDialog({
 
   async function RedirectLogin(email: string, password: string) {
     if (!validateEmail(email)) {
-      openErrorDialog(true);
+      ErrorDialog_open(true);
       setErrorMessage("Некоректний формат пошти");
       return;
     }
 
     if (password.length < 5) {
-      openErrorDialog(true);
+      ErrorDialog_open(true);
       setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
       return;
     }
@@ -65,10 +65,10 @@ export default function LoginDialog({
     ).then((result: any) => {
       console.log("result.status " + result.meta.requestStatus);
       if (result.meta.requestStatus === "fulfilled") {
-        openLoginDialog(false);
+        LoginDialog_open(false);
         dispatch(checkAuthorization());
       } else if (result.meta.requestStatus === "rejected") {
-        openErrorDialog(true);
+        ErrorDialog_open(true);
         setErrorMessage("Схоже при авторизації виникла помилка");
       }
     });
@@ -79,7 +79,7 @@ export default function LoginDialog({
   }
 
   return (
-    <Dialog open={openLogin} onClose={closeLoginDialog}>
+    <Dialog open={openLogin} onClose={LoginDialog_close}>
       <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
         Авторизація
       </DialogTitle>
@@ -92,7 +92,7 @@ export default function LoginDialog({
           Ще не маєш аккаунт?
           <Typography
             color={"#1976d2"}
-            onClick={openRegisterDialog}
+            onClick={RegisterDialog_open}
             sx={{
               cursor: "pointer",
               paddingLeft: "0.6%",
@@ -135,7 +135,6 @@ export default function LoginDialog({
           }
           onChange={(e) => setPassword(e.target.value)}
         />
-
       </DialogContent>
       <DialogActions>
         <Button
@@ -148,7 +147,7 @@ export default function LoginDialog({
         </Button>
         <Button
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={closeLoginDialog}
+          onClick={LoginDialog_close}
         >
           Вийти
         </Button>

@@ -6,11 +6,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { IReviewGET, IReviewPOST, ReviewsDisplay } from "../../redux/types";
+import { IReviewGET, IReviewPOST } from "../../redux/types";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloseIcon from "@mui/icons-material/Close";
-import { hover } from "@testing-library/user-event/dist/hover";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useState } from "react";
 import {
@@ -19,15 +18,13 @@ import {
   updateReview,
 } from "../../redux/review/asyncActions";
 import { setTotalRating } from "../../redux/review/reviewSlice";
-import { updateItem } from "../../redux/home/asyncActions";
-
-import AnswerForm from "./AnswerForm";
-import Answer from "./Answer";
+import ReplyForm from "./ReplyForm";
+import Reply from "./Reply";
 
 export default function Review(props: IReviewGET) {
   const { user } = useAppSelector((state) => state.user);
   const [editMode, setEditMode] = useState(false);
-  const [answerMode, setAnswerMode] = useState(false);
+  const [replyMode, setreplyMode] = useState(false);
   const [description, setDescription] = useState<string>(props.description);
   const [advantages, setAdvantages] = useState<string>(props.advantages);
   const [disadvantages, setDisadvantages] = useState<string>(
@@ -41,13 +38,12 @@ export default function Review(props: IReviewGET) {
     const date = new Date(time);
 
     const day = date.getUTCDate();
-    const month = date.getUTCMonth() + 1; // Месяцы в объекте Date индексируются с 0, поэтому добавляем 1
+    const month = date.getUTCMonth() + 1;
     const year = date.getUTCFullYear();
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
 
-    // Шаг 3: Формирование строки с желаемым форматом
     const formattedDate = `${day.toString().padStart(2, "0")}.${month
       .toString()
       .padStart(2, "0")}.${year} ${hours.toString().padStart(2, "0")}:${minutes
@@ -80,7 +76,7 @@ export default function Review(props: IReviewGET) {
         userName: "",
         description: description,
         advantages: advantages,
-        answers: props.answers,
+        replies: props.replies,
         disadvantages: disadvantages,
         rating: rating,
       } as IReviewPOST)
@@ -118,123 +114,116 @@ export default function Review(props: IReviewGET) {
     setRating(e.target.value);
   }
 
-  function handleAnswerMode() {
-    setAnswerMode(!answerMode);
+  function handlereplyMode() {
+    setreplyMode(!replyMode);
   }
 
   return (
-    <Box
-      padding={5}
-      
-      
-    >
-      <Box height={editMode ? 450 : 250} display={"flex"}
-      flexDirection={"column"}
-      justifyContent={"space-between"}>
+    <Box padding={5}>
       <Box
+        height={editMode ? 450 : 250}
         display={"flex"}
         flexDirection={"column"}
         justifyContent={"space-between"}
-        alignItems={"flex-start"}
-        width={100}
-        
       >
-        <Typography>{props.userName}</Typography>
-        <Typography width={400}>
-          {props.createdAt !== props.updatedAt
-            ? formatDate(props.createdAt) +
-              "\n" +
-              "Оновлено " +
-              formatDate(props.updatedAt) +
-              " "
-            : formatDate(props.createdAt)}
-        </Typography>
-      </Box>
-      {editMode ? (
-        <Rating value={rating} onChange={handleRatingChange} />
-      ) : (
-        <Rating value={props.rating} readOnly />
-      )}
-
-      {editMode ? (
-        <TextField
-          id="outlined-multiline-static"
-          label="Опис"
-          fullWidth
-          value={description}
-          multiline
-          rows={4}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      ) : (
-        <Typography>{props.description}</Typography>
-      )}
-
-      <Box>
-        <Box>
-          {editMode ? (
-            <TextField
-              margin="dense"
-              label="Переваги"
-              value={advantages}
-              fullWidth
-              variant="standard"
-              onChange={(e) => setAdvantages(e.target.value)}
-            />
-          ) : (
-            <>
-              <Typography>Переваги:</Typography>
-
-              <Typography> {props.advantages}</Typography>
-            </>
-          )}
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"space-between"}
+          alignItems={"flex-start"}
+          width={100}
+        >
+          <Typography>{props.userName}</Typography>
+          <Typography width={400}>
+            {props.createdAt !== props.updatedAt
+              ? formatDate(props.createdAt) +
+                "\n" +
+                "Оновлено " +
+                formatDate(props.updatedAt) +
+                " "
+              : formatDate(props.createdAt)}
+          </Typography>
         </Box>
-        <Box>
-          {editMode ? (
-            <TextField
-              margin="dense"
-              label="Недоліки"
-              value={disadvantages}
-              fullWidth
-              variant="standard"
-              onChange={(e) => setDisadvantages(e.target.value)}
-            />
-          ) : (
-            <>
-              <Typography>Недоліки:</Typography>
+        {editMode ? (
+          <Rating value={rating} onChange={handleRatingChange} />
+        ) : (
+          <Rating value={props.rating} readOnly />
+        )}
 
-              <Typography> {props.disadvantages}</Typography>
-            </>
-          )}
-          
+        {editMode ? (
+          <TextField
+            id="outlined-multiline-static"
+            label="Опис"
+            fullWidth
+            value={description}
+            multiline
+            rows={4}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        ) : (
+          <Typography>{props.description}</Typography>
+        )}
+
+        <Box>
+          <Box>
+            {editMode ? (
+              <TextField
+                margin="dense"
+                label="Переваги"
+                value={advantages}
+                fullWidth
+                variant="standard"
+                onChange={(e) => setAdvantages(e.target.value)}
+              />
+            ) : (
+              <>
+                <Typography>Переваги:</Typography>
+
+                <Typography> {props.advantages}</Typography>
+              </>
+            )}
+          </Box>
+          <Box>
+            {editMode ? (
+              <TextField
+                margin="dense"
+                label="Недоліки"
+                value={disadvantages}
+                fullWidth
+                variant="standard"
+                onChange={(e) => setDisadvantages(e.target.value)}
+              />
+            ) : (
+              <>
+                <Typography>Недоліки:</Typography>
+
+                <Typography> {props.disadvantages}</Typography>
+              </>
+            )}
+          </Box>
         </Box>
-        
-      </Box>
-      <Button
-                color="warning"
-                variant="contained"
-                sx={{
-                  fontFamily: "Comfortaa",
-                  fontSize: 15,
-                  width: 200,
-                  height: 25,
-                  alignSelf: "flex-start",
-                }}
-                onClick={handleAnswerMode}
-              >
-                {
-                  answerMode
-                  ? 
-                  'Відмінити'
-                  :
-                  'Відповісти'
-                }
-                
-              </Button>
+        <Button
+          color="warning"
+          variant="contained"
+          sx={{
+            fontFamily: "Comfortaa",
+            fontSize: 15,
+            width: 200,
+            height: 25,
+            alignSelf: "flex-start",
+          }}
+          onClick={handlereplyMode}
+        >
+          {replyMode ? "Відмінити" : "Відповісти"}
+        </Button>
       </Box>
       {user.id === props.user ? (
-        <Box display={"flex"} flexDirection={"row"} alignItems={'center'} justifyContent={"flex-end"}>
-          
+        <Box
+          display={"flex"}
+          flexDirection={"row"}
+          alignItems={"center"}
+          justifyContent={"flex-end"}
+        >
           {editMode ? (
             <>
               <Button
@@ -295,32 +284,20 @@ export default function Review(props: IReviewGET) {
       ) : (
         ""
       )}
-      {
-        answerMode
-        ? <AnswerForm {...props}/>
-        : ''
-       }
-      {props.answers.length === 0 ? (
-       
-       ''
-
-       
+      {replyMode ? <ReplyForm {...props} /> : ""}
+      {props.replies.length === 0 ? (
+        ""
       ) : (
-       
-        <Box >
-           
+        <Box>
           <Typography fontFamily={"Comfortaa"} paddingTop={3} fontSize={20}>
             Відповіді
           </Typography>
-          
-          
-          
-          <Box width={600}  marginLeft={10} paddingTop={4} >
-          {props.answers.map((answer) => {
-            return <Answer review={props} answer={answer} />;
-          })}
+
+          <Box width={600} marginLeft={10} paddingTop={4}>
+            {props.replies.map((reply) => {
+              return <Reply review={props} reply={reply} />;
+            })}
           </Box>
-          
         </Box>
       )}
     </Box>

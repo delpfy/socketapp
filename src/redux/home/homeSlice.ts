@@ -3,7 +3,7 @@ import { InitialiseHome } from "../../utils/InitialiseHome";
 import {
   ItemsDisplay,
   HomeState,
-  ShippingItems,
+  TShippingItems,
   Items,
   CombinedItems,
 } from "../types";
@@ -24,7 +24,7 @@ const homeSlice = createSlice({
       state.category = action.payload;
     },
 
-    setCurrentItem(state, action: PayloadAction<ShippingItems | Items>) {
+    setCurrentItem(state, action: PayloadAction<TShippingItems | Items>) {
       state.itemCurrent = action.payload;
       state.status = "success";
     },
@@ -67,7 +67,6 @@ const homeSlice = createSlice({
 
     // update.
     builder.addCase(updateItem.fulfilled, (state, action) => {
-
       state.itemCurrent = action.payload.item;
 
       const recentlyReviewed = JSON.parse(
@@ -78,10 +77,10 @@ const homeSlice = createSlice({
         const itemIndex = recentlyReviewed.findIndex(
           (item: Items) => item.name === action.payload.item.name
         );
-        console.log("RATING 1" + action.payload.item.rating)
+        console.log("RATING 1" + action.payload.item.rating);
 
         if (itemIndex !== -1) {
-          console.log("RATING 2" + recentlyReviewed[itemIndex].rating)
+          console.log("RATING 2" + recentlyReviewed[itemIndex].rating);
           for (const key in action.payload.item) {
             console.log("KEY" + key);
             if (action.payload.item.hasOwnProperty(key)) {

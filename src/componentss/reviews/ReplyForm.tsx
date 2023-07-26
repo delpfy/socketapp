@@ -1,45 +1,33 @@
-import {
-  Box,
-  Button,
-  TextField,
-} from "@mui/material";
-import {
-  IAnswerPOST,
-  IReviewGET,
-  IReviewPOST,
-} from "../../redux/types";
+import { Box, Button, TextField } from "@mui/material";
+import { TReplyPOST, IReviewGET, IReviewPOST } from "../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect, useState } from "react";
-import {
-  getItemReviews,
-  updateReview,
-} from "../../redux/review/asyncActions";
+import { getItemReviews, updateReview } from "../../redux/review/asyncActions";
 import ErrorDialog from "../dialogs/ErrorDialog";
 
-
-export default function AnswerForm(review: IReviewGET) {
+export default function ReplyForm(review: IReviewGET) {
   const { user } = useAppSelector((state) => state.user);
   const [description, setDescription] = useState<string>("");
   const [userName, setUserName] = useState<string>(user.name);
-  const [answers, setAnswers] = useState<IAnswerPOST[]>(review.answers);
+  const [replies, setReplies] = useState<TReplyPOST[]>(review.replies);
 
   const [openError, setOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
-  
+
   const [execute_POST, setExecute_POST] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  
-  function closeErrorDialog() {
+
+  function ErrorDialog_close() {
     setOpenError(false);
   }
-  function openErrorDialog() {
+  function ErrorDialog_open() {
     setOpenError(true);
   }
 
-  function appendAnswers() {
+  function executeReply_POST() {
     setExecute_POST(true);
-    setAnswers((current) => [
+    setReplies((current) => [
       ...current,
       {
         user: user.id,
@@ -51,38 +39,37 @@ export default function AnswerForm(review: IReviewGET) {
 
   useEffect(() => {
     if (userName === "" && execute_POST) {
-      openErrorDialog();
+      ErrorDialog_open();
       setErrorMessage("Ви не вказали ім'я");
       return;
     }
 
     if (description === "" && execute_POST) {
-      openErrorDialog();
+      ErrorDialog_open();
       setErrorMessage("Ви не написали повідомлення");
       return;
     }
 
-    if(execute_POST){
-        dispatch(
-            updateReview({
-              _id: review._id,
-              item: "",
-              user: "",
-              userName: review.userName,
-              description: review.description,
-              advantages: review.advantages,
-              answers: answers,
-              disadvantages: review.disadvantages,
-              rating: review.rating,
-            } as IReviewPOST)
-          ).then((result: any) => {
-            if (result.meta.requestStatus === "fulfilled") {
-              dispatch(getItemReviews(review.item));
-            }
-          });
+    if (execute_POST) {
+      dispatch(
+        updateReview({
+          _id: review._id,
+          item: "",
+          user: "",
+          userName: review.userName,
+          description: review.description,
+          advantages: review.advantages,
+          replies: replies,
+          disadvantages: review.disadvantages,
+          rating: review.rating,
+        } as IReviewPOST)
+      ).then((result: any) => {
+        if (result.meta.requestStatus === "fulfilled") {
+          dispatch(getItemReviews(review.item));
+        }
+      });
     }
-    
-  }, [answers]);
+  }, [replies]);
 
   return (
     <>
@@ -135,7 +122,7 @@ export default function AnswerForm(review: IReviewGET) {
               height: 30,
               alignSelf: "flex-end",
             }}
-            onClick={appendAnswers}
+            onClick={executeReply_POST}
           >
             Відправити
           </Button>
@@ -143,7 +130,7 @@ export default function AnswerForm(review: IReviewGET) {
       </Box>
       <ErrorDialog
         openError={openError}
-        closeErrorDialog={closeErrorDialog}
+        ErrorDialog_close={ErrorDialog_close}
         errorMessage={errorMessage}
       />
     </>

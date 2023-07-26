@@ -9,17 +9,17 @@ import {
 
 type Props = {
   openInfo: boolean;
-  closeInfoDialog: () => void;
+  InfoDialog_close: () => void;
   infoMessage: string;
 };
 
 export default function InfoDialog({
   openInfo,
-  closeInfoDialog,
+  InfoDialog_close,
   infoMessage,
 }: Props) {
   return (
-    <Dialog open={openInfo} onClose={closeInfoDialog}>
+    <Dialog open={openInfo} onClose={InfoDialog_close}>
       <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
         Інформація
       </DialogTitle>
@@ -35,7 +35,7 @@ export default function InfoDialog({
       <DialogActions>
         <Button
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={closeInfoDialog}
+          onClick={InfoDialog_close}
         >
           Зрозуміло
         </Button>

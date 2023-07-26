@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Carousel from "react-material-ui-carousel";
-import { IReviewGET, ShippingItems, Status } from "../../redux/types";
+import { TShippingItems, Status } from "../../redux/types";
 
-import { Box, Button, CircularProgress, Rating, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Rating,
+  Typography,
+} from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
 import { addBasketItem } from "../../redux/basket/asyncActions";
 import { SetItemsAmount } from "../../redux/basket/basketSlice";
@@ -11,8 +17,10 @@ import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
 import Review from "../../componentss/reviews/Review";
 import ReviewForm from "../../componentss/reviews/ReviewForm";
-import { setReviewsAmount, setRatingAmount} from "../../redux/review/reviewSlice";
-
+import {
+  setReviewsAmount,
+  setRatingAmount,
+} from "../../redux/review/reviewSlice";
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
@@ -20,30 +28,32 @@ export const ItemPage = () => {
 
   const { status, itemCurrent } = useAppSelector((state) => state.home);
   const { user } = useAppSelector((state) => state.user);
-  const { reviews, status_review, status_PROCESS_item} = useAppSelector(state => state.review);
+  const { reviews, status_review } = useAppSelector((state) => state.review);
 
   const { itemsAmount } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Unhandled error");
 
-  function closeInfoDialog() {
+  function InfoDialog_close() {
     setOpenInfo(false);
   }
 
-  function openInfoDialog() {
+  function InfoDialog_open() {
     setOpenInfo(true);
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }, [dispatch])
+  }, [dispatch]);
 
-  function adjustPrice(){
-    if(itemCurrent.sale === 0){
-      return itemCurrent.price
-    }
-    else{
-      return (itemCurrent.price - Math.round((itemCurrent.price * itemCurrent.sale) / 100))
+  function adjustPrice() {
+    if (itemCurrent.sale === 0) {
+      return itemCurrent.price;
+    } else {
+      return (
+        itemCurrent.price -
+        Math.round((itemCurrent.price * itemCurrent.sale) / 100)
+      );
     }
   }
 
@@ -60,22 +70,21 @@ export const ItemPage = () => {
           rating: itemCurrent.rating,
           image: itemCurrent.image,
           amount: 1,
-        } as ShippingItems)
+        } as TShippingItems)
       );
 
       dispatch(SetItemsAmount(itemsAmount + 1));
     } else {
       setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
-      openInfoDialog();
+      InfoDialog_open();
       // Tip, dunno if i`ll use it.
       // setOpen(true)
     }
   }
 
-  function handleBackToCatalog(){
-    navigate("/catalog")
+  function handleBackToCatalog() {
+    navigate("/catalog");
   }
-
 
   const Item = () => {
     return (
@@ -109,12 +118,6 @@ export const ItemPage = () => {
                   xs: 500,
                   md: 700,
                 },
-
-                /*  width: 'calc(100%-30px)',
-              height: 'calc(100%-30px)', */
-
-                /* maxWidth: '100%',
-              minWidth: '100%', */
 
                 display: "flex",
                 alignContent: "center",
@@ -230,8 +233,6 @@ export const ItemPage = () => {
             >
               Покласти у кошик
             </Button>
-
-
           </Box>
           <Box paddingTop={10}>
             <Typography
@@ -241,18 +242,13 @@ export const ItemPage = () => {
             >
               Відгуки
             </Typography>
-            <ReviewForm {...itemCurrent}/>
-            <Box>
-              {
-                StatusReviewHandler(status_review)
-              }
-
-            </Box>
+            <ReviewForm {...itemCurrent} />
+            <Box>{StatusReviewHandler(status_review)}</Box>
           </Box>
         </Box>
         <InfoDialog
           openInfo={openInfo}
-          closeInfoDialog={closeInfoDialog}
+          InfoDialog_close={InfoDialog_close}
           infoMessage={infoMessage}
         />
       </>
@@ -264,37 +260,45 @@ export const ItemPage = () => {
       case "success":
         if (reviews !== undefined) {
           let countRatingAmount = 0;
-          dispatch(setReviewsAmount(parseInt(reviews.reviews.length.toString())));
-          if(reviews.reviews.length === 0){
+          dispatch(
+            setReviewsAmount(parseInt(reviews.reviews.length.toString()))
+          );
+          if (reviews.reviews.length === 0) {
             dispatch(setRatingAmount(0));
           }
-          return (reviews.reviews.map((review, index) => {
-            countRatingAmount = parseInt(countRatingAmount.toString()) + parseInt(review.rating.toString());
-            if(index === reviews.reviews.length-1){
+          return reviews.reviews.map((review, index) => {
+            countRatingAmount =
+              parseInt(countRatingAmount.toString()) +
+              parseInt(review.rating.toString());
+            if (index === reviews.reviews.length - 1) {
               dispatch(setRatingAmount(countRatingAmount));
             }
-            return (<Review {...review}/>)
-          }));
-          
+            return <Review {...review} />;
+          });
         } else {
-
-          return (<Typography fontFamily={"Comfortaa"} fontSize={20}>
-          Пусто...
-        </Typography>)
+          return (
+            <Typography fontFamily={"Comfortaa"} fontSize={20}>
+              Пусто...
+            </Typography>
+          );
         }
       case "pending":
-        <CircularProgress />
-        return ''
+        <CircularProgress />;
+        return "";
       case "error":
-        return (<Typography fontFamily={"Comfortaa"} fontSize={20}>
-        Пусто...
-      </Typography>)
+        return (
+          <Typography fontFamily={"Comfortaa"} fontSize={20}>
+            Пусто...
+          </Typography>
+        );
       default:
-        return (<Typography fontFamily={"Comfortaa"} fontSize={20}>
-        Пусто...
-      </Typography>)
+        return (
+          <Typography fontFamily={"Comfortaa"} fontSize={20}>
+            Пусто...
+          </Typography>
+        );
+    }
   }
-}
 
   function StatusItemHandler(status: Status) {
     switch (status) {

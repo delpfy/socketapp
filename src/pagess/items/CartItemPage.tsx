@@ -1,13 +1,13 @@
 import React from "react";
 import { useAppSelector } from "../../redux/hooks";
-import { ShippingItems, Status } from "../../redux/types";
+import { TShippingItems, Status } from "../../redux/types";
 
 import { Box, Rating, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import NotFoundPage from "../PageAbsence";
 import Review from "../../componentss/reviews/Review";
 
-export const BasketItemPage = (props: ShippingItems) => {
+export const BasketItemPage = (props: TShippingItems) => {
   const { status } = useAppSelector((state) => state.basket);
 
   /*  React.useEffect(() => {
@@ -97,9 +97,7 @@ export const BasketItemPage = (props: ShippingItems) => {
             {props.description}
           </Typography>
         </Box>
-        <Box>
-        
-        </Box>
+        <Box></Box>
       </Box>
     );
   };

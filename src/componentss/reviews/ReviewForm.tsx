@@ -11,16 +11,11 @@ import {
   setTotalRating,
 } from "../../redux/review/reviewSlice";
 import { updateItem } from "../../redux/home/asyncActions";
-import { Items, ShippingItems } from "../../redux/types";
-import { setCurrentItem } from "../../redux/home/homeSlice";
+import { Items, TShippingItems } from "../../redux/types";
 
-type ReviewFormProps = {
-  itemId: string;
-};
-
-export default function ReviewForm(props: Items | ShippingItems) {
+export default function ReviewForm(props: Items | TShippingItems) {
   const { user } = useAppSelector((state) => state.user);
- 
+
   const { item_totalRating, item_reviewsAmount, item_noMoreReviews } =
     useAppSelector((state) => state.review);
 
@@ -37,17 +32,17 @@ export default function ReviewForm(props: Items | ShippingItems) {
 
   const dispatch = useAppDispatch();
 
-  function closeErrorDialog() {
+  function ErrorDialog_close() {
     setOpenError(false);
   }
-  function openErrorDialog() {
+  function ErrorDialog_open() {
     setOpenError(true);
   }
 
-  function closeInfoDialog() {
+  function InfoDialog_close() {
     setOpenInfo(false);
   }
-  function openInfoDialog() {
+  function InfoDialog_open() {
     setOpenInfo(true);
   }
 
@@ -56,7 +51,7 @@ export default function ReviewForm(props: Items | ShippingItems) {
   }
 
   useEffect(() => {
-    console.log("UPDATE")
+    console.log("UPDATE");
     if (item_totalRating !== 0 || item_noMoreReviews) {
       dispatch(
         updateItem({
@@ -66,19 +61,16 @@ export default function ReviewForm(props: Items | ShippingItems) {
             reviewsAmount: item_reviewsAmount,
           },
         })
-      )
+      );
       dispatch(disableNoMoreReviews());
     }
 
     dispatch(nullifyTotalRating());
-    
   }, [item_totalRating]);
-
-
 
   async function review_POST() {
     if (rating === 0) {
-      openErrorDialog();
+      ErrorDialog_open();
       setErrorMessage("Оберіть кількість зірок");
       return;
     }
@@ -90,14 +82,14 @@ export default function ReviewForm(props: Items | ShippingItems) {
         userName: user.name,
         description: description.replace(/\s+/g, " "),
         rating: rating,
-        answers: [],
+        replies: [],
         advantages: advantages.replace(/\s+/g, " "),
         disadvantages: disadvantages.replace(/\s+/g, " "),
       })
     ).then((result: any) => {
       console.log("result.status " + result.meta.requestStatus);
       if (result.meta.requestStatus === "fulfilled") {
-        openInfoDialog();
+        InfoDialog_open();
         setInfoMessage("Дякуємо за відгук");
         dispatch(checkAuthorization());
         dispatch(getItemReviews(props._id));
@@ -105,18 +97,10 @@ export default function ReviewForm(props: Items | ShippingItems) {
           setTotalRating({ prevStars: 0, stars: rating, func: "append" })
         );
       } else if (result.meta.requestStatus === "rejected") {
-        openErrorDialog();
+        ErrorDialog_open();
         setErrorMessage("Схоже при обробці запиту виникла помилка");
       }
     });
-  }
-
-  function compareObjects(obj1: any, obj2: any) {
-    
-  }
-
-  function setAsRecentlyReviewed() {
-   
   }
 
   return (
@@ -202,12 +186,12 @@ export default function ReviewForm(props: Items | ShippingItems) {
       </Box>
       <ErrorDialog
         openError={openError}
-        closeErrorDialog={closeErrorDialog}
+        ErrorDialog_close={ErrorDialog_close}
         errorMessage={errorMessage}
       />
       <InfoDialog
         openInfo={openInfo}
-        closeInfoDialog={closeInfoDialog}
+        InfoDialog_close={InfoDialog_close}
         infoMessage={infoMessage}
       />
     </Box>

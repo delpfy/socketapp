@@ -13,7 +13,7 @@ import {
   IconButton,
 } from "@mui/material";
 
-import { Items, ShippingItems } from "../../../redux/types";
+import { Items, TShippingItems } from "../../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
   addBasketItem,
@@ -24,7 +24,7 @@ import { SetItemsAmount } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
 
-export const BasketItemBlock = (props: ShippingItems) => {
+export const BasketItemBlock = (props: TShippingItems) => {
   const dispatch = useAppDispatch();
 
   const { user } = useAppSelector((state) => state.user);
@@ -55,8 +55,6 @@ export const BasketItemBlock = (props: ShippingItems) => {
     }
   }
 
-
-
   async function basketItem_APPEND() {
     await dispatch(
       addBasketItem({
@@ -69,7 +67,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         rating: props.rating,
         image: props.image,
         amount: 1,
-      } as ShippingItems)
+      } as TShippingItems)
     );
 
     dispatch(SetItemsAmount(itemsAmount + 1));
@@ -87,7 +85,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         rating: props.rating,
         image: props.image,
         amount: props.amount,
-      } as ShippingItems)
+      } as TShippingItems)
     );
 
     dispatch(SetItemsAmount(itemsAmount - 1));
@@ -105,7 +103,7 @@ export const BasketItemBlock = (props: ShippingItems) => {
         rating: props.rating,
         image: props.image,
         amount: props.amount,
-      } as ShippingItems)
+      } as TShippingItems)
     );
 
     dispatch(SetItemsAmount(itemsAmount - props.amount));
@@ -125,7 +123,13 @@ export const BasketItemBlock = (props: ShippingItems) => {
       >
         {props.sale ? (
           <img
-            style={{ position: "absolute", marginBottom: 425, zIndex: 2, height: 70, width: 70 }}
+            style={{
+              position: "absolute",
+              marginBottom: 425,
+              zIndex: 2,
+              height: 70,
+              width: 70,
+            }}
             src="https://www.svgrepo.com/show/250306/percentage-percent.svg"
             alt=""
           />
@@ -178,19 +182,14 @@ export const BasketItemBlock = (props: ShippingItems) => {
               justifyContent={"space-between"}
               flexDirection={"row"}
             >
-              
-                
-              
-             
-                <Typography
-                  paddingLeft={0.3}
-                  fontSize={22}
-                  fontFamily={"Comfortaa"}
-                  color={"error"}
-                >
-                  {props.price }₴
-                </Typography>
-              
+              <Typography
+                paddingLeft={0.3}
+                fontSize={22}
+                fontFamily={"Comfortaa"}
+                color={"error"}
+              >
+                {props.price}₴
+              </Typography>
             </Box>
 
             <Rating name="read-only" value={props.rating} readOnly />
@@ -233,15 +232,15 @@ export const BasketItemBlock = (props: ShippingItems) => {
             alignItems={"flex-end"}
             flexDirection={"row"}
           >
-            <IconButton onClick={basketItem_APPEND}  >
-              <AddCircleIcon color="info"  sx={{ width: 40, height: 40 }}/>
+            <IconButton onClick={basketItem_APPEND}>
+              <AddCircleIcon color="info" sx={{ width: 40, height: 40 }} />
             </IconButton>
-            <IconButton onClick={basketItem_REDUCE} >
-              <RemoveCircleIcon color="info"  sx={{ width: 40, height: 40 }} />
+            <IconButton onClick={basketItem_REDUCE}>
+              <RemoveCircleIcon color="info" sx={{ width: 40, height: 40 }} />
             </IconButton>
           </Box>
 
-          <IconButton onClick={basketItem_DELETE} >
+          <IconButton onClick={basketItem_DELETE}>
             <DeleteForeverIcon color="error" sx={{ width: 40, height: 40 }} />
           </IconButton>
         </Box>

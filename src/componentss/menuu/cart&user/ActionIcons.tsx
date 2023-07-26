@@ -1,40 +1,31 @@
 import React, { useEffect, useState } from "react";
 
-import {
-  Badge,
-  Box,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Badge, Box, IconButton, Typography } from "@mui/material";
 
-import {  useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
-import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 import InfoDialog from "../../dialogs/InfoDialog";
 import ErrorDialog from "../../dialogs/ErrorDialog";
 import LoginDialog from "../../dialogs/LoginDialog";
-import LogoutDialog from "../../dialogs/LogoutDialog";
 import RegisterDialog from "../../dialogs/RegisterDialog";
 import BasketDialog from "../../dialogs/BasketDialog";
 import { checkAuthorization } from "../../../redux/user/asyncActions";
 import { useNavigate } from "react-router-dom";
-import { ShippingItems, ShippingItemsDisplay } from "../../../redux/types";
 
 export const ActionIcons = () => {
   const { user } = useAppSelector((state) => state.user);
-  const { isOnItemPage, itemsAmount, items } = useAppSelector((state) => state.basket);
-  
+  const { isOnItemPage, items } = useAppSelector((state) => state.basket);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [cartSelected, setCartSelected] = useState(false);
-  const [personSelected, setPersonSelected] = useState(false);
 
   const [openLogin, setOpenLogin] = useState(false);
- 
+
   const [openError, setOpenError] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
   const [openRegister, setOpenRegister] = useState(false);
@@ -43,35 +34,34 @@ export const ActionIcons = () => {
   const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
-
   useEffect(() => {
-    closeBasketDialog();
+    CartDialog_close();
   }, [isOnItemPage]);
 
-  useEffect(() => {dispatch(checkAuthorization())}, [])
+  useEffect(() => {
+    dispatch(checkAuthorization());
+  }, []);
 
-  function openBasketDialog() {
+  function CartDialog_open() {
     dispatch(checkAuthorization());
     if (user.authorized === true) {
-      closeRegDialog();
-      closeLoginDialog();
+      RegisterDialog_close();
+      LoginDialog_close();
       setOpenBasket(true);
       setCartSelected(true);
-      
     } else {
-      openLoginDialog();
+      LoginDialog_open();
     }
   }
-  function closeBasketDialog() {
+  function CartDialog_close() {
     setOpenBasket(false);
     setCartSelected(false);
-   
   }
-  function openLoginDialog() {
+  function LoginDialog_open() {
     if (user.authorized === true) {
-      navigate('/user')
+      navigate("/user");
     } else {
-      closeRegDialog();
+      RegisterDialog_close();
       setOpenLogin(true);
     }
   }
@@ -79,42 +69,42 @@ export const ActionIcons = () => {
   function closeRegAfterSuccess() {
     setOpenRegister(false);
     setInfoMessage("Все добре, теперь увійдіть");
-    openInfoDialog();
+    InfoDialog_open();
   }
 
-  function openInfoDialog() {
+  function InfoDialog_open() {
     setOpenInfo(true);
   }
 
-  function closeInfoDialog() {
+  function InfoDialog_close() {
     setOpenInfo(false);
   }
 
-  
-
-
-  function closeErrorDialog() {
+  function ErrorDialog_close() {
     setOpenError(false);
   }
 
-  function closeLoginDialog() {
+  function LoginDialog_close() {
     setOpenLogin(false);
   }
 
-  function closeRegDialog() {
+  function RegisterDialog_close() {
     setOpenRegister(false);
   }
 
-
-
-
-   const Locker = () => {
+  const Locker = () => {
     if (user.authorized === true) {
-     
-        return user.avatar === undefined 
-        ? <Typography sx = {{color: '#fff'}} fontFamily={'Comfortaa'}>{user.name}</Typography>
-        : <img src={user.avatar} alt={user.name} style = {{width: 50, height: 50}}/>
-       
+      return user.avatar === undefined ? (
+        <Typography sx={{ color: "#fff" }} fontFamily={"Comfortaa"}>
+          {user.name}
+        </Typography>
+      ) : (
+        <img
+          src={user.avatar}
+          alt={user.name}
+          style={{ width: 50, height: 50 }}
+        />
+      );
     } else {
       return (
         <LockPersonRoundedIcon
@@ -142,36 +132,32 @@ export const ActionIcons = () => {
           alignItems={"center"}
           maxWidth={180}
         >
-          <IconButton onClick={openBasketDialog}>
-            {
-              
-
-              items.items === undefined
-              ? <Badge badgeContent={'пусто'} color="warning">
-              <ShoppingCartIcon
-                color={cartSelected ? "info" : "warning"}
-                sx={{
-                  width: 40,
-                  height: 40,
-                }}
-              />
-             </Badge>
-             : <Badge badgeContent={items.items.length} color="warning">
-             <ShoppingCartIcon
-               color={cartSelected ? "info" : "warning"}
-               sx={{
-                 width: 40,
-                 height: 40,
-               }}
-             />
-            </Badge>
-              
-            }
-            
+          <IconButton onClick={CartDialog_open}>
+            {items.items === undefined ? (
+              <Badge badgeContent={"пусто"} color="warning">
+                <ShoppingCartIcon
+                  color={cartSelected ? "info" : "warning"}
+                  sx={{
+                    width: 40,
+                    height: 40,
+                  }}
+                />
+              </Badge>
+            ) : (
+              <Badge badgeContent={items.items.length} color="warning">
+                <ShoppingCartIcon
+                  color={cartSelected ? "info" : "warning"}
+                  sx={{
+                    width: 40,
+                    height: 40,
+                  }}
+                />
+              </Badge>
+            )}
           </IconButton>
         </Box>
         <Box>
-          <IconButton onClick={openLoginDialog}>
+          <IconButton onClick={LoginDialog_open}>
             <Locker />
           </IconButton>
         </Box>
@@ -179,44 +165,39 @@ export const ActionIcons = () => {
 
       <LoginDialog
         openLogin={openLogin}
-        closeLoginDialog={closeLoginDialog}
-        openErrorDialog={setOpenError}
-        openRegisterDialog={setOpenRegister}
-        openLoginDialog={setOpenLogin}
+        LoginDialog_close={LoginDialog_close}
+        ErrorDialog_open={setOpenError}
+        RegisterDialog_open={setOpenRegister}
+        LoginDialog_open={setOpenLogin}
         setErrorMessage={setErrorMessage}
       />
 
-      
-
       <ErrorDialog
         openError={openError}
-        closeErrorDialog={closeErrorDialog}
+        ErrorDialog_close={ErrorDialog_close}
         errorMessage={errorMessage}
       />
       <InfoDialog
         openInfo={openInfo}
-        closeInfoDialog={closeInfoDialog}
+        InfoDialog_close={InfoDialog_close}
         infoMessage={infoMessage}
       />
 
-      
       <RegisterDialog
         openRegister={openRegister}
-        closeRegisterDialog={closeRegDialog}
-        openErrorDialog={setOpenError}
-        openLoginDialog={openLoginDialog}
+        closeRegisterDialog={RegisterDialog_close}
+        ErrorDialog_open={setOpenError}
+        LoginDialog_open={LoginDialog_open}
         closeRegAfterSuccess={closeRegAfterSuccess}
         setErrorMessage={setErrorMessage}
       />
 
-     
-
       {/*<Basket Dialog>*/}
       <BasketDialog
         openBasket={openBasket}
-        closeBasketDialog={closeBasketDialog}
-        user = {user}
-       />
+        CartDialog_close={CartDialog_close}
+        user={user}
+      />
       {/*</Basket Dialog>*/}
     </>
   );

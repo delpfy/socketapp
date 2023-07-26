@@ -20,10 +20,8 @@ import {
   checkAuthorization,
 } from "../../redux/user/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
-import axios from "axios";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { getItemReviews, updateAllUserReviews, updateReview } from "../../redux/review/asyncActions";
-import { IReviewGET } from "../../redux/types";
+import { updateAllUserReviews } from "../../redux/review/asyncActions";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
@@ -45,25 +43,25 @@ export default function User() {
 
   const avatarFileRef = useRef<HTMLInputElement | null>(null);
 
-  function openLogoutDialog() {
+  function LogoutDialog_open() {
     setOpenLogout(true);
   }
 
-  function closeLogoutDialog() {
+  function LogoutDialog_close() {
     setOpenLogout(false);
   }
 
-  function closeErrorDialog() {
+  function ErrorDialog_close() {
     setOpenError(false);
   }
-  function openErrorDialog() {
+  function ErrorDialog_open() {
     setOpenError(true);
   }
 
-  function closeInfoDialog() {
+  function InfoDialog_close() {
     setOpenInfo(false);
   }
-  function openInfoDialog() {
+  function InfoDialog_open() {
     setOpenInfo(true);
   }
 
@@ -74,7 +72,7 @@ export default function User() {
       formData.append("image", e.target.files[0]);
       dispatch(UploadAvatar(formData));
     } catch (error: any) {
-      openErrorDialog();
+      ErrorDialog_open();
       setErrorMessage(error.message);
     }
   }
@@ -88,11 +86,9 @@ export default function User() {
     return emailRegex.test(email);
   }
 
- 
-
   function handleUserChanges() {
     if (fullName.length < 3 || fullName.length > 20) {
-      openErrorDialog();
+      ErrorDialog_open();
       setErrorMessage(
         "Ім'я має бути завдовжки мінімум 3 символа та максимум 20"
       );
@@ -100,13 +96,13 @@ export default function User() {
     }
 
     if (!validateEmail(email)) {
-      openErrorDialog();
+      ErrorDialog_open();
       setErrorMessage("Некоректний формат пошти");
       return;
     }
 
     if (password.length < 5) {
-      openErrorDialog();
+      ErrorDialog_open();
       setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
       return;
     }
@@ -124,19 +120,19 @@ export default function User() {
         console.log("result.status " + result.meta.requestStatus);
         if (result.meta.requestStatus === "fulfilled") {
           console.log("fullName.replace()" + fullName.replace(/\s+/g, " "));
-          dispatch(updateAllUserReviews({userName: fullName.replace(/\s+/g, " ")}));
-          openInfoDialog();
+          dispatch(
+            updateAllUserReviews({ userName: fullName.replace(/\s+/g, " ") })
+          );
+          InfoDialog_open();
           setInfoMessage("Дані було оновлено");
           dispatch(checkAuthorization());
-          
-          
         } else if (result.meta.requestStatus === "rejected") {
-          openErrorDialog();
+          ErrorDialog_open();
           setErrorMessage("Схоже при оновленні данних виникла помилка");
         }
       });
     } catch (error: any) {
-      openErrorDialog();
+      ErrorDialog_open();
       setErrorMessage(error);
     }
   }
@@ -205,7 +201,10 @@ export default function User() {
 
           <Box padding={3}>
             <InputLabel>Пошта</InputLabel>
-            <Input value={email} onChange={(e) => setEmail(e.target.value.replace(/\s+/g, ""))} />
+            <Input
+              value={email}
+              onChange={(e) => setEmail(e.target.value.replace(/\s+/g, ""))}
+            />
             <FormHelperText sx={{ fontSize: 15 }}>
               Ми ніколи не розголошуватимемо вашу електронну пошту.
             </FormHelperText>
@@ -256,7 +255,7 @@ export default function User() {
               variant="contained"
               color="error"
               sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-              onClick={openLogoutDialog}
+              onClick={LogoutDialog_open}
             >
               Вийти з аккаута
             </Button>
@@ -264,16 +263,16 @@ export default function User() {
         </Box>
         <LogoutDialog
           openLogout={openLogout}
-          closeLogoutDialog={closeLogoutDialog}
+          LogoutDialog_close={LogoutDialog_close}
         />
         <ErrorDialog
           openError={openError}
-          closeErrorDialog={closeErrorDialog}
+          ErrorDialog_close={ErrorDialog_close}
           errorMessage={errorMessage}
         />
         <InfoDialog
           openInfo={openInfo}
-          closeInfoDialog={closeInfoDialog}
+          InfoDialog_close={InfoDialog_close}
           infoMessage={infoMessage}
         />
       </Box>

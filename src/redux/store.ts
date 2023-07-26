@@ -9,7 +9,7 @@ const store = configureStore({
     basket: basketReduser,
     home: homeReduser,
     user: userReduser,
-    review: reviewReduser
+    review: reviewReduser,
   },
 });
 
