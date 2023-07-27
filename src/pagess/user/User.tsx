@@ -67,9 +67,11 @@ export default function User() {
 
   async function handleImageChange(e: any) {
     setImage(e.target.files[0]);
+    console.log("e.target.files[0] " + e.target.files[0].originalName)
     try {
       const formData = new FormData();
       formData.append("image", e.target.files[0]);
+      console.log("e.target.files[0] " + e.target.files[0])
       dispatch(UploadAvatar(formData));
     } catch (error: any) {
       ErrorDialog_open();
@@ -114,7 +116,7 @@ export default function User() {
           fullName: fullName,
           role: user.role,
           password: password,
-          avatarUrl: image,
+          avatarUrl: "",
         })
       ).then((result: any) => {
         console.log("result.status " + result.meta.requestStatus);
@@ -163,13 +165,9 @@ export default function User() {
             justifyContent={"space-around"}
           >
             {user.avatar === undefined ? (
-              <Avatar sx={{ width: 100, height: 100 }} />
+              <Avatar alt="user_avatar" sx={{ width: 100, height: 100 }} />
             ) : (
-              <img
-                src={user.avatar}
-                alt="user_avatar"
-                style={{ width: 100, height: 100 }}
-              />
+              <Avatar alt="user_avatar" src= {user.avatar} sx={{ width: 100, height: 100 }} />
             )}
 
             <input

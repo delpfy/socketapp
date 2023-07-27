@@ -1,7 +1,6 @@
 import { Box, Button, Rating, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { checkAuthorization } from "../../redux/user/asyncActions";
 import { createReview, getItemReviews } from "../../redux/review/asyncActions";
 import ErrorDialog from "../dialogs/ErrorDialog";
 import InfoDialog from "../dialogs/InfoDialog";
@@ -91,7 +90,6 @@ export default function ReviewForm(props: Items | TShippingItems) {
       if (result.meta.requestStatus === "fulfilled") {
         InfoDialog_open();
         setInfoMessage("Дякуємо за відгук");
-        dispatch(checkAuthorization());
         dispatch(getItemReviews(props._id));
         dispatch(
           setTotalRating({ prevStars: 0, stars: rating, func: "append" })

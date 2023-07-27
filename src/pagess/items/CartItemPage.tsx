@@ -86,7 +86,7 @@ export const BasketItemPage = (props: TShippingItems) => {
             color="error"
             sx={{ paddingLeft: 0.3 }}
           >
-            {props.price}₴
+            {props.price} ₴
           </Typography>
           <Rating name="read-only" value={props.rating} readOnly />
 

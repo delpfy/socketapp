@@ -10,6 +10,5 @@ export const InitialiseBasket = () => {
     items: {} as TShippingItemsDisplay,
     basketItemCurrent: {} as ShippingItemDisplay,
     itemsAmount: 0,
-    isOnItemPage: false,
   };
 };

@@ -23,6 +23,8 @@ import {
 import { SetItemsAmount } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
+import { setUserExpences } from "../../../redux/user/userSlice";
+import { checkAuthorization } from "../../../redux/user/asyncActions";
 
 export const BasketItemBlock = (props: TShippingItems) => {
   const dispatch = useAppDispatch();
@@ -68,9 +70,13 @@ export const BasketItemBlock = (props: TShippingItems) => {
         image: props.image,
         amount: 1,
       } as TShippingItems)
-    );
-
-    dispatch(SetItemsAmount(itemsAmount + 1));
+    ).then((result: any) => {
+      if(result.meta.requestStatus === 'fulfilled'){
+        dispatch(checkAuthorization());
+        dispatch(SetItemsAmount(itemsAmount + 1));
+      }
+    })
+   
   }
 
   async function basketItem_REDUCE() {
@@ -86,9 +92,13 @@ export const BasketItemBlock = (props: TShippingItems) => {
         image: props.image,
         amount: props.amount,
       } as TShippingItems)
-    );
-
-    dispatch(SetItemsAmount(itemsAmount - 1));
+    ).then((result: any) => {
+      if(result.meta.requestStatus === 'fulfilled'){
+        dispatch(checkAuthorization());
+        dispatch(SetItemsAmount(itemsAmount - 1));
+      }
+    })
+    
   }
 
   async function basketItem_DELETE() {
@@ -104,9 +114,13 @@ export const BasketItemBlock = (props: TShippingItems) => {
         image: props.image,
         amount: props.amount,
       } as TShippingItems)
-    );
-
-    dispatch(SetItemsAmount(itemsAmount - props.amount));
+    ).then((result: any) => {
+      if(result.meta.requestStatus === 'fulfilled'){
+        dispatch(checkAuthorization());
+        dispatch(SetItemsAmount(itemsAmount - props.amount));
+      }
+    })
+   
   }
   return (
     <>
@@ -188,7 +202,7 @@ export const BasketItemBlock = (props: TShippingItems) => {
                 fontFamily={"Comfortaa"}
                 color={"error"}
               >
-                {props.price}₴
+                {props.price} ₴
               </Typography>
             </Box>
 

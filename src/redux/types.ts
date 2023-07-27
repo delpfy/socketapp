@@ -123,7 +123,6 @@ export interface BasketState {
   items: TShippingItemsDisplay;
   basketItemCurrent: ShippingItemDisplay;
   itemsAmount: number;
-  isOnItemPage: boolean;
 }
 
 export interface HomeState {

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   Authorize,
   checkAuthorization,
@@ -29,6 +29,9 @@ const userSlice = createSlice({
       state.user.authorized = false;
       state.user.name = "";
       localStorage.removeItem("token");
+    },
+    setUserExpences(state, action: PayloadAction<number>){
+      state.user.expences = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -90,5 +93,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { NullifyToken } = userSlice.actions;
+export const { NullifyToken, setUserExpences } = userSlice.actions;
 export default userSlice.reducer;

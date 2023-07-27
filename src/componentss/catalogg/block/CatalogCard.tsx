@@ -21,6 +21,8 @@ import InfoDialog from "../../dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
 import { getItemReviews } from "../../../redux/review/asyncActions";
+import { setUserExpences } from "../../../redux/user/userSlice";
+import { checkAuthorization } from "../../../redux/user/asyncActions";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
@@ -110,9 +112,15 @@ export default function CatalogCard(props: Items) {
           image: props.image,
           amount: 1,
         } as TShippingItems)
-      );
-
-      dispatch(SetItemsAmount(itemsAmount + 1));
+      ).then((result: any) => {
+        if(result.meta.requestStatus === 'fulfilled'){
+          dispatch(checkAuthorization());
+          dispatch(SetItemsAmount(itemsAmount + 1));
+        }
+      })
+     
+      
+      
     } else {
       setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
       InfoDialog_open();
@@ -211,7 +219,7 @@ export default function CatalogCard(props: Items) {
                     : { fontSize: 22 }
                 }
               >
-                {props.price}₴
+                {props.price} ₴
               </Typography>
               {props.sale ? (
                 <Typography
@@ -220,7 +228,7 @@ export default function CatalogCard(props: Items) {
                   fontFamily={"Comfortaa"}
                   color={"error"}
                 >
-                  {props.price - Math.round((props.price * props.sale) / 100)}₴
+                  {props.price - Math.round((props.price * props.sale) / 100)} ₴
                 </Typography>
               ) : (
                 <></>

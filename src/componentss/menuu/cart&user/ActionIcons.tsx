@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Badge, Box, IconButton, Typography } from "@mui/material";
+import { Avatar, Badge, Box, IconButton, Typography } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
@@ -12,12 +12,11 @@ import ErrorDialog from "../../dialogs/ErrorDialog";
 import LoginDialog from "../../dialogs/LoginDialog";
 import RegisterDialog from "../../dialogs/RegisterDialog";
 import BasketDialog from "../../dialogs/BasketDialog";
-import { checkAuthorization } from "../../../redux/user/asyncActions";
 import { useNavigate } from "react-router-dom";
 
 export const ActionIcons = () => {
   const { user } = useAppSelector((state) => state.user);
-  const { isOnItemPage, items } = useAppSelector((state) => state.basket);
+  const { items } = useAppSelector((state) => state.basket);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -34,16 +33,9 @@ export const ActionIcons = () => {
   const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
-  useEffect(() => {
-    CartDialog_close();
-  }, [isOnItemPage]);
 
-  useEffect(() => {
-    dispatch(checkAuthorization());
-  }, []);
 
   function CartDialog_open() {
-    dispatch(checkAuthorization());
     if (user.authorized === true) {
       RegisterDialog_close();
       LoginDialog_close();
@@ -99,11 +91,7 @@ export const ActionIcons = () => {
           {user.name}
         </Typography>
       ) : (
-        <img
-          src={user.avatar}
-          alt={user.name}
-          style={{ width: 50, height: 50 }}
-        />
+        <Avatar alt="user_avatar" src= {user.avatar} sx={{ width: 50, height: 50 }} />
       );
     } else {
       return (
@@ -132,7 +120,12 @@ export const ActionIcons = () => {
           alignItems={"center"}
           maxWidth={180}
         >
-          <IconButton onClick={CartDialog_open}>
+          {
+            window.location.pathname.includes('/order')
+            ? <></>
+            : 
+            <>
+<IconButton onClick={CartDialog_open}>
             {items.items === undefined ? (
               <Badge badgeContent={"пусто"} color="warning">
                 <ShoppingCartIcon
@@ -155,6 +148,9 @@ export const ActionIcons = () => {
               </Badge>
             )}
           </IconButton>
+            </>
+          }
+          
         </Box>
         <Box>
           <IconButton onClick={LoginDialog_open}>

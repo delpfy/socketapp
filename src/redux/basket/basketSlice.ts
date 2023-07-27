@@ -17,10 +17,6 @@ const basketSlice = createSlice({
     SetItemsAmount(state, action: PayloadAction<number>) {
       state.itemsAmount = action.payload;
     },
-
-    SetItemPage(state, action: PayloadAction<boolean>) {
-      state.isOnItemPage = action.payload;
-    },
   },
   extraReducers: (builder) => {
     // All items by id.
@@ -75,5 +71,5 @@ const basketSlice = createSlice({
   },
 });
 
-export const { SetItemsAmount, SetItemPage } = basketSlice.actions;
+export const { SetItemsAmount} = basketSlice.actions;
 export default basketSlice.reducer;

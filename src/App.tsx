@@ -9,8 +9,8 @@ import { Home } from "./pagess/Home/Home";
 import Footer from "./componentss/Footer";
 import ItemPage from "./pagess/items/CatalogItemPage";
 import AppBarMenu from "./componentss/menuu/appbar/Menu";
-import { getBasketItemsByUser } from "./redux/basket/asyncActions";
 import User from "./pagess/user/User";
+import OrderPage from "./pagess/order/OrderPage";
 
 function App() {
   const {itemsAmount} = useAppSelector(state => state.basket);
@@ -23,7 +23,7 @@ function App() {
   }
   useEffect(() => {
     dispatch(checkAuthorization());
-  }, [itemsAmount, dispatch]);
+  }, []);
 
   
   return (
@@ -34,6 +34,7 @@ function App() {
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/catalog/item" element={<ItemPage />} />
         <Route path="/user" element={<User />} />
+        <Route path="/order" element={<OrderPage />} />
         {/*  <Route path="/socketapp/catalog/basket" element={<BasketPage />} />   */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

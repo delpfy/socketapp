@@ -21,6 +21,8 @@ import {
   setReviewsAmount,
   setRatingAmount,
 } from "../../redux/review/reviewSlice";
+import { setUserExpences } from "../../redux/user/userSlice";
+import { checkAuthorization } from "../../redux/user/asyncActions";
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
@@ -71,9 +73,13 @@ export const ItemPage = () => {
           image: itemCurrent.image,
           amount: 1,
         } as TShippingItems)
-      );
-
-      dispatch(SetItemsAmount(itemsAmount + 1));
+      ).then((result: any) => {
+        if(result.meta.requestStatus === 'fulfilled'){
+          dispatch(checkAuthorization());
+          dispatch(SetItemsAmount(itemsAmount + 1));
+        }
+      })
+     
     } else {
       setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
       InfoDialog_open();
@@ -190,7 +196,7 @@ export const ItemPage = () => {
                     : { fontSize: 22 }
                 }
               >
-                {itemCurrent.price}₴
+                {itemCurrent.price} ₴
               </Typography>
               {itemCurrent.sale ? (
                 <Typography
@@ -201,7 +207,7 @@ export const ItemPage = () => {
                 >
                   {itemCurrent.price -
                     Math.round((itemCurrent.price * itemCurrent.sale) / 100)}
-                  ₴
+                   ₴
                 </Typography>
               ) : (
                 <></>

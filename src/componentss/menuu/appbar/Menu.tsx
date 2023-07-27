@@ -21,6 +21,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { getBasketItemsByUser } from "../../../redux/basket/asyncActions";
+import { checkAuthorization } from "../../../redux/user/asyncActions";
+import { useEffect } from "react";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -43,9 +45,10 @@ export default function AppBarMenu() {
     navigate("/catalog");
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getBasketItemsByUser(user.id));
   }, [user, itemsAmount]);
+
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>

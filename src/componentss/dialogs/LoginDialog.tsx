@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Authorize, checkAuthorization } from "../../redux/user/asyncActions";
+import { Authorize } from "../../redux/user/asyncActions";
 import { useAppDispatch } from "../../redux/hooks";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 
@@ -66,7 +66,6 @@ export default function LoginDialog({
       console.log("result.status " + result.meta.requestStatus);
       if (result.meta.requestStatus === "fulfilled") {
         LoginDialog_open(false);
-        dispatch(checkAuthorization());
       } else if (result.meta.requestStatus === "rejected") {
         ErrorDialog_open(true);
         setErrorMessage("Схоже при авторизації виникла помилка");

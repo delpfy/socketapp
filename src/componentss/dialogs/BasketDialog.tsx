@@ -28,6 +28,7 @@ export default function InfoDialog({
   user,
 }: Props) {
   const { itemCurrent } = useAppSelector((state) => state.home);
+  const {items} = useAppSelector((state) => state.basket);
   const navigate = useNavigate();
   const [scroll] = useState<DialogProps["scroll"]>("paper");
   const [maxWidth] = useState<DialogProps["maxWidth"]>("md");
@@ -39,9 +40,13 @@ export default function InfoDialog({
     CartDialog_close();
   }, [itemCurrent]);
 
-  function handleContinue() {
+  function handleContinueShopping() {
     CartDialog_close();
     navigate("/");
+  }
+  function handleMakeAnOrder() {
+    CartDialog_close();
+    navigate("/order");
   }
 
   return (
@@ -99,7 +104,7 @@ export default function InfoDialog({
             fontFamily={"Comfortaa"}
             color={"error"}
           >
-            {user.expences}₴
+            {user.expences} ₴
           </Typography>
         </Box>
       </DialogTitle>
@@ -110,24 +115,37 @@ export default function InfoDialog({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button
-          sx={{
-            width: {
-              xs: 170,
-              md: 225,
-            },
-            fontSize: {
-              xs: 12,
-              md: 14,
-            },
-          }}
-          variant="contained"
-        >
-          Оформити замовлення
-        </Button>
+        {
+          items.items === undefined
+          ? ""
+          : 
+
+            items.items.length === 0
+            ? <></>
+            : <Button
+       
+            sx={{
+              width: {
+                xs: 170,
+                md: 225,
+              },
+              fontSize: {
+                xs: 12,
+                md: 14,
+              },
+            }}
+            variant="contained"
+            onClick={handleMakeAnOrder}
+          >
+            Оформити замовлення
+          </Button>
+          
+          
+        }
+        
         <Button
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={handleContinue}
+          onClick={handleContinueShopping}
         >
           Продовжити покупки
         </Button>
