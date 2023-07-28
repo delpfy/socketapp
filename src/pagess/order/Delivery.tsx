@@ -1,20 +1,27 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Autocomplete,
   Box,
-  Button,
   Checkbox,
+  FormControl,
   FormControlLabel,
   FormGroup,
+  FormLabel,
   Paper,
+  Radio,
+  RadioGroup,
   TextField,
   Typography,
 } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useEffect, useState } from "react";
+import { useAppDispatch } from "../../redux/hooks";
+import { getNovaPoshtaLocations, getUkrPoshtaLocations } from "../../redux/order/asyncActions";
 
 export default function Delivery() {
+  const [selectedOption, setSelectedOption] = useState("payOnDelivery");
+  const handleOptionChange = (event: any) => {
+    setSelectedOption(event.target.value);
+  };
+
   const top100Films = [
     { label: "The Shawshank Redemption", year: 1994 },
     { label: "The Godfather", year: 1972 },
@@ -143,79 +150,68 @@ export default function Delivery() {
     { label: "Monty Python and the Holy Grail", year: 1975 },
   ];
 
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getNovaPoshtaLocations({city: "asd", searchValue: "sd"}))
+    dispatch(getUkrPoshtaLocations({city: "asd", searchValue: "sd"}))
+  } , [])
+
   return (
     <Paper elevation={5} sx={{ marginBottom: 5 }}>
-      <Typography>Доставка</Typography>
-      <Box
-        sx={{
-          paddingTop: 2,
-          paddingBottom: 2,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Accordion sx={{ marginBottom: 3, width: "100%" }}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
+      <FormControl component="fieldset" sx = {{padding: 2}}>
+        <FormLabel component="legend">Доставка</FormLabel>
+        <RadioGroup
+          aria-label="payment-options"
+          value={selectedOption}
+          onChange={handleOptionChange}
+        >
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            width={800}
+            flexDirection={"row"}
           >
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              width={800}
-              flexDirection={"row"}
-            >
-              <Typography>Самовивіз з наших магазинів </Typography>
-              <Typography color={"#2e7d32"}>Безкоштовно</Typography>
-            </Box>
-          </AccordionSummary>
-          <AccordionDetails>
-          <Autocomplete
+            <FormControlLabel
+              value="pickupFromOurStores"
+              control={<Radio color = 'success' />}
+              label="Самовивіз з наших магазинів"
+            />
+            <Typography color={"#2e7d32"}>Безкоштовно</Typography>
+          </Box>
+          {selectedOption === "pickupFromOurStores" && (
+              <Box sx = {{padding: 5}}>
+<Autocomplete
               size="small"
               disablePortal
               id="combo-box-demo"
-              noOptionsText = {'(·_·)'}
+              noOptionsText={"(·_·)"}
               options={top100Films}
               fullWidth
               renderInput={(params) => (
-                <TextField {...params} label="Введіть адресу або номер відділення" />
+                <TextField
+                  {...params}
+                  label="Введіть адресу або номер відділення"
+                />
               )}
             />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                paddingBottom: 1,
-                paddingTop: 3,
-              }}
-            >
-              <Button variant="contained" size="large" color="success">
-                Зберігти
-              </Button>
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion sx={{ marginBottom: 3, width: "100%" }}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
+              </Box>
+          )}
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            width={800}
+            flexDirection={"row"}
           >
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              width={800}
-              flexDirection={"row"}
-            >
-              <Typography>Кур'єр на вашу адресу </Typography>
-              <Typography>199 ₴</Typography>
-            </Box>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Box
+            <FormControlLabel
+              value="courier"
+              control={<Radio color = 'success' />}
+              label="Кур'єр на вашу адресу"
+            />
+            <Typography>199 ₴</Typography>
+          </Box>
+          {selectedOption === "courier" && (
+              <Box sx = {{padding: 5}}>
+<Box
               display={"flex"}
               justifyContent={"space-around"}
               flexDirection={"row"}
@@ -256,7 +252,7 @@ export default function Delivery() {
                 size="small"
                 disablePortal
                 id="combo-box-demo"
-                noOptionsText = {'(·_·)'}
+                noOptionsText={"(·_·)"}
                 options={["Відсутній", "Присутній"]}
                 fullWidth
                 renderInput={(params) => (
@@ -267,67 +263,72 @@ export default function Delivery() {
 
             <FormGroup sx={{ marginTop: 3 }}>
               <FormControlLabel
-                control={<Checkbox />}
+                control={<Checkbox color = 'success' />}
                 label="Підняти на поверх ( + 11₴) "
               />
             </FormGroup>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                paddingBottom: 1,
-                paddingTop: 3,
-              }}
-            >
-              <Button variant="contained" size="large" color="success">
-                Зберігти
-              </Button>
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion sx={{ width: "100%" }}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2a-content"
-            id="panel2a-header"
+              </Box>
+          )}
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            width={800}
+            flexDirection={"row"}
           >
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              flexDirection={"row"}
-              width={800}
-            >
-              <Typography>Самовивіз з Нової Пошти </Typography>
-              <Typography>149 ₴</Typography>
-            </Box>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Autocomplete
+            <FormControlLabel
+              value="pickupFromUrk"
+              control={<Radio color = 'success' />}
+              label="Самовивіз з Укр Пошти"
+            />
+            <Typography>149 ₴</Typography>
+          </Box>
+          {selectedOption === "pickupFromUrk" && (
+              <Box sx = {{padding: 5}}>
+<Autocomplete
               size="small"
               disablePortal
               id="combo-box-demo"
-              noOptionsText = {'(·_·)'}
+              noOptionsText={"(·_·)"}
               options={top100Films}
               fullWidth
               renderInput={(params) => (
                 <TextField {...params} label="Виберіть відповідне відділення" />
               )}
             />
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                paddingBottom: 1,
-                paddingTop: 3,
-              }}
-            >
-              <Button variant="contained" size="large" color="success">
-                Зберігти
-              </Button>
-            </Box>
-          </AccordionDetails>
-        </Accordion>
-      </Box>
+              </Box>
+          )}
+          
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            width={800}
+            flexDirection={"row"}
+          >
+            <FormControlLabel
+              value="pickupFromNova"
+              control={<Radio color = 'success' />}
+              label="Самовивіз з Нової Пошти"
+            />
+            <Typography>149 ₴</Typography>
+          </Box>
+          {selectedOption === "pickupFromNova" && (
+              <Box sx = {{padding: 5}}>
+<Autocomplete
+              size="small"
+              disablePortal
+              id="combo-box-demo"
+              noOptionsText={"(·_·)"}
+              options={top100Films}
+              fullWidth
+              renderInput={(params) => (
+                <TextField {...params} label="Виберіть відповідне відділення" />
+              )}
+            />
+              </Box>
+          )}
+        </RadioGroup>
+      </FormControl>
+
     </Paper>
   );
 }

@@ -21,7 +21,6 @@ import {
   setReviewsAmount,
   setRatingAmount,
 } from "../../redux/review/reviewSlice";
-import { setUserExpences } from "../../redux/user/userSlice";
 import { checkAuthorization } from "../../redux/user/asyncActions";
 
 export const ItemPage = () => {
@@ -30,7 +29,7 @@ export const ItemPage = () => {
 
   const { status, itemCurrent } = useAppSelector((state) => state.home);
   const { user } = useAppSelector((state) => state.user);
-  const { reviews, status_review } = useAppSelector((state) => state.review);
+  const { reviews, status_review } = useAppSelector((state) => state.reviews);
 
   const { itemsAmount } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);

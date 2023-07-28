@@ -16,7 +16,7 @@ export default function ReviewForm(props: Items | TShippingItems) {
   const { user } = useAppSelector((state) => state.user);
 
   const { item_totalRating, item_reviewsAmount, item_noMoreReviews } =
-    useAppSelector((state) => state.review);
+    useAppSelector((state) => state.reviews);
 
   const [description, setDescription] = useState<string>("");
   const [advantages, setAdvantages] = useState<string>("");

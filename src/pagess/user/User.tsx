@@ -22,6 +22,7 @@ import {
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { updateAllUserReviews } from "../../redux/review/asyncActions";
+import { useNavigate } from "react-router-dom";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
@@ -144,136 +145,146 @@ export default function User() {
       avatarFileRef.current.click();
     }
   }
-
+  const navigate = useNavigate();
+  
   return (
     <>
+    {
+      !user.authorized 
+      ?
+      
+      navigate('/')
+      
+      :
       <Box
-        sx={{ paddingTop: { xs: "25%", md: "15%", lg: "9%" } }}
-        width={"100%"}
-      >
-        <Typography fontFamily={"Comfortaa"} textAlign={"center"} fontSize={32}>
-          Особистий кабінет
-        </Typography>
+      sx={{ paddingTop: { xs: "25%", md: "15%", lg: "9%" } }}
+      width={"100%"}
+    >
+      <Typography fontFamily={"Comfortaa"} textAlign={"center"} fontSize={32}>
+        Особистий кабінет
+      </Typography>
+
+      <Box padding={3}>
+        <Box
+          padding={3}
+          display={"flex"}
+          alignItems={"center"}
+          flexDirection={"column"}
+          height={200}
+          justifyContent={"space-around"}
+        >
+          {user.avatar === undefined ? (
+            <Avatar alt="user_avatar" sx={{ width: 100, height: 100 }} />
+          ) : (
+            <Avatar alt="user_avatar" src= {user.avatar} sx={{ width: 100, height: 100 }} />
+          )}
+
+          <input
+            hidden
+            ref={avatarFileRef}
+            color="warning"
+            type="file"
+            onChange={handleImageChange}
+          />
+          <Button
+            color="warning"
+            variant="contained"
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={handleLoadImageClick}
+          >
+            Змінити аватар
+          </Button>
+        </Box>
+        <Box padding={3}>
+          <InputLabel>Iм'я</InputLabel>
+          <Input
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value.replace(/\s+/g, " "))}
+          />
+          <FormHelperText sx={{ fontSize: 15 }}>
+            Наразі ви - {user.name}
+          </FormHelperText>
+        </Box>
 
         <Box padding={3}>
-          <Box
-            padding={3}
-            display={"flex"}
-            alignItems={"center"}
-            flexDirection={"column"}
-            height={200}
-            justifyContent={"space-around"}
-          >
-            {user.avatar === undefined ? (
-              <Avatar alt="user_avatar" sx={{ width: 100, height: 100 }} />
-            ) : (
-              <Avatar alt="user_avatar" src= {user.avatar} sx={{ width: 100, height: 100 }} />
-            )}
-
-            <input
-              hidden
-              ref={avatarFileRef}
-              color="warning"
-              type="file"
-              onChange={handleImageChange}
-            />
-            <Button
-              color="warning"
-              variant="contained"
-              sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-              onClick={handleLoadImageClick}
-            >
-              Змінити аватар
-            </Button>
-          </Box>
-          <Box padding={3}>
-            <InputLabel>Iм'я</InputLabel>
-            <Input
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value.replace(/\s+/g, " "))}
-            />
-            <FormHelperText sx={{ fontSize: 15 }}>
-              Наразі ви - {user.name}
-            </FormHelperText>
-          </Box>
-
-          <Box padding={3}>
-            <InputLabel>Пошта</InputLabel>
-            <Input
-              value={email}
-              onChange={(e) => setEmail(e.target.value.replace(/\s+/g, ""))}
-            />
-            <FormHelperText sx={{ fontSize: 15 }}>
-              Ми ніколи не розголошуватимемо вашу електронну пошту.
-            </FormHelperText>
-          </Box>
-          <Box padding={3}>
-            <InputLabel>Пароль</InputLabel>
-            <Input
-              value={password}
-              type={passVisible ? "password" : "text"}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    edge="end"
-                  >
-                    {passVisible ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <FormHelperText sx={{ fontSize: 15 }}>
-              Ми ніколи не розголошуватимемо ваш пароль.
-            </FormHelperText>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              height: { xs: 170, md: 100 },
-              width: { xs: 300, md: 600 },
-              flexDirection: { xs: "column", md: "row" },
-              alignItems: { xs: "flex-end", md: "center" },
-              justifyContent: "space-around",
-            }}
-          >
-            <Button
-              variant="contained"
-              color="warning"
-              sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-              onClick={handleUserChanges}
-            >
-              Зберігти зміни
-            </Button>
-
-            <Button
-              variant="contained"
-              color="error"
-              sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-              onClick={LogoutDialog_open}
-            >
-              Вийти з аккаута
-            </Button>
-          </Box>
+          <InputLabel>Пошта</InputLabel>
+          <Input
+            value={email}
+            onChange={(e) => setEmail(e.target.value.replace(/\s+/g, ""))}
+          />
+          <FormHelperText sx={{ fontSize: 15 }}>
+            Ми ніколи не розголошуватимемо вашу електронну пошту.
+          </FormHelperText>
         </Box>
-        <LogoutDialog
-          openLogout={openLogout}
-          LogoutDialog_close={LogoutDialog_close}
-        />
-        <ErrorDialog
-          openError={openError}
-          ErrorDialog_close={ErrorDialog_close}
-          errorMessage={errorMessage}
-        />
-        <InfoDialog
-          openInfo={openInfo}
-          InfoDialog_close={InfoDialog_close}
-          infoMessage={infoMessage}
-        />
+        <Box padding={3}>
+          <InputLabel>Пароль</InputLabel>
+          <Input
+            value={password}
+            type={passVisible ? "password" : "text"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {passVisible ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <FormHelperText sx={{ fontSize: 15 }}>
+            Ми ніколи не розголошуватимемо ваш пароль.
+          </FormHelperText>
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            height: { xs: 170, md: 100 },
+            width: { xs: 300, md: 600 },
+            flexDirection: { xs: "column", md: "row" },
+            alignItems: { xs: "flex-end", md: "center" },
+            justifyContent: "space-around",
+          }}
+        >
+          <Button
+            variant="contained"
+            color="warning"
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={handleUserChanges}
+          >
+            Зберігти зміни
+          </Button>
+
+          <Button
+            variant="contained"
+            color="error"
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={LogoutDialog_open}
+          >
+            Вийти з аккаута
+          </Button>
+        </Box>
       </Box>
+      <LogoutDialog
+        openLogout={openLogout}
+        LogoutDialog_close={LogoutDialog_close}
+      />
+      <ErrorDialog
+        openError={openError}
+        ErrorDialog_close={ErrorDialog_close}
+        errorMessage={errorMessage}
+      />
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
+    </Box>
+    }
+     
     </>
   );
 }

@@ -11,6 +11,7 @@ import {
   getAllItems,
   getItemById,
   getItemsByCategory,
+  searchItems,
   updateItem,
 } from "./asyncActions";
 
@@ -56,6 +57,20 @@ const homeSlice = createSlice({
     builder.addCase(getItemsByCategory.rejected, (state) => {
       state.status = "error";
       state.itemsCategory = {} as ItemsDisplay;
+    });
+
+    // Items by category.
+    builder.addCase(searchItems.fulfilled, (state, action) => {
+      state.status = "success";
+      state.itemsDisplay = action.payload;
+    });
+    builder.addCase(searchItems.pending, (state) => {
+      state.status = "pending";
+      state.itemsDisplay = {} as ItemsDisplay;
+    });
+    builder.addCase(searchItems.rejected, (state) => {
+      state.status = "error";
+      state.itemsDisplay = {} as ItemsDisplay;
     });
 
     // get item by id.

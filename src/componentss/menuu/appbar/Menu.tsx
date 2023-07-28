@@ -19,10 +19,10 @@ import {
   ListItemText,
   SwipeableDrawer,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { getBasketItemsByUser } from "../../../redux/basket/asyncActions";
-import { checkAuthorization } from "../../../redux/user/asyncActions";
 import { useEffect } from "react";
+import Search from "../search/Search";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -141,7 +141,7 @@ export default function AppBarMenu() {
               <Logo />
             </Box>
           </Box>
-
+          <Search />
           <Box>
             <Basket />
           </Box>

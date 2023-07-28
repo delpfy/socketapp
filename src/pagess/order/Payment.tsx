@@ -16,7 +16,7 @@ export default function Payment() {
   const [selectedOption, setSelectedOption] = useState("payOnDelivery");
   const [selectedSecondaryOption, setSelectedSecondaryOption] =
     useState("payOnDelivery");
-
+   
   const handleOptionChange = (event: any) => {
     setSelectedOption(event.target.value);
   };
@@ -26,8 +26,8 @@ export default function Payment() {
 
   return (
     <Paper elevation={5} sx={{ marginBottom: 5 }}>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <FormControl component="fieldset">
+      <Box sx={{ display: "flex", flexDirection: "column"}}>
+        <FormControl component="fieldset"  sx = {{padding: 2}}>
           <FormLabel component="legend">Варіанти оплати</FormLabel>
           <RadioGroup
             aria-label="payment-options"
@@ -36,12 +36,12 @@ export default function Payment() {
           >
             <FormControlLabel
               value="payOnDelivery"
-              control={<Radio />}
+              control={<Radio color = 'success' />}
               label="Оплата під час отримання товару"
             />
             <FormControlLabel
               value="rozetkaPay"
-              control={<Radio />}
+              control={<Radio color = 'success' />}
               label="Оплатити зараз через RozetkaPay"
             />
             {selectedOption === "rozetkaPay" && (
@@ -53,7 +53,7 @@ export default function Payment() {
                 >
                 <FormControlLabel
                   value="addCard"
-                  control={<Radio />}
+                  control={<Radio color = 'success' />}
                   label="Додати картку"
                 />
                 {selectedSecondaryOption === "addCard" && (
@@ -62,7 +62,7 @@ export default function Payment() {
                     <TextField label="Термін дії" fullWidth />
                     <TextField label="CVV" fullWidth />
                     <Box mt={2}>
-                      <Button variant="contained" color="primary">
+                      <Button variant="contained" color = 'success'>
                         Додати
                       </Button>
                     </Box>
@@ -70,17 +70,17 @@ export default function Payment() {
                 )}
                 <FormControlLabel
                   value="googlePay"
-                  control={<Radio />}
+                  control={<Radio color = 'success' />}
                   label="GooglePay"
                 />
                 <FormControlLabel
                   value="onlineBabyPackage"
-                  control={<Radio />}
+                  control={<Radio color = 'success' />}
                   label="Оплатити онлайн соціальною картою 'Пакунок малюка'"
                 />
                 <FormControlLabel
                   value="onlineSupportCard"
-                  control={<Radio />}
+                  control={<Radio color = 'success' />}
                   label="Оплатити онлайн картою 'єПідтримка'"
                 />
                 </RadioGroup>
@@ -92,7 +92,7 @@ export default function Payment() {
             {/* Additional options for "Безготівковими для юридичних осіб" */}
             <FormControlLabel
               value="nonCashForLegalEntities"
-              control={<Radio />}
+              control={<Radio color = 'success' />}
               label="Безготівковими для юридичних осіб"
             />
             {selectedOption === "nonCashForLegalEntities" && (
@@ -109,7 +109,7 @@ export default function Payment() {
 
             <FormControlLabel
               value="credit"
-              control={<Radio />}
+              control={<Radio color = 'success' />}
               label="Кредит та оплата частинами Оформлення кредитів у банках партнерів"
             />
           </RadioGroup>
