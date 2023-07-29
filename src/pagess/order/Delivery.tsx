@@ -11,16 +11,29 @@ import {
   RadioGroup,
   TextField,
   Typography,
+  debounce,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useAppDispatch } from "../../redux/hooks";
+import { useEffect, useMemo, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getNovaPoshtaLocations, getUkrPoshtaLocations } from "../../redux/order/asyncActions";
+import { setNovaPoshtaLocation } from "../../redux/order/orderSlice";
+
+interface TNovaLocation {
+  Description: string;
+}
 
 export default function Delivery() {
   const [selectedOption, setSelectedOption] = useState("payOnDelivery");
+  const {city} = useAppSelector(state => state.orders);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const { novaPoshtaLocations } = useAppSelector((state) => state.orders);
+  const [novaPoshtaOptions, setNovaPoshtaOptions] = useState<readonly TNovaLocation[]>([]);
   const handleOptionChange = (event: any) => {
     setSelectedOption(event.target.value);
   };
+  useEffect(() => {
+    setNovaPoshtaOptions(novaPoshtaLocations.data);
+  }, [novaPoshtaLocations]);
 
   const top100Films = [
     { label: "The Shawshank Redemption", year: 1994 },
@@ -150,9 +163,22 @@ export default function Delivery() {
     { label: "Monty Python and the Holy Grail", year: 1975 },
   ];
 
+  function handleSearchChange(event: any, newInputValue: string) {
+    setSelectedDepartment(newInputValue);
+    
+    if (newInputValue !== "") {
+      searchDelayed(newInputValue);
+    }
+  }
+
+  function loadLocations(newInputValue: any) {
+    dispatch(getNovaPoshtaLocations({city: city, searchValue: newInputValue}))
+  }
+
+  const searchDelayed = useMemo(() => debounce(loadLocations, 300), []);
+
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getNovaPoshtaLocations({city: "asd", searchValue: "sd"}))
     dispatch(getUkrPoshtaLocations({city: "asd", searchValue: "sd"}))
   } , [])
 
@@ -184,9 +210,13 @@ export default function Delivery() {
               size="small"
               disablePortal
               id="combo-box-demo"
+             
               noOptionsText={"(·_·)"}
-              options={top100Films}
+              options={novaPoshtaOptions === undefined ? [] : novaPoshtaOptions}
               fullWidth
+              getOptionLabel={(option) =>
+                option.Description || ""
+              }
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -312,18 +342,28 @@ export default function Delivery() {
             <Typography>149 ₴</Typography>
           </Box>
           {selectedOption === "pickupFromNova" && (
+            
               <Box sx = {{padding: 5}}>
 <Autocomplete
               size="small"
               disablePortal
               id="combo-box-demo"
+              onInputChange={handleSearchChange}
+              onChange={(e, value) =>{ if(value){setNovaPoshtaLocation(value.Description)}} }
               noOptionsText={"(·_·)"}
-              options={top100Films}
+              options={novaPoshtaOptions === undefined ? [] : novaPoshtaOptions}
               fullWidth
+              getOptionLabel={(option) =>
+                option.Description || ""
+              }
               renderInput={(params) => (
-                <TextField {...params} label="Виберіть відповідне відділення" />
+                <TextField
+                  {...params}
+                  label="Введіть адресу або номер відділення"
+                />
               )}
             />
+        
               </Box>
           )}
         </RadioGroup>

@@ -43,15 +43,19 @@ export const getLocations = createAsyncThunk<TLocationCity, {city: string}>(
 export const getNovaPoshtaLocations = createAsyncThunk<any, {city: string, searchValue: string}>(
   "orders/getNovaPoshtaLocations",
   async (params) => {
+    console.log("params.searchValue " + params.searchValue)
     const { data } = await axios.post(
       'https://api.novaposhta.ua/v2.0/json/',
       {
         
           apiKey: "5d01301bf2df2e22fdad66e5428dba0d",
-          modelName: 'Address',
-          calledMethod: 'searchSettlements',
+          modelName: 'AddressGeneral',
+          calledMethod: 'getWarehouses',
           methodProperties: {
-            CityName: 'Київ', 
+            CityName: params.city, 
+            Limit: 15,
+            FindByString: params.searchValue ? params.searchValue : "",
+
           }
         
       }

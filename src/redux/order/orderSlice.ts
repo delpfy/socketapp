@@ -1,39 +1,60 @@
-import {  createSlice } from "@reduxjs/toolkit";
-import {  TLocationCity } from "../types";
+import {  PayloadAction, createSlice } from "@reduxjs/toolkit";
+import {  TLocationCity, TLocationNova } from "../types";
 import { getLocations, getNovaPoshtaLocations, getUkrPoshtaLocations } from "./asyncActions";
 
 const orderSlice = createSlice({
   name: "reviews",
   initialState: {
-    location: {
+    locations: {
       data: [{}],
     } as TLocationCity,
 
-    novaPoshtaLocation: {},
-    ukrPoshtaLocation: {},
+    city: "",
+
+    novaPoshtaLocations: {
+      data:[{}]
+    } as TLocationNova,
+    ukrPoshtaLocations: {},
+
+    location: "",
+    novaPoshtaLocation: "",
+    ukrPoshtaLocation: "",
   },
 
-  reducers: {},
+  reducers: {
+    setCity(state, action: PayloadAction<string>) {
+      state.city = action.payload;
+    },
+    setNovaPoshtaLocation(state, action: PayloadAction<string>) {
+      state.novaPoshtaLocation = action.payload;
+    },
+    setLocation(state, action: PayloadAction<string>) {
+      state.location = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getLocations.fulfilled, (state, action) => {
-      state.location = action.payload;
+      state.locations = action.payload;
     });
     builder.addCase(getLocations.pending, (state) => {});
     builder.addCase(getLocations.rejected, (state) => {});
 
     builder.addCase(getNovaPoshtaLocations.fulfilled, (state, action) => {
-      state.novaPoshtaLocation = action.payload;
+      state.novaPoshtaLocations = action.payload;
+      console.log("!!!!")
+      console.log(state.novaPoshtaLocations);
+      console.log("!!!!")
     });
     builder.addCase(getNovaPoshtaLocations.pending, (state) => {});
     builder.addCase(getNovaPoshtaLocations.rejected, (state) => {});
 
     builder.addCase(getUkrPoshtaLocations.fulfilled, (state, action) => {
-        state.ukrPoshtaLocation = action.payload;
+        state.ukrPoshtaLocations = action.payload;
       });
       builder.addCase(getUkrPoshtaLocations.pending, (state) => {});
       builder.addCase(getUkrPoshtaLocations.rejected, (state) => {});
   },
 });
 
-export const {} = orderSlice.actions;
+export const {setCity, setNovaPoshtaLocation, setLocation} = orderSlice.actions;
 export default orderSlice.reducer;

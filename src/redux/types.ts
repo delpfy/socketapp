@@ -128,6 +128,14 @@ export type TLocationCity= {
 
 }
 
+export type TLocationNova= {
+  
+  data: {
+    Description: string,
+  }[]
+
+}
+
 export interface BasketState {
   status: Status;
   items: TShippingItemsDisplay;
