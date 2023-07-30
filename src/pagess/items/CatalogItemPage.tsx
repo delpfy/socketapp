@@ -11,8 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
-import { addBasketItem } from "../../redux/basket/asyncActions";
-import { SetItemsAmount } from "../../redux/basket/basketSlice";
+import { synchronizeBasket } from "../../redux/basket/basketSlice";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
 import Review from "../../componentss/reviews/Review";
@@ -21,27 +20,17 @@ import {
   setReviewsAmount,
   setRatingAmount,
 } from "../../redux/review/reviewSlice";
-import { checkAuthorization } from "../../redux/user/asyncActions";
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  
+
 
   const { status, itemCurrent } = useAppSelector((state) => state.home);
-  const { user } = useAppSelector((state) => state.user);
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
-
-  const { itemsAmount } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);
-  const [infoMessage, setInfoMessage] = useState<string>("Unhandled error");
-
-  function InfoDialog_close() {
-    setOpenInfo(false);
-  }
-
-  function InfoDialog_open() {
-    setOpenInfo(true);
-  }
+ 
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -58,11 +47,15 @@ export const ItemPage = () => {
     }
   }
 
-  function basketItem_APPEND() {
-    if (user.authorized === true) {
-      dispatch(
-        addBasketItem({
-          _id: user.id,
+  async function basketItem_APPEND() {
+    const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
+    if (basketItems !== undefined) {
+      const itemIndex = basketItems.findIndex(
+        (item: TShippingItems) => item.name === itemCurrent.name
+      );
+
+      if (itemIndex !== -1) {
+        basketItems[itemIndex] = {
           name: itemCurrent.name,
           description: itemCurrent.description,
           category: itemCurrent.category,
@@ -70,21 +63,27 @@ export const ItemPage = () => {
           sale: itemCurrent.sale,
           rating: itemCurrent.rating,
           image: itemCurrent.image,
-          amount: 1,
-        } as TShippingItems)
-      ).then((result: any) => {
-        if(result.meta.requestStatus === 'fulfilled'){
-          dispatch(checkAuthorization());
-          dispatch(SetItemsAmount(itemsAmount + 1));
-        }
-      })
-     
-    } else {
-      setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
-      InfoDialog_open();
-      // Tip, dunno if i`ll use it.
-      // setOpen(true)
+          amount: basketItems[itemIndex].amount + 1,
+        };
+
+      }
+      else{
+        basketItems.push(
+          {
+            name: itemCurrent.name,
+            description: itemCurrent.description,
+            category: itemCurrent.category,
+            price: adjustPrice(),
+            sale: itemCurrent.sale,
+            rating: itemCurrent.rating,
+            image: itemCurrent.image,
+            amount: 1,
+          }
+        )
+      }
     }
+    localStorage.setItem("basketItems", JSON.stringify(basketItems));
+    dispatch(synchronizeBasket());
   }
 
   function handleBackToCatalog() {
@@ -251,11 +250,6 @@ export const ItemPage = () => {
             <Box>{StatusReviewHandler(status_review)}</Box>
           </Box>
         </Box>
-        <InfoDialog
-          openInfo={openInfo}
-          InfoDialog_close={InfoDialog_close}
-          infoMessage={infoMessage}
-        />
       </>
     );
   };

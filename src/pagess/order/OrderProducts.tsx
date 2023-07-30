@@ -80,10 +80,10 @@ export default function OrderProducts() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.items === undefined ? (
+              {items === undefined ? (
                 <CircularProgress size={50} />
               ) : (
-                items.items.map((item) => (
+                items.map((item) => (
                   <TableRow
                     key={item.name}
                     sx={{

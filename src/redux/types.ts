@@ -138,7 +138,7 @@ export type TLocationNova= {
 
 export interface BasketState {
   status: Status;
-  items: TShippingItemsDisplay;
+  items: TShippingItems[];
   basketItemCurrent: ShippingItemDisplay;
   itemsAmount: number;
 }

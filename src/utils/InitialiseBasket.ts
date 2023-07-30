@@ -2,12 +2,13 @@ import {
   ShippingItemDisplay,
   TShippingItemsDisplay,
   Status,
+  TShippingItems,
 } from "../redux/types";
 
 export const InitialiseBasket = () => {
   return {
     status: "" as Status,
-    items: {} as TShippingItemsDisplay,
+    items: [],
     basketItemCurrent: {} as ShippingItemDisplay,
     itemsAmount: 0,
   };

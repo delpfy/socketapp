@@ -13,35 +13,21 @@ import {
 } from "@mui/material";
 
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { addBasketItem } from "../../../redux/basket/asyncActions";
+import { useAppDispatch} from "../../../redux/hooks";
 import { TShippingItems, Items } from "../../../redux/types";
-import { SetItemsAmount } from "../../../redux/basket/basketSlice";
-import InfoDialog from "../../dialogs/InfoDialog";
+import {synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
 import { getItemReviews } from "../../../redux/review/asyncActions";
-import { setUserExpences } from "../../../redux/user/userSlice";
-import { checkAuthorization } from "../../../redux/user/asyncActions";
 
 export default function CatalogCard(props: Items) {
-  const { user } = useAppSelector((state) => state.user);
-  const { itemsAmount } = useAppSelector((state) => state.basket);
-  const [open, setOpen] = React.useState<boolean>(false);
 
-  const [openInfo, setOpenInfo] = React.useState(false);
-  const [infoMessage, setInfoMessage] = React.useState<string>("Some info");
+
+  const [open, setOpen] = React.useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  function InfoDialog_open() {
-    setOpenInfo(true);
-  }
-
-  function InfoDialog_close() {
-    setOpenInfo(false);
-  }
 
   function compareObjects(obj1: any, obj2: any) {
   
@@ -97,12 +83,16 @@ export default function CatalogCard(props: Items) {
     }
   }
 
-  // Chech auth, if authorized - add and changing active state.
-  function basketItem_APPEND() {
-    if (user.authorized === true) {
-      dispatch(
-        addBasketItem({
-          _id: user.id,
+
+  async function basketItem_APPEND() {
+    const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
+    if (basketItems !== undefined) {
+      const itemIndex = basketItems.findIndex(
+        (item: TShippingItems) => item.name === props.name
+      );
+      console.log(itemIndex)
+      if (itemIndex !== -1) {
+        basketItems[itemIndex] = {
           name: props.name,
           description: props.description,
           category: props.category,
@@ -110,23 +100,27 @@ export default function CatalogCard(props: Items) {
           sale: props.sale,
           rating: props.rating,
           image: props.image,
-          amount: 1,
-        } as TShippingItems)
-      ).then((result: any) => {
-        if(result.meta.requestStatus === 'fulfilled'){
-          dispatch(checkAuthorization());
-          dispatch(SetItemsAmount(itemsAmount + 1));
-        }
-      })
-     
-      
-      
-    } else {
-      setInfoMessage("Не так швидко...\nСпочатку увійдіть -_-");
-      InfoDialog_open();
-      // Tip, dunno if i`ll use it.
-      // setOpen(true)
+          amount: basketItems[itemIndex].amount + 1,
+        };
+       
+      }
+      else{
+        basketItems.push(
+          {
+            name: props.name,
+            description: props.description,
+            category: props.category,
+            price: adjustPrice(),
+            sale: props.sale,
+            rating: props.rating,
+            image: props.image,
+            amount: 1,
+          }
+        )
+      }
     }
+    localStorage.setItem("basketItems", JSON.stringify(basketItems));
+    dispatch(synchronizeBasket());
   }
 
   return (
@@ -268,12 +262,6 @@ export default function CatalogCard(props: Items) {
         </CardActions>
       </Card>
 
-      {/* information */}
-      <InfoDialog
-        openInfo={openInfo}
-        InfoDialog_close={InfoDialog_close}
-        infoMessage={infoMessage}
-      />
     </>
   );
 }

@@ -17,10 +17,17 @@ const basketSlice = createSlice({
     SetItemsAmount(state, action: PayloadAction<number>) {
       state.itemsAmount = action.payload;
     },
+    synchronizeBasket(state){
+      state.items = JSON.parse(
+        localStorage.getItem("basketItems") || "{}"
+      );
+      console.log("!!!");
+      console.log(state.items);
+    }
   },
   extraReducers: (builder) => {
     // All items by id.
-    builder.addCase(getBasketItemsByUser.fulfilled, (state, action) => {
+    /* builder.addCase(getBasketItemsByUser.fulfilled, (state, action) => {
       state.status = "success";
       state.items = action.payload;
     });
@@ -32,7 +39,7 @@ const basketSlice = createSlice({
       state.status = "error";
       state.items = {} as TShippingItemsDisplay;
       state.itemsAmount = 0;
-    });
+    }); */
 
     // Post item.
     builder.addCase(addBasketItem.fulfilled, (state, action) => {
@@ -71,5 +78,5 @@ const basketSlice = createSlice({
   },
 });
 
-export const { SetItemsAmount} = basketSlice.actions;
+export const { SetItemsAmount, synchronizeBasket} = basketSlice.actions;
 export default basketSlice.reducer;

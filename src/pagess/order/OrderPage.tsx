@@ -6,27 +6,20 @@ import OrderProducts from "./OrderProducts";
 import Delivery from "./Delivery";
 import Payment from "./Payment";
 import { useNavigate } from "react-router-dom";
+import { TShippingItems } from "../../redux/types";
 
 export default function OrderPage() {
   const { items } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   let itemsTotalAmount = 0;
-  function countItemsAmount() {
-    if (items.items) {
-      items.items.map((item) => {
-        itemsTotalAmount += item.amount;
-      });
-    }
-
-    return itemsTotalAmount;
-  }
+  
 
   return (
     <>
-      {items.items === undefined ? (
+      {items === undefined ? (
         navigate("/")
-      ) : items.items.length === 0 ? (
+      ) : items.length === 0 ? (
         navigate("/")
       ) : (
         <Box paddingTop={15}>
@@ -64,8 +57,8 @@ export default function OrderPage() {
                   flexDirection={"row"}
                   width={"100%"}
                 >
-                  <Typography>{countItemsAmount()} товари на сумму</Typography>
-                  <Typography width={100}>{user.expences} ₴</Typography>
+                  <Typography>{items.length} товари на сумму</Typography>
+                  <Typography width={100}>{items.reduce((sum: number, item: TShippingItems) => {return  sum += item.price * item.amount},0)} ₴</Typography>
                 </Box>
 
                 <Box

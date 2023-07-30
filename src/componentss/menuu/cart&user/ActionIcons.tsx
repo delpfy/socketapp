@@ -16,9 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 export const ActionIcons = () => {
   const { user } = useAppSelector((state) => state.user);
-  const { items } = useAppSelector((state) => state.basket);
-
-  const dispatch = useAppDispatch();
+  const {items} = useAppSelector(state => state.basket)
   const navigate = useNavigate();
 
   const [cartSelected, setCartSelected] = useState(false);
@@ -36,14 +34,12 @@ export const ActionIcons = () => {
 
 
   function CartDialog_open() {
-    if (user.authorized === true) {
+    
       RegisterDialog_close();
       LoginDialog_close();
       setOpenBasket(true);
       setCartSelected(true);
-    } else {
-      LoginDialog_open();
-    }
+ 
   }
   function CartDialog_close() {
     setOpenBasket(false);
@@ -75,7 +71,7 @@ export const ActionIcons = () => {
   function ErrorDialog_close() {
     setOpenError(false);
   }
-
+  
   function LoginDialog_close() {
     setOpenLogin(false);
   }
@@ -126,7 +122,7 @@ export const ActionIcons = () => {
             : 
             <>
 <IconButton onClick={CartDialog_open}>
-            {items.items === undefined ? (
+            {items.length === 0 ? (
               <Badge badgeContent={"пусто"} color="warning">
                 <ShoppingCartIcon
                   color={cartSelected ? "info" : "warning"}
@@ -137,7 +133,7 @@ export const ActionIcons = () => {
                 />
               </Badge>
             ) : (
-              <Badge badgeContent={items.items.length} color="warning">
+              <Badge badgeContent={items.length} color="warning">
                 <ShoppingCartIcon
                   color={cartSelected ? "info" : "warning"}
                   sx={{

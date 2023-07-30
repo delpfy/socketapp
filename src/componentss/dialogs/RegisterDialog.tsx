@@ -31,7 +31,7 @@ type Props = {
   LoginDialog_open: () => void;
 };
 
-export default function LoginDialog({
+export default function RegisterDialog({
   ErrorDialog_open,
   setErrorMessage,
   LoginDialog_open,

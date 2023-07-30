@@ -16,22 +16,13 @@ import {
 import { Items, TShippingItems } from "../../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import {
-  addBasketItem,
-  deleteBasketItem,
-  removeBasketItem,
-} from "../../../redux/basket/asyncActions";
-import { SetItemsAmount } from "../../../redux/basket/basketSlice";
+  synchronizeBasket,
+} from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
-import { setUserExpences } from "../../../redux/user/userSlice";
-import { checkAuthorization } from "../../../redux/user/asyncActions";
 
-export const BasketItemBlock = (props: TShippingItems) => {
+export default function BasketItemBlock(props: TShippingItems) {
   const dispatch = useAppDispatch();
-
-  const { user } = useAppSelector((state) => state.user);
-  const { itemsAmount } = useAppSelector((state) => state.basket);
-
   const navigate = useNavigate();
 
   function getCurrentItem() {
@@ -57,70 +48,84 @@ export const BasketItemBlock = (props: TShippingItems) => {
     }
   }
 
+
   async function basketItem_APPEND() {
-    await dispatch(
-      addBasketItem({
-        _id: user.id,
-        name: props.name,
-        description: props.description,
-        category: props.category,
-        price: props.price,
-        sale: props.sale,
-        rating: props.rating,
-        image: props.image,
-        amount: 1,
-      } as TShippingItems)
-    ).then((result: any) => {
-      if(result.meta.requestStatus === 'fulfilled'){
-        dispatch(checkAuthorization());
-        dispatch(SetItemsAmount(itemsAmount + 1));
+    const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
+    if (basketItems !== undefined) {
+      const itemIndex = basketItems.findIndex(
+        (item: TShippingItems) => item.name === props.name
+      );
+
+      if (itemIndex !== -1) {
+        basketItems[itemIndex] = {
+          name: props.name,
+          description: props.description,
+          category: props.category,
+          price: props.price,
+          sale: props.sale,
+          rating: props.rating,
+          image: props.image,
+          amount: props.amount + 1,
+        };
+        
       }
-    })
-   
+      else{
+        basketItems.push(
+          {
+            name: props.name,
+            description: props.description,
+            category: props.category,
+            price: props.price,
+            sale: props.sale,
+            rating: props.rating,
+            image: props.image,
+            amount: 1,
+          }
+        )
+      }
+    }
+    localStorage.setItem("basketItems", JSON.stringify(basketItems));
+    dispatch(synchronizeBasket());
   }
 
   async function basketItem_REDUCE() {
-    await dispatch(
-      removeBasketItem({
-        _id: props._id,
-        name: props.name,
-        description: props.description,
-        category: props.category,
-        price: props.price,
-        sale: props.price,
-        rating: props.rating,
-        image: props.image,
-        amount: props.amount,
-      } as TShippingItems)
-    ).then((result: any) => {
-      if(result.meta.requestStatus === 'fulfilled'){
-        dispatch(checkAuthorization());
-        dispatch(SetItemsAmount(itemsAmount - 1));
+    const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
+    if (basketItems !== undefined) {
+      const itemIndex = basketItems.findIndex(
+        (item: TShippingItems) => item.name === props.name
+      );
+
+      if (itemIndex !== -1) {
+        if (basketItems[itemIndex].amount - 1 !== 0) {
+          basketItems[itemIndex] = {
+            name: props.name,
+            description: props.description,
+            category: props.category,
+            price: props.price,
+            sale: props.sale,
+            rating: props.rating,
+            image: props.image,
+            amount: props.amount - 1,
+          };
+          localStorage.setItem("basketItems", JSON.stringify(basketItems));
+        } else {
+          basketItem_DELETE(basketItems[itemIndex]._id);
+        }
       }
-    })
-    
+    }
+    dispatch(synchronizeBasket());
   }
 
-  async function basketItem_DELETE() {
-    await dispatch(
-      deleteBasketItem({
-        _id: props._id,
-        name: props.name,
-        description: props.description,
-        category: props.category,
-        price: props.price,
-        sale: props.sale,
-        rating: props.rating,
-        image: props.image,
-        amount: props.amount,
-      } as TShippingItems)
-    ).then((result: any) => {
-      if(result.meta.requestStatus === 'fulfilled'){
-        dispatch(checkAuthorization());
-        dispatch(SetItemsAmount(itemsAmount - props.amount));
-      }
-    })
-   
+  async function basketItem_DELETE(itemId: string) {
+    const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
+    if (basketItems !== undefined) {
+      const itemIndex = basketItems.findIndex(
+        (item: TShippingItems) => item._id === itemId
+      );
+      basketItems.splice(itemIndex, 1);
+      localStorage.setItem("basketItems", JSON.stringify(basketItems));
+    }
+    dispatch(synchronizeBasket());
   }
   return (
     <>
@@ -254,13 +259,11 @@ export const BasketItemBlock = (props: TShippingItems) => {
             </IconButton>
           </Box>
 
-          <IconButton onClick={basketItem_DELETE}>
+          <IconButton onClick={() => basketItem_DELETE(props._id)}>
             <DeleteForeverIcon color="error" sx={{ width: 40, height: 40 }} />
           </IconButton>
         </Box>
       </Card>
     </>
   );
-};
-
-export default BasketItemBlock;
+}

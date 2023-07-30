@@ -11,9 +11,9 @@ import ItemPage from "./pagess/items/CatalogItemPage";
 import AppBarMenu from "./componentss/menuu/appbar/Menu";
 import User from "./pagess/user/User";
 import OrderPage from "./pagess/order/OrderPage";
+import { synchronizeBasket } from "./redux/basket/basketSlice";
 
 function App() {
-  const {itemsAmount} = useAppSelector(state => state.basket);
   const dispatch = useAppDispatch();
   if (!localStorage.getItem("recentlyReviewed")) {
     localStorage.setItem(
@@ -21,11 +21,20 @@ function App() {
       JSON.stringify([])
     );
   }
+  if (!localStorage.getItem("basketItems")) {
+    localStorage.setItem(
+      "basketItems",
+      JSON.stringify([])
+    );
+  }
+
   useEffect(() => {
     dispatch(checkAuthorization());
   }, []);
 
-  
+  React.useEffect(() => {
+    dispatch(synchronizeBasket());
+  }, [dispatch, JSON.parse(localStorage.getItem("basketItems") || "{}")]);
   return (
     <>
       <AppBarMenu />
