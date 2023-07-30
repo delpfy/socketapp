@@ -14,6 +14,7 @@ import {
   searchItems,
   updateItem,
 } from "./asyncActions";
+import { actualizeData } from "../../utils/actuilizeLocalStorageData";
 
 const initialState: HomeState = InitialiseHome();
 
@@ -87,45 +88,18 @@ const homeSlice = createSlice({
       const recentlyReviewed = JSON.parse(
         localStorage.getItem("recentlyReviewed") || "{}"
       );
+      const basketItems = JSON.parse(
+        localStorage.getItem("basketItems") || "{}"
+      );
 
-      if (recentlyReviewed !== undefined) {
-        const itemIndex = recentlyReviewed.findIndex(
-          (item: Items) => item.name === action.payload.item.name
-        );
-        console.log("RATING 1" + action.payload.item.rating);
+      actualizeData(recentlyReviewed, action.payload);
 
-        if (itemIndex !== -1) {
-          console.log("RATING 2" + recentlyReviewed[itemIndex].rating);
-          for (const key in action.payload.item) {
-            console.log("KEY" + key);
-            if (action.payload.item.hasOwnProperty(key)) {
-              if (
-                action.payload.item[key as keyof CombinedItems] !==
-                recentlyReviewed[itemIndex][key]
-              ) {
-                console.log("obj2[key] 1" + recentlyReviewed[itemIndex][key]);
-                recentlyReviewed[itemIndex][key] =
-                  action.payload.item[key as keyof CombinedItems];
-                console.log("obj2[key] 2" + recentlyReviewed[itemIndex][key]);
-              }
-            }
-          }
 
-          for (const key in recentlyReviewed[itemIndex]) {
-            if (
-              recentlyReviewed[itemIndex].hasOwnProperty(key) &&
-              !action.payload.item.hasOwnProperty(key)
-            ) {
-              delete recentlyReviewed[itemIndex][key];
-            }
-          }
-
-          localStorage.setItem(
-            "recentlyReviewed",
-            JSON.stringify(recentlyReviewed)
-          );
-        }
-      }
+      localStorage.setItem(
+        "recentlyReviewed",
+        JSON.stringify(recentlyReviewed)
+      );
+      
     });
     builder.addCase(updateItem.pending, (state) => {});
     builder.addCase(updateItem.rejected, (state) => {});

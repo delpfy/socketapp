@@ -305,11 +305,13 @@ export const ItemPage = () => {
         if (itemCurrent !== undefined) {
           return <Item />;
         } else {
+          navigate("/catalog");
           return <NotFoundPage />;
         }
       case "pending":
         return <NotFoundPage />;
       case "error":
+        navigate("/catalog");
         return <NotFoundPage />;
       default:
         navigate("/catalog");
