@@ -19,6 +19,13 @@ const orderSlice = createSlice({
     location: "",
     novaPoshtaLocation: "",
     ukrPoshtaLocation: "",
+    totalExpences: 0,
+    user_contact: {
+      name: "",
+      surname: "",
+      email: "",
+      phone: "",
+    }
   },
 
   reducers: {
@@ -30,6 +37,10 @@ const orderSlice = createSlice({
     },
     setLocation(state, action: PayloadAction<string>) {
       state.location = action.payload;
+    },
+    setTotalExpences(state, action: PayloadAction<number>) {
+      state.totalExpences = action.payload;
+      console.log(state.totalExpences);
     },
   },
   extraReducers: (builder) => {
@@ -56,5 +67,5 @@ const orderSlice = createSlice({
   },
 });
 
-export const {setCity, setNovaPoshtaLocation, setLocation} = orderSlice.actions;
+export const {setCity, setNovaPoshtaLocation, setLocation,setTotalExpences} = orderSlice.actions;
 export default orderSlice.reducer;

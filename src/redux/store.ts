@@ -4,6 +4,7 @@ import homeReduser from "./home/homeSlice";
 import userReduser from "./user/userSlice";
 import reviewReduser from "./review/reviewSlice";
 import orderReduser from "./order/orderSlice";
+import postReduser from "./posts/postsSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,8 @@ const store = configureStore({
     user: userReduser,
     reviews: reviewReduser,
     orders: orderReduser,
+    posts: postReduser,
+    
   },
 });
 

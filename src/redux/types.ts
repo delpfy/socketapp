@@ -136,6 +136,14 @@ export type TLocationNova= {
 
 }
 
+export type TPost={
+  _id: string;
+  name: string;
+  image: string;
+  description: string;
+  content: any
+}
+
 export interface BasketState {
   status: Status;
   items: TShippingItems[];

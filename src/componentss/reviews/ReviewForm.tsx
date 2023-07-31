@@ -52,7 +52,6 @@ export default function ReviewForm(props: Items | TShippingItems) {
   }
 
   useEffect(() => {
-    console.log("UPDATE");
     if (item_totalRating !== 0 || item_noMoreReviews) {
       dispatch(
         updateItem({

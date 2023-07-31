@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import BasketPage from "../../pagess/cart/Cart";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import RegisterDialog from "./RegisterDialog";
 import ErrorDialog from "./ErrorDialog";
@@ -21,7 +21,9 @@ import ErrorDialog from "./ErrorDialog";
 import LoginDialog from "./LoginDialog";
 import InfoDialog from "./InfoDialog";
 import { TShippingItems } from "../../redux/types";
-
+import { setUserExpences } from "../../redux/user/userSlice";
+import { Update, checkAuthorization } from "../../redux/user/asyncActions";
+import { request } from "http";
 
 type Props = {
   openBasket: boolean;
@@ -35,9 +37,9 @@ export default function BasketDialog({
   user,
 }: Props) {
   const { itemCurrent } = useAppSelector((state) => state.home);
-  const {items} = useAppSelector(state => state.basket)
+  const { items } = useAppSelector((state) => state.basket);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
 
   const [openLogin, setOpenLogin] = useState(false);
 
@@ -84,7 +86,7 @@ export default function BasketDialog({
   function ErrorDialog_close() {
     setOpenError(false);
   }
-  
+
   function LoginDialog_close() {
     setOpenLogin(false);
   }
@@ -99,143 +101,141 @@ export default function BasketDialog({
   }
   function handleMakeAnOrder() {
     CartDialog_close();
-    if(user && user.authorized){
+    if (user && user.authorized) {
       navigate("/order");
+    } else {
+      setOpenLogin(true);
     }
-   else{
-    setOpenLogin(true);
-   }
   }
 
   return (
     <>
-    <Dialog
-      open={openBasket}
-      onClose={CartDialog_close}
-      scroll={scroll}
-      maxWidth={maxWidth}
-      fullWidth={fullWidth}
-      fullScreen={fullScreen}
-      aria-labelledby="scroll-dialog-title"
-      aria-describedby="scroll-dialog-description"
-    >
-      <DialogTitle
-        id="scroll-dialog-title"
-        width={"90%"}
-        display={"flex"}
-        flexDirection={"row"}
-        justifyContent={"space-between"}
-        alignItems={"center"}
+      <Dialog
+        open={openBasket}
+        onClose={CartDialog_close}
+        scroll={scroll}
+        maxWidth={maxWidth}
+        fullWidth={fullWidth}
+        fullScreen={fullScreen}
+        aria-labelledby="scroll-dialog-title"
+        aria-describedby="scroll-dialog-description"
       >
-        <Typography fontFamily={"Comfortaa"} fontSize={22}>
-          Кошик
-        </Typography>
-        <Box
-          sx={{
-            width: {
-              xs: 173,
-              md: 220,
-            },
-          }}
+        <DialogTitle
+          id="scroll-dialog-title"
+          width={"90%"}
           display={"flex"}
           flexDirection={"row"}
           justifyContent={"space-between"}
           alignItems={"center"}
         >
-          <Typography
-            sx={{
-              fontSize: {
-                xs: 15,
-                md: 19,
-              },
-            }}
-            fontFamily={"Comfortaa"}
-          >
-            Сума товарів:{" "}
+          <Typography fontFamily={"Comfortaa"} fontSize={22}>
+            Кошик
           </Typography>
-          <Typography
-            sx={{
-              fontSize: {
-                xs: 15,
-                md: 19,
-              },
-            }}
-            fontFamily={"Comfortaa"}
-            color={"error"}
-          >
-            {items && items.reduce((sum: number, item: TShippingItems) => {return  sum += item.price * item.amount},0)}₴
-          </Typography>
-        </Box>
-      </DialogTitle>
-
-      <DialogContent dividers={scroll === "paper"}>
-        <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-          <BasketPage />
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        {
-          
-
-          items.length === 0
-            ? <></>
-            : <Button
-       
+          <Box
             sx={{
               width: {
-                xs: 170,
-                md: 225,
-              },
-              fontSize: {
-                xs: 12,
-                md: 14,
+                xs: 173,
+                md: 220,
               },
             }}
-            variant="contained"
-            onClick={handleMakeAnOrder}
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
           >
-            Оформити замовлення
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: 15,
+                  md: 19,
+                },
+              }}
+              fontFamily={"Comfortaa"}
+            >
+              Сума товарів:{" "}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: 15,
+                  md: 19,
+                },
+              }}
+              fontFamily={"Comfortaa"}
+              color={"error"}
+            >
+              {items &&
+                items.reduce((sum: number, item: TShippingItems) => {
+                  return (sum += item.price * item.amount);
+                }, 0)}
+              ₴
+            </Typography>
+          </Box>
+        </DialogTitle>
+
+        <DialogContent dividers={scroll === "paper"}>
+          <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
+            <BasketPage />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          {items.length === 0 ? (
+            <></>
+          ) : (
+            <Button
+              sx={{
+                width: {
+                  xs: 170,
+                  md: 225,
+                },
+                fontSize: {
+                  xs: 12,
+                  md: 14,
+                },
+              }}
+              variant="contained"
+              onClick={handleMakeAnOrder}
+            >
+              Оформити замовлення
+            </Button>
+          )}
+
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={handleContinueShopping}
+          >
+            Продовжити покупки
           </Button>
-          
-          
-        }
-        
-        <Button
-          sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={handleContinueShopping}
-        >
-          Продовжити покупки
-        </Button>
-      </DialogActions>
-    </Dialog>
-    <LoginDialog
-    openLogin={openLogin}
-    LoginDialog_close={LoginDialog_close}
-    ErrorDialog_open={setOpenError}
-    RegisterDialog_open={setOpenRegister}
-    LoginDialog_open={setOpenLogin}
-    setErrorMessage={setErrorMessage}
-  />
+        </DialogActions>
+      </Dialog>
+      <LoginDialog
+        openLogin={openLogin}
+        LoginDialog_close={LoginDialog_close}
+        ErrorDialog_open={setOpenError}
+        RegisterDialog_open={setOpenRegister}
+        LoginDialog_open={setOpenLogin}
+        setErrorMessage={setErrorMessage}
+      />
 
-  <ErrorDialog
-    openError={openError}
-    ErrorDialog_close={ErrorDialog_close}
-    errorMessage={errorMessage}
-  />
-  <InfoDialog
-    openInfo={openInfo}
-    InfoDialog_close={InfoDialog_close}
-    infoMessage={infoMessage}
-  />
+      <ErrorDialog
+        openError={openError}
+        ErrorDialog_close={ErrorDialog_close}
+        errorMessage={errorMessage}
+      />
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
 
-  <RegisterDialog
-    openRegister={openRegister}
-    closeRegisterDialog={RegisterDialog_close}
-    ErrorDialog_open={setOpenError}
-    LoginDialog_open={LoginDialog_open}
-    closeRegAfterSuccess={closeRegAfterSuccess}
-    setErrorMessage={setErrorMessage}
-  />
+      <RegisterDialog
+        openRegister={openRegister}
+        closeRegisterDialog={RegisterDialog_close}
+        ErrorDialog_open={setOpenError}
+        LoginDialog_open={LoginDialog_open}
+        closeRegAfterSuccess={closeRegAfterSuccess}
+        setErrorMessage={setErrorMessage}
+      />
     </>
   );
 }

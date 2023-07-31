@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Paper, Typography } from "@mui/material";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import Contacts from "./Contacts";
 import OrderProducts from "./OrderProducts";
@@ -7,13 +7,21 @@ import Delivery from "./Delivery";
 import Payment from "./Payment";
 import { useNavigate } from "react-router-dom";
 import { TShippingItems } from "../../redux/types";
+import { useEffect, useState } from "react";
+import { setTotalExpences } from "../../redux/order/orderSlice";
 
 export default function OrderPage() {
   const { items } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.user);
+  const { totalExpences } = useAppSelector((state) => state.orders);
+
   const navigate = useNavigate();
-  let itemsTotalAmount = 0;
+  const dispatch = useAppDispatch();
+
   
+  useEffect(() => {
+    dispatch(setTotalExpences(items.reduce((sum: number, item: TShippingItems) => {return  sum += item.price * item.amount},0)));
+  }, [])
 
   return (
     <>
@@ -79,7 +87,7 @@ export default function OrderPage() {
                 >
                   <Typography>До сплати</Typography>
                   <Typography width={100} fontSize={25}>
-                    {user.expences} ₴
+                    {totalExpences} ₴
                   </Typography>
                 </Box>
                 <Divider light />

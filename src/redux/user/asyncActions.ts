@@ -15,7 +15,7 @@ export const checkAuthorization = createAsyncThunk<UserDisplay>(
   }
 );
 
-export const Update = createAsyncThunk<{ success: string }, UserUpdate>(
+export const Update = createAsyncThunk<{ success: string }, {}>(
   "home/Update",
   async function (params) {
     const { data } = await axios.patch<{ success: string }>(`/update`, params, {

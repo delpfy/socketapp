@@ -102,10 +102,9 @@ export default function AppBarMenu() {
 
       <Box
         width={"100%"}
-        height={"10vh"}
         position={"fixed"}
         zIndex={2}
-        sx={{ backgroundColor: "black", backgroundAttachment: "fixed" }}
+        sx={{ backgroundColor: "#0c061a", backgroundAttachment: "fixed" }}
       >
         <Box
           width={"95%"}

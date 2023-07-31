@@ -122,7 +122,6 @@ export default function User() {
       ).then((result: any) => {
         console.log("result.status " + result.meta.requestStatus);
         if (result.meta.requestStatus === "fulfilled") {
-          console.log("fullName.replace()" + fullName.replace(/\s+/g, " "));
           dispatch(
             updateAllUserReviews({ userName: fullName.replace(/\s+/g, " ") })
           );
