@@ -137,11 +137,39 @@ export type TLocationNova= {
 }
 
 export type TPost={
-  _id: string;
-  name: string;
-  image: string;
-  description: string;
-  content: any
+    _id: string;
+    title: string;
+    image: string;
+    description: string;
+    content: any
+    createdAt: string;
+    updatedAt: string;
+}
+
+export type TPostGET={
+  post: {
+    _id: string;
+    title: string;
+    image: string;
+    description: string;
+    content: any;
+    createdAt: string;
+    updatedAt: string;
+  }
+ 
+}
+export type TPostPOST={
+  
+    title: string;
+    image: string;
+    description: string;
+    content: any
+  
+}
+
+export type TPostDisplay={
+  posts: TPost[] 
+  
 }
 
 export interface BasketState {

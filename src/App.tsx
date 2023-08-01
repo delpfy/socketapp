@@ -17,6 +17,7 @@ import Return from "./pagess/footerPages/Return";
 import DeliveryInfo from "./pagess/footerPages/DeliveryInfo";
 import Posts from "./pagess/footerPages/Posts";
 import PostPage from "./pagess/footerPages/PostPage";
+import AddPostPage from "./pagess/footerPages/AddPostPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -54,6 +55,7 @@ function App() {
         <Route path="/delivery" element={<DeliveryInfo />} />
         <Route path="/posts" element={<Posts />} />
         <Route path="/post" element={<PostPage />} />
+        <Route path="/addpost" element={<AddPostPage />} />
         {/*  <Route path="/socketapp/catalog/basket" element={<BasketPage />} />   */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

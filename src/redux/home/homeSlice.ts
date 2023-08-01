@@ -77,6 +77,7 @@ const homeSlice = createSlice({
     // get item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;
+      console.log(state.itemCurrent)
     });
     builder.addCase(getItemById.pending, (state) => {});
     builder.addCase(getItemById.rejected, (state) => {});
