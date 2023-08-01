@@ -120,11 +120,10 @@ export type Status = "success" | "pending" | "error";
 
 export type TLocationCity= {
   
-    data: {
-      description: string,
-      district: string,
-      region: string,
-    }[]
+
+      display_name: string,
+
+    
 
 }
 

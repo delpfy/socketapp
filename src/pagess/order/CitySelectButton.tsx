@@ -21,9 +21,8 @@ import { setCity, setLocation } from "../../redux/order/orderSlice";
 const cities = ["Київ", "Харків", "Одеса", "Дніпро", "Запоріжжя", "Львів"];
 
 interface TLocation {
-  description: string;
-  district: string;
-  region: string;
+  display_name: string;
+
 }
 
 export default function CitySelectionButton() {
@@ -36,7 +35,8 @@ export default function CitySelectionButton() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setOptions(locations.data);
+    setOptions(locations);
+    console.log(locations);
   }, [locations]);
 
   const handleCityClick = (city: any) => {
@@ -115,15 +115,11 @@ export default function CitySelectionButton() {
               options={options === undefined ? [] : options}
               inputValue={selectedLocality}
               onInputChange={handleSearchChange}
-              onChange={(e, value) =>{ if(value){setLocation(value.description)}} }
+              onChange={(e, value) =>{ if(value){setLocation(value.display_name)}} }
               renderInput={(params) => <TextField {...params} required />}
               style={{ marginBottom: 16 }}
               getOptionLabel={(option) =>
-                option.description +
-                  ", " +
-                  option.district +
-                  ", " +
-                  option.region || ""
+                option.display_name || ""
               }
               fullWidth
               noOptionsText={"(·_·)"}

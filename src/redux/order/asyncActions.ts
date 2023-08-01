@@ -25,13 +25,28 @@ export const getBasketItemsByUser = createAsyncThunk<
   return data;
 });
 
-export const getLocations = createAsyncThunk<TLocationCity, { city: string }>(
+export const getLocations = createAsyncThunk<any, { city: string }>(
   "orders/getLocations",
   async (params) => {
-    const { data } = await axios.get<TLocationCity>(
-      `https://api.sat.ua/study/hs/api/v1.0/main/json/getTowns?language=uk&searchString=${params.city.toLowerCase()}`
+    const { city } = params;
+    const query = encodeURIComponent(city);
+    const { data } = await axios.get<any>(
+      `https://nominatim.openstreetmap.org/search?countrycodes=UA&city=${params.city}&format=json&limit=30`
     );
+    console.log(data)
+    return data;
+  }
+);
 
+export const getStreets = createAsyncThunk<any, { city: string, searchValue: string }>(
+  "orders/getStreets",
+  async (params) => {
+    const { city } = params;
+    const query = encodeURIComponent(city);
+    const { data } = await axios.get<any>(
+      `https://nominatim.openstreetmap.org/search?country=Ukraine&city=${params.city}&street=${params.searchValue}&format=json&limit=30`
+    );
+    console.log(data)
     return data;
   }
 );

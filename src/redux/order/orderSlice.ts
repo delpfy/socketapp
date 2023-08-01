@@ -1,13 +1,17 @@
 import {  PayloadAction, createSlice } from "@reduxjs/toolkit";
 import {  TLocationCity, TLocationNova } from "../types";
-import { getLocations, getNovaPoshtaLocations, getUkrPoshtaLocations } from "./asyncActions";
+import { getLocations, getNovaPoshtaLocations, getStreets, getUkrPoshtaLocations } from "./asyncActions";
 
 const orderSlice = createSlice({
   name: "reviews",
   initialState: {
-    locations: {
-      data: [{}],
-    } as TLocationCity,
+    locations: [{
+      display_name: "",
+    }] as TLocationCity[],
+
+    street: [{
+      display_name: "",
+    }] as TLocationCity[],
 
     city: "",
 
@@ -17,6 +21,7 @@ const orderSlice = createSlice({
     ukrPoshtaLocations: {},
 
     location: "",
+    street_location: "",
     novaPoshtaLocation: "",
     ukrPoshtaLocation: "",
     totalExpences: 0,
@@ -35,6 +40,9 @@ const orderSlice = createSlice({
     setNovaPoshtaLocation(state, action: PayloadAction<string>) {
       state.novaPoshtaLocation = action.payload;
     },
+    setStreetLocation(state, action: PayloadAction<string>) {
+      state.street_location = action.payload;
+    },
     setLocation(state, action: PayloadAction<string>) {
       state.location = action.payload;
     },
@@ -49,6 +57,14 @@ const orderSlice = createSlice({
     });
     builder.addCase(getLocations.pending, (state) => {});
     builder.addCase(getLocations.rejected, (state) => {});
+
+    builder.addCase(getStreets.fulfilled, (state, action) => {
+      state.street = action.payload;
+      console.log(state.street);
+    });
+    builder.addCase(getStreets.pending, (state) => {});
+    builder.addCase(getStreets.rejected, (state) => {});
+
 
     builder.addCase(getNovaPoshtaLocations.fulfilled, (state, action) => {
       state.novaPoshtaLocations = action.payload;
@@ -67,5 +83,5 @@ const orderSlice = createSlice({
   },
 });
 
-export const {setCity, setNovaPoshtaLocation, setLocation,setTotalExpences} = orderSlice.actions;
+export const {setCity, setNovaPoshtaLocation,setStreetLocation, setLocation,setTotalExpences} = orderSlice.actions;
 export default orderSlice.reducer;
