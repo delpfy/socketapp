@@ -31,6 +31,7 @@ export default function CitySelectionButton() {
   const [options, setOptions] = React.useState<readonly TLocation[]>([]);
   const [selectedCity, setSelectedCity] = useState("");
   const [selectedLocality, setSelectedLocality] = useState("");
+  const [afterCitySelect, setAfterCitySelect] = useState(false);
 
   const dispatch = useAppDispatch();
 
@@ -43,6 +44,7 @@ export default function CitySelectionButton() {
     setSelectedCity(city);
     dispatch(setCity(city))
     setSelectedLocality(city);
+    setAfterCitySelect(true)
     dispatch(getLocations({ city: city }));
   };
 
@@ -51,7 +53,11 @@ export default function CitySelectionButton() {
   };
 
   function handleSearchChange(event: any, newInputValue: string) {
-    setSelectedLocality(newInputValue);
+    if(newInputValue !== "" && !afterCitySelect){
+      setSelectedLocality(newInputValue);
+      setAfterCitySelect(false);
+    }
+    
 
     if (newInputValue !== "" && newInputValue.length > 2) {
       searchDelayed(newInputValue);
@@ -115,7 +121,7 @@ export default function CitySelectionButton() {
               options={options === undefined ? [] : options}
               inputValue={selectedLocality}
               onInputChange={handleSearchChange}
-              onChange={(e, value) =>{ if(value){setLocation(value.display_name)}} }
+              onChange={(e, value) =>{ if(value){dispatch(setLocation(value.display_name))}} }
               renderInput={(params) => <TextField {...params} required />}
               style={{ marginBottom: 16 }}
               getOptionLabel={(option) =>

@@ -31,7 +31,12 @@ export const getLocations = createAsyncThunk<any, { city: string }>(
     const { city } = params;
     const query = encodeURIComponent(city);
     const { data } = await axios.get<any>(
-      `https://nominatim.openstreetmap.org/search?countrycodes=UA&city=${params.city}&format=json&limit=30`
+      `https://nominatim.openstreetmap.org/search?countrycodes=UA&city=${params.city}&format=json&limit=30`,
+      {
+        headers: {
+          'Accept-Language': 'uk-UA', 
+        },
+      }
     );
     console.log(data)
     return data;
@@ -44,7 +49,12 @@ export const getStreets = createAsyncThunk<any, { city: string, searchValue: str
     const { city } = params;
     const query = encodeURIComponent(city);
     const { data } = await axios.get<any>(
-      `https://nominatim.openstreetmap.org/search?country=Ukraine&city=${params.city}&street=${params.searchValue}&format=json&limit=30`
+      `https://nominatim.openstreetmap.org/search?country=Ukraine&city=${params.city}&street=${params.searchValue}&format=json&limit=30`,
+      {
+        headers: {
+          'Accept-Language': 'uk-UA', 
+        },
+      }
     );
     console.log(data)
     return data;
