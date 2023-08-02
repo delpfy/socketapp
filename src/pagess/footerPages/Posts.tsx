@@ -100,7 +100,7 @@ export default function Posts() {
                   <></>
                 )}
 
-                {posts.map((post) => {
+                {posts.slice().reverse().map((post) => {
                   return (
                     <Box
                       key={post._id}

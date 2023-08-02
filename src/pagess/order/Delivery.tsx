@@ -13,15 +13,21 @@ import {
   Typography,
   debounce,
 } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { SetStateAction, useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   getNovaPoshtaLocations,
   getStreets,
   getUkrPoshtaLocations,
 } from "../../redux/order/asyncActions";
-import { setNovaPoshtaLocation, setStreetLocation } from "../../redux/order/orderSlice";
-import { TLocationCity } from "../../redux/types";
+import {
+  ORDER_setDelivery,
+  STAGES_delivery,
+  setNovaPoshtaLocation,
+  setStreetLocation,
+  ORDER_setTotal,
+} from "../../redux/order/orderSlice";
+import { TLocationCity, TShippingItems } from "../../redux/types";
 
 interface TNovaLocation {
   Description: string;
@@ -29,18 +35,185 @@ interface TNovaLocation {
 
 export default function Delivery() {
   const [selectedOption, setSelectedOption] = useState("payOnDelivery");
-  const { city,street } = useAppSelector((state) => state.orders);
+  const { items } = useAppSelector((state) => state.basket);
+  const { city, street,  _order } = useAppSelector(
+    (state) => state.orders
+  );
+  
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const { novaPoshtaLocations } = useAppSelector((state) => state.orders);
   const [novaPoshtaOptions, setNovaPoshtaOptions] = useState<
     readonly TNovaLocation[]
   >([]);
-  const [streetOptions, setStreetOptions] = useState<
-    readonly TLocationCity[]
-  >([]);
-  const handleOptionChange = (event: any) => {
-    setSelectedOption(event.target.value);
+  const [streetOptions, setStreetOptions] = useState<readonly TLocationCity[]>(
+    []
+  );
+
+  const [houseNumber, setHouseNumber] = useState("");
+  const [apartmentNumber, setApartmentNumber] = useState("");
+  const [floor, setFloor] = useState("");
+  const [elevator, setElevator] = useState("Відсутній");
+  const [streetLocation, setStreetLocation] = useState(_order.delivery.delivery_location.street);
+  const [isLiftRequired, setIsLiftRequired] = useState(false);
+
+  const [houseNumberError, setHouseNumberError] = useState(false);
+
+  const [apartmentNumberError, setApartmentNumberError] = useState(false);
+  const [floorError, setFloorError] = useState(false);
+
+  const handleHouseNumberChange = (event: any) => {
+    const value = event.target.value;
+
+    if (/^\d*$/.test(value)) {
+      setHouseNumber(value);
+      setHouseNumberError(false);
+    } else {
+      setHouseNumberError(true);
+    }
   };
+
+  const handleApartmentNumberChange = (event: any) => {
+    const value = event.target.value;
+
+    if (/^\d*$/.test(value)) {
+      setApartmentNumber(value);
+      setApartmentNumberError(false);
+    } else {
+      setApartmentNumberError(true);
+    }
+  };
+
+  const handleFloorChange = (event: any) => {
+    const value = event.target.value;
+
+    if (/^\d*$/.test(value)) {
+      setFloor(value);
+      setFloorError(false);
+    } else {
+      setFloorError(true);
+    }
+  };
+
+  const handleLiftRequiredChange = (event: any) => {
+    setIsLiftRequired(event.target.checked);
+
+    event.target.checked 
+    ? dispatch(
+      ORDER_setTotal(_order.total + 11)
+    )
+    :
+    dispatch(
+      ORDER_setTotal(_order.total - 11)
+    );
+
+  };
+
+  useEffect(() => {
+    const streetIsValid = streetLocation !== "";
+    const houseNumberIsValid = houseNumber !== "";
+    const apartmentNumberIsValid = apartmentNumber !== "";
+    const floorIsValid = floor !== "";
+    setHouseNumberError(!houseNumberIsValid);
+    if (apartmentNumberIsValid) {
+      setFloorError(!floorIsValid);
+    }
+
+    if (
+      streetIsValid &&
+      houseNumberIsValid &&
+      apartmentNumberIsValid &&
+      floorIsValid
+    ) {
+      dispatch(
+        ORDER_setDelivery({
+          delivery_type: "on adress",
+          delivery_location: {
+            street: streetLocation,
+            houseNumber: houseNumber,
+            apartmentNumber: apartmentNumber,
+            floorNumber: floor,
+          },
+          liftRequired: isLiftRequired,
+          elevator: elevator === "Присутній" ? true : false,
+        })
+      );
+      dispatch(STAGES_delivery(true));
+    } else if (streetIsValid && houseNumberIsValid &&  !apartmentNumberIsValid &&
+      !floorIsValid ) {
+      dispatch(
+        ORDER_setDelivery({
+          delivery_type: "on adress",
+          delivery_location: {
+            street: streetLocation,
+            houseNumber: houseNumber,
+            apartmentNumber: "",
+            floorNumber: "",
+          },
+          liftRequired: false,
+          elevator: false,
+        })
+      );
+      dispatch(STAGES_delivery(true));
+    }
+  }, [
+    houseNumber,
+    apartmentNumber,
+    floor,
+    elevator,
+    streetLocation,
+    isLiftRequired,
+    streetLocation
+  ]);
+
+  const handleCourierOptionChange = (event: any) => {
+    
+    setSelectedOption(event.target.value);
+    switch (event.target.value) {
+      case "pickupFromOurStores":
+        dispatch(
+          ORDER_setTotal(
+            items.reduce((sum: number, item: TShippingItems) => {
+              return (sum += item.price * item.amount);
+            }, 0)
+          )
+        );
+        break;
+      case "courier":
+        setIsLiftRequired(false)
+        dispatch(
+          ORDER_setTotal(
+            items.reduce((sum: number, item: TShippingItems) => {
+              return (sum += item.price * item.amount);
+            }, 0) + 199
+          )
+        );
+        break;
+      case "pickupFromUrk":
+        dispatch(
+          ORDER_setTotal(
+            items.reduce((sum: number, item: TShippingItems) => {
+              return (sum += item.price * item.amount);
+            }, 0) + 149
+          )
+        );
+
+        break;
+      case "pickupFromNova":
+        dispatch(
+          ORDER_setTotal(
+            items.reduce((sum: number, item: TShippingItems) => {
+              return (sum += item.price * item.amount);
+            }, 0) + 149
+          )
+        );
+
+        break;
+    }
+  };
+
+
+
+
   useEffect(() => {
     setNovaPoshtaOptions(novaPoshtaLocations.data);
   }, [novaPoshtaLocations]);
@@ -49,42 +222,47 @@ export default function Delivery() {
   }, [street]);
 
   const top100Films = [{}];
- 
 
   function handleSearchNovaChange(event: any, newInputValue: string) {
     setSelectedDepartment(newInputValue);
 
     if (newInputValue !== "") {
-      searchNovaDelayed(newInputValue);
+      searchNovaDelayed(newInputValue, city);
     }
   }
 
   function handleSearchStreetChange(event: any, newInputValue: string) {
     setSelectedDepartment(newInputValue);
-
+  
     if (newInputValue !== "") {
-      searchStreetDelayed(newInputValue);
+      searchStreetDelayed(newInputValue, city);
     }
   }
 
-  function loadNovaLocations(newInputValue: any) {
+  function loadNovaLocations(newInputValue: any, cityToSearch: string) {
     dispatch(
-      getNovaPoshtaLocations({ city: city? city : "київ", searchValue: newInputValue })
+      getNovaPoshtaLocations({
+        city: cityToSearch ? cityToSearch : "київ",
+        searchValue: newInputValue,
+      })
     );
   }
-  function loadStreetLocations(newInputValue: any) {
+  function loadStreetLocations(newInputValue: any, cityToSearch: string) {
     dispatch(
-      getStreets({ city: city ? city : "київ", searchValue: newInputValue })
+      getStreets({ city: cityToSearch ? cityToSearch : "київ", searchValue: newInputValue })
     );
   }
 
   const searchNovaDelayed = useMemo(() => debounce(loadNovaLocations, 300), []);
-  const searchStreetDelayed = useMemo(() => debounce(loadStreetLocations, 300), []);
+  const searchStreetDelayed = useMemo(
+    () => debounce(loadStreetLocations, 300),
+    []
+  );
 
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getUkrPoshtaLocations({ city: "asd", searchValue: "sd" }));
-    dispatch(getStreets({ city: "київ", searchValue: "sdf" }))
+    dispatch(getStreets({ city: "київ", searchValue: "sdf" }));
   }, []);
 
   return (
@@ -94,7 +272,7 @@ export default function Delivery() {
         <RadioGroup
           aria-label="payment-options"
           value={selectedOption}
-          onChange={handleOptionChange}
+          onChange={handleCourierOptionChange}
         >
           <Box
             display={"flex"}
@@ -151,62 +329,76 @@ export default function Delivery() {
                 flexDirection={"row"}
                 paddingBottom={3}
               >
-                
                 <Autocomplete
-                size="small"
-                disablePortal
-                id="combo-box-demo"
-                onInputChange={handleSearchStreetChange}
-                onChange={(e, value) => {
-                  if (value) {
-                    setStreetLocation(value.display_name);
-                  }
-                }}
-                noOptionsText={"(·_·)"}
-                options={
-                  streetOptions === undefined ? [] : streetOptions
-                }
-                sx = {{width: 300}}
-                getOptionLabel={(option) => option.display_name || ""}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Введіть назву вулиці"
-                  />
-                )}
-              />
-           
+                  size="small"
+                  disablePortal
+                  id="combo-box-demo"
+                  onInputChange={handleSearchStreetChange}
+                  onChange={(e, value) => {
+                    if (value) {
+                      setStreetLocation(value.display_name);
+                    }
+                  }}
+                  noOptionsText={"(·_·)"}
+                  options={streetOptions === undefined ? [] : streetOptions}
+                  sx={{ width: 300 }}
+                  getOptionLabel={(option) => option.display_name || ""}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Введіть назву вулиці" />
+                  )}
+                />
+
                 <TextField
                   label="Будинок"
                   id="outlined-size-small"
                   size="small"
                   sx={{ width: 200 }}
+                  value={houseNumber}
+                  onChange={handleHouseNumberChange}
+                  error={houseNumberError}
+                  helperText={
+                    houseNumberError && "Введіть правильний номер будинку"
+                  }
                 />
                 <TextField
-                  label="Квартира "
+                  label="Квартира"
                   id="outlined-size-small"
                   size="small"
                   sx={{ width: 200 }}
+                  value={apartmentNumber}
+                  onChange={handleApartmentNumberChange}
+                  error={apartmentNumberError}
+                  helperText={
+                    apartmentNumberError && "Введіть правильний номер квартири"
+                  }
                 />
               </Box>
               <Box
-                display={"flex"}
-                justifyContent={"space-around"}
-                flexDirection={"row"}
+                display="flex"
+                justifyContent="space-around"
+                flexDirection="row"
               >
                 <TextField
                   label="Поверх"
                   id="outlined-size-small"
                   size="small"
                   sx={{ width: 350 }}
+                  value={floor}
+                  onChange={handleFloorChange}
+                  error={floorError}
+                  helperText={floorError && "Введіть правильний номер поверху"}
                 />
                 <Autocomplete
                   sx={{ width: 350 }}
                   size="small"
                   disablePortal
                   id="combo-box-demo"
-                  noOptionsText={"(·_·)"}
+                  noOptionsText="(·_·)"
                   options={["Відсутній", "Присутній"]}
+                  value={elevator}
+                  onChange={(e, value) => {
+                    setElevator(value || "");
+                  }}
                   fullWidth
                   renderInput={(params) => (
                     <TextField {...params} label="Наявність вантажного ліфта" />
@@ -217,7 +409,10 @@ export default function Delivery() {
               <FormGroup sx={{ marginTop: 3 }}>
                 <FormControlLabel
                   control={<Checkbox color="success" />}
-                  label="Підняти на поверх ( + 11₴) "
+                  disabled={floor === "" || apartmentNumber === ""}
+                  label="Підняти на поверх (+ 11₴)"
+                  checked={isLiftRequired}
+                  onChange={handleLiftRequiredChange}
                 />
               </FormGroup>
             </Box>
@@ -276,7 +471,7 @@ export default function Delivery() {
                 onInputChange={handleSearchNovaChange}
                 onChange={(e, value) => {
                   if (value) {
-                    setNovaPoshtaLocation(value.Description);
+                    dispatch(setNovaPoshtaLocation(value.Description));
                   }
                 }}
                 noOptionsText={"(·_·)"}

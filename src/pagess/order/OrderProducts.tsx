@@ -13,12 +13,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TShippingItems } from "../../redux/types";
 import { setCurrentItem } from "../../redux/home/homeSlice";
 import { getItemReviews } from "../../redux/review/asyncActions";
 import BasketDialog from "../../componentss/dialogs/BasketDialog";
+import { ORDER_setItems, ORDER_setTotal } from "../../redux/order/orderSlice";
 
 export default function OrderProducts() {
   const { items } = useAppSelector((state) => state.basket);
@@ -41,6 +42,10 @@ export default function OrderProducts() {
     dispatch(getItemReviews(item._id));
     navigate("/catalog/item");
   }
+
+  useEffect(() => {
+    dispatch(ORDER_setItems(items))
+  }, [items])
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Paper, Typography } from "@mui/material";
+import { Box, Button, Divider, Paper, PaperProps, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 
 import Contacts from "./Contacts";
@@ -7,20 +7,91 @@ import Delivery from "./Delivery";
 import Payment from "./Payment";
 import { useNavigate } from "react-router-dom";
 import { TShippingItems } from "../../redux/types";
-import { useEffect, useState } from "react";
-import { setTotalExpences } from "../../redux/order/orderSlice";
+import { useEffect, useRef, useState } from "react";
+import { ORDER_setTotal } from "../../redux/order/orderSlice";
+import Receiver from "./Receiver";
 
 export default function OrderPage() {
   const { items } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.user);
-  const { totalExpences } = useAppSelector((state) => state.orders);
+  const { _order, stages_of_order } = useAppSelector((state) => state.orders);
+
+
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  
-  useEffect(() => {
-    dispatch(setTotalExpences(items.reduce((sum: number, item: TShippingItems) => {return  sum += item.price * item.amount},0)));
+  function handleOrderReady(){
+    
+    if(!stages_of_order.stage_userContact){
+      pointOn_Contacts();
+      return;
+    }
+    if(!stages_of_order.stage_city){
+      pointOn_Contacts();
+      return;
+    }
+    if(!stages_of_order.stage_delivery){
+      pointOn_Delivery();
+      return;
+    }
+    if(!stages_of_order.stage_payment){
+      pointOn_Payment();
+      return;
+    }
+    if(!stages_of_order.stage_recevierContact){
+      pointOn_Receiver();
+      return;
+    }
+    
+    alert("WOW")
+    console.log("WOW 1")
+    console.log(_order)
+    console.log("WOW 2")
+  }
+ 
+  const contact_ref = useRef<HTMLDivElement>(null);
+  const payment_ref = useRef<HTMLDivElement | null>(null);
+  const delivery_ref = useRef<HTMLDivElement | null>(null);
+  const receiver_ref = useRef<HTMLDivElement | null>(null);
+
+  const pointOn_Contacts = () => {
+    if (contact_ref.current) {
+      contact_ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+  const pointOn_Payment = () => {
+    if (payment_ref.current) {
+      payment_ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+  const pointOn_Delivery = () => {
+    if (delivery_ref.current) {
+      delivery_ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+  const pointOn_Receiver = () => {
+    if (receiver_ref.current) {
+      receiver_ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+
+  useEffect(()=>{
+    dispatch(ORDER_setTotal(items.reduce((sum: number, item: TShippingItems) => {
+      return (sum += item.price * item.amount);
+    }, 0)))
   }, [])
 
   return (
@@ -87,7 +158,7 @@ export default function OrderPage() {
                 >
                   <Typography>До сплати</Typography>
                   <Typography width={100} fontSize={25}>
-                    {totalExpences} ₴
+                    {_order.total} ₴
                   </Typography>
                 </Box>
                 <Divider light />
@@ -97,6 +168,7 @@ export default function OrderPage() {
                 size="large"
                 color="success"
                 sx={{ justifySelf: "center" }}
+                onClick = {handleOrderReady}
               >
                 Замовлення підтверджую
               </Button>
@@ -123,10 +195,27 @@ export default function OrderPage() {
               justifyContent={"space-between"}
               flexDirection={"column"}
             >
+              <div ref = {contact_ref}>
               <Contacts />
+              </div>
+              
+
+
+
+              
               <OrderProducts />
+              <div ref = {delivery_ref}>
               <Delivery />
+              </div>
+              <div ref = {payment_ref}>
               <Payment />
+                </div>
+                <div ref = {receiver_ref}>
+                <Receiver/>
+              </div>
+              
+             
+              
             </Box>
           </Box>
         </Box>

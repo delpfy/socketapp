@@ -16,7 +16,7 @@ import {
 import PlaceIcon from "@mui/icons-material/Place";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getLocations } from "../../redux/order/asyncActions";
-import { setCity, setLocation } from "../../redux/order/orderSlice";
+import { ORDER_setUserLocation, STAGES_city, setCity, setLocation } from "../../redux/order/orderSlice";
 
 const cities = ["Київ", "Харків", "Одеса", "Дніпро", "Запоріжжя", "Львів"];
 
@@ -37,8 +37,9 @@ export default function CitySelectionButton() {
 
   useEffect(() => {
     setOptions(locations);
-    console.log(locations);
+
   }, [locations]);
+  
 
   const handleCityClick = (city: any) => {
     setSelectedCity(city);
@@ -53,9 +54,13 @@ export default function CitySelectionButton() {
   };
 
   function handleSearchChange(event: any, newInputValue: string) {
-    if(newInputValue !== "" && !afterCitySelect){
+    
+    if(newInputValue === "" && afterCitySelect ){
+    }
+    else{
       setSelectedLocality(newInputValue);
       setAfterCitySelect(false);
+      
     }
     
 
@@ -121,7 +126,15 @@ export default function CitySelectionButton() {
               options={options === undefined ? [] : options}
               inputValue={selectedLocality}
               onInputChange={handleSearchChange}
-              onChange={(e, value) =>{ if(value){dispatch(setLocation(value.display_name))}} }
+              onChange={(e, value) =>{ if(value)
+                {dispatch(ORDER_setUserLocation({
+                city_location: value.display_name
+              }))
+              dispatch(STAGES_city(true));
+            }
+            
+            
+            } }
               renderInput={(params) => <TextField {...params} required />}
               style={{ marginBottom: 16 }}
               getOptionLabel={(option) =>

@@ -294,7 +294,7 @@ export default function Review(props: IReviewGET) {
           </Typography>
 
           <Box width={600} marginLeft={10} paddingTop={4}>
-            {props.replies.map((reply) => {
+            {props.replies.slice().reverse().map((reply) => {
               return <Reply review={props} reply={reply} />;
             })}
           </Box>

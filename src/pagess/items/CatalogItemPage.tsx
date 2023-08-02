@@ -265,7 +265,7 @@ export const ItemPage = () => {
           if (reviews.reviews.length === 0) {
             dispatch(setRatingAmount(0));
           }
-          return reviews.reviews.map((review, index) => {
+          return reviews.reviews.slice().reverse().map((review, index) => {
             countRatingAmount =
               parseInt(countRatingAmount.toString()) +
               parseInt(review.rating.toString());
