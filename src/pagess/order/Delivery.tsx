@@ -21,7 +21,7 @@ import {
   getUkrPoshtaLocations,
 } from "../../redux/order/asyncActions";
 import {
-  ORDER_setDelivery,
+  ORDER_setDeliveryOnAdress,
   STAGES_delivery,
   setNovaPoshtaLocation,
   setStreetLocation,
@@ -36,10 +36,8 @@ interface TNovaLocation {
 export default function Delivery() {
   const [selectedOption, setSelectedOption] = useState("payOnDelivery");
   const { items } = useAppSelector((state) => state.basket);
-  const { city, street,  _order } = useAppSelector(
-    (state) => state.orders
-  );
-  
+  const { city, street, _order } = useAppSelector((state) => state.orders);
+
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const { novaPoshtaLocations } = useAppSelector((state) => state.orders);
   const [novaPoshtaOptions, setNovaPoshtaOptions] = useState<
@@ -53,7 +51,9 @@ export default function Delivery() {
   const [apartmentNumber, setApartmentNumber] = useState("");
   const [floor, setFloor] = useState("");
   const [elevator, setElevator] = useState("Відсутній");
-  const [streetLocation, setStreetLocation] = useState(_order.delivery.delivery_location.street);
+  const [streetLocation, setStreetLocation] = useState(
+    _order.delivery.delivery_location.street
+  );
   const [isLiftRequired, setIsLiftRequired] = useState(false);
 
   const [houseNumberError, setHouseNumberError] = useState(false);
@@ -97,15 +97,9 @@ export default function Delivery() {
   const handleLiftRequiredChange = (event: any) => {
     setIsLiftRequired(event.target.checked);
 
-    event.target.checked 
-    ? dispatch(
-      ORDER_setTotal(_order.total + 11)
-    )
-    :
-    dispatch(
-      ORDER_setTotal(_order.total - 11)
-    );
-
+    event.target.checked
+      ? dispatch(ORDER_setTotal(_order.total + 11))
+      : dispatch(ORDER_setTotal(_order.total - 11));
   };
 
   useEffect(() => {
@@ -125,7 +119,7 @@ export default function Delivery() {
       floorIsValid
     ) {
       dispatch(
-        ORDER_setDelivery({
+        ORDER_setDeliveryOnAdress({
           delivery_type: "on adress",
           delivery_location: {
             street: streetLocation,
@@ -133,15 +127,20 @@ export default function Delivery() {
             apartmentNumber: apartmentNumber,
             floorNumber: floor,
           },
+          novaDepartment: "",
           liftRequired: isLiftRequired,
           elevator: elevator === "Присутній" ? true : false,
         })
       );
       dispatch(STAGES_delivery(true));
-    } else if (streetIsValid && houseNumberIsValid &&  !apartmentNumberIsValid &&
-      !floorIsValid ) {
+    } else if (
+      streetIsValid &&
+      houseNumberIsValid &&
+      !apartmentNumberIsValid &&
+      !floorIsValid
+    ) {
       dispatch(
-        ORDER_setDelivery({
+        ORDER_setDeliveryOnAdress({
           delivery_type: "on adress",
           delivery_location: {
             street: streetLocation,
@@ -149,6 +148,7 @@ export default function Delivery() {
             apartmentNumber: "",
             floorNumber: "",
           },
+          novaDepartment: "",
           liftRequired: false,
           elevator: false,
         })
@@ -162,11 +162,10 @@ export default function Delivery() {
     elevator,
     streetLocation,
     isLiftRequired,
-    streetLocation
+    streetLocation,
   ]);
 
   const handleCourierOptionChange = (event: any) => {
-    
     setSelectedOption(event.target.value);
     switch (event.target.value) {
       case "pickupFromOurStores":
@@ -179,7 +178,7 @@ export default function Delivery() {
         );
         break;
       case "courier":
-        setIsLiftRequired(false)
+        setIsLiftRequired(false);
         dispatch(
           ORDER_setTotal(
             items.reduce((sum: number, item: TShippingItems) => {
@@ -211,9 +210,6 @@ export default function Delivery() {
     }
   };
 
-
-
-
   useEffect(() => {
     setNovaPoshtaOptions(novaPoshtaLocations.data);
   }, [novaPoshtaLocations]);
@@ -233,7 +229,7 @@ export default function Delivery() {
 
   function handleSearchStreetChange(event: any, newInputValue: string) {
     setSelectedDepartment(newInputValue);
-  
+
     if (newInputValue !== "") {
       searchStreetDelayed(newInputValue, city);
     }
@@ -249,7 +245,10 @@ export default function Delivery() {
   }
   function loadStreetLocations(newInputValue: any, cityToSearch: string) {
     dispatch(
-      getStreets({ city: cityToSearch ? cityToSearch : "київ", searchValue: newInputValue })
+      getStreets({
+        city: cityToSearch ? cityToSearch : "київ",
+        searchValue: newInputValue,
+      })
     );
   }
 
@@ -472,6 +471,21 @@ export default function Delivery() {
                 onChange={(e, value) => {
                   if (value) {
                     dispatch(setNovaPoshtaLocation(value.Description));
+                    dispatch(
+                      ORDER_setDeliveryOnAdress({
+                        delivery_type: "nova",
+                        delivery_location: {
+                          street: "",
+                          houseNumber: "",
+                          apartmentNumber: "",
+                          floorNumber: "",
+                        },
+                        novaDepartment: value.Description,
+                        liftRequired: false,
+                        elevator: false,
+                      })
+                    );
+                    dispatch(STAGES_delivery(true));
                   }
                 }}
                 noOptionsText={"(·_·)"}

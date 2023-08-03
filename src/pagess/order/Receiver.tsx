@@ -30,23 +30,41 @@ export default function Receiver() {
     const value = e.target.value.trim();
     const cleanedValue = value.replace(/\D/g, "");
 
-    if (cleanedValue.length <= 10) {
+    if (cleanedValue.length <= 9) {
       setPhone(cleanedValue);
 
-      if (/^\d{10}$/.test(cleanedValue)) {
+      if (/^\d{9}$/.test(cleanedValue)) {
         setPhoneError(false);
       } else {
         setPhoneError(true);
       }
     }
   };
+
+  useEffect(() => {
+    dispatch(
+      ORDER_setReceiver({
+        userIsReceiver: true,
+        contact: {
+          name: "",
+          surname: "",
+          email: "",
+          phone: "",
+        },
+      })
+      
+    );
+    dispatch(STAGES_receiverContact(true));
+  }, [])
+
   useEffect(() => {
     const isNameValid = name.trim() !== "";
     const isSurnameValid = surname.trim() !== "";
-    const isPhoneValid = /^\d{10}$/.test(phone);
+    const isPhoneValid = /^\d{9}$/.test(phone);
     const isEmailValid = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
 
     setEmailError(!isEmailValid);
+    setPhoneError(!isPhoneValid)
     if (isNameValid && isSurnameValid && isPhoneValid && isEmailValid) {
       dispatch(
         ORDER_setReceiver({
@@ -55,7 +73,7 @@ export default function Receiver() {
             name: name,
             surname: surname,
             email: email,
-            phone: "+38" + phone,
+            phone: "+380" + phone,
           },
         })
       );
@@ -145,7 +163,7 @@ export default function Receiver() {
                 <TextField
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">+38</InputAdornment>
+                      <InputAdornment position="start">+380</InputAdornment>
                     ),
                   }}
                   label="Мобільний телефон"

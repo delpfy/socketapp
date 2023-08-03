@@ -56,6 +56,7 @@ const orderSlice = createSlice({
           apartmentNumber: "",
           floorNumber: "",
         },
+        novaDepartment: "",
         liftRequired: false,
         elevator: false,
       },
@@ -150,7 +151,7 @@ const orderSlice = createSlice({
       state._order.user_contact = action.payload;
       console.log(state._order.user_contact);
     },
-    ORDER_setDelivery(
+    ORDER_setDeliveryOnAdress(
       state,
       action: PayloadAction<{
         delivery_type: string;
@@ -160,6 +161,27 @@ const orderSlice = createSlice({
           apartmentNumber: string;
           floorNumber: string;
         };
+        novaDepartment: string,
+        elevator: boolean;
+        liftRequired: boolean;
+      }>
+    ) {
+      state._order.delivery = action.payload;
+      console.log("state._order.delivery 11");
+      console.log(state._order.delivery);
+      console.log("state._order.delivery 12");
+    },
+    ORDER_setDeliveryNova(
+      state,
+      action: PayloadAction<{
+        delivery_type: string;
+        delivery_location: {
+          street: string;
+          houseNumber: string;
+          apartmentNumber: string;
+          floorNumber: string;
+        };
+        novaDepartment: string,
         elevator: boolean;
         liftRequired: boolean;
       }>
@@ -235,7 +257,7 @@ export const {
   ORDER_setUserLocation,
   ORDER_setReceiver,
   ORDER_setUserContact,
-  ORDER_setDelivery,
+  ORDER_setDeliveryOnAdress,
   ORDER_setPayment,
   ORDER_setItems,
   STAGES_userContact,
