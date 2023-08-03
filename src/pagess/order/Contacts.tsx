@@ -36,7 +36,7 @@ export default function Contacts() {
   };
   useEffect(() => {
     const isNameValid = name.trim() !== "";
-    const isSurnameValid = surname.trim() !== "";
+    const isSurnameValid = surname.trim() !== ""; 
     const isPhoneValid = /^\d{9}$/.test(phone);
     const isEmailValid = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
     setEmailError(!isEmailValid)
