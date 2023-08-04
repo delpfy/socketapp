@@ -7,13 +7,14 @@ import { getItemsByCategory } from "../../../redux/home/asyncActions";
 import Card from "../block/CatalogCard";
 import Skeleton from "../block/CatalogSkeleton";
 import NotFoundPage from "../../../pagess/PageAbsence";
+import SortBy from "../../sort/SortBy";
 
 export const CatalogField = () => {
   const { category, status } = useAppSelector((state) => state.home);
 
   // ItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
-  const { items } = useAppSelector((state) => state.home.itemsCategory);
+  const { itemsCategory, itemsSorted, sortedByRange } = useAppSelector((state) => state.home);
 
   const dispatch = useAppDispatch();
 
@@ -29,6 +30,7 @@ export const CatalogField = () => {
   const Catalog = () => {
     return (
       <Box width={"100%"}>
+       
         <Box
           display={"flex"}
           justifyContent={"center"}
@@ -46,7 +48,30 @@ export const CatalogField = () => {
             spacing={{ xs: 1, sm: 3, md: 4 }}
             columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
           >
-            {items.map((item: Items) => (
+            {
+              sortedByRange
+              ?
+              
+              itemsSorted.items.map((item: Items) => (
+                <Grid
+                  item
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  paddingBottom={2}
+                  xs={2}
+                  sm={4}
+                  md={4}
+                  lg={4}
+                  xl={5}
+                  key={item._id}
+                >
+                  <Card key={item._id} {...item} />
+                </Grid>
+              ))
+              :
+            
+            itemsCategory.items.map((item: Items) => (
               <Grid
                 item
                 display={"flex"}
@@ -119,10 +144,11 @@ export const CatalogField = () => {
   function StatusHandler(status: Status) {
     switch (status) {
       case "success":
-        if (items !== undefined) {
+        if (itemsCategory.items !== undefined || itemsSorted.items !== undefined) {
           return <Catalog />;
           //return <CatalogSkeletons />
-        } else {
+        } 
+        else {
           return <CatalogSkeletons />;
         }
       case "pending":

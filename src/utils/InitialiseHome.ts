@@ -27,6 +27,8 @@ export const InitialiseHome = () => {
     status: "" as Status,
     itemsDisplay: {} as ItemsDisplay,
     itemsCategory: {} as ItemsDisplay,
+    itemsSorted: {} as ItemsDisplay,
+    sortedByRange: false,
     itemCurrent: {} as TShippingItems | Items,
     categories,
     category: "Монітори",

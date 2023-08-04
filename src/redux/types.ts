@@ -44,6 +44,7 @@ export type IReviewPOST = {
 
 export type Combinedreply = TReplyGET | TReplyPOST;
 
+
 export type Items = {
   _id: string;
   category: string;
@@ -184,6 +185,8 @@ export interface HomeState {
   id: number;
   itemsDisplay: ItemsDisplay;
   itemsCategory: ItemsDisplay;
+  itemsSorted: ItemsDisplay;
+  sortedByRange: boolean;
   itemCurrent: TShippingItems | Items;
   categories: { id: number; name: string; image: string }[];
   category: string;

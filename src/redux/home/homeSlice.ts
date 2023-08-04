@@ -30,6 +30,50 @@ const homeSlice = createSlice({
       state.itemCurrent = action.payload;
       state.status = "success";
     },
+
+    sortByCost_ASC(state) {
+      state.sortedByRange = false;
+      state.itemsCategory.items = [...state.itemsCategory.items].sort(
+        (a, b) => a.price - b.price
+      );
+    },
+    sortByCost_DESC(state) {
+      state.sortedByRange = false;
+      state.itemsCategory.items = [...state.itemsCategory.items]
+        .sort((a, b) => a.price - b.price)
+        .reverse();
+    },
+    sortByRelevance_ASC(state) {
+      state.sortedByRange = false;
+      state.itemsCategory.items = [...state.itemsCategory.items].sort(
+        (a, b) => b.rating - a.rating
+      );
+    },
+    sortByRelevance_DESC(state) {
+      state.sortedByRange = false;
+      state.itemsCategory.items = [...state.itemsCategory.items]
+        .sort((a, b) => b.rating - a.rating)
+        .reverse();
+    },
+
+    sortByCostRange(state, action: PayloadAction<number[]>) {
+      state.sortedByRange = true;
+      state.itemsSorted.items = state.itemsCategory.items.filter(
+        (item: Items) =>
+          item.price >= action.payload[0] && item.price <= action.payload[1]
+      );
+      
+
+    },
+    sortByRelevanceRange(state, action: PayloadAction<number[]>) {
+      state.sortedByRange = true;
+      state.itemsSorted.items = state.itemsCategory.items.filter(
+        (item: Items) =>
+          item.rating >= action.payload[0] && item.rating <= action.payload[1]
+      );
+      
+
+    },
   },
   extraReducers: (builder) => {
     // All items.
@@ -77,7 +121,7 @@ const homeSlice = createSlice({
     // get item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;
-      console.log(state.itemCurrent)
+      console.log(state.itemCurrent);
     });
     builder.addCase(getItemById.pending, (state) => {});
     builder.addCase(getItemById.rejected, (state) => {});
@@ -95,12 +139,10 @@ const homeSlice = createSlice({
 
       actualizeData(recentlyReviewed, action.payload);
 
-
       localStorage.setItem(
         "recentlyReviewed",
         JSON.stringify(recentlyReviewed)
       );
-      
     });
     builder.addCase(updateItem.pending, (state) => {});
     builder.addCase(updateItem.rejected, (state) => {});
@@ -124,5 +166,14 @@ const homeSlice = createSlice({
   },
 });
 
-export const { SetCategory, setCurrentItem } = homeSlice.actions;
+export const {
+  SetCategory,
+  setCurrentItem,
+  sortByCost_ASC,
+  sortByCost_DESC,
+  sortByRelevance_ASC,
+  sortByRelevance_DESC,
+  sortByCostRange,
+  sortByRelevanceRange,
+} = homeSlice.actions;
 export default homeSlice.reducer;

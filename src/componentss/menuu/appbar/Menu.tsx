@@ -23,6 +23,7 @@ import {  useNavigate } from "react-router-dom";
 import { getBasketItemsByUser } from "../../../redux/basket/asyncActions";
 import { useEffect } from "react";
 import Search from "../search/Search";
+import SortBy from "../../sort/SortBy";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -69,10 +70,10 @@ export default function AppBarMenu() {
     <Box
       width={250}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      
     >
-      <List>
+      <List onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}>
         {CATEGORIES.map((category) => (
           <ListItem key={category.id} disablePadding>
             <ListItemButton onClick={() => handleCategoryChange(category)}>
@@ -83,6 +84,7 @@ export default function AppBarMenu() {
         ))}
       </List>
       <Divider />
+      <SortBy/>
       <List></List>
     </Box>
   );
