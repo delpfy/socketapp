@@ -7,14 +7,16 @@ import {
   Paper,
   Radio,
   RadioGroup,
+  Slider,
   TextField,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useAppDispatch } from "../../redux/hooks";
-import { ORDER_setPayment, STAGES_payment } from "../../redux/order/orderSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { ORDER_setPayment, ORDER_setPaymentWithParts, STAGES_payment } from "../../redux/order/orderSlice";
 
 export default function Payment() {
+  const { _order } = useAppSelector((state) => state.orders);
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
@@ -27,6 +29,30 @@ export default function Payment() {
     useState("payOnDelivery");
 
   const dispatch = useAppDispatch();
+
+  const marks = [
+    {value: 2, label: "2" },
+    {value: 3, label: "3"},
+    {value: 4, label: "4"},
+    {value: 5, label: "5"},
+    {value: 6, label: "6"},
+    {value: 7, label: "7"},
+    {value: 8, label: "8"},
+    {value: 9, label: "9"},
+    {value: 10, label: "10"},
+    {value: 11, label: "11"},
+    {value: 12, label: "12"},
+  ]
+
+  function valuetext(value: number) {
+    
+    return `${_order.total / value} ₴`;
+  }
+
+  const handleMonthChange = (event: Event, newValue: number | number[]) => {
+    dispatch(ORDER_setPaymentWithParts({months: newValue as number, perMonth: Math.round(_order.total / (newValue as number)), firstPay: Math.round(_order.total / (newValue as number)) + _order.delivery.delivery_cost}))
+    dispatch(STAGES_payment(true));
+  };
 
   const handleCardNumberChange = (event: any) => {
     const value = event.target.value;
@@ -95,7 +121,6 @@ export default function Payment() {
     return chunks.join(" ");
   };
 
-  
   const isCardValid = () => {
     const expiryMonth = expiryDate.substring(0, 2);
     const expiryYear = expiryDate.substring(3, 5);
@@ -130,7 +155,7 @@ export default function Payment() {
           },
         })
       );
-    } 
+    }
     dispatch(STAGES_payment(true));
   }
 
@@ -273,6 +298,39 @@ export default function Payment() {
                     </Box>
                   )}
                 </RadioGroup>
+              </Box>
+            )}
+            <FormControlLabel
+              value="partPay"
+              control={<Radio color="success" />}
+              label="Оплата частинами"
+            />
+            {selectedOption === "partPay" && (
+              <Box sx={{ paddingLeft: 5, width: 500 }}>
+                <Slider
+                  aria-label="Small steps"
+                  defaultValue={2}
+                  getAriaValueText={valuetext}
+                  onChange={handleMonthChange}
+                  step={1}
+                  min={2}
+                  max={12}
+                  marks={marks}
+                  valueLabelDisplay="auto"
+                />
+                 {
+                    _order.payWithParts.months === 0
+                    ? <></>
+                    : 
+                    <>
+                    <Typography>
+                    {_order.payWithParts.perMonth} ₴
+                    {" "} на {" "}
+                 {_order.payWithParts.months} міс.
+                 </Typography>
+                    </>
+                  }
+                
               </Box>
             )}
           </RadioGroup>

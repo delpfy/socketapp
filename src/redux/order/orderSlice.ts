@@ -50,6 +50,7 @@ const orderSlice = createSlice({
       },
       delivery: {
         delivery_type: "",
+        delivery_cost: 0,
         delivery_location: {
           street: "",
           houseNumber: "",
@@ -68,6 +69,12 @@ const orderSlice = createSlice({
           date: "",
           cvv: "",
         },
+        
+      },
+      payWithParts: {
+        months: 0,
+        perMonth: 0,
+        firstPay: 0,
       },
       items: {},
       total: 0
@@ -114,6 +121,17 @@ const orderSlice = createSlice({
       state._order.user_location = action.payload;
     },
 
+    ORDER_setPaymentWithParts(
+      state,
+      action: PayloadAction<{
+        months: number,
+        perMonth: number,
+        firstPay: number,
+      }>
+    ) {
+      state._order.payWithParts = action.payload;
+    },
+
     ORDER_setTotal(
       state,
       action: PayloadAction<number>
@@ -155,6 +173,7 @@ const orderSlice = createSlice({
       state,
       action: PayloadAction<{
         delivery_type: string;
+        delivery_cost: number;
         delivery_location: {
           street: string;
           houseNumber: string;
@@ -175,6 +194,7 @@ const orderSlice = createSlice({
       state,
       action: PayloadAction<{
         delivery_type: string;
+        delivery_cost: number;
         delivery_location: {
           street: string;
           houseNumber: string;
@@ -260,6 +280,7 @@ export const {
   ORDER_setDeliveryOnAdress,
   ORDER_setPayment,
   ORDER_setItems,
+  ORDER_setPaymentWithParts,
   STAGES_userContact,
   STAGES_delivery,
   STAGES_payment,

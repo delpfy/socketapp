@@ -26,11 +26,11 @@ interface TLocation {
 }
 
 export default function CitySelectionButton() {
-  const { locations } = useAppSelector((state) => state.orders);
+  const { locations, _order } = useAppSelector((state) => state.orders);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = React.useState<readonly TLocation[]>([]);
-  const [selectedCity, setSelectedCity] = useState("");
-  const [selectedLocality, setSelectedLocality] = useState("");
+  const [selectedCity, setSelectedCity] = useState(_order.user_location.city_location);
+  const [selectedLocality, setSelectedLocality] = useState(_order.user_location.city_location);
   const [afterCitySelect, setAfterCitySelect] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -40,6 +40,10 @@ export default function CitySelectionButton() {
 
   }, [locations]);
   
+  useEffect(() => {
+    setSelectedCity(_order.user_location.city_location);
+    setSelectedLocality(_order.user_location.city_location);
+  }, [])
 
   const handleCityClick = (city: any) => {
     setSelectedCity(city);

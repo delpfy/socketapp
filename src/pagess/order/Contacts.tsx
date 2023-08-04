@@ -12,11 +12,12 @@ import { ORDER_setUserContact, STAGES_userContact } from "../../redux/order/orde
 
 export default function Contacts() {
   const { user } = useAppSelector((state) => state.user);
+  const { _order } = useAppSelector((state) => state.orders);
   const dispatch = useAppDispatch();
-  const [name, setName] = useState(user.name);
-  const [surname, setSurame] = useState("");
+  const [name, setName] = useState(_order.user_contact.name=== "" ? user.name : _order.user_contact.name);
+  const [surname, setSurame] = useState(_order.user_contact.surname);
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState(user.email);
+  const [email, setEmail] = useState(_order.user_contact.email === "" ? user.email : _order.user_contact.email);
   const [phoneError, setPhoneError] = useState(false);
   const [emailError, setEmailError] = useState(false);
 
@@ -51,6 +52,9 @@ export default function Contacts() {
         })
       );
       dispatch(STAGES_userContact(true));
+    }
+    else{
+      dispatch(STAGES_userContact(false));
     }
   }, [phone, name, surname, email]);
 

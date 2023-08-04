@@ -26,6 +26,7 @@ import {
   setNovaPoshtaLocation,
   setStreetLocation,
   ORDER_setTotal,
+  ORDER_setPaymentWithParts,
 } from "../../redux/order/orderSlice";
 import { TLocationCity, TShippingItems } from "../../redux/types";
 
@@ -103,6 +104,10 @@ export default function Delivery() {
   };
 
   useEffect(() => {
+    dispatch(ORDER_setPaymentWithParts({months: _order.payWithParts.months, perMonth: _order.payWithParts.perMonth , firstPay: _order.payWithParts.perMonth + _order.delivery.delivery_cost}))
+  }, [_order.delivery.delivery_cost])
+
+  useEffect(() => {
     const streetIsValid = streetLocation !== "";
     const houseNumberIsValid = houseNumber !== "";
     const apartmentNumberIsValid = apartmentNumber !== "";
@@ -121,6 +126,7 @@ export default function Delivery() {
       dispatch(
         ORDER_setDeliveryOnAdress({
           delivery_type: "on adress",
+          delivery_cost: 199,
           delivery_location: {
             street: streetLocation,
             houseNumber: houseNumber,
@@ -142,6 +148,7 @@ export default function Delivery() {
       dispatch(
         ORDER_setDeliveryOnAdress({
           delivery_type: "on adress",
+          delivery_cost: 199,
           delivery_location: {
             street: streetLocation,
             houseNumber: houseNumber,
@@ -474,6 +481,7 @@ export default function Delivery() {
                     dispatch(
                       ORDER_setDeliveryOnAdress({
                         delivery_type: "nova",
+                        delivery_cost: 149,
                         delivery_location: {
                           street: "",
                           houseNumber: "",

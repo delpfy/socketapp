@@ -62,7 +62,10 @@ export default function OrderProducts() {
         >
           <Typography fontSize={20}>Замовлення №1</Typography>
 
-          <Typography fontSize={20}>на суму: {user.expences} ₴</Typography>
+          <Typography fontSize={20}>на суму: {items &&
+                items.reduce((sum: number, item: TShippingItems) => {
+                  return (sum += item.price * item.amount);
+                }, 0)} ₴</Typography>
         </Box>
         <Box
           sx={{
