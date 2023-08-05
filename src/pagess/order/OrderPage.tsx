@@ -39,36 +39,36 @@ export default function OrderPage() {
 
   function InfoDialog_close() {
     setOpenInfo(false);
-    console.log("!stages_of_order.stage_userContact: ")
-    console.log(!stages_of_order.stage_userContact)
+    console.log("!stages_of_order.stage_userContact: ");
+    console.log(!stages_of_order.stage_userContact);
     if (!stages_of_order.stage_userContact) {
       pointOn_Contacts();
 
       return;
     }
-    console.log("!stages_of_order.stage_city: ")
-    console.log(!stages_of_order.stage_city)
+    console.log("!stages_of_order.stage_city: ");
+    console.log(!stages_of_order.stage_city);
     if (!stages_of_order.stage_city) {
       pointOn_Contacts();
 
       return;
     }
-    console.log("!stages_of_order.stage_delivery: ")
-    console.log(!stages_of_order.stage_delivery)
+    console.log("!stages_of_order.stage_delivery: ");
+    console.log(!stages_of_order.stage_delivery);
     if (!stages_of_order.stage_delivery) {
       pointOn_Delivery();
 
       return;
     }
-    console.log("!stages_of_order.stage_payment ")
-    console.log(!stages_of_order.stage_payment)
+    console.log("!stages_of_order.stage_payment ");
+    console.log(!stages_of_order.stage_payment);
     if (!stages_of_order.stage_payment) {
       pointOn_Payment();
 
       return;
     }
-    console.log("!stages_of_order.stage_recevierContact: ")
-    console.log(!stages_of_order.stage_recevierContact)
+    console.log("!stages_of_order.stage_recevierContact: ");
+    console.log(!stages_of_order.stage_recevierContact);
     if (!stages_of_order.stage_recevierContact) {
       pointOn_Receiver();
       return;
@@ -118,40 +118,33 @@ export default function OrderPage() {
   const delivery_ref = useRef<HTMLDivElement | null>(null);
   const receiver_ref = useRef<HTMLDivElement | null>(null);
   const scrollToElement = (element: HTMLElement) => {
-    return new Promise<void>((resolve) => {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-        inline: "center",
-      });
-
-      setTimeout(() => {
-        resolve();
-      }, 500);
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
     });
   };
 
-  const pointOn_Contacts = async () => {
+  const pointOn_Contacts = () => {
     if (contact_ref.current) {
-      await scrollToElement(contact_ref.current);
+      scrollToElement(contact_ref.current);
     }
   };
 
-  const pointOn_Payment = async () => {
+  const pointOn_Payment = () => {
     if (payment_ref.current) {
-      await scrollToElement(payment_ref.current);
+      scrollToElement(payment_ref.current);
     }
   };
-  const pointOn_Delivery = async () => {
-    console.log(delivery_ref.current);
+  const pointOn_Delivery = () => {
+    console.log("delivery_ref.current " + delivery_ref.current);
     if (delivery_ref.current) {
-      
-      await scrollToElement(delivery_ref.current);
+      scrollToElement(delivery_ref.current);
     }
   };
-  const pointOn_Receiver = async () => {
+  const pointOn_Receiver = () => {
     if (receiver_ref.current) {
-      await scrollToElement(receiver_ref.current);
+      scrollToElement(receiver_ref.current);
     }
   };
 
