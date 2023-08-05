@@ -30,6 +30,11 @@ export default function OrderPage() {
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
+  const contact_ref = useRef<HTMLDivElement>(null);
+  const payment_ref = useRef<HTMLDivElement | null>(null);
+  const delivery_ref = useRef<HTMLDivElement | null>(null);
+  const receiver_ref = useRef<HTMLDivElement | null>(null);
+
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -39,36 +44,32 @@ export default function OrderPage() {
 
   function InfoDialog_close() {
     setOpenInfo(false);
-    console.log("!stages_of_order.stage_userContact: ");
-    console.log(!stages_of_order.stage_userContact);
+
     if (!stages_of_order.stage_userContact) {
       pointOn_Contacts();
 
       return;
     }
-    console.log("!stages_of_order.stage_city: ");
-    console.log(!stages_of_order.stage_city);
+
     if (!stages_of_order.stage_city) {
       pointOn_Contacts();
 
       return;
     }
-    console.log("!stages_of_order.stage_delivery: ");
-    console.log(!stages_of_order.stage_delivery);
+
     if (!stages_of_order.stage_delivery) {
+      console.log("lol");
       pointOn_Delivery();
 
       return;
     }
-    console.log("!stages_of_order.stage_payment ");
-    console.log(!stages_of_order.stage_payment);
+
     if (!stages_of_order.stage_payment) {
       pointOn_Payment();
 
       return;
     }
-    console.log("!stages_of_order.stage_recevierContact: ");
-    console.log(!stages_of_order.stage_recevierContact);
+
     if (!stages_of_order.stage_recevierContact) {
       pointOn_Receiver();
       return;
@@ -113,39 +114,49 @@ export default function OrderPage() {
     console.log("WOW 2");
   }
 
-  const contact_ref = useRef<HTMLDivElement>(null);
-  const payment_ref = useRef<HTMLDivElement | null>(null);
-  const delivery_ref = useRef<HTMLDivElement | null>(null);
-  const receiver_ref = useRef<HTMLDivElement | null>(null);
-  const scrollToElement = (element: HTMLElement) => {
-    element.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "center",
-    });
-  };
-
   const pointOn_Contacts = () => {
-    if (contact_ref.current) {
-      scrollToElement(contact_ref.current);
-    }
+    setTimeout(() => {
+      if (contact_ref.current) {
+        contact_ref.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+      }
+    }, 300);
   };
 
   const pointOn_Payment = () => {
-    if (payment_ref.current) {
-      scrollToElement(payment_ref.current);
-    }
+    setTimeout(() => {
+      if (payment_ref.current) {
+        payment_ref.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+      }
+    }, 300);
   };
-  const pointOn_Delivery = () => {
-    console.log("delivery_ref.current " + delivery_ref.current);
-    if (delivery_ref.current) {
-      scrollToElement(delivery_ref.current);
-    }
-  };
+  function pointOn_Delivery() {
+    setTimeout(() => {
+      if (delivery_ref.current) {
+        delivery_ref.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      }
+    }, 300);
+  }
   const pointOn_Receiver = () => {
-    if (receiver_ref.current) {
-      scrollToElement(receiver_ref.current);
-    }
+    setTimeout(() => {
+      if (receiver_ref.current) {
+        receiver_ref.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "center",
+        });
+      }
+    }, 300);
   };
 
   useEffect(() => {
