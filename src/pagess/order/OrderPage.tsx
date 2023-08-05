@@ -41,27 +41,36 @@ export default function OrderPage() {
 
   function InfoDialog_close() {
     setOpenInfo(false);
+    console.log("!stages_of_order.stage_userContact: ")
+    console.log(!stages_of_order.stage_userContact)
     if (!stages_of_order.stage_userContact) {
       pointOn_Contacts();
 
       return;
     }
+    console.log("!stages_of_order.stage_city: ")
+    console.log(!stages_of_order.stage_city)
     if (!stages_of_order.stage_city) {
       pointOn_Contacts();
 
       return;
     }
+    console.log("!stages_of_order.stage_delivery: ")
+    console.log(!stages_of_order.stage_delivery)
     if (!stages_of_order.stage_delivery) {
       pointOn_Delivery();
 
       return;
     }
+    console.log("!stages_of_order.stage_payment ")
+    console.log(!stages_of_order.stage_payment)
     if (!stages_of_order.stage_payment) {
       pointOn_Payment();
 
       return;
     }
-
+    console.log("!stages_of_order.stage_recevierContact: ")
+    console.log(!stages_of_order.stage_recevierContact)
     if (!stages_of_order.stage_recevierContact) {
       pointOn_Receiver();
       return;

@@ -84,7 +84,9 @@ export default function AppBarMenu() {
         ))}
       </List>
       <Divider />
-      <SortBy/>
+      <Box sx= {{display: {xs: "flex", md: "none"}, width: '100%'}}>
+          <SortBy/>
+          </Box>
       <List></List>
     </Box>
   );

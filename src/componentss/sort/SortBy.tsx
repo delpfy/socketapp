@@ -23,15 +23,16 @@ import {
   sortByRelevanceRange,
 } from "../../redux/home/homeSlice";
 
+
 export default function SortBy() {
   const [relevanceValue, setRelevanceValue] = React.useState("asc");
   const [costValue, setCostValue] = React.useState("asc");
   const [costRangeValue, setCostRangeValue] = React.useState<number[]>([
     0, 70000,
   ]);
-  const [relevanceRangeValue, setRelevanceRangeValue] = React.useState<number[]>([
-    1, 5,
-  ]);
+  const [relevanceRangeValue, setRelevanceRangeValue] = React.useState<
+    number[]
+  >([1, 5]);
   const dispatch = useAppDispatch();
 
   const handleCostRangeChange = (event: Event, newValue: number | number[]) => {
@@ -76,7 +77,11 @@ export default function SortBy() {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box
+      sx={{
+        width: "100%"
+      }}
+    >
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
