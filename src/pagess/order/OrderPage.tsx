@@ -30,8 +30,6 @@ export default function OrderPage() {
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
-  const [scrollPosition, setScrollPosition] = useState(0);
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -135,7 +133,6 @@ export default function OrderPage() {
 
   const pointOn_Contacts = async () => {
     if (contact_ref.current) {
-      setScrollPosition(contact_ref.current.scrollTop);
       await scrollToElement(contact_ref.current);
     }
   };
@@ -146,7 +143,9 @@ export default function OrderPage() {
     }
   };
   const pointOn_Delivery = async () => {
+    console.log(delivery_ref.current);
     if (delivery_ref.current) {
+      
       await scrollToElement(delivery_ref.current);
     }
   };
