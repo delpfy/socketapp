@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Box, Paper, Typography } from "@mui/material";
 import { getOrdersByUser } from "../../redux/order/asyncActions";
-import { Items, Status } from "../../redux/types";
+import { Items, Status, TOrder } from "../../redux/types";
 
 export default function UserOrders() {
   const { user_orders, status } = useAppSelector((state) => state.orders);
@@ -19,34 +19,37 @@ export default function UserOrders() {
   function StatusHandler(status: Status) {
     switch (status) {
       case "success":
-        if (user_orders !== undefined && user_orders.orders.length !== 0) {
-          return (
-            <Paper elevation={5} sx={{ marginBottom: 5 }}>
-              <Typography fontSize={20}>Ваші закази:</Typography>
-              {user_orders.orders.map((order: any, index) => (
-                <>
-                  <Paper elevation={5} sx={{ margin: 5 }}>
-                    <Typography key={order.numberOfOrder}>
-                      Номер {index + 1}: код: {order.numberOfOrder}
-                    </Typography>
-                    <Box>
-                      {order.items.map((item: Items) => {
-                        return (
-                          <>
-                            <img
-                              src={item.image[0]}
-                              alt=""
-                              style={{ width: 50, height: 50 }}
-                            />
-                          </>
-                        );
+        if (user_orders !== undefined  ) {
+            if(user_orders.orders !== undefined){
+                return (
+                    <Paper elevation={5} sx={{ marginBottom: 5 }}>
+                      <Typography fontSize={20}>Ваші закази:</Typography>
+                      {user_orders.orders.map((order: TOrder, index) => {
+                          return (
+                              <>
+                                  <Paper elevation={5} sx={{ margin: 5 }}>
+                                      <Typography key={order.numberOfOrder}>
+                                          Номер {index + 1}: код: {order.numberOfOrder}
+                                      </Typography>
+                                      <Box>
+                                        {
+                                            order.items.map((item: Items) => {
+                                                return(
+                                                    <img src={item.image[0]} alt="" style={{width: 50, height: 50}}/>
+                                                )
+                                            })
+                                        }
+                                      </Box>
+                                  </Paper>
+                              </>
+                          );
                       })}
-                    </Box>
-                  </Paper>
-                </>
-              ))}
-            </Paper>
-          );
+                    </Paper>
+                  );
+            }else {
+                return <></>;
+              }
+          
           //return <CatalogSkeletons />
         } else {
           return <></>;

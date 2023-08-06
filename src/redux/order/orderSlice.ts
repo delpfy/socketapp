@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Status, TLocationCity, TLocationNova } from "../types";
+import { Items, Status, TLocationCity, TLocationNova, TOrders } from "../types";
 import {
   addOrder,
   getLocations,
@@ -32,7 +32,7 @@ const orderSlice = createSlice({
     } as TLocationNova,
     ukrPoshtaLocations: {},
 
-    user_orders:{orders: [{}]},
+    user_orders:[] as unknown as TOrders,
 
     _order: {
       user_location: {
@@ -81,7 +81,7 @@ const orderSlice = createSlice({
         perMonth: 0,
         firstPay: 0,
       },
-      items: {},
+      items: [] as Items[],
       total: 0,
       numberOfOrder: "",
     },

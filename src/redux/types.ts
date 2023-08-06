@@ -172,6 +172,64 @@ export type TPostDisplay={
   
 }
 
+export type TOrder={
+  user_location: {
+    city_location: string,
+  },
+  receiver: {
+    userIsReceiver: boolean,
+    contact: {
+      name: string,
+      surname: string,
+      email: string,
+      phone: string,
+    },
+  },
+  user_contact: {
+    name: string,
+    surname: string,
+    email: string,
+    phone: string,
+  },
+  delivery: {
+    delivery_type: string,
+    delivery_cost: number,
+    delivery_location: {
+      street: string,
+      houseNumber: string,
+      apartmentNumber: string,
+      floorNumber: string,
+    },
+    novaDepartment: string,
+    liftRequired: boolean,
+    elevator: boolean,
+  },
+  payment: {
+    payment_type: string,
+    uponReceipt: boolean,
+    card: {
+      number: string,
+      date: string,
+      cvv: string,
+    },
+    
+  },
+  payWithParts: {
+    months: number,
+    perMonth: number,
+    firstPay: number,
+  },
+  items: Items[],
+  total: number,
+  numberOfOrder: string,
+}
+
+export type TOrders={
+  orders: TOrder[]
+  
+}
+
+
 export interface BasketState {
   status: Status;
   items: TShippingItems[];

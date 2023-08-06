@@ -62,7 +62,7 @@ export default function OrderProducts() {
             alignItems: "center",
           }}
         >
-          <Typography fontSize={20}>Замовлення № {user_orders.orders.length + 1}</Typography>
+          <Typography fontSize={20}>Замовлення № {user_orders.orders !== undefined ? user_orders.orders.length + 1 : ""}</Typography>
 
           <Typography fontSize={20}>на суму: {items &&
                 items.reduce((sum: number, item: TShippingItems) => {

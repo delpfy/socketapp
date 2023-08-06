@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { TLocationCity } from "../types";
+import { TLocationCity, TOrder, TOrders } from "../types";
 
 export const getAllOrders = createAsyncThunk<any>(
   "home/getAllOrders",
@@ -10,7 +10,7 @@ export const getAllOrders = createAsyncThunk<any>(
   }
 );
 
-export const getOrdersByUser = createAsyncThunk<any, string>(
+export const getOrdersByUser = createAsyncThunk<TOrders, string>(
   "home/getOrdersByUser", async (params) => {
   const { data } = await axios.get<any>(
     `/orders/user/${params}`,
@@ -24,7 +24,7 @@ export const getOrdersByUser = createAsyncThunk<any, string>(
 });
 
 
-export const addOrder = createAsyncThunk<any, any>(
+export const addOrder = createAsyncThunk<TOrders, TOrder>(
   "home/addOrder",
   async (params) => {
     const { data } = await axios.post(`/orders`, params, {
