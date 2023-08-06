@@ -47,16 +47,14 @@ export const CatalogField = () => {
         justifyContent={"center"}
         alignItems={"flex-start"}
         >
-          <Box sx= {{display: {xs: "none", md: "flex"}, width: '20%'}}>
-          <SortBy/>
-          </Box>
+          
         
           <Grid
             container
             padding={"2%"}
             paddingTop={0}
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 1, sm: 5, md: 8, lg: 12, xl: 15 }}
+            columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
           >
             {
               sortedByRange
@@ -88,7 +86,7 @@ export const CatalogField = () => {
                 justifyContent={"center"}
                 alignItems={"center"}
                 paddingBottom={2}
-                xs={1}
+                xs={2}
                 sm={4}
                 md={4}
                 lg={4}

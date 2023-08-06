@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { TLocationCity, TLocationNova } from "../types";
+import { Status, TLocationCity, TLocationNova } from "../types";
 import {
+  addOrder,
   getLocations,
   getNovaPoshtaLocations,
+  getOrdersByUser,
   getStreets,
   getUkrPoshtaLocations,
 } from "./asyncActions";
@@ -10,6 +12,7 @@ import {
 const orderSlice = createSlice({
   name: "reviews",
   initialState: {
+    status: "success" as Status,
     locations: [
       {
         display_name: "",
@@ -28,6 +31,8 @@ const orderSlice = createSlice({
       data: [{}],
     } as TLocationNova,
     ukrPoshtaLocations: {},
+
+    user_orders:{orders: [{}]},
 
     _order: {
       user_location: {
@@ -77,7 +82,8 @@ const orderSlice = createSlice({
         firstPay: 0,
       },
       items: {},
-      total: 0
+      total: 0,
+      numberOfOrder: "",
     },
 
     stages_of_order: {
@@ -87,6 +93,8 @@ const orderSlice = createSlice({
       stage_payment: false,
       stage_recevierContact: false,
     },
+
+    
 
     location: "",
     street_location: "",
@@ -119,6 +127,13 @@ const orderSlice = createSlice({
       }>
     ) {
       state._order.user_location = action.payload;
+    },
+
+    ORDER_setUniqueNumber(
+      state,
+      action: PayloadAction<string>
+    ) {
+      state._order.numberOfOrder = action.payload;
     },
 
     ORDER_setPaymentWithParts(
@@ -265,6 +280,22 @@ const orderSlice = createSlice({
     });
     builder.addCase(getUkrPoshtaLocations.pending, (state) => {});
     builder.addCase(getUkrPoshtaLocations.rejected, (state) => {});
+
+
+    builder.addCase(addOrder.fulfilled, (state, action) => {
+      state.user_orders = action.payload;
+      
+    });
+    builder.addCase(addOrder.pending, (state) => {});
+    builder.addCase(addOrder.rejected, (state) => {});
+
+    builder.addCase(getOrdersByUser.fulfilled, (state, action) => {
+      state.user_orders = action.payload;
+      state.status = "success";
+      
+    });
+    builder.addCase(getOrdersByUser.pending, (state) => {state.status = "pending";});
+    builder.addCase(getOrdersByUser.rejected, (state) => {state.status = "error";});
   },
 });
 
@@ -280,6 +311,7 @@ export const {
   ORDER_setDeliveryOnAdress,
   ORDER_setPayment,
   ORDER_setItems,
+  ORDER_setUniqueNumber,
   ORDER_setPaymentWithParts,
   STAGES_userContact,
   STAGES_delivery,

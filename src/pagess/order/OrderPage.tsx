@@ -18,9 +18,12 @@ import { useEffect, useRef, useState } from "react";
 import {
   ORDER_setPaymentWithParts,
   ORDER_setTotal,
+  ORDER_setUniqueNumber,
 } from "../../redux/order/orderSlice";
 import Receiver from "./Receiver";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
+import { addOrder, getOrdersByUser } from "../../redux/order/asyncActions";
+import UserOrders from "./UserOrders";
 
 export default function OrderPage() {
   const { items } = useAppSelector((state) => state.basket);
@@ -76,7 +79,10 @@ export default function OrderPage() {
     }
   }
 
-  function handleOrderReady() {
+
+  async function handleOrderReady() {
+    
+
     if (!stages_of_order.stage_userContact) {
       InfoDialog_open();
       setInfoMessage("Ви не вказали усі контактні дані");
@@ -107,12 +113,19 @@ export default function OrderPage() {
 
       return;
     }
-
-    alert("WOW");
-    console.log("WOW 1");
-    console.log(_order);
-    console.log("WOW 2");
+    
+    dispatch(ORDER_setUniqueNumber(Math.random().toString(36).slice(2, 8)));
+  
+  alert("WOW");
+  dispatch(addOrder(_order)).then((result: any) => {
+    if(result.meta.requestStatus === 'fulfilled'){
+      dispatch(getOrdersByUser(user.id))
+    }
+  })
+  
   }
+
+  
 
   const pointOn_Contacts = () => {
     setTimeout(() => {
@@ -167,6 +180,7 @@ export default function OrderPage() {
         }, 0)
       )
     );
+    dispatch(ORDER_setUniqueNumber(Math.random().toString(36).slice(2, 8)));
   }, []);
 
   return (
@@ -311,6 +325,8 @@ export default function OrderPage() {
               justifyContent={"space-between"}
               flexDirection={"column"}
             >
+              <UserOrders/>
+              
               <div ref={contact_ref}>
                 <Contacts />
               </div>

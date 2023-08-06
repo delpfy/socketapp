@@ -22,6 +22,8 @@ import BasketDialog from "../../componentss/dialogs/BasketDialog";
 import { ORDER_setItems, ORDER_setTotal } from "../../redux/order/orderSlice";
 
 export default function OrderProducts() {
+  
+  const { user_orders } = useAppSelector((state) => state.orders);
   const { items } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.user);
   const [openBasket, setOpenBasket] = useState(false);
@@ -60,7 +62,7 @@ export default function OrderProducts() {
             alignItems: "center",
           }}
         >
-          <Typography fontSize={20}>Замовлення №1</Typography>
+          <Typography fontSize={20}>Замовлення № {user_orders.orders.length + 1}</Typography>
 
           <Typography fontSize={20}>на суму: {items &&
                 items.reduce((sum: number, item: TShippingItems) => {

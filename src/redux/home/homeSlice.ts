@@ -34,13 +34,21 @@ const homeSlice = createSlice({
     sortByCost_ASC(state) {
       state.sortedByRange = false;
       state.itemsCategory.items = [...state.itemsCategory.items].sort(
-        (a, b) => a.price - b.price
+        (a, b) =>
+          a.price -
+          Math.round((a.price * a.sale) / 100) -
+          (b.price - Math.round((b.price * b.sale) / 100))
       );
     },
     sortByCost_DESC(state) {
       state.sortedByRange = false;
       state.itemsCategory.items = [...state.itemsCategory.items]
-        .sort((a, b) => a.price - b.price)
+        .sort(
+          (a, b) =>
+            a.price -
+            Math.round((a.price * a.sale) / 100) -
+            (b.price - Math.round((b.price * b.sale) / 100))
+        )
         .reverse();
     },
     sortByRelevance_ASC(state) {
@@ -60,10 +68,11 @@ const homeSlice = createSlice({
       state.sortedByRange = true;
       state.itemsSorted.items = state.itemsCategory.items.filter(
         (item: Items) =>
-          item.price >= action.payload[0] && item.price <= action.payload[1]
+          item.price - Math.round((item.price * item.sale) / 100) >=
+            action.payload[0] &&
+          item.price - Math.round((item.price * item.sale) / 100) <=
+            action.payload[1]
       );
-      
-
     },
     sortByRelevanceRange(state, action: PayloadAction<number[]>) {
       state.sortedByRange = true;
@@ -71,8 +80,6 @@ const homeSlice = createSlice({
         (item: Items) =>
           item.rating >= action.payload[0] && item.rating <= action.payload[1]
       );
-      
-
     },
   },
   extraReducers: (builder) => {
@@ -94,6 +101,7 @@ const homeSlice = createSlice({
     builder.addCase(getItemsByCategory.fulfilled, (state, action) => {
       state.status = "success";
       state.itemsCategory = action.payload;
+      state.itemsSorted= action.payload;
     });
     builder.addCase(getItemsByCategory.pending, (state) => {
       state.status = "pending";

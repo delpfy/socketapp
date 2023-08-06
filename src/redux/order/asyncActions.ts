@@ -1,21 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { TLocationCity, TShippingItems, TShippingItemsDisplay } from "../types";
+import { TLocationCity } from "../types";
 
-export const getAllBasketItems = createAsyncThunk<TShippingItemsDisplay>(
-  "home/getAllBasketItems",
+export const getAllOrders = createAsyncThunk<any>(
+  "home/getAllOrders",
   async function () {
-    const { data } = await axios.get<TShippingItemsDisplay>(`/basketitems`);
+    const { data } = await axios.get<any>(`/orders`);
     return data;
   }
 );
 
-export const getBasketItemsByUser = createAsyncThunk<
-  TShippingItemsDisplay,
-  string
->("home/getBasketItemsByUser", async (params) => {
-  const { data } = await axios.get<TShippingItemsDisplay>(
-    `/basketitems/user/${params}`,
+export const getOrdersByUser = createAsyncThunk<any, string>(
+  "home/getOrdersByUser", async (params) => {
+  const { data } = await axios.get<any>(
+    `/orders/user/${params}`,
     {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -24,6 +22,35 @@ export const getBasketItemsByUser = createAsyncThunk<
   );
   return data;
 });
+
+
+export const addOrder = createAsyncThunk<any, any>(
+  "home/addOrder",
+  async (params) => {
+    const { data } = await axios.post(`/orders`, params, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
+    console.log("DATA 34" + data);
+    return data;
+  }
+);
+
+export const removeOrder = createAsyncThunk<"", any>(
+  "home/removeOrder",
+  async (params) => {
+    const { data } = await axios.delete(`/orders/${params._id}`, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
+
+
 
 export const getLocations = createAsyncThunk<any, { city: string }>(
   "orders/getLocations",
@@ -96,28 +123,3 @@ export const getUkrPoshtaLocations = createAsyncThunk<
 
   return data;
 });
-
-export const addBasketItem = createAsyncThunk<"", TShippingItems>(
-  "home/addBasketItem",
-  async (params) => {
-    const { data } = await axios.post(`/basketitems`, params, {
-      headers: {
-        authorization: `Bearer ${window.localStorage.getItem("token")}`,
-      },
-    });
-    console.log("DATA 34" + data);
-    return data;
-  }
-);
-
-export const removeBasketItem = createAsyncThunk<"", TShippingItems>(
-  "home/removeBasketItem",
-  async (params) => {
-    const { data } = await axios.delete(`/basketitems/${params._id}`, {
-      headers: {
-        authorization: `Bearer ${window.localStorage.getItem("token")}`,
-      },
-    });
-    return data;
-  }
-);
