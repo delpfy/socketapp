@@ -23,6 +23,7 @@ import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { updateAllUserReviews } from "../../redux/review/asyncActions";
 import { useNavigate } from "react-router-dom";
+import UserOrders from "../order/UserOrders";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
@@ -162,7 +163,7 @@ export default function User() {
       <Typography fontFamily={"Comfortaa"} textAlign={"center"} fontSize={32}>
         Особистий кабінет
       </Typography>
-
+      
       <Box padding={3}>
         <Box
           padding={3}
@@ -266,6 +267,7 @@ export default function User() {
             Вийти з аккаута
           </Button>
         </Box>
+        <UserOrders/>
       </Box>
       <LogoutDialog
         openLogout={openLogout}

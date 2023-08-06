@@ -24,6 +24,7 @@ import { getBasketItemsByUser } from "../../../redux/basket/asyncActions";
 import { useEffect } from "react";
 import Search from "../search/Search";
 import SortBy from "../../sort/SortBy";
+import ContactUs from "../ContactUs";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -145,6 +146,7 @@ export default function AppBarMenu() {
             </Box>
           </Box>
           <Search />
+          <ContactUs/>
           <Box>
             <Basket />
           </Box>

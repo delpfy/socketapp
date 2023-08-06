@@ -1,9 +1,12 @@
 import {
+  Alert,
   Box,
   Button,
   Divider,
   Paper,
   PaperProps,
+  Snackbar,
+  SnackbarOrigin,
   Typography,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -25,6 +28,10 @@ import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { addOrder, getOrdersByUser } from "../../redux/order/asyncActions";
 import UserOrders from "./UserOrders";
 
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
+
 export default function OrderPage() {
   const { items } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.user);
@@ -32,6 +39,21 @@ export default function OrderPage() {
 
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
+
+  const [approvedSnackbar, setapprovedSnackbar] = useState<State>({
+    open: false,
+    vertical: "top",
+    horizontal: "right",
+  });
+  const { vertical, horizontal, open } = approvedSnackbar;
+
+  function handleapprovedSnackbar() {
+    setapprovedSnackbar({ ...approvedSnackbar, open: true });
+  }
+
+  function handleApprovedSnackbarClose() {
+    setapprovedSnackbar({ ...approvedSnackbar, open: false });
+  }
 
   const contact_ref = useRef<HTMLDivElement>(null);
   const payment_ref = useRef<HTMLDivElement | null>(null);
@@ -79,10 +101,7 @@ export default function OrderPage() {
     }
   }
 
-
   async function handleOrderReady() {
-    
-
     if (!stages_of_order.stage_userContact) {
       InfoDialog_open();
       setInfoMessage("Ви не вказали усі контактні дані");
@@ -91,7 +110,7 @@ export default function OrderPage() {
     if (!stages_of_order.stage_city) {
       InfoDialog_open();
       setInfoMessage("Ви не вказали міста");
-
+      
       return;
     }
     if (!stages_of_order.stage_delivery) {
@@ -113,19 +132,18 @@ export default function OrderPage() {
 
       return;
     }
-    
-    dispatch(ORDER_setUniqueNumber(Math.random().toString(36).slice(2, 8)));
-  
-  alert("WOW");
-  dispatch(addOrder(_order)).then((result: any) => {
-    if(result.meta.requestStatus === 'fulfilled'){
-      dispatch(getOrdersByUser(user.id))
-    }
-  })
-  
-  }
 
-  
+    dispatch(ORDER_setUniqueNumber(Math.random().toString(36).slice(2, 8)));
+
+    InfoDialog_open();
+      setInfoMessage("Заказ було офомлено! Історія заказів в вашому особистому кабінеті.");
+      
+    dispatch(addOrder(_order)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        dispatch(getOrdersByUser(user.id));
+      }
+    });
+  }
 
   const pointOn_Contacts = () => {
     setTimeout(() => {
@@ -325,8 +343,6 @@ export default function OrderPage() {
               justifyContent={"space-between"}
               flexDirection={"column"}
             >
-              <UserOrders/>
-              
               <div ref={contact_ref}>
                 <Contacts />
               </div>
@@ -345,6 +361,7 @@ export default function OrderPage() {
           </Box>
         </Box>
       )}
+      
       <InfoDialog
         openInfo={openInfo}
         InfoDialog_close={InfoDialog_close}

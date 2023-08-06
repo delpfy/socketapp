@@ -18,6 +18,7 @@ import DeliveryInfo from "./pagess/footerPages/DeliveryInfo";
 import Posts from "./pagess/footerPages/Posts";
 import PostPage from "./pagess/footerPages/PostPage";
 import AddPostPage from "./pagess/footerPages/AddPostPage";
+import Contact from "./pagess/footerPages/Contact";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -51,6 +52,7 @@ function App() {
         <Route path="/user" element={<User />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/return" element={<Return />} />
         <Route path="/delivery" element={<DeliveryInfo />} />
         <Route path="/posts" element={<Posts />} />
