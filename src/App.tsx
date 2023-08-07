@@ -19,6 +19,7 @@ import Posts from "./pagess/footerPages/Posts";
 import PostPage from "./pagess/footerPages/PostPage";
 import AddPostPage from "./pagess/footerPages/AddPostPage";
 import Contact from "./pagess/footerPages/Contact";
+import AddItem from "./pagess/items/AddItem";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -49,6 +50,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/catalog" element={<Catalog />} />
         <Route path="/catalog/item" element={<ItemPage />} />
+        <Route path="/add-item" element={<AddItem />} />
+        
         <Route path="/user" element={<User />} />
         <Route path="/order" element={<OrderPage />} />
         <Route path="/about" element={<About />} />
