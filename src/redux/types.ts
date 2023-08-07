@@ -57,6 +57,18 @@ export type Items = {
   description: string;
 };
 
+export type ItemsPOST = {
+ 
+  category: string;
+  name: string;
+  price: number;
+  sale: number;
+  rating: number;
+  reviewsAmount: number;
+  image: string[];
+  description: string;
+};
+
 export type TShippingItems = {
   _id: string;
   category: string;
