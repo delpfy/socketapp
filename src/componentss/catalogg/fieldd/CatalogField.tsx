@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { Items, Status } from "../../../redux/types";
@@ -7,16 +7,22 @@ import { getItemsByCategory } from "../../../redux/home/asyncActions";
 import Card from "../block/CatalogCard";
 import Skeleton from "../block/CatalogSkeleton";
 import NotFoundPage from "../../../pagess/PageAbsence";
-import SortBy from "../../sort/SortBy";
+import { useNavigate } from "react-router-dom";
+
+
 
 export const CatalogField = () => {
   const { category, status } = useAppSelector((state) => state.home);
+  const { user } = useAppSelector((state) => state.user);
 
   // ItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
-  const { itemsCategory, itemsSorted, sortedByRange } = useAppSelector((state) => state.home);
+  const { itemsCategory, itemsSorted, sortedByRange } = useAppSelector(
+    (state) => state.home
+  );
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // Trying to make request to get items from same category.
   useEffect(() => {
@@ -27,28 +33,42 @@ export const CatalogField = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  function redirectToAddItemPage () {
+    navigate('/add-item')
+  }
+
   const Catalog = () => {
     return (
       <Box width={"100%"}>
-        
         <Box
           display={"flex"}
-          justifyContent={"center"}
+          justifyContent={"flex-end"}
           alignItems={"center"}
           sx={{ paddingTop: { xs: "20%", md: "13%", lg: "10%" } }}
         >
-          <Typography variant={"h3"} fontSize={30} marginBottom={5} fontFamily={"Comfortaa"}>
+          <Box width={'55%'} alignSelf={'flex-end'} marginRight={3} marginBottom={5} sx = {{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          <Typography
+            variant={"h3"}
+            fontSize={30}
+            
+            fontFamily={"Comfortaa"}
+          >
             {category}
           </Typography>
+          {user.role === "manager" ? (
+              <Button variant="contained" onClick={redirectToAddItemPage}>Додати товар</Button>
+            ) : (
+              <></>
+            )}
+          </Box>
+          
         </Box>
         <Box
-        display={"flex"}
-        flexDirection={'row'}
-        justifyContent={"center"}
-        alignItems={"flex-start"}
+          display={"flex"}
+          flexDirection={"row"}
+          justifyContent={"center"}
+          alignItems={"flex-start"}
         >
-          
-        
           <Grid
             container
             padding={"2%"}
@@ -56,46 +76,42 @@ export const CatalogField = () => {
             spacing={{ xs: 1, sm: 3, md: 4 }}
             columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
           >
-            {
-              sortedByRange
-              ?
-              
-              itemsSorted.items.map((item: Items) => (
-                <Grid
-                  item
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  paddingBottom={2}
-                  xs={2}
-                  sm={4}
-                  md={4}
-                  lg={4}
-                  xl={5}
-                  key={item._id}
-                >
-                  <Card key={item._id} {...item} />
-                </Grid>
-              ))
-              :
+            {sortedByRange
+              ? itemsSorted.items.map((item: Items) => (
+                  <Grid
+                    item
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    paddingBottom={2}
+                    xs={2}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                    xl={5}
+                    key={item._id}
+                  >
+                    <Card key={item._id} {...item} />
+                  </Grid>
+                ))
+              : itemsCategory.items.map((item: Items) => (
+                  <Grid
+                    item
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    paddingBottom={2}
+                    xs={2}
+                    sm={4}
+                    md={4}
+                    lg={4}
+                    xl={5}
+                    key={item._id}
+                  >
+                    <Card key={item._id} {...item} />
+                  </Grid>
+                ))}
             
-            itemsCategory.items.map((item: Items) => (
-              <Grid
-                item
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                paddingBottom={2}
-                xs={2}
-                sm={4}
-                md={4}
-                lg={4}
-                xl={5}
-                key={item._id}
-              >
-                <Card key={item._id} {...item} />
-              </Grid>
-            ))}
           </Grid>
         </Box>
       </Box>
@@ -152,11 +168,13 @@ export const CatalogField = () => {
   function StatusHandler(status: Status) {
     switch (status) {
       case "success":
-        if (itemsCategory.items !== undefined || itemsSorted.items !== undefined) {
+        if (
+          itemsCategory.items !== undefined ||
+          itemsSorted.items !== undefined
+        ) {
           return <Catalog />;
           //return <CatalogSkeletons />
-        } 
-        else {
+        } else {
           return <CatalogSkeletons />;
         }
       case "pending":
