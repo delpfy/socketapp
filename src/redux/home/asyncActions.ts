@@ -54,7 +54,7 @@ export const createItem = createAsyncThunk<
 >("home/createItem", async (params) => {
   const { data } = await axios.post<
     { item: Items } | { item: TShippingItems }
-  >(`/items`, params, {
+  >(`/items/`, params, {
     headers: {
       authorization: `Bearer ${window.localStorage.getItem("token")}`,
     },
