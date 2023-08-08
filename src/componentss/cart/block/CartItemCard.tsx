@@ -20,6 +20,7 @@ import {
 } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
+import { updateItem } from "../../../redux/home/asyncActions";
 
 export default function BasketItemBlock(props: TShippingItems) {
   const dispatch = useAppDispatch();
@@ -58,6 +59,7 @@ export default function BasketItemBlock(props: TShippingItems) {
 
       if (itemIndex !== -1) {
         basketItems[itemIndex] = {
+          _id: props._id,
           name: props.name,
           description: props.description,
           category: props.category,
@@ -72,6 +74,7 @@ export default function BasketItemBlock(props: TShippingItems) {
       else{
         basketItems.push(
           {
+            _id: props._id,
             name: props.name,
             description: props.description,
             category: props.category,
@@ -85,6 +88,8 @@ export default function BasketItemBlock(props: TShippingItems) {
       }
     }
     localStorage.setItem("basketItems", JSON.stringify(basketItems));
+    console.log(props.quantity);
+    
     dispatch(synchronizeBasket());
   }
 
@@ -98,6 +103,7 @@ export default function BasketItemBlock(props: TShippingItems) {
       if (itemIndex !== -1) {
         if (basketItems[itemIndex].amount - 1 !== 0) {
           basketItems[itemIndex] = {
+            _id: props._id,
             name: props.name,
             description: props.description,
             category: props.category,
@@ -113,6 +119,7 @@ export default function BasketItemBlock(props: TShippingItems) {
         }
       }
     }
+    
     dispatch(synchronizeBasket());
   }
 
@@ -120,11 +127,13 @@ export default function BasketItemBlock(props: TShippingItems) {
     const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
       const itemIndex = basketItems.findIndex(
-        (item: TShippingItems) => item._id === itemId
+        (item: TShippingItems) => item._id === props._id
       );
+      console.log("itemId " + props._id)
       basketItems.splice(itemIndex, 1);
       localStorage.setItem("basketItems", JSON.stringify(basketItems));
     }
+    
     dispatch(synchronizeBasket());
   }
   return (

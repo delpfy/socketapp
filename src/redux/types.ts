@@ -50,6 +50,7 @@ export type Items = {
   category: string;
   name: string;
   price: number;
+  quantity: number;
   sale: number;
   rating: number;
   reviewsAmount: number;
@@ -63,6 +64,7 @@ export type ItemsPOST = {
   name: string;
   price: number;
   sale: number;
+  quantity: number;
   rating: number;
   reviewsAmount: number;
   image: string[];
@@ -75,6 +77,7 @@ export type TShippingItems = {
   name: string;
   price: number;
   sale: number;
+  quantity: number;
   rating: number;
   amount: number;
   image: string[];

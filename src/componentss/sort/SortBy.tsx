@@ -25,8 +25,8 @@ import {
 
 
 export default function SortBy() {
-  const [relevanceValue, setRelevanceValue] = React.useState("asc");
-  const [costValue, setCostValue] = React.useState("asc");
+  const [relevanceValue, setRelevanceValue] = React.useState("");
+  const [costValue, setCostValue] = React.useState("");
   const [costRangeValue, setCostRangeValue] = React.useState<number[]>([
     0, 70000,
   ]);

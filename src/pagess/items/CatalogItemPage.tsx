@@ -20,6 +20,7 @@ import {
   setReviewsAmount,
   setRatingAmount,
 } from "../../redux/review/reviewSlice";
+import { updateItem } from "../../redux/home/asyncActions";
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
@@ -56,6 +57,7 @@ export const ItemPage = () => {
 
       if (itemIndex !== -1) {
         basketItems[itemIndex] = {
+          _id: itemCurrent._id,
           name: itemCurrent.name,
           description: itemCurrent.description,
           category: itemCurrent.category,
@@ -70,6 +72,7 @@ export const ItemPage = () => {
       else{
         basketItems.push(
           {
+            _id: itemCurrent._id,
             name: itemCurrent.name,
             description: itemCurrent.description,
             category: itemCurrent.category,
@@ -83,6 +86,7 @@ export const ItemPage = () => {
       }
     }
     localStorage.setItem("basketItems", JSON.stringify(basketItems));
+    
     dispatch(synchronizeBasket());
   }
 
@@ -168,6 +172,18 @@ export const ItemPage = () => {
           </Box>
 
           <Box display={"flex"} flexDirection={"column"} alignItems={"left"}>
+          {
+              itemCurrent.quantity <= 10
+              ?<Typography
+              fontFamily={"Comfortaa"}
+              sx={{ paddingLeft: 0.3, background: "#fdfacf" }}
+              fontSize={25}
+              
+            >
+              Товар закінчується! Залишилось: {itemCurrent.quantity}
+            </Typography>
+              : <></>
+            }
             <Typography
               fontFamily={"Comfortaa"}
               sx={{ paddingLeft: 0.3 }}
@@ -175,6 +191,8 @@ export const ItemPage = () => {
             >
               {itemCurrent.name}
             </Typography>
+            
+            
             <Box
               display={"flex"}
               width={100}

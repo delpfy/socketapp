@@ -15,6 +15,7 @@ export default function AddItem() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("0");
+  const [quantity, setQuantity] = useState("1");
   const [rating, setRating] = useState(0);
   const [images, setImages] = useState(["", "", ""]);
   const [sale, setSale] = useState("0");
@@ -44,6 +45,7 @@ export default function AddItem() {
         name,
         category,
         description,
+        quantity : parseInt(quantity),
         price: parseInt(price),
         rating,
         image: images,
@@ -172,6 +174,33 @@ export default function AddItem() {
             value={price}
             onChange={(event) => {
               setPrice(event.target.value);
+            }}
+          />
+        </Box>
+        <Box
+          width={700}
+          paddingBottom={5}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <Typography
+            variant="h1"
+            textAlign={"center"}
+            fontSize={30}
+            fontFamily={"Ubuntu"}
+            width={300}
+          >
+            Кількість:
+          </Typography>
+          <TextField
+            fullWidth
+            value={quantity}
+            onChange={(event) => {
+              setQuantity(event.target.value);
             }}
           />
         </Box>

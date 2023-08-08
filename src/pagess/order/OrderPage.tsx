@@ -27,6 +27,7 @@ import Receiver from "./Receiver";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { addOrder, getOrdersByUser } from "../../redux/order/asyncActions";
 import UserOrders from "./UserOrders";
+import { updateItem } from "../../redux/home/asyncActions";
 
 interface State extends SnackbarOrigin {
   open: boolean;
@@ -134,7 +135,16 @@ export default function OrderPage() {
     }
 
     dispatch(ORDER_setUniqueNumber(Math.random().toString(36).slice(2, 8)));
-
+    items.map((item) => {
+      dispatch(
+        updateItem({
+          itemId: item._id,
+          params: {
+            quantity: -item.amount,
+          },
+        })
+      )
+    })
     InfoDialog_open();
       setInfoMessage("Заказ було офомлено! Історія заказів в вашому особистому кабінеті.");
       

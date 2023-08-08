@@ -19,6 +19,7 @@ import {synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
 import { getItemReviews } from "../../../redux/review/asyncActions";
+import { updateItem } from "../../../redux/home/asyncActions";
 
 export default function CatalogCard(props: Items) {
 
@@ -93,6 +94,7 @@ export default function CatalogCard(props: Items) {
       console.log(itemIndex)
       if (itemIndex !== -1) {
         basketItems[itemIndex] = {
+          _id: props._id,
           name: props.name,
           description: props.description,
           category: props.category,
@@ -107,6 +109,7 @@ export default function CatalogCard(props: Items) {
       else{
         basketItems.push(
           {
+            _id: props._id,
             name: props.name,
             description: props.description,
             category: props.category,
@@ -120,6 +123,7 @@ export default function CatalogCard(props: Items) {
       }
     }
     localStorage.setItem("basketItems", JSON.stringify(basketItems));
+    
     dispatch(synchronizeBasket());
   }
 
