@@ -30,6 +30,7 @@ export const InitialiseHome = () => {
     itemsSorted: {} as ItemsDisplay,
     sortedByRange: false,
     itemCurrent: {} as TShippingItems | Items,
+    
     categories,
     category: "Монітори",
   };

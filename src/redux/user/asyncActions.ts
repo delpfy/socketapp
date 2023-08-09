@@ -63,3 +63,29 @@ export const Register = createAsyncThunk<
 
   return data;
 });
+
+export const ResetPassword = createAsyncThunk<
+  { success: string; token: string },
+  {email: string}
+>("home/ResetPassword", async function (params) {
+  const { data } = await axios.post<{ success: string; token: string }>(
+    `/reset-password`,
+    params
+  );
+
+  return data;
+});
+
+export const UpdatePassword = createAsyncThunk<
+  { success: string },
+  {email: string, password: string}
+>("home/UpdatePassword", async function (params) {
+  const { data } = await axios.patch<{ success: string }>(
+    `/update-password`,
+    params
+  );
+
+  return data;
+});
+
+

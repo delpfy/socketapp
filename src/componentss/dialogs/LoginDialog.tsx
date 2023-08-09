@@ -12,9 +12,11 @@ import {
   IconButton,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Authorize, checkAuthorization } from "../../redux/user/asyncActions";
+import { Authorize, ResetPassword, checkAuthorization } from "../../redux/user/asyncActions";
 import { useAppDispatch } from "../../redux/hooks";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
+import TokenDialog from "./TokenDialog";
+import { setUserEmail } from "../../redux/user/userSlice";
 
 type Props = {
   ErrorDialog_open: Dispatch<SetStateAction<any>>;
@@ -35,9 +37,36 @@ export default function LoginDialog({
 }: Props) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [openToken, setOpenToken] = useState(false);
   const [passVisible, setPassVisible] = useState(true);
+  const [openError, setOpenError] = useState(false);
 
   const dispatch = useAppDispatch();
+
+  function TokenDialog_open() {
+
+    if (!validateEmail(email)) {
+      ErrorDialog_open(true);
+      setErrorMessage("Введіть пошту, на неї буде відправлено код відновлення");
+      return;
+    }
+    dispatch(setUserEmail(email));
+    dispatch(ResetPassword({email})).then((result:any) => {
+      if(result.meta.requestStatus === 'rejected'){
+        ErrorDialog_open(true);
+      setErrorMessage("Схоже, такої пошти не існує...");
+      }
+      if(result.meta.requestStatus === 'fulfilled'){
+        LoginDialog_open(false);
+    setOpenToken(true);
+      }
+    })
+    
+  }
+
+  function TokenDialog_close() {
+    setOpenToken(false);
+  }
 
   function validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -79,7 +108,10 @@ export default function LoginDialog({
   }
 
   return (
-    <Dialog open={openLogin} onClose={LoginDialog_close}>
+    
+    <>
+
+<Dialog open={openLogin} onClose={LoginDialog_close}>
       <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
         Авторизація
       </DialogTitle>
@@ -135,6 +167,19 @@ export default function LoginDialog({
           }
           onChange={(e) => setPassword(e.target.value)}
         />
+        <Typography
+            color={"error"}
+            onClick={TokenDialog_open}
+
+            sx={{
+              cursor: "pointer",
+              paddingLeft: "0.6%",
+              fontFamily: "Comfortaa",
+              fontSize: 15,
+            }}
+          >
+            Забув пароль?
+          </Typography>
       </DialogContent>
       <DialogActions>
         <Button
@@ -153,5 +198,14 @@ export default function LoginDialog({
         </Button>
       </DialogActions>
     </Dialog>
+
+<TokenDialog
+    openToken={openToken}
+        TokenDialog_close={TokenDialog_close}
+        ErrorDialog_open={ErrorDialog_open}
+        TokenDialog_open={setOpenToken}
+        setErrorMessage={setErrorMessage}
+    />
+    </>
   );
 }

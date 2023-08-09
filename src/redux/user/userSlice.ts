@@ -3,7 +3,9 @@ import {
   Authorize,
   checkAuthorization,
   Register,
+  ResetPassword,
   Update,
+  UpdatePassword,
   UploadAvatar,
 } from "./asyncActions";
 import { UserDisplay } from "../types";
@@ -21,6 +23,7 @@ const userSlice = createSlice({
       expences: 0,
     },
     token: "",
+    passToken: "",
     avatarFile: {} as any,
   },
   reducers: {
@@ -32,6 +35,9 @@ const userSlice = createSlice({
     },
     setUserExpences(state, action: PayloadAction<number>){
       state.user.expences = action.payload;
+    },
+    setUserEmail(state, action: PayloadAction<string>){
+      state.user.email = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -90,8 +96,20 @@ const userSlice = createSlice({
     builder.addCase(Update.fulfilled, (state, action) => {});
     builder.addCase(Update.pending, (state) => {});
     builder.addCase(Update.rejected, (state, action) => {});
+
+    // Reset Password.
+    builder.addCase(ResetPassword.fulfilled, (state, action) => {
+      state.passToken = action.payload.token.slice(2, 8);
+    });
+    builder.addCase(ResetPassword.pending, (state) => {});
+    builder.addCase(ResetPassword.rejected, (state, action) => {});
+
+    // Update Password.
+    builder.addCase(UpdatePassword.fulfilled, (state, action) => {});
+    builder.addCase(UpdatePassword.pending, (state) => {});
+    builder.addCase(UpdatePassword.rejected, (state, action) => {});
   },
 });
 
-export const { NullifyToken, setUserExpences } = userSlice.actions;
+export const { NullifyToken, setUserExpences,setUserEmail } = userSlice.actions;
 export default userSlice.reducer;

@@ -256,6 +256,7 @@ export interface BasketState {
 export interface HomeState {
   status: Status;
   id: number;
+  
   itemsDisplay: ItemsDisplay;
   itemsCategory: ItemsDisplay;
   itemsSorted: ItemsDisplay;
