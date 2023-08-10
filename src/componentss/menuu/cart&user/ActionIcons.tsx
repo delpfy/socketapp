@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-import { Avatar, Badge, Box, CircularProgress, IconButton, Typography } from "@mui/material";
+import {
+  Avatar,
+  Badge,
+  Box,
+  CircularProgress,
+  IconButton,
+  Typography,
+} from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
@@ -15,7 +22,7 @@ import BasketDialog from "../../dialogs/BasketDialog";
 import { useNavigate } from "react-router-dom";
 
 export const ActionIcons = () => {
-  const { user, user_status} = useAppSelector((state) => state.user);
+  const { user, user_status } = useAppSelector((state) => state.user);
   const { items } = useAppSelector((state) => state.basket);
   const navigate = useNavigate();
 
@@ -90,14 +97,9 @@ export const ActionIcons = () => {
         />
       );
     } else {
-      return (
-      user_status === "pending"
-      ?
-      
-       <CircularProgress size = {20}/>
-      
-      :
-      
+      return user_status === "pending" ? (
+        <CircularProgress size={20} />
+      ) : (
         <LockPersonRoundedIcon
           color="warning"
           sx={{

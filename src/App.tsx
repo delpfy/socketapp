@@ -21,6 +21,7 @@ import AddPostPage from "./pagess/footerPages/AddPostPage";
 import Contact from "./pagess/footerPages/Contact";
 import AddItem from "./pagess/items/AddItem";
 import UserOrder from "./pagess/order/UserOrder";
+import ButtonUp from "./componentss/ButtonUpComponent/ButtonUp";
 
 function App() {
   
@@ -46,6 +47,7 @@ function App() {
     dispatch(synchronizeBasket());
   }, [dispatch, JSON.parse(localStorage.getItem("basketItems") || "{}")]);
   return (
+    
     <>
       <AppBarMenu />
       <Routes>
@@ -67,6 +69,7 @@ function App() {
         {/*  <Route path="/socketapp/catalog/basket" element={<BasketPage />} />   */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <ButtonUp/>
       <Footer />
     </>
   );
