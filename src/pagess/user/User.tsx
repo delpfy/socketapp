@@ -9,7 +9,7 @@ import {
   InputLabel,
   Typography,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import LogoutDialog from "../../componentss/dialogs/LogoutDialog";
@@ -24,10 +24,11 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { updateAllUserReviews } from "../../redux/review/asyncActions";
 import { useNavigate } from "react-router-dom";
 import UserOrders from "../order/UserOrders";
+import { getOrdersByUser } from "../../redux/order/asyncActions";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
-
+  const { user_orders, status } = useAppSelector((state) => state.orders);
   const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState<string>(user.email);
@@ -146,6 +147,15 @@ export default function User() {
     }
   }
   const navigate = useNavigate();
+  
+
+  useEffect(() => {
+    dispatch(getOrdersByUser(user.id)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        console.log(user_orders);
+      }
+    });
+  }, []);
   
   return (
     <>
@@ -267,7 +277,14 @@ export default function User() {
             Вийти з аккаута
           </Button>
         </Box>
-        <UserOrders/>
+        {
+          user_orders.orders === undefined 
+          ? <></>
+          : user_orders.orders.length === 0
+          ?<></>
+          : <UserOrders/>
+        }
+        
       </Box>
       <LogoutDialog
         openLogout={openLogout}

@@ -8,11 +8,13 @@ import {
   UpdatePassword,
   UploadAvatar,
 } from "./asyncActions";
-import { UserDisplay } from "../types";
+import { Status, UserDisplay } from "../types";
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
+    status: "error" as Status,
+    user_status: "error" as Status,
     user: {
       id: "",
       role: "",
@@ -50,13 +52,17 @@ const userSlice = createSlice({
       state.user.avatar = action.payload.user.avatarUrl;
       state.user.expences = action.payload.user.expences;
       state.user.name = action.payload.user.fullName;
+      state.user_status = "success";
+      
     });
 
     builder.addCase(checkAuthorization.pending, (state) => {
       state.user.authorized = false;
+      state.user_status = "pending";
     });
     builder.addCase(checkAuthorization.rejected, (state, action) => {
       state.user.authorized = false;
+      state.user_status = "error";
     });
 
     // Authorize.
@@ -100,9 +106,10 @@ const userSlice = createSlice({
     // Reset Password.
     builder.addCase(ResetPassword.fulfilled, (state, action) => {
       state.passToken = action.payload.token.slice(2, 8);
+      state.status = "success";
     });
-    builder.addCase(ResetPassword.pending, (state) => {});
-    builder.addCase(ResetPassword.rejected, (state, action) => {});
+    builder.addCase(ResetPassword.pending, (state) => {state.status = "pending";});
+    builder.addCase(ResetPassword.rejected, (state, action) => {state.status = "error";});
 
     // Update Password.
     builder.addCase(UpdatePassword.fulfilled, (state, action) => {});

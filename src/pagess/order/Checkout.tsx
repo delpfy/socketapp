@@ -41,20 +41,6 @@ export default function OrderPage() {
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
-  const [approvedSnackbar, setapprovedSnackbar] = useState<State>({
-    open: false,
-    vertical: "top",
-    horizontal: "right",
-  });
-  const { vertical, horizontal, open } = approvedSnackbar;
-
-  function handleapprovedSnackbar() {
-    setapprovedSnackbar({ ...approvedSnackbar, open: true });
-  }
-
-  function handleApprovedSnackbarClose() {
-    setapprovedSnackbar({ ...approvedSnackbar, open: false });
-  }
 
   const contact_ref = useRef<HTMLDivElement>(null);
   const payment_ref = useRef<HTMLDivElement | null>(null);

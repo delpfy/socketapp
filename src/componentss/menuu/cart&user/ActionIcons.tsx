@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Avatar, Badge, Box, IconButton, Typography } from "@mui/material";
+import { Avatar, Badge, Box, CircularProgress, IconButton, Typography } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
@@ -15,8 +15,8 @@ import BasketDialog from "../../dialogs/BasketDialog";
 import { useNavigate } from "react-router-dom";
 
 export const ActionIcons = () => {
-  const { user } = useAppSelector((state) => state.user);
-  const {items} = useAppSelector(state => state.basket)
+  const { user, user_status} = useAppSelector((state) => state.user);
+  const { items } = useAppSelector((state) => state.basket);
   const navigate = useNavigate();
 
   const [cartSelected, setCartSelected] = useState(false);
@@ -31,15 +31,11 @@ export const ActionIcons = () => {
   const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
-
-
   function CartDialog_open() {
-    
-      RegisterDialog_close();
-      LoginDialog_close();
-      setOpenBasket(true);
-      setCartSelected(true);
- 
+    RegisterDialog_close();
+    LoginDialog_close();
+    setOpenBasket(true);
+    setCartSelected(true);
   }
   function CartDialog_close() {
     setOpenBasket(false);
@@ -71,7 +67,7 @@ export const ActionIcons = () => {
   function ErrorDialog_close() {
     setOpenError(false);
   }
-  
+
   function LoginDialog_close() {
     setOpenLogin(false);
   }
@@ -87,10 +83,21 @@ export const ActionIcons = () => {
           {user.name}
         </Typography>
       ) : (
-        <Avatar alt="user_avatar" src= {user.avatar} sx={{ width: 50, height: 50 }} />
+        <Avatar
+          alt="user_avatar"
+          src={user.avatar}
+          sx={{ width: 50, height: 50 }}
+        />
       );
     } else {
       return (
+      user_status === "pending"
+      ?
+      
+       <CircularProgress size = {20}/>
+      
+      :
+      
         <LockPersonRoundedIcon
           color="warning"
           sx={{
@@ -116,37 +123,35 @@ export const ActionIcons = () => {
           alignItems={"center"}
           maxWidth={180}
         >
-          {
-            window.location.pathname.includes('/order')
-            ? <></>
-            : 
+          {window.location.pathname.includes("/order") ? (
+            <></>
+          ) : (
             <>
-<IconButton onClick={CartDialog_open}>
-            {items.length === 0 ? (
-              <Badge badgeContent={"пусто"} color="warning">
-                <ShoppingCartIcon
-                  color={cartSelected ? "info" : "warning"}
-                  sx={{
-                    width: 40,
-                    height: 40,
-                  }}
-                />
-              </Badge>
-            ) : (
-              <Badge badgeContent={items.length} color="warning">
-                <ShoppingCartIcon
-                  color={cartSelected ? "info" : "warning"}
-                  sx={{
-                    width: 40,
-                    height: 40,
-                  }}
-                />
-              </Badge>
-            )}
-          </IconButton>
+              <IconButton onClick={CartDialog_open}>
+                {items.length === 0 ? (
+                  <Badge badgeContent={"пусто"} color="warning">
+                    <ShoppingCartIcon
+                      color={cartSelected ? "info" : "warning"}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                      }}
+                    />
+                  </Badge>
+                ) : (
+                  <Badge badgeContent={items.length} color="warning">
+                    <ShoppingCartIcon
+                      color={cartSelected ? "info" : "warning"}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                      }}
+                    />
+                  </Badge>
+                )}
+              </IconButton>
             </>
-          }
-          
+          )}
         </Box>
         <Box>
           <IconButton onClick={LoginDialog_open}>
@@ -159,9 +164,11 @@ export const ActionIcons = () => {
         openLogin={openLogin}
         LoginDialog_close={LoginDialog_close}
         ErrorDialog_open={setOpenError}
+        InfoDialog_open={setOpenInfo}
         RegisterDialog_open={setOpenRegister}
         LoginDialog_open={setOpenLogin}
         setErrorMessage={setErrorMessage}
+        setInfoMessage={setInfoMessage}
       />
 
       <ErrorDialog

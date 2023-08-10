@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Items, Status, TLocationCity, TLocationNova, TOrders } from "../types";
+import { Items, Status, TLocationCity, TLocationNova, TOrder, TOrders } from "../types";
 import {
   addOrder,
   getLocations,
@@ -33,7 +33,7 @@ const orderSlice = createSlice({
     ukrPoshtaLocations: {},
 
     user_orders:[] as unknown as TOrders,
-
+    current_order: {} as unknown as TOrder,
     _order: {
       user_location: {
         city_location: "",
@@ -120,6 +120,12 @@ const orderSlice = createSlice({
       state.stages_of_order.stage_recevierContact = action.payload;
     },
 
+    CURRENT_ORDER_setOrder(state,
+      action: PayloadAction<TOrder>){
+        state.current_order = action.payload;
+        console.log(state.current_order);
+    },
+
     ORDER_setUserLocation(
       state,
       action: PayloadAction<{
@@ -201,9 +207,7 @@ const orderSlice = createSlice({
       }>
     ) {
       state._order.delivery = action.payload;
-      console.log("state._order.delivery 11");
-      console.log(state._order.delivery);
-      console.log("state._order.delivery 12");
+      
     },
     ORDER_setDeliveryNova(
       state,
@@ -304,6 +308,7 @@ export const {
   setNovaPoshtaLocation,
   setStreetLocation,
   setLocation,
+  CURRENT_ORDER_setOrder,
   ORDER_setTotal,
   ORDER_setUserLocation,
   ORDER_setReceiver,

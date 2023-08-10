@@ -20,6 +20,13 @@ import User from "../../pagess/user/User";
   type Props = {
     ErrorDialog_open: Dispatch<SetStateAction<any>>;
     ResetPasswordDialog_open: Dispatch<SetStateAction<any>>;
+
+    InfoDialog_open: Dispatch<SetStateAction<any>>;
+  setInfoMessage: (message: string) => void;
+
+    LoginDialog_open: Dispatch<SetStateAction<any>>;
+  LoginDialog_close: () => void;
+
     setErrorMessage: (message: string) => void;
     openResetPassword: boolean;
     ResetPasswordDialog_close: () => void;
@@ -28,6 +35,10 @@ import User from "../../pagess/user/User";
   export default function ResetPasswordDialog({
     ErrorDialog_open,
     setErrorMessage,
+    LoginDialog_open,
+    LoginDialog_close,
+    InfoDialog_open,
+    setInfoMessage,
     ResetPasswordDialog_open,
     openResetPassword,
     ResetPasswordDialog_close,
@@ -48,7 +59,10 @@ import User from "../../pagess/user/User";
       if(valid){
         dispatch(UpdatePassword({email: user.email, password: passFirst})).then((result: any) => {
           if(result.meta.requestStatus === 'fulfilled'){
-            alert("Все добре, тепер увійдіть")
+            InfoDialog_open(true);
+            setInfoMessage("Пароль було оновлено");
+            LoginDialog_open(true);
+            ResetPasswordDialog_close();
           }
         })
        

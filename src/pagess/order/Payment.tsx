@@ -13,7 +13,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { ORDER_setPayment, ORDER_setPaymentWithParts, STAGES_payment } from "../../redux/order/orderSlice";
+import {
+  ORDER_setPayment,
+  ORDER_setPaymentWithParts,
+  STAGES_payment,
+} from "../../redux/order/orderSlice";
 
 export default function Payment() {
   const { _order } = useAppSelector((state) => state.orders);
@@ -23,7 +27,7 @@ export default function Payment() {
   const [cardNumberError, setCardNumberError] = useState(false);
   const [expiryDateError, setExpiryDateError] = useState(false);
   const [cvvError, setCvvError] = useState(false);
-
+  const [cardButtonMessage, setCardButtonMessage] = useState("Додати")
   const [selectedOption, setSelectedOption] = useState("payOnDelivery");
   const [selectedSecondaryOption, setSelectedSecondaryOption] =
     useState("payOnDelivery");
@@ -31,26 +35,33 @@ export default function Payment() {
   const dispatch = useAppDispatch();
 
   const marks = [
-    {value: 2, label: "2" },
-    {value: 3, label: "3"},
-    {value: 4, label: "4"},
-    {value: 5, label: "5"},
-    {value: 6, label: "6"},
-    {value: 7, label: "7"},
-    {value: 8, label: "8"},
-    {value: 9, label: "9"},
-    {value: 10, label: "10"},
-    {value: 11, label: "11"},
-    {value: 12, label: "12"},
-  ]
+    { value: 2, label: "2" },
+    { value: 3, label: "3" },
+    { value: 4, label: "4" },
+    { value: 5, label: "5" },
+    { value: 6, label: "6" },
+    { value: 7, label: "7" },
+    { value: 8, label: "8" },
+    { value: 9, label: "9" },
+    { value: 10, label: "10" },
+    { value: 11, label: "11" },
+    { value: 12, label: "12" },
+  ];
 
   function valuetext(value: number) {
-    
     return `${_order.total / value} ₴`;
   }
 
   const handleMonthChange = (event: Event, newValue: number | number[]) => {
-    dispatch(ORDER_setPaymentWithParts({months: newValue as number, perMonth: Math.round(_order.total / (newValue as number)), firstPay: Math.round(_order.total / (newValue as number)) + _order.delivery.delivery_cost}))
+    dispatch(
+      ORDER_setPaymentWithParts({
+        months: newValue as number,
+        perMonth: Math.round(_order.total / (newValue as number)),
+        firstPay:
+          Math.round(_order.total / (newValue as number)) +
+          _order.delivery.delivery_cost,
+      })
+    );
     dispatch(STAGES_payment(true));
   };
 
@@ -143,10 +154,12 @@ export default function Payment() {
   };
 
   function handleAddCard() {
+    
     if (isCardValid()) {
+      
       dispatch(
         ORDER_setPayment({
-          payment_type: "card",
+          payment_type: "карткою",
           uponReceipt: false,
           card: {
             number: cardNumber,
@@ -155,14 +168,16 @@ export default function Payment() {
           },
         })
       );
+      dispatch(STAGES_payment(true));
+    setCardButtonMessage("Додано ✓")
     }
-    dispatch(STAGES_payment(true));
+    
   }
 
   function handleCardUponReceipt() {
     dispatch(
       ORDER_setPayment({
-        payment_type: "card",
+        payment_type: "карткою",
         uponReceipt: true,
         card: {
           number: "",
@@ -176,7 +191,7 @@ export default function Payment() {
   function handleCashUponReceipt() {
     dispatch(
       ORDER_setPayment({
-        payment_type: "cash",
+        payment_type: "готівка",
         uponReceipt: true,
         card: {
           number: "",
@@ -290,9 +305,10 @@ export default function Payment() {
                         <Button
                           variant="contained"
                           color="success"
+                          
                           onClick={handleAddCard}
                         >
-                          Додати
+                         {cardButtonMessage}
                         </Button>
                       </Box>
                     </Box>
@@ -318,19 +334,16 @@ export default function Payment() {
                   marks={marks}
                   valueLabelDisplay="auto"
                 />
-                 {
-                    _order.payWithParts.months === 0
-                    ? <></>
-                    : 
-                    <>
+                {_order.payWithParts.months === 0 ? (
+                  <></>
+                ) : (
+                  <>
                     <Typography>
-                    {_order.payWithParts.perMonth} ₴
-                    {" "} на {" "}
-                 {_order.payWithParts.months} міс.
-                 </Typography>
-                    </>
-                  }
-                
+                      {_order.payWithParts.perMonth} ₴ на{" "}
+                      {_order.payWithParts.months} міс.
+                    </Typography>
+                  </>
+                )}
               </Box>
             )}
           </RadioGroup>

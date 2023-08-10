@@ -125,7 +125,7 @@ export default function Delivery() {
     ) {
       dispatch(
         ORDER_setDeliveryOnAdress({
-          delivery_type: "on adress",
+          delivery_type: "На адресу",
           delivery_cost: 199,
           delivery_location: {
             street: streetLocation,
@@ -147,7 +147,7 @@ export default function Delivery() {
     ) {
       dispatch(
         ORDER_setDeliveryOnAdress({
-          delivery_type: "on adress",
+          delivery_type: "На адресу",
           delivery_cost: 199,
           delivery_location: {
             street: streetLocation,
@@ -480,7 +480,7 @@ export default function Delivery() {
                     dispatch(setNovaPoshtaLocation(value.Description));
                     dispatch(
                       ORDER_setDeliveryOnAdress({
-                        delivery_type: "nova",
+                        delivery_type: "Нова Пошта",
                         delivery_cost: 149,
                         delivery_location: {
                           street: "",

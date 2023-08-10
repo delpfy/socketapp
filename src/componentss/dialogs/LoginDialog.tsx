@@ -10,19 +10,22 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Authorize, ResetPassword, checkAuthorization } from "../../redux/user/asyncActions";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import TokenDialog from "./TokenDialog";
 import { setUserEmail } from "../../redux/user/userSlice";
 
 type Props = {
   ErrorDialog_open: Dispatch<SetStateAction<any>>;
+  InfoDialog_open: Dispatch<SetStateAction<any>>;
   RegisterDialog_open: Dispatch<SetStateAction<any>>;
   LoginDialog_open: Dispatch<SetStateAction<any>>;
   setErrorMessage: (message: string) => void;
+  setInfoMessage: (message: string) => void;
   openLogin: boolean;
   LoginDialog_close: () => void;
 };
@@ -32,6 +35,8 @@ export default function LoginDialog({
   RegisterDialog_open,
   setErrorMessage,
   LoginDialog_open,
+  InfoDialog_open,
+  setInfoMessage,
   openLogin,
   LoginDialog_close,
 }: Props) {
@@ -40,7 +45,7 @@ export default function LoginDialog({
   const [openToken, setOpenToken] = useState(false);
   const [passVisible, setPassVisible] = useState(true);
   const [openError, setOpenError] = useState(false);
-
+  const { status } = useAppSelector(state => state.user)
   const dispatch = useAppDispatch();
 
   function TokenDialog_open() {
@@ -83,6 +88,7 @@ export default function LoginDialog({
     if (password.length < 5) {
       ErrorDialog_open(true);
       setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
+      
       return;
     }
 
@@ -167,7 +173,11 @@ export default function LoginDialog({
           }
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Typography
+        {
+          status === "pending"
+          ? <CircularProgress size={20} />
+          :
+<Typography
             color={"error"}
             onClick={TokenDialog_open}
 
@@ -180,6 +190,8 @@ export default function LoginDialog({
           >
             Забув пароль?
           </Typography>
+        }
+        
       </DialogContent>
       <DialogActions>
         <Button
@@ -202,9 +214,13 @@ export default function LoginDialog({
 <TokenDialog
     openToken={openToken}
         TokenDialog_close={TokenDialog_close}
+        LoginDialog_open={LoginDialog_open}
+        LoginDialog_close={LoginDialog_close}
         ErrorDialog_open={ErrorDialog_open}
         TokenDialog_open={setOpenToken}
         setErrorMessage={setErrorMessage}
+        InfoDialog_open={InfoDialog_open}
+        setInfoMessage={setInfoMessage}
     />
     </>
   );

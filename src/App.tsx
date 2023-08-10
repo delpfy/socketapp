@@ -10,7 +10,7 @@ import Footer from "./componentss/Footer";
 import ItemPage from "./pagess/items/CatalogItemPage";
 import AppBarMenu from "./componentss/menuu/appbar/Menu";
 import User from "./pagess/user/User";
-import OrderPage from "./pagess/order/OrderPage";
+import OrderPage from "./pagess/order/Checkout";
 import { synchronizeBasket } from "./redux/basket/basketSlice";
 import About from "./pagess/footerPages/About";
 import Return from "./pagess/footerPages/Return";
@@ -20,8 +20,10 @@ import PostPage from "./pagess/footerPages/PostPage";
 import AddPostPage from "./pagess/footerPages/AddPostPage";
 import Contact from "./pagess/footerPages/Contact";
 import AddItem from "./pagess/items/AddItem";
+import UserOrder from "./pagess/order/UserOrder";
 
 function App() {
+  
   const dispatch = useAppDispatch();
   if (!localStorage.getItem("recentlyReviewed")) {
     localStorage.setItem(
@@ -54,6 +56,7 @@ function App() {
         
         <Route path="/user" element={<User />} />
         <Route path="/order" element={<OrderPage />} />
+        <Route path="/user-order" element={<UserOrder />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/return" element={<Return />} />

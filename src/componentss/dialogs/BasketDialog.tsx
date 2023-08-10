@@ -215,6 +215,8 @@ export default function BasketDialog({
         RegisterDialog_open={setOpenRegister}
         LoginDialog_open={setOpenLogin}
         setErrorMessage={setErrorMessage}
+        InfoDialog_open={setOpenInfo}
+        setInfoMessage={setInfoMessage}
       />
 
       <ErrorDialog

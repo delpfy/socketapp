@@ -3,18 +3,21 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Box, Paper, Typography } from "@mui/material";
 import { getOrdersByUser } from "../../redux/order/asyncActions";
 import { Items, Status, TOrder } from "../../redux/types";
+import { CURRENT_ORDER_setOrder } from "../../redux/order/orderSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function UserOrders() {
-  const { user_orders, status } = useAppSelector((state) => state.orders);
+  const { user_orders,current_order, status } = useAppSelector((state) => state.orders);
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getOrdersByUser(user.id)).then((result: any) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        console.log(user_orders);
-      }
-    });
-  }, []);
+  const navigate = useNavigate();
+  
+
+
+  function RedirectToOrder (order: TOrder){
+    dispatch(CURRENT_ORDER_setOrder(order))
+    navigate("/user-order")
+  }
 
   function StatusHandler(status: Status) {
     switch (status) {
@@ -27,7 +30,7 @@ export default function UserOrders() {
                       {user_orders.orders.map((order: TOrder, index) => {
                           return (
                               <>
-                                  <Paper elevation={5} sx={{ margin: 5 }}>
+                                  <Paper elevation={5} sx={{ margin: 5, cursor: 'pointer' }} onClick = {() => {RedirectToOrder(order)}} >
                                       <Typography key={order.numberOfOrder}>
                                           Номер {index + 1}: код: {order.numberOfOrder}
                                       </Typography>
