@@ -25,10 +25,12 @@ import { updateAllUserReviews } from "../../redux/review/asyncActions";
 import { useNavigate } from "react-router-dom";
 import UserOrders from "../order/UserOrders";
 import { getOrdersByUser } from "../../redux/order/asyncActions";
+import { setAfterOrder, synchronizeBasket } from "../../redux/basket/basketSlice";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
   const { user_orders, status } = useAppSelector((state) => state.orders);
+  const { afterOrder } = useAppSelector((state) => state.basket);
   const dispatch = useAppDispatch();
 
   const [email, setEmail] = useState<string>(user.email);
@@ -155,6 +157,10 @@ export default function User() {
         console.log(user_orders);
       }
     });
+    if(afterOrder){
+      dispatch(synchronizeBasket());
+      dispatch(setAfterOrder(false))
+    }
   }, []);
   
   return (

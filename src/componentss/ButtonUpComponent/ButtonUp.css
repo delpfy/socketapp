@@ -1,25 +1,12 @@
-.circle-button {
-    position: sticky;
-    bottom: 10px;
-    left: 10px;
-    width: 60px;
-    height: 60px;
-    background-color: #3498db;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    cursor: pointer;
-    transition: opacity 0.3s ease-in-out;
-    opacity: 0;
-    z-index: 1;
-  }
-  
-  .circle-button.show {
-    opacity: 1;
-  }
-  
-  .circle-button.hide {
-    opacity: 0;
-  }
+.circle-button-root {
+  background-color: #3498db;
+  color: white;
+}
+
+.circle-button-root:hover {
+  background-color: #2980b9; /* Новый цвет при наведении */
+}
+
+.circle-button-focus-visible {
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.4); /* Новый эффект focus-visible */
+}

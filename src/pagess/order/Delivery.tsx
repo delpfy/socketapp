@@ -44,7 +44,7 @@ export default function Delivery() {
   const [novaPoshtaOptions, setNovaPoshtaOptions] = useState<
     readonly TNovaLocation[]
   >([]);
-  const [streetOptions, setStreetOptions] = useState<readonly TLocationCity[]>(
+  const [streetOptions, setStreetOptions] = useState<string[]>(
     []
   );
 
@@ -342,13 +342,13 @@ export default function Delivery() {
                   onInputChange={handleSearchStreetChange}
                   onChange={(e, value) => {
                     if (value) {
-                      setStreetLocation(value.display_name);
+                      setStreetLocation(value);
                     }
                   }}
                   noOptionsText={"(·_·)"}
                   options={streetOptions === undefined ? [] : streetOptions}
                   sx={{ width: 300 }}
-                  getOptionLabel={(option) => option.display_name || ""}
+                  getOptionLabel={(option) => option || ""}
                   renderInput={(params) => (
                     <TextField {...params} label="Введіть назву вулиці" />
                   )}

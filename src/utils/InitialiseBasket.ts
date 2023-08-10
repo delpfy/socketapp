@@ -9,6 +9,7 @@ export const InitialiseBasket = () => {
   return {
     status: "" as Status,
     items: [],
+    afterOrder: false,
     basketItemCurrent: {} as ShippingItemDisplay,
     itemsAmount: 0,
   };

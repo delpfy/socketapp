@@ -28,6 +28,7 @@ import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { addOrder, getOrdersByUser } from "../../redux/order/asyncActions";
 import UserOrders from "./UserOrders";
 import { updateItem } from "../../redux/home/asyncActions";
+import { setAfterOrder, synchronizeBasket } from "../../redux/basket/basketSlice";
 
 interface State extends SnackbarOrigin {
   open: boolean;
@@ -137,8 +138,11 @@ export default function OrderPage() {
     dispatch(addOrder(_order)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(getOrdersByUser(user.id));
+        localStorage.setItem("basketItems", JSON.stringify([]));
+        dispatch(setAfterOrder(true))
       }
     });
+    
   }
 
   const pointOn_Contacts = () => {
@@ -199,7 +203,7 @@ export default function OrderPage() {
 
   return (
     <>
-      {items === undefined ? (
+      {items === undefined  ? (
         navigate("/")
       ) : items.length === 0 ? (
         navigate("/")

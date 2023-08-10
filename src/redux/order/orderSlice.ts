@@ -1,5 +1,12 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Items, Status, TLocationCity, TLocationNova, TOrder, TOrders } from "../types";
+import {
+  Items,
+  Status,
+  TLocationCity,
+  TLocationNova,
+  TOrder,
+  TOrders,
+} from "../types";
 import {
   addOrder,
   getLocations,
@@ -19,11 +26,7 @@ const orderSlice = createSlice({
       },
     ] as TLocationCity[],
 
-    street: [
-      {
-        display_name: "",
-      },
-    ] as TLocationCity[],
+    street: [] as unknown as any ,
 
     city: "",
 
@@ -32,7 +35,7 @@ const orderSlice = createSlice({
     } as TLocationNova,
     ukrPoshtaLocations: {},
 
-    user_orders:[] as unknown as TOrders,
+    user_orders: [] as unknown as TOrders,
     current_order: {} as unknown as TOrder,
     _order: {
       user_location: {
@@ -74,7 +77,6 @@ const orderSlice = createSlice({
           date: "",
           cvv: "",
         },
-        
       },
       payWithParts: {
         months: 0,
@@ -94,13 +96,10 @@ const orderSlice = createSlice({
       stage_recevierContact: false,
     },
 
-    
-
     location: "",
     street_location: "",
     novaPoshtaLocation: "",
     ukrPoshtaLocation: "",
-    
   },
 
   reducers: {
@@ -120,10 +119,9 @@ const orderSlice = createSlice({
       state.stages_of_order.stage_recevierContact = action.payload;
     },
 
-    CURRENT_ORDER_setOrder(state,
-      action: PayloadAction<TOrder>){
-        state.current_order = action.payload;
-        console.log(state.current_order);
+    CURRENT_ORDER_setOrder(state, action: PayloadAction<TOrder>) {
+      state.current_order = action.payload;
+      console.log(state.current_order);
     },
 
     ORDER_setUserLocation(
@@ -135,30 +133,23 @@ const orderSlice = createSlice({
       state._order.user_location = action.payload;
     },
 
-    ORDER_setUniqueNumber(
-      state,
-      action: PayloadAction<string>
-    ) {
+    ORDER_setUniqueNumber(state, action: PayloadAction<string>) {
       state._order.numberOfOrder = action.payload;
     },
 
     ORDER_setPaymentWithParts(
       state,
       action: PayloadAction<{
-        months: number,
-        perMonth: number,
-        firstPay: number,
+        months: number;
+        perMonth: number;
+        firstPay: number;
       }>
     ) {
       state._order.payWithParts = action.payload;
     },
 
-    ORDER_setTotal(
-      state,
-      action: PayloadAction<number>
-    ) {
+    ORDER_setTotal(state, action: PayloadAction<number>) {
       state._order.total = action.payload;
-      
     },
 
     ORDER_setItems(state, action: PayloadAction<any>) {
@@ -201,13 +192,12 @@ const orderSlice = createSlice({
           apartmentNumber: string;
           floorNumber: string;
         };
-        novaDepartment: string,
+        novaDepartment: string;
         elevator: boolean;
         liftRequired: boolean;
       }>
     ) {
       state._order.delivery = action.payload;
-      
     },
     ORDER_setDeliveryNova(
       state,
@@ -220,7 +210,7 @@ const orderSlice = createSlice({
           apartmentNumber: string;
           floorNumber: string;
         };
-        novaDepartment: string,
+        novaDepartment: string;
         elevator: boolean;
         liftRequired: boolean;
       }>
@@ -247,7 +237,6 @@ const orderSlice = createSlice({
 
     setCity(state, action: PayloadAction<string>) {
       state.city = action.payload;
-   
     },
     setNovaPoshtaLocation(state, action: PayloadAction<string>) {
       state.novaPoshtaLocation = action.payload;
@@ -258,7 +247,6 @@ const orderSlice = createSlice({
     setLocation(state, action: PayloadAction<string>) {
       state.location = action.payload;
     },
-    
   },
   extraReducers: (builder) => {
     builder.addCase(getLocations.fulfilled, (state, action) => {
@@ -268,7 +256,14 @@ const orderSlice = createSlice({
     builder.addCase(getLocations.rejected, (state) => {});
 
     builder.addCase(getStreets.fulfilled, (state, action) => {
-      state.street = action.payload;
+      const simplifiedAddresses = action.payload.map((address: any) => {
+        const parts = address.display_name.split(", ");
+        const simplified = `${parts[0]}, ${parts[parts.length - 3]}`;
+        return simplified;
+      });
+      const uniqueAddresses =  Array.from(new Set(simplifiedAddresses));
+      console.log(uniqueAddresses)
+      state.street = uniqueAddresses;
     });
     builder.addCase(getStreets.pending, (state) => {});
     builder.addCase(getStreets.rejected, (state) => {});
@@ -285,10 +280,8 @@ const orderSlice = createSlice({
     builder.addCase(getUkrPoshtaLocations.pending, (state) => {});
     builder.addCase(getUkrPoshtaLocations.rejected, (state) => {});
 
-
     builder.addCase(addOrder.fulfilled, (state, action) => {
       state.user_orders = action.payload;
-      
     });
     builder.addCase(addOrder.pending, (state) => {});
     builder.addCase(addOrder.rejected, (state) => {});
@@ -296,10 +289,13 @@ const orderSlice = createSlice({
     builder.addCase(getOrdersByUser.fulfilled, (state, action) => {
       state.user_orders = action.payload;
       state.status = "success";
-      
     });
-    builder.addCase(getOrdersByUser.pending, (state) => {state.status = "pending";});
-    builder.addCase(getOrdersByUser.rejected, (state) => {state.status = "error";});
+    builder.addCase(getOrdersByUser.pending, (state) => {
+      state.status = "pending";
+    });
+    builder.addCase(getOrdersByUser.rejected, (state) => {
+      state.status = "error";
+    });
   },
 });
 

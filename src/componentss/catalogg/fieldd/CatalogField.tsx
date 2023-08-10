@@ -8,12 +8,14 @@ import Card from "../block/CatalogCard";
 import Skeleton from "../block/CatalogSkeleton";
 import NotFoundPage from "../../../pagess/PageAbsence";
 import { useNavigate } from "react-router-dom";
+import { setAfterOrder, synchronizeBasket } from "../../../redux/basket/basketSlice";
 
 
 
 export const CatalogField = () => {
   const { category, status } = useAppSelector((state) => state.home);
   const { user } = useAppSelector((state) => state.user);
+  const { afterOrder } = useAppSelector((state) => state.basket);
 
   // ItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
@@ -31,6 +33,10 @@ export const CatalogField = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if(afterOrder){
+      dispatch(synchronizeBasket());
+      dispatch(setAfterOrder(false));
+    }
   }, []);
 
   function redirectToAddItemPage () {

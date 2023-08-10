@@ -1,10 +1,11 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { useEffect, useRef } from "react";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Card from "../../componentss/categories/CategoryTile";
 import "./icon.css";
 import RecentlyReviewed from "../../componentss/RecentlyReviewed";
+import { setAfterOrder, synchronizeBasket } from "../../redux/basket/basketSlice";
 
 /* const MenuContent = () => {
   return (
@@ -39,6 +40,9 @@ import RecentlyReviewed from "../../componentss/RecentlyReviewed";
 
 export const Home = () => {
   const { categories } = useAppSelector((state) => state.home);
+  const { afterOrder } = useAppSelector((state) => state.basket);
+
+  const dispatch = useAppDispatch();
   const recentlyReviewed = JSON.parse(
     localStorage.getItem("recentlyReviewed") || "{}"
   );
@@ -56,6 +60,10 @@ export const Home = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if(afterOrder){
+      dispatch(synchronizeBasket());
+      dispatch(setAfterOrder(false));
+    }
   }, []);
 
   return (

@@ -21,8 +21,10 @@ const basketSlice = createSlice({
       state.items = JSON.parse(
         localStorage.getItem("basketItems") || "{}"
       );
-      console.log("!!!");
-      console.log(state.items);
+      
+    },
+    setAfterOrder(state, action: PayloadAction<boolean>){
+      state.afterOrder = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -78,5 +80,5 @@ const basketSlice = createSlice({
   },
 });
 
-export const { SetItemsAmount, synchronizeBasket} = basketSlice.actions;
+export const { SetItemsAmount, synchronizeBasket,setAfterOrder} = basketSlice.actions;
 export default basketSlice.reducer;

@@ -248,6 +248,7 @@ export type TOrders={
 export interface BasketState {
   status: Status;
   items: TShippingItems[];
+  afterOrder: boolean;
   basketItemCurrent: ShippingItemDisplay;
   itemsAmount: number;
 }
