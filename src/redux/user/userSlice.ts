@@ -117,6 +117,7 @@ const userSlice = createSlice({
       console.log("action.payload.success " + action.payload.success)
       if(action.payload.success){
         state.emailConfirmed = true;
+        state.user_status = 'success';
       }
     });
     builder.addCase(confirmEmail.pending, (state) => {});
