@@ -12,7 +12,7 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
   Authorize,
   ResetPassword,
@@ -48,7 +48,7 @@ export default function LoginDialog({
   const [password, setPassword] = useState<string>("");
   const [openToken, setOpenToken] = useState(false);
   const [passVisible, setPassVisible] = useState(true);
-  const [openError, setOpenError] = useState(false);
+  const [userAuthorized, setUserAuthorized] = useState(false);
   const { status, user, user_status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
@@ -93,7 +93,7 @@ export default function LoginDialog({
 
       return;
     }
-    
+
     await dispatch(
       Authorize({
         email: email,
@@ -102,20 +102,16 @@ export default function LoginDialog({
     ).then((result: any) => {
       console.log("result.status " + result.meta.requestStatus);
       if (result.meta.requestStatus === "fulfilled") {
-        
-        
         dispatch(checkAuthorization()).then((result_: any) => {
           if (result_.meta.requestStatus === "fulfilled") {
-            if(!user.authorized){
+            if (!userAuthorized) {
               ErrorDialog_open(true);
               setErrorMessage("Ви не підтвердили пошту");
-            }
-            else{
+            } else {
               LoginDialog_open(false);
             }
           }
         });
-        
       } else if (result.meta.requestStatus === "rejected") {
         ErrorDialog_open(true);
         setErrorMessage("Схоже при авторизації виникла помилка");
@@ -126,6 +122,10 @@ export default function LoginDialog({
   function handleClickShowPassword() {
     setPassVisible((passVisible) => !passVisible);
   }
+
+  useEffect(() => {
+    setUserAuthorized(user.authorized);
+  }, [user.authorized]);
 
   return (
     <>
