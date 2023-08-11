@@ -110,7 +110,7 @@ export default function LoginDialog({
               ErrorDialog_open(true);
               setErrorMessage("Ви не підтвердили пошту");
             }
-            else if(user_status === 'success'){
+            else(user_status === 'success'){
               LoginDialog_open(false);
             }
           }
