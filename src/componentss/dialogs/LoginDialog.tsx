@@ -49,7 +49,7 @@ export default function LoginDialog({
   const [openToken, setOpenToken] = useState(false);
   const [passVisible, setPassVisible] = useState(true);
   const [openError, setOpenError] = useState(false);
-  const { status, emailConfirmed, user_status } = useAppSelector((state) => state.user);
+  const { status, user, user_status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   function TokenDialog_open() {
@@ -106,7 +106,7 @@ export default function LoginDialog({
         
         dispatch(checkAuthorization()).then((result_: any) => {
           if (result_.meta.requestStatus === "fulfilled") {
-            if(user_status === 'error'){
+            if(!user.authorized){
               ErrorDialog_open(true);
               setErrorMessage("Ви не підтвердили пошту");
             }
