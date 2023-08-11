@@ -14,9 +14,9 @@ import { Status, UserDisplay } from "../types";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    status: "error" as Status,
-    user_status: "error" as Status,
-    confirmEmail_status : "error" as Status,
+    status: "pending" as Status,
+    user_status: "pending" as Status,
+    confirmEmail_status : "pending" as Status,
     user: {
       id: "",
       role: "",
