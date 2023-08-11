@@ -59,7 +59,7 @@ export const ActionIcons = () => {
 
   function closeRegAfterSuccess() {
     setOpenRegister(false);
-    setInfoMessage("Все добре, теперь увійдіть");
+    setInfoMessage("На вашу пошту було надіслано повідомлення з підтвердженням");
     InfoDialog_open();
   }
 

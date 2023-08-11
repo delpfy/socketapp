@@ -13,7 +13,11 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Authorize, ResetPassword, checkAuthorization } from "../../redux/user/asyncActions";
+import {
+  Authorize,
+  ResetPassword,
+  checkAuthorization,
+} from "../../redux/user/asyncActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import TokenDialog from "./TokenDialog";
@@ -45,28 +49,26 @@ export default function LoginDialog({
   const [openToken, setOpenToken] = useState(false);
   const [passVisible, setPassVisible] = useState(true);
   const [openError, setOpenError] = useState(false);
-  const { status } = useAppSelector(state => state.user)
+  const { status, emailConfirmed, user_status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   function TokenDialog_open() {
-
     if (!validateEmail(email)) {
       ErrorDialog_open(true);
       setErrorMessage("Введіть пошту, на неї буде відправлено код відновлення");
       return;
     }
     dispatch(setUserEmail(email));
-    dispatch(ResetPassword({email})).then((result:any) => {
-      if(result.meta.requestStatus === 'rejected'){
+    dispatch(ResetPassword({ email })).then((result: any) => {
+      if (result.meta.requestStatus === "rejected") {
         ErrorDialog_open(true);
-      setErrorMessage("Схоже, такої пошти не існує...");
+        setErrorMessage("Схоже, такої пошти не існує...");
       }
-      if(result.meta.requestStatus === 'fulfilled'){
+      if (result.meta.requestStatus === "fulfilled") {
         LoginDialog_open(false);
-    setOpenToken(true);
+        setOpenToken(true);
       }
-    })
-    
+    });
   }
 
   function TokenDialog_close() {
@@ -88,10 +90,10 @@ export default function LoginDialog({
     if (password.length < 5) {
       ErrorDialog_open(true);
       setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
-      
+
       return;
     }
-
+    
     await dispatch(
       Authorize({
         email: email,
@@ -100,8 +102,16 @@ export default function LoginDialog({
     ).then((result: any) => {
       console.log("result.status " + result.meta.requestStatus);
       if (result.meta.requestStatus === "fulfilled") {
-        LoginDialog_open(false);
+        
+        
         dispatch(checkAuthorization());
+        if(user_status === 'error'){
+          ErrorDialog_open(true);
+          setErrorMessage("Ви не підтвердили пошту");
+        }
+        else if(user_status === 'success'){
+          LoginDialog_open(false);
+        }
       } else if (result.meta.requestStatus === "rejected") {
         ErrorDialog_open(true);
         setErrorMessage("Схоже при авторизації виникла помилка");
@@ -114,105 +124,100 @@ export default function LoginDialog({
   }
 
   return (
-    
     <>
+      <Dialog open={openLogin} onClose={LoginDialog_close}>
+        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
+          Авторизація
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            display={"flex"}
+            flexDirection={"row"}
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+          >
+            Ще не маєш аккаунт?
+            <Typography
+              color={"#1976d2"}
+              onClick={RegisterDialog_open}
+              sx={{
+                cursor: "pointer",
+                paddingLeft: "0.6%",
+                fontFamily: "Comfortaa",
+                fontSize: 15,
+              }}
+            >
+              Реєструйся!
+            </Typography>
+          </DialogContentText>
+          <TextField
+            margin="dense"
+            label="Пошта"
+            type="email"
+            value={email}
+            fullWidth
+            variant="standard"
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-<Dialog open={openLogin} onClose={LoginDialog_close}>
-      <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
-        Авторизація
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText
-          display={"flex"}
-          flexDirection={"row"}
-          sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-        >
-          Ще не маєш аккаунт?
-          <Typography
-            color={"#1976d2"}
-            onClick={RegisterDialog_open}
-            sx={{
-              cursor: "pointer",
-              paddingLeft: "0.6%",
-              fontFamily: "Comfortaa",
-              fontSize: 15,
+          <OutlinedInput
+            autoFocus
+            margin="dense"
+            id="password"
+            sx={{ marginTop: 2, marginBottom: 2 }}
+            placeholder="Пароль"
+            value={password}
+            fullWidth
+            type={passVisible ? "password" : "text"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  edge="end"
+                >
+                  {passVisible ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {status === "pending" ? (
+            <CircularProgress size={20} />
+          ) : (
+            <Typography
+              color={"error"}
+              onClick={TokenDialog_open}
+              sx={{
+                cursor: "pointer",
+                paddingLeft: "0.6%",
+                fontFamily: "Comfortaa",
+                fontSize: 15,
+              }}
+            >
+              Забув пароль?
+            </Typography>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={() => {
+              RedirectLogin(email, password);
             }}
           >
-            Реєструйся!
-          </Typography>
-        </DialogContentText>
-        <TextField
-          margin="dense"
-          label="Пошта"
-          type="email"
-          value={email}
-          fullWidth
-          variant="standard"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <OutlinedInput
-          autoFocus
-          margin="dense"
-          id="password"
-          sx={{ marginTop: 2, marginBottom: 2 }}
-          placeholder="Пароль"
-          value={password}
-          fullWidth
-          type={passVisible ? "password" : "text"}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                edge="end"
-              >
-                {passVisible ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          }
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {
-          status === "pending"
-          ? <CircularProgress size={20} />
-          :
-<Typography
-            color={"error"}
-            onClick={TokenDialog_open}
-
-            sx={{
-              cursor: "pointer",
-              paddingLeft: "0.6%",
-              fontFamily: "Comfortaa",
-              fontSize: 15,
-            }}
+            Продовжити
+          </Button>
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={LoginDialog_close}
           >
-            Забув пароль?
-          </Typography>
-        }
-        
-      </DialogContent>
-      <DialogActions>
-        <Button
-          sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={() => {
-            RedirectLogin(email, password);
-          }}
-        >
-          Продовжити
-        </Button>
-        <Button
-          sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={LoginDialog_close}
-        >
-          Вийти
-        </Button>
-      </DialogActions>
-    </Dialog>
+            Вийти
+          </Button>
+        </DialogActions>
+      </Dialog>
 
-<TokenDialog
-    openToken={openToken}
+      <TokenDialog
+        openToken={openToken}
         TokenDialog_close={TokenDialog_close}
         LoginDialog_open={LoginDialog_open}
         LoginDialog_close={LoginDialog_close}
@@ -221,7 +226,7 @@ export default function LoginDialog({
         setErrorMessage={setErrorMessage}
         InfoDialog_open={InfoDialog_open}
         setInfoMessage={setInfoMessage}
-    />
+      />
     </>
   );
 }

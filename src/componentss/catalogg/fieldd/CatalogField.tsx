@@ -16,7 +16,7 @@ export const CatalogField = () => {
   const { category, status } = useAppSelector((state) => state.home);
   const { user } = useAppSelector((state) => state.user);
   const { afterOrder } = useAppSelector((state) => state.basket);
-
+  
   // ItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
   const { itemsCategory, itemsSorted, sortedByRange } = useAppSelector(

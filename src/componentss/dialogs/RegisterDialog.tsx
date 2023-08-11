@@ -15,10 +15,11 @@ import {
   InputAdornment,
   IconButton,
   OutlinedInput,
+  CircularProgress,
 } from "@mui/material";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Register } from "../../redux/user/asyncActions";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { NullifyToken } from "../../redux/user/userSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -44,7 +45,7 @@ export default function RegisterDialog({
   const [role, setRole] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [passVisible, setPassVisible] = useState(true);
-
+  const { confirmEmail_status } = useAppSelector((state) => state.user);
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
   };
@@ -106,7 +107,9 @@ export default function RegisterDialog({
           closeRegAfterSuccess();
         } else if (result.meta.requestStatus === "rejected") {
           ErrorDialog_open(true);
-          setErrorMessage("Схоже при реєстрації виникла помилка");
+          setErrorMessage(
+            "Схоже при реєстрації виникла помилка. Це може бути пов'язано с тим, що ви ввели або неіснуючу пошту, або вже зареєстровану"
+          );
         }
       });
     } catch (error: any) {
@@ -212,12 +215,17 @@ export default function RegisterDialog({
         </FormControl>
       </DialogContent>
       <DialogActions>
-        <Button
-          sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={() => RedirectRegister(email, fullName, role, password)}
-        >
-          Продовжити
-        </Button>
+        {confirmEmail_status === "pending" ? (
+          <CircularProgress size={20} />
+        ) : (
+          <Button
+            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            onClick={() => RedirectRegister(email, fullName, role, password)}
+          >
+            Продовжити
+          </Button>
+        )}
+
         <Button
           sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
           onClick={closeRegisterDialog}

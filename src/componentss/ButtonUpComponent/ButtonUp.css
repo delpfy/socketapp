@@ -4,9 +4,9 @@
 }
 
 .circle-button-root:hover {
-  background-color: #2980b9; /* Новый цвет при наведении */
+  background-color: #2980b9; 
 }
 
 .circle-button-focus-visible {
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.4); /* Новый эффект focus-visible */
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.4); 
 }

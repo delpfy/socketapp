@@ -11,7 +11,10 @@ import {
   Typography,
 } from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
-import { synchronizeBasket } from "../../redux/basket/basketSlice";
+import {
+  setAfterOrder,
+  synchronizeBasket,
+} from "../../redux/basket/basketSlice";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { useNavigate } from "react-router-dom";
 import Review from "../../componentss/reviews/Review";
@@ -25,16 +28,19 @@ import { updateItem } from "../../redux/home/asyncActions";
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
-
 
   const { status, itemCurrent } = useAppSelector((state) => state.home);
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
+  const { afterOrder } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);
- 
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    if (afterOrder) {
+      dispatch(synchronizeBasket());
+      dispatch(setAfterOrder(false));
+    }
   }, [dispatch]);
 
   function adjustPrice() {
@@ -67,26 +73,22 @@ export const ItemPage = () => {
           image: itemCurrent.image,
           amount: basketItems[itemIndex].amount + 1,
         };
-
-      }
-      else{
-        basketItems.push(
-          {
-            _id: itemCurrent._id,
-            name: itemCurrent.name,
-            description: itemCurrent.description,
-            category: itemCurrent.category,
-            price: adjustPrice(),
-            sale: itemCurrent.sale,
-            rating: itemCurrent.rating,
-            image: itemCurrent.image,
-            amount: 1,
-          }
-        )
+      } else {
+        basketItems.push({
+          _id: itemCurrent._id,
+          name: itemCurrent.name,
+          description: itemCurrent.description,
+          category: itemCurrent.category,
+          price: adjustPrice(),
+          sale: itemCurrent.sale,
+          rating: itemCurrent.rating,
+          image: itemCurrent.image,
+          amount: 1,
+        });
       }
     }
     localStorage.setItem("basketItems", JSON.stringify(basketItems));
-    
+
     dispatch(synchronizeBasket());
   }
 
@@ -172,18 +174,17 @@ export const ItemPage = () => {
           </Box>
 
           <Box display={"flex"} flexDirection={"column"} alignItems={"left"}>
-          {
-              itemCurrent.quantity <= 10
-              ?<Typography
-              fontFamily={"Comfortaa"}
-              sx={{ paddingLeft: 0.3, background: "#fdfacf" }}
-              fontSize={25}
-              
-            >
-              Товар закінчується! Залишилось: {itemCurrent.quantity}
-            </Typography>
-              : <></>
-            }
+            {itemCurrent.quantity <= 10 ? (
+              <Typography
+                fontFamily={"Comfortaa"}
+                sx={{ paddingLeft: 0.3, background: "#fdfacf" }}
+                fontSize={25}
+              >
+                Товар закінчується! Залишилось: {itemCurrent.quantity}
+              </Typography>
+            ) : (
+              <></>
+            )}
             <Typography
               fontFamily={"Comfortaa"}
               sx={{ paddingLeft: 0.3 }}
@@ -191,8 +192,7 @@ export const ItemPage = () => {
             >
               {itemCurrent.name}
             </Typography>
-            
-            
+
             <Box
               display={"flex"}
               width={100}
@@ -223,7 +223,7 @@ export const ItemPage = () => {
                 >
                   {itemCurrent.price -
                     Math.round((itemCurrent.price * itemCurrent.sale) / 100)}
-                   ₴
+                  ₴
                 </Typography>
               ) : (
                 <></>
@@ -283,15 +283,18 @@ export const ItemPage = () => {
           if (reviews.reviews.length === 0) {
             dispatch(setRatingAmount(0));
           }
-          return reviews.reviews.slice().reverse().map((review, index) => {
-            countRatingAmount =
-              parseInt(countRatingAmount.toString()) +
-              parseInt(review.rating.toString());
-            if (index === reviews.reviews.length - 1) {
-              dispatch(setRatingAmount(countRatingAmount));
-            }
-            return <Review {...review} />;
-          });
+          return reviews.reviews
+            .slice()
+            .reverse()
+            .map((review, index) => {
+              countRatingAmount =
+                parseInt(countRatingAmount.toString()) +
+                parseInt(review.rating.toString());
+              if (index === reviews.reviews.length - 1) {
+                dispatch(setRatingAmount(countRatingAmount));
+              }
+              return <Review {...review} />;
+            });
         } else {
           return (
             <Typography fontFamily={"Comfortaa"} fontSize={20}>

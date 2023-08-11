@@ -26,7 +26,7 @@ const orderSlice = createSlice({
       },
     ] as TLocationCity[],
 
-    street: [] as unknown as any ,
+    street: [] as unknown as any,
 
     city: "",
 
@@ -261,8 +261,8 @@ const orderSlice = createSlice({
         const simplified = `${parts[0]}, ${parts[parts.length - 3]}`;
         return simplified;
       });
-      const uniqueAddresses =  Array.from(new Set(simplifiedAddresses));
-      console.log(uniqueAddresses)
+      const uniqueAddresses = Array.from(new Set(simplifiedAddresses));
+      console.log(uniqueAddresses);
       state.street = uniqueAddresses;
     });
     builder.addCase(getStreets.pending, (state) => {});

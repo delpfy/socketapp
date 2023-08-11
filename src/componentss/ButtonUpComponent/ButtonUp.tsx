@@ -31,7 +31,7 @@ export default function ButtonUp  () {
 
   const fabStyle = {
     position: 'fixed',
-    bottom: showButton ? '10px' : '-60px', // В зависимости от прокрутки
+    bottom: showButton ? '10px' : '-60px', 
     left: '10px',
     width: '60px',
     height: '60px',

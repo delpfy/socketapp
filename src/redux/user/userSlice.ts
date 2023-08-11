@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   Authorize,
   checkAuthorization,
+  confirmEmail,
   Register,
   ResetPassword,
   Update,
@@ -15,6 +16,7 @@ const userSlice = createSlice({
   initialState: {
     status: "error" as Status,
     user_status: "error" as Status,
+    confirmEmail_status : "error" as Status,
     user: {
       id: "",
       role: "",
@@ -23,8 +25,11 @@ const userSlice = createSlice({
       email: "",
       authorized: false,
       expences: 0,
+      emailConfirmed: false,
     },
     token: "",
+    emailConfirmationToken: "",
+    emailConfirmed: false,
     passToken: "",
     avatarFile: {} as any,
   },
@@ -45,14 +50,17 @@ const userSlice = createSlice({
   extraReducers: (builder) => {
     // Verify Authorization.
     builder.addCase(checkAuthorization.fulfilled, (state, action) => {
-      state.user.authorized = true;
-      state.user.id = action.payload.user._id;
-      state.user.email = action.payload.user.email;
-      state.user.role = action.payload.user.role;
-      state.user.avatar = action.payload.user.avatarUrl;
-      state.user.expences = action.payload.user.expences;
-      state.user.name = action.payload.user.fullName;
-      state.user_status = "success";
+      if(action.payload.user.emailConfirmed){
+        state.user.authorized = true;
+        state.user.id = action.payload.user._id;
+        state.user.email = action.payload.user.email;
+        state.user.role = action.payload.user.role;
+        state.user.avatar = action.payload.user.avatarUrl;
+        state.user.expences = action.payload.user.expences;
+        state.user.name = action.payload.user.fullName;
+        state.user_status = "success";
+      }
+      state.user_status = "error";
       
     });
 
@@ -90,14 +98,29 @@ const userSlice = createSlice({
     builder.addCase(Register.fulfilled, (state, action) => {
       state.user.authorized = false;
       state.token = action.payload.token;
+      state.emailConfirmationToken = action.payload.emailConfirmationToken;
+      
+      state.confirmEmail_status = 'success';
     });
     builder.addCase(Register.pending, (state) => {
       state.user.authorized = false;
+      state.confirmEmail_status = 'pending';
     });
     builder.addCase(Register.rejected, (state, action) => {
       state.user.authorized = false;
+      state.confirmEmail_status = 'error';
     });
 
+    //Confirm email
+    
+    builder.addCase(confirmEmail.fulfilled, (state, action) => {
+      console.log("action.payload.success " + action.payload.success)
+      if(action.payload.success){
+        state.emailConfirmed = true;
+      }
+    });
+    builder.addCase(confirmEmail.pending, (state) => {});
+    builder.addCase(confirmEmail.rejected, (state, action) => {});
     // Update.
     builder.addCase(Update.fulfilled, (state, action) => {});
     builder.addCase(Update.pending, (state) => {});

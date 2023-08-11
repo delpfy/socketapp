@@ -53,20 +53,21 @@ export const Authorize = createAsyncThunk<
 });
 
 export const Register = createAsyncThunk<
-  { success: string; token: string },
+  { success: string; token: string; emailConfirmationToken: string },
   UserRegister
 >("home/Register", async function (params) {
-  const { data } = await axios.post<{ success: string; token: string }>(
-    `/register`,
-    params
-  );
+  const { data } = await axios.post<{
+    success: string;
+    token: string;
+    emailConfirmationToken: string;
+  }>(`/register`, params);
 
   return data;
 });
 
 export const ResetPassword = createAsyncThunk<
   { success: string; token: string },
-  {email: string}
+  { email: string }
 >("home/ResetPassword", async function (params) {
   const { data } = await axios.post<{ success: string; token: string }>(
     `/reset-password`,
@@ -76,9 +77,20 @@ export const ResetPassword = createAsyncThunk<
   return data;
 });
 
+export const confirmEmail = createAsyncThunk<
+  { success: string },
+  { token: string }
+>("home/confirmEmail", async function (params) {
+  const { data } = await axios.get<{ success: string; token: string }>(
+    `/confirm-email?token=${params.token}`
+  );
+
+  return data;
+});
+
 export const UpdatePassword = createAsyncThunk<
   { success: string },
-  {email: string, password: string}
+  { email: string; password: string }
 >("home/UpdatePassword", async function (params) {
   const { data } = await axios.patch<{ success: string }>(
     `/update-password`,
@@ -87,5 +99,3 @@ export const UpdatePassword = createAsyncThunk<
 
   return data;
 });
-
-

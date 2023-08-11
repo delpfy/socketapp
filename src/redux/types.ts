@@ -44,7 +44,6 @@ export type IReviewPOST = {
 
 export type Combinedreply = TReplyGET | TReplyPOST;
 
-
 export type Items = {
   _id: string;
   category: string;
@@ -59,7 +58,6 @@ export type Items = {
 };
 
 export type ItemsPOST = {
- 
   category: string;
   name: string;
   price: number;
@@ -107,6 +105,7 @@ export type User = {
   role: string;
   expences: number;
   avatarUrl: string;
+  emailConfirmed: boolean;
 };
 
 export type UserUpdate = {
@@ -119,7 +118,6 @@ export type UserUpdate = {
 
 export type UserLogin = {
   email: string;
-
   password: string;
 };
 
@@ -134,34 +132,27 @@ export type UserRegister = {
 
 export type Status = "success" | "pending" | "error";
 
-export type TLocationCity= {
-  
+export type TLocationCity = {
+  display_name: string;
+};
 
-      display_name: string,
-
-    
-
-}
-
-export type TLocationNova= {
-  
+export type TLocationNova = {
   data: {
-    Description: string,
-  }[]
+    Description: string;
+  }[];
+};
 
-}
+export type TPost = {
+  _id: string;
+  title: string;
+  image: string;
+  description: string;
+  content: any;
+  createdAt: string;
+  updatedAt: string;
+};
 
-export type TPost={
-    _id: string;
-    title: string;
-    image: string;
-    description: string;
-    content: any
-    createdAt: string;
-    updatedAt: string;
-}
-
-export type TPostGET={
+export type TPostGET = {
   post: {
     _id: string;
     title: string;
@@ -170,80 +161,73 @@ export type TPostGET={
     content: any;
     createdAt: string;
     updatedAt: string;
-  }
- 
-}
-export type TPostPOST={
-  
-    title: string;
-    image: string;
-    description: string;
-    content: any
-  
-}
+  };
+};
+export type TPostPOST = {
+  title: string;
+  image: string;
+  description: string;
+  content: any;
+};
 
-export type TPostDisplay={
-  posts: TPost[] 
-  
-}
+export type TPostDisplay = {
+  posts: TPost[];
+};
 
-export type TOrder={
+export type TOrder = {
   user_location: {
-    city_location: string,
-  },
+    city_location: string;
+  };
   receiver: {
-    userIsReceiver: boolean,
+    userIsReceiver: boolean;
     contact: {
-      name: string,
-      surname: string,
-      email: string,
-      phone: string,
-    },
-  },
+      name: string;
+      surname: string;
+      email: string;
+      phone: string;
+    };
+  };
   user_contact: {
-    name: string,
-    surname: string,
-    email: string,
-    phone: string,
-  },
+    name: string;
+    surname: string;
+    email: string;
+    phone: string;
+  };
   delivery: {
-    delivery_type: string,
-    delivery_cost: number,
+    delivery_type: string;
+    delivery_cost: number;
     delivery_location: {
-      street: string,
-      houseNumber: string,
-      apartmentNumber: string,
-      floorNumber: string,
-    },
-    novaDepartment: string,
-    liftRequired: boolean,
-    elevator: boolean,
-  },
+      street: string;
+      houseNumber: string;
+      apartmentNumber: string;
+      floorNumber: string;
+    };
+    novaDepartment: string;
+    liftRequired: boolean;
+    elevator: boolean;
+  };
   payment: {
-    payment_type: string,
-    uponReceipt: boolean,
+    payment_type: string;
+    uponReceipt: boolean;
     card: {
-      number: string,
-      date: string,
-      cvv: string,
-    },
-    
-  },
+      number: string;
+      date: string;
+      cvv: string;
+    };
+  };
   payWithParts: {
-    months: number,
-    perMonth: number,
-    firstPay: number,
-  },
-  items: Items[],
-  total: number,
-  numberOfOrder: string,
-}
+    months: number;
+    perMonth: number;
+    firstPay: number;
+  };
+  items: Items[];
+  total: number;
+  numberOfOrder: string;
+};
 
-export type TOrders={
-  orders: TOrder[]
-  
-}
-
+export type TOrders = {
+  orders: TOrder[];
+};
 
 export interface BasketState {
   status: Status;
@@ -253,11 +237,10 @@ export interface BasketState {
   itemsAmount: number;
 }
 
-
 export interface HomeState {
   status: Status;
   id: number;
-  
+
   itemsDisplay: ItemsDisplay;
   itemsCategory: ItemsDisplay;
   itemsSorted: ItemsDisplay;
