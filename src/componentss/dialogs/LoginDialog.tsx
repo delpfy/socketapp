@@ -104,14 +104,18 @@ export default function LoginDialog({
       if (result.meta.requestStatus === "fulfilled") {
         
         
-        dispatch(checkAuthorization());
-        if(user_status === 'error'){
-          ErrorDialog_open(true);
-          setErrorMessage("Ви не підтвердили пошту");
-        }
-        else if(user_status === 'success'){
-          LoginDialog_open(false);
-        }
+        dispatch(checkAuthorization()).then((result_: any) => {
+          if (result_.meta.requestStatus === "fulfilled") {
+            if(user_status === 'error'){
+              ErrorDialog_open(true);
+              setErrorMessage("Ви не підтвердили пошту");
+            }
+            else if(user_status === 'success'){
+              LoginDialog_open(false);
+            }
+          }
+        });
+        
       } else if (result.meta.requestStatus === "rejected") {
         ErrorDialog_open(true);
         setErrorMessage("Схоже при авторизації виникла помилка");
