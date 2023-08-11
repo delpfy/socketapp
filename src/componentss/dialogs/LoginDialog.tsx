@@ -100,16 +100,13 @@ export default function LoginDialog({
         password: password,
       })
     ).then((result: any) => {
-      console.log("result.status " + result.meta.requestStatus);
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(checkAuthorization()).then((result_: any) => {
           if (result_.meta.requestStatus === "fulfilled") {
-            if (!userAuthorized) {
-              ErrorDialog_open(true);
-              setErrorMessage("Ви не підтвердили пошту");
-            } else {
-              LoginDialog_open(false);
-            }
+            LoginDialog_open(false);
+          } else if (result_.meta.requestStatus === "rejected") {
+            ErrorDialog_open(true);
+            setErrorMessage("Ви не підтвердили пошту");
           }
         });
       } else if (result.meta.requestStatus === "rejected") {
