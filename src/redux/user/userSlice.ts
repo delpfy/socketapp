@@ -16,7 +16,7 @@ const userSlice = createSlice({
   initialState: {
     status: "error" as Status,
     user_status: "pending" as Status,
-    confirmEmail_status : "error" as Status,
+    confirmEmail_status: "error" as Status,
     user: {
       id: "",
       role: "",
@@ -40,17 +40,17 @@ const userSlice = createSlice({
       state.user.name = "";
       localStorage.removeItem("token");
     },
-    setUserExpences(state, action: PayloadAction<number>){
+    setUserExpences(state, action: PayloadAction<number>) {
       state.user.expences = action.payload;
     },
-    setUserEmail(state, action: PayloadAction<string>){
+    setUserEmail(state, action: PayloadAction<string>) {
       state.user.email = action.payload;
     },
   },
   extraReducers: (builder) => {
     // Verify Authorization.
     builder.addCase(checkAuthorization.fulfilled, (state, action) => {
-      if(action.payload.user.emailConfirmed){
+      if (action.payload.user.emailConfirmed) {
         state.user.authorized = true;
         state.user.id = action.payload.user._id;
         state.user.email = action.payload.user.email;
@@ -59,9 +59,9 @@ const userSlice = createSlice({
         state.user.expences = action.payload.user.expences;
         state.user.name = action.payload.user.fullName;
         state.user_status = "success";
+      } else {
+        state.user_status = "error";
       }
-      state.user_status = "error";
-      
     });
 
     builder.addCase(checkAuthorization.pending, (state) => {
@@ -99,25 +99,25 @@ const userSlice = createSlice({
       state.user.authorized = false;
       state.token = action.payload.token;
       state.emailConfirmationToken = action.payload.emailConfirmationToken;
-      
-      state.confirmEmail_status = 'success';
+
+      state.confirmEmail_status = "success";
     });
     builder.addCase(Register.pending, (state) => {
       state.user.authorized = false;
-      state.confirmEmail_status = 'pending';
+      state.confirmEmail_status = "pending";
     });
     builder.addCase(Register.rejected, (state, action) => {
       state.user.authorized = false;
-      state.confirmEmail_status = 'error';
+      state.confirmEmail_status = "error";
     });
 
     //Confirm email
-    
+
     builder.addCase(confirmEmail.fulfilled, (state, action) => {
-      console.log("action.payload.success " + action.payload.success)
-      if(action.payload.success){
+      console.log("action.payload.success " + action.payload.success);
+      if (action.payload.success) {
         state.emailConfirmed = true;
-        state.user_status = 'success';
+        state.user_status = "success";
       }
     });
     builder.addCase(confirmEmail.pending, (state) => {});
@@ -132,8 +132,12 @@ const userSlice = createSlice({
       state.passToken = action.payload.token.slice(2, 8);
       state.status = "success";
     });
-    builder.addCase(ResetPassword.pending, (state) => {state.status = "pending";});
-    builder.addCase(ResetPassword.rejected, (state, action) => {state.status = "error";});
+    builder.addCase(ResetPassword.pending, (state) => {
+      state.status = "pending";
+    });
+    builder.addCase(ResetPassword.rejected, (state, action) => {
+      state.status = "error";
+    });
 
     // Update Password.
     builder.addCase(UpdatePassword.fulfilled, (state, action) => {});
@@ -142,5 +146,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { NullifyToken, setUserExpences,setUserEmail } = userSlice.actions;
+export const { NullifyToken, setUserExpences, setUserEmail } =
+  userSlice.actions;
 export default userSlice.reducer;
