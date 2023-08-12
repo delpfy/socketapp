@@ -45,7 +45,7 @@ export default function Footer() {
             display: "flex",
             
             alignItems: "center",
-            paddingTop: 5,
+            paddingTop: 9,
             flexDirection: "column",
             justifyContent: "space-evenly",
           }}
@@ -78,7 +78,7 @@ export default function Footer() {
                   display: "flex",
                   flexDirection: "column",
 
-                  height: 130,
+                  height: 170,
                   justifyContent: "space-between",
                 }}
               >
@@ -114,7 +114,7 @@ export default function Footer() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  height: 130,
+                  height: 170,
                   justifyContent: "space-between",
                 }}
               >
@@ -169,6 +169,19 @@ export default function Footer() {
                   onClick={() => navigate("/contact")}
                 >
                   Контакти
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "rgba(255,255,255,.5)",
+                    cursor: "pointer",
+                    "&:hover": { color: "#fff" },
+                    transition: "color .2s ease",
+                  }}
+                  fontFamily={"Comfortaa"}
+                  color="white"
+                  onClick={() => navigate("/quarantees")}
+                >
+                  Гарантії
                 </Typography>
               </Box>
             </Box>

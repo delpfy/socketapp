@@ -41,11 +41,13 @@ export default function RegisterDialog({
   closeRegAfterSuccess,
 }: Props) {
   const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [passFirst, setPassFirst] = useState<string>("");
+  const [passSecond, setPassSecond] = useState<string>("");
   const [role, setRole] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [passVisible, setPassVisible] = useState(true);
   const { confirmEmail_status } = useAppSelector((state) => state.user);
+  const [passError, setPassError] = useState(false);
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
   };
@@ -76,12 +78,22 @@ export default function RegisterDialog({
       );
       return;
     }
-
-    if (password.length < 5) {
+    const valid = passFirst === passSecond;
+    if(valid){
+      setPassError(false);
+      if (password.length < 5) {
+        
+        ErrorDialog_open(true);
+        setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
+        return;
+      }
+    }else{
+      setPassError(true);
       ErrorDialog_open(true);
-      setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
+      setErrorMessage("Паролі не співпадають");
       return;
     }
+    
 
     const validRoles = ["customer"];
     if (!validRoles.includes(role)) {
@@ -176,7 +188,7 @@ export default function RegisterDialog({
           id="password"
           sx={{ marginTop: 2, marginBottom: 2 }}
           placeholder="Пароль"
-          value={password}
+          value={passFirst}
           fullWidth
           type={passVisible ? "password" : "text"}
           endAdornment={
@@ -190,7 +202,32 @@ export default function RegisterDialog({
               </IconButton>
             </InputAdornment>
           }
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => setPassFirst(e.target.value)}
+          error={passError}
+        />
+        <OutlinedInput
+          autoFocus
+          margin="dense"
+          id="password"
+          sx={{ marginTop: 2, marginBottom: 2 }}
+          placeholder="Пароль"
+          value={passSecond}
+          fullWidth
+          type={passVisible ? "password" : "text"}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                edge="end"
+              >
+                {passVisible ? <VisibilityOff /> : <Visibility />}
+              </IconButton>
+            </InputAdornment>
+          }
+          onChange={(e) => setPassSecond(e.target.value)}
+          error={passError}
+          
         />
         <FormControl>
           <FormLabel id="demo-radio-buttons-group-label">
@@ -220,7 +257,7 @@ export default function RegisterDialog({
         ) : (
           <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={() => RedirectRegister(email, fullName, role, password)}
+            onClick={() => RedirectRegister(email, fullName, role, passFirst)}
           >
             Продовжити
           </Button>

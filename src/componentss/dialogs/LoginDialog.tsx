@@ -200,14 +200,19 @@ export default function LoginDialog({
           )}
         </DialogContent>
         <DialogActions>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={() => {
-              RedirectLogin(email, password);
-            }}
-          >
-            Продовжити
-          </Button>
+          {user_status === "pending" ? (
+            <CircularProgress size={20} />
+          ) : (
+            <Button
+              sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+              onClick={() => {
+                RedirectLogin(email, password);
+              }}
+            >
+              Продовжити
+            </Button>
+          )}
+
           <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
             onClick={LoginDialog_close}

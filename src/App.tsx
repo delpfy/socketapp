@@ -24,6 +24,7 @@ import UserOrder from "./pagess/order/UserOrder";
 import ButtonUp from "./componentss/ButtonUpComponent/ButtonUp";
 import ConfirmEmail from "./pagess/ConfirmEmail";
 import Layout from "./componentss/Layout";
+import Guarantees from "./pagess/footerPages/Guarantees";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -60,6 +61,8 @@ function App() {
           <Route path="/posts" element={<Posts />} />
           <Route path="/post" element={<PostPage />} />
           <Route path="/confirm-email/:token" element={<ConfirmEmail />} />
+          <Route path="/quarantees" element={<Guarantees />} />
+          
           <Route path="/addpost" element={<AddPostPage />} />
           {/*  <Route path="/socketapp/catalog/basket" element={<BasketPage />} />   */}
           <Route path="*" element={<NotFoundPage />} />
