@@ -12,7 +12,7 @@ import {
   IconButton,
   CircularProgress,
 } from "@mui/material";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   Authorize,
   ResetPassword,
@@ -48,8 +48,7 @@ export default function LoginDialog({
   const [password, setPassword] = useState<string>("");
   const [openToken, setOpenToken] = useState(false);
   const [passVisible, setPassVisible] = useState(true);
-  const [userAuthorized, setUserAuthorized] = useState(false);
-  const { status, user, user_status } = useAppSelector((state) => state.user);
+  const { status, user_status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   function TokenDialog_open() {
@@ -119,10 +118,6 @@ export default function LoginDialog({
   function handleClickShowPassword() {
     setPassVisible((passVisible) => !passVisible);
   }
-
-  useEffect(() => {
-    setUserAuthorized(user.authorized);
-  }, [user.authorized]);
 
   return (
     <>
@@ -226,9 +221,7 @@ export default function LoginDialog({
         openToken={openToken}
         TokenDialog_close={TokenDialog_close}
         LoginDialog_open={LoginDialog_open}
-        LoginDialog_close={LoginDialog_close}
         ErrorDialog_open={ErrorDialog_open}
-        TokenDialog_open={setOpenToken}
         setErrorMessage={setErrorMessage}
         InfoDialog_open={InfoDialog_open}
         setInfoMessage={setInfoMessage}

@@ -19,7 +19,7 @@ import { TShippingItems } from "../../redux/types";
 import { setCurrentItem } from "../../redux/home/homeSlice";
 import { getItemReviews } from "../../redux/review/asyncActions";
 import BasketDialog from "../../componentss/dialogs/BasketDialog";
-import { ORDER_setItems, ORDER_setTotal } from "../../redux/order/orderSlice";
+import { ORDER_setItems } from "../../redux/order/orderSlice";
 
 export default function OrderProducts() {
   
@@ -112,6 +112,7 @@ export default function OrderProducts() {
                       >
                         <img
                           src={item.image[0]}
+                          alt={item.name}
                           style={{ height: 50, width: 50 }}
                         />
 

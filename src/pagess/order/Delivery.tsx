@@ -13,7 +13,7 @@ import {
   Typography,
   debounce,
 } from "@mui/material";
-import { SetStateAction, useEffect, useMemo, useState } from "react";
+import {  useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   getNovaPoshtaLocations,
@@ -24,11 +24,10 @@ import {
   ORDER_setDeliveryOnAdress,
   STAGES_delivery,
   setNovaPoshtaLocation,
-  setStreetLocation,
   ORDER_setTotal,
   ORDER_setPaymentWithParts,
 } from "../../redux/order/orderSlice";
-import { TLocationCity, TShippingItems } from "../../redux/types";
+import { TShippingItems } from "../../redux/types";
 
 interface TNovaLocation {
   Description: string;
@@ -37,16 +36,11 @@ interface TNovaLocation {
 export default function Delivery() {
   const [selectedOption, setSelectedOption] = useState("payOnDelivery");
   const { items } = useAppSelector((state) => state.basket);
-  const { city, street, _order } = useAppSelector((state) => state.orders);
-
-  const [selectedDepartment, setSelectedDepartment] = useState("");
-  const { novaPoshtaLocations } = useAppSelector((state) => state.orders);
+  const { city, street, _order, novaPoshtaLocations } = useAppSelector((state) => state.orders);
   const [novaPoshtaOptions, setNovaPoshtaOptions] = useState<
     readonly TNovaLocation[]
   >([]);
-  const [streetOptions, setStreetOptions] = useState<string[]>(
-    []
-  );
+  const [streetOptions, setStreetOptions] = useState<string[]>([]);
 
   const [houseNumber, setHouseNumber] = useState("");
   const [apartmentNumber, setApartmentNumber] = useState("");
@@ -104,8 +98,14 @@ export default function Delivery() {
   };
 
   useEffect(() => {
-    dispatch(ORDER_setPaymentWithParts({months: _order.payWithParts.months, perMonth: _order.payWithParts.perMonth , firstPay: _order.payWithParts.perMonth + _order.delivery.delivery_cost}))
-  }, [_order.delivery.delivery_cost])
+    dispatch(
+      ORDER_setPaymentWithParts({
+        months: _order.payWithParts.months,
+        perMonth: _order.payWithParts.perMonth,
+        firstPay: _order.payWithParts.perMonth + _order.delivery.delivery_cost,
+      })
+    );
+  }, [_order.delivery.delivery_cost]);
 
   useEffect(() => {
     const streetIsValid = streetLocation !== "";
@@ -227,7 +227,7 @@ export default function Delivery() {
   const top100Films = [{}];
 
   function handleSearchNovaChange(event: any, newInputValue: string) {
-    setSelectedDepartment(newInputValue);
+    
 
     if (newInputValue !== "") {
       searchNovaDelayed(newInputValue, city);
@@ -235,7 +235,7 @@ export default function Delivery() {
   }
 
   function handleSearchStreetChange(event: any, newInputValue: string) {
-    setSelectedDepartment(newInputValue);
+   
 
     if (newInputValue !== "") {
       searchStreetDelayed(newInputValue, city);

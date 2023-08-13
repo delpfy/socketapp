@@ -27,7 +27,7 @@ export default function Payment() {
   const [cardNumberError, setCardNumberError] = useState(false);
   const [expiryDateError, setExpiryDateError] = useState(false);
   const [cvvError, setCvvError] = useState(false);
-  const [cardButtonMessage, setCardButtonMessage] = useState("Додати")
+  const [cardButtonMessage, setCardButtonMessage] = useState("Додати");
   const [selectedOption, setSelectedOption] = useState("payOnDelivery");
   const [selectedSecondaryOption, setSelectedSecondaryOption] =
     useState("payOnDelivery");
@@ -68,7 +68,7 @@ export default function Payment() {
   const handleCardNumberChange = (event: any) => {
     const value = event.target.value;
     const cleanedValue = value.replace(/\D/g, "");
-    // Удалить все нецифровые символы из номера карты
+
     if (cleanedValue.length <= 16) {
       setCardNumber(cleanedValue);
 
@@ -86,7 +86,7 @@ export default function Payment() {
 
   const handleExpiryDateChange = (event: any) => {
     const value = event.target.value;
-    // Удалить все нецифровые символы из срока действия
+
     const cleanedValue = value.replace(/\D/g, "");
     if (cleanedValue.length <= 4) {
       setExpiryDate(cleanedValue);
@@ -96,7 +96,6 @@ export default function Payment() {
         formattedValue = cleanedValue.slice(0, 2) + "/" + cleanedValue.slice(2);
       }
 
-      // Проверить длину и формат срока действия (должен быть в формате MM/YY)
       if (/^\d{0,4}$/.test(cleanedValue)) {
         setExpiryDate(formattedValue);
         setExpiryDateError(false);
@@ -108,11 +107,9 @@ export default function Payment() {
 
   const handleCvvChange = (event: any) => {
     const value = event.target.value;
-    // Удалить все нецифровые символы из CVV
 
     const cleanedValue = value.replace(/\D/g, "");
 
-    // Проверить длину CVV (должен быть 3 цифры)
     if (cleanedValue.length <= 3) {
       setCvv(cleanedValue);
       if (cleanedValue.length > 0 && /^\d{0,3}$/.test(cleanedValue)) {
@@ -154,9 +151,7 @@ export default function Payment() {
   };
 
   function handleAddCard() {
-    
     if (isCardValid()) {
-      
       dispatch(
         ORDER_setPayment({
           payment_type: "карткою",
@@ -169,9 +164,8 @@ export default function Payment() {
         })
       );
       dispatch(STAGES_payment(true));
-    setCardButtonMessage("Додано ✓")
+      setCardButtonMessage("Додано ✓");
     }
-    
   }
 
   function handleCardUponReceipt() {
@@ -305,10 +299,9 @@ export default function Payment() {
                         <Button
                           variant="contained"
                           color="success"
-                          
                           onClick={handleAddCard}
                         >
-                         {cardButtonMessage}
+                          {cardButtonMessage}
                         </Button>
                       </Box>
                     </Box>

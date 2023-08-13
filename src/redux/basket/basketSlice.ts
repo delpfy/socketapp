@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseBasket } from "../../utils/InitialiseBasket";
-import { BasketState, TShippingItemsDisplay } from "../types";
+import { BasketState} from "../types";
 import {
   addBasketItem,
   deleteBasketItem,
-  getBasketItemsByUser,
   removeBasketItem,
 } from "./asyncActions";
 

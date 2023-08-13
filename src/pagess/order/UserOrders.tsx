@@ -1,14 +1,12 @@
-import { useEffect } from "react";
+
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Box, Paper, Typography } from "@mui/material";
-import { getOrdersByUser } from "../../redux/order/asyncActions";
 import { Items, Status, TOrder } from "../../redux/types";
 import { CURRENT_ORDER_setOrder } from "../../redux/order/orderSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function UserOrders() {
-  const { user_orders,current_order, status } = useAppSelector((state) => state.orders);
-  const { user } = useAppSelector((state) => state.user);
+  const { user_orders, status } = useAppSelector((state) => state.orders);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   

@@ -1,11 +1,8 @@
 import {
-  Alert,
   Box,
   Button,
   Divider,
   Paper,
-  PaperProps,
-  Snackbar,
   SnackbarOrigin,
   Typography,
 } from "@mui/material";
@@ -19,20 +16,17 @@ import { useNavigate } from "react-router-dom";
 import { TShippingItems } from "../../redux/types";
 import { useEffect, useRef, useState } from "react";
 import {
-  ORDER_setPaymentWithParts,
   ORDER_setTotal,
   ORDER_setUniqueNumber,
 } from "../../redux/order/orderSlice";
 import Receiver from "./Receiver";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { addOrder, getOrdersByUser } from "../../redux/order/asyncActions";
-import UserOrders from "./UserOrders";
-import { updateItem } from "../../redux/home/asyncActions";
-import { setAfterOrder, synchronizeBasket } from "../../redux/basket/basketSlice";
 
-interface State extends SnackbarOrigin {
-  open: boolean;
-}
+import { updateItem } from "../../redux/home/asyncActions";
+import { setAfterOrder } from "../../redux/basket/basketSlice";
+
+
 
 export default function OrderPage() {
   const { items } = useAppSelector((state) => state.basket);

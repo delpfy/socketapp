@@ -14,13 +14,13 @@ import {
 } from "@mui/material";
 
 import { Items, TShippingItems } from "../../../redux/types";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch } from "../../../redux/hooks";
 import {
   synchronizeBasket,
 } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
-import { updateItem } from "../../../redux/home/asyncActions";
+
 
 export default function BasketItemBlock(props: TShippingItems) {
   const dispatch = useAppDispatch();

@@ -19,7 +19,6 @@ import {synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
 import { getItemReviews } from "../../../redux/review/asyncActions";
-import { updateItem } from "../../../redux/home/asyncActions";
 
 export default function CatalogCard(props: Items) {
 

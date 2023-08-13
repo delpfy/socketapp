@@ -8,9 +8,7 @@ import {
 import RecentlyReviewed from "../../componentss/RecentlyReviewed";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { TPost } from "../../redux/types";
 import { useNavigate } from "react-router-dom";
-import { setCurrentPost } from "../../redux/posts/postsSlice";
 import { getAllPosts, getPostById } from "../../redux/posts/asyncActions";
 
 export default function Posts() {

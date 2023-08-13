@@ -5,7 +5,10 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Card from "../../componentss/categories/CategoryTile";
 import "./icon.css";
 import RecentlyReviewed from "../../componentss/RecentlyReviewed";
-import { setAfterOrder, synchronizeBasket } from "../../redux/basket/basketSlice";
+import {
+  setAfterOrder,
+  synchronizeBasket,
+} from "../../redux/basket/basketSlice";
 
 /* const MenuContent = () => {
   return (
@@ -60,7 +63,7 @@ export const Home = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(afterOrder){
+    if (afterOrder) {
       dispatch(synchronizeBasket());
       dispatch(setAfterOrder(false));
     }

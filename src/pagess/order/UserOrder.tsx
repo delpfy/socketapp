@@ -1,11 +1,11 @@
 import { Box, Grid, Paper, Typography } from "@mui/material";
-import { TOrder } from "../../redux/types";
+
 import { useAppSelector } from "../../redux/hooks";
 
 export default function UserOrder() {
   const { current_order } = useAppSelector((state) => state.orders);
   if (!current_order) {
-    return null; // Handle the case where current_order is not available yet
+    return null;
   }
 
   const {
@@ -29,7 +29,6 @@ export default function UserOrder() {
           </Typography>
         </Grid>
 
-        {/* User Location */}
         <Grid item xs={12} md={6}>
           <Paper elevation={3} style={{ padding: "20px" }}>
             <Typography variant="h6">Місцезнаходження користувача</Typography>
@@ -37,7 +36,6 @@ export default function UserOrder() {
           </Paper>
         </Grid>
 
-        {/* Receiver */}
         <Grid item xs={12} md={6}>
           <Paper elevation={3} style={{ padding: "20px" }}>
             <Typography variant="h6">Оплата</Typography>
@@ -56,24 +54,19 @@ export default function UserOrder() {
             ) : (
               <></>
             )}
-
-            {/* Add other payment fields */}
           </Paper>
         </Grid>
 
-        {/* User Contact */}
         <Grid item xs={12} md={6}>
           <Paper elevation={3} style={{ padding: "20px" }}>
             <Typography variant="h6">Контакт користувача</Typography>
             <Typography>Ім'я: {user_contact.name}</Typography>
             <Typography>Прізвище: {user_contact.surname}</Typography>
             <Typography>Номер телефону: {user_contact.phone}</Typography>
-            {/* Add other user_contact fields */}
           </Paper>
         </Grid>
 
-         {/* Payment */}
-         <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Paper elevation={3} style={{ padding: "20px" }}>
             <Typography variant="h6">Отримувач</Typography>
             {receiver.userIsReceiver ? (
@@ -86,11 +79,11 @@ export default function UserOrder() {
               <>
                 <Typography>Ім'я: {receiver.contact.name}</Typography>
                 <Typography>Прізвище: {receiver.contact.surname}</Typography>
-                <Typography>Номер телефону: {receiver.contact.phone}</Typography>
+                <Typography>
+                  Номер телефону: {receiver.contact.phone}
+                </Typography>
               </>
             )}
-
-            {/* Add other receiver fields */}
           </Paper>
         </Grid>
 
@@ -132,11 +125,8 @@ export default function UserOrder() {
                 )}
               </>
             ) : null}
-            {/* Add other delivery fields */}
           </Paper>
         </Grid>
-
-       
 
         {/* Pay With Parts */}
         {payWithParts.months !== 0 ? (

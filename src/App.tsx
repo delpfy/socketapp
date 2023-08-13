@@ -2,13 +2,11 @@ import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import NotFoundPage from "./pagess/PageAbsence";
 import Catalog from "./pagess/Home/Catalog";
-import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { useAppDispatch } from "./redux/hooks";
 import "./styles/style.css";
 import { checkAuthorization } from "./redux/user/asyncActions";
 import { Home } from "./pagess/Home/Home";
-import Footer from "./componentss/Footer";
 import ItemPage from "./pagess/items/CatalogItemPage";
-import AppBarMenu from "./componentss/menuu/appbar/Menu";
 import User from "./pagess/user/User";
 import OrderPage from "./pagess/order/Checkout";
 import { synchronizeBasket } from "./redux/basket/basketSlice";
@@ -21,7 +19,6 @@ import AddPostPage from "./pagess/footerPages/AddPostPage";
 import Contact from "./pagess/footerPages/Contact";
 import AddItem from "./pagess/items/AddItem";
 import UserOrder from "./pagess/order/UserOrder";
-import ButtonUp from "./componentss/ButtonUpComponent/ButtonUp";
 import ConfirmEmail from "./pagess/ConfirmEmail";
 import Layout from "./componentss/Layout";
 import Guarantees from "./pagess/footerPages/Guarantees";
@@ -47,24 +44,26 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
+
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/catalog/item" element={<ItemPage />} />
           <Route path="/add-item" element={<AddItem />} />
 
           <Route path="/user" element={<User />} />
-          <Route path="/order" element={<OrderPage />} />
           <Route path="/user-order" element={<UserOrder />} />
+          <Route path="/confirm-email/:token" element={<ConfirmEmail />} />
+
+          <Route path="/order" element={<OrderPage />} />
+
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/return" element={<Return />} />
           <Route path="/delivery" element={<DeliveryInfo />} />
           <Route path="/posts" element={<Posts />} />
           <Route path="/post" element={<PostPage />} />
-          <Route path="/confirm-email/:token" element={<ConfirmEmail />} />
-          <Route path="/quarantees" element={<Guarantees />} />
-          
           <Route path="/addpost" element={<AddPostPage />} />
-          {/*  <Route path="/socketapp/catalog/basket" element={<BasketPage />} />   */}
+          <Route path="/quarantees" element={<Guarantees />} />
+
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

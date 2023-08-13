@@ -16,40 +16,46 @@ import {
 import PlaceIcon from "@mui/icons-material/Place";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { getLocations } from "../../redux/order/asyncActions";
-import { ORDER_setUserLocation, STAGES_city, setCity, setLocation } from "../../redux/order/orderSlice";
+import {
+  ORDER_setUserLocation,
+  STAGES_city,
+  setCity,
+} from "../../redux/order/orderSlice";
 
 const cities = ["Київ", "Харків", "Одеса", "Дніпро", "Запоріжжя", "Львів"];
 
 interface TLocation {
   display_name: string;
-
 }
 
 export default function CitySelectionButton() {
   const { locations, _order } = useAppSelector((state) => state.orders);
   const [open, setOpen] = useState(false);
   const [options, setOptions] = React.useState<readonly TLocation[]>([]);
-  const [selectedCity, setSelectedCity] = useState(_order.user_location.city_location);
-  const [selectedLocality, setSelectedLocality] = useState(_order.user_location.city_location);
+  const [selectedCity, setSelectedCity] = useState(
+    _order.user_location.city_location
+  );
+  const [selectedLocality, setSelectedLocality] = useState(
+    _order.user_location.city_location
+  );
   const [afterCitySelect, setAfterCitySelect] = useState(false);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     setOptions(locations);
-
   }, [locations]);
-  
+
   useEffect(() => {
     setSelectedCity(_order.user_location.city_location);
     setSelectedLocality(_order.user_location.city_location);
-  }, [])
+  }, []);
 
   const handleCityClick = (city: any) => {
     setSelectedCity(city);
-    dispatch(setCity(city))
+    dispatch(setCity(city));
     setSelectedLocality(city);
-    setAfterCitySelect(true)
+    setAfterCitySelect(true);
     dispatch(getLocations({ city: city }));
   };
 
@@ -58,15 +64,11 @@ export default function CitySelectionButton() {
   };
 
   function handleSearchChange(event: any, newInputValue: string) {
-    
-    if(newInputValue === "" && afterCitySelect ){
-    }
-    else{
+    if (newInputValue === "" && afterCitySelect) {
+    } else {
       setSelectedLocality(newInputValue);
       setAfterCitySelect(false);
-      
     }
-    
 
     if (newInputValue !== "" && newInputValue.length > 2) {
       searchDelayed(newInputValue);
@@ -130,20 +132,19 @@ export default function CitySelectionButton() {
               options={options === undefined ? [] : options}
               inputValue={selectedLocality}
               onInputChange={handleSearchChange}
-              onChange={(e, value) =>{ if(value)
-                {dispatch(ORDER_setUserLocation({
-                city_location: value.display_name
-              }))
-              dispatch(STAGES_city(true));
-            }
-            
-            
-            } }
+              onChange={(e, value) => {
+                if (value) {
+                  dispatch(
+                    ORDER_setUserLocation({
+                      city_location: value.display_name,
+                    })
+                  );
+                  dispatch(STAGES_city(true));
+                }
+              }}
               renderInput={(params) => <TextField {...params} required />}
               style={{ marginBottom: 16 }}
-              getOptionLabel={(option) =>
-                option.display_name || ""
-              }
+              getOptionLabel={(option) => option.display_name || ""}
               fullWidth
               noOptionsText={"(·_·)"}
             />

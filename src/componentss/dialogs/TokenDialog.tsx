@@ -20,13 +20,13 @@ import ResetPasswordDialog from "./ResetPasswordDialog";
 
 type Props = {
   ErrorDialog_open: Dispatch<SetStateAction<any>>;
-  TokenDialog_open: Dispatch<SetStateAction<any>>;
+  
 
   InfoDialog_open: Dispatch<SetStateAction<any>>;
   setInfoMessage: (message: string) => void;
 
   LoginDialog_open: Dispatch<SetStateAction<any>>;
-  LoginDialog_close: () => void;
+  
 
   setErrorMessage: (message: string) => void;
   openToken: boolean;
@@ -36,20 +36,16 @@ type Props = {
 export default function TokenDialog({
   ErrorDialog_open,
   LoginDialog_open,
-  LoginDialog_close,
   InfoDialog_open,
   setInfoMessage,
   setErrorMessage,
-  TokenDialog_open,
   openToken,
   TokenDialog_close,
 }: Props) {
   const [userToken, setUserToken] = useState<string>("");
   const { user, passToken } = useAppSelector((state) => state.user);
-  const [openError, setOpenError] = useState(false);
 
   const [openResetPassword, setOpenResetPassword] = useState(false);
-  const dispatch = useAppDispatch();
 
   function ResetPasswordDialog_open() {
     setOpenResetPassword(true);
@@ -94,7 +90,6 @@ export default function TokenDialog({
             value={userToken}
             fullWidth
             variant="standard"
-           
             onChange={(e) => setUserToken(e.target.value)}
           />
         </DialogContent>
@@ -119,10 +114,8 @@ export default function TokenDialog({
       <ResetPasswordDialog
         openResetPassword={openResetPassword}
         LoginDialog_open={LoginDialog_open}
-        LoginDialog_close={LoginDialog_close}
         ResetPasswordDialog_close={ResetPasswordDialog_close}
         ErrorDialog_open={ErrorDialog_open}
-        ResetPasswordDialog_open={setOpenResetPassword}
         setErrorMessage={setErrorMessage}
         InfoDialog_open={InfoDialog_open}
         setInfoMessage={setInfoMessage}

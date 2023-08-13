@@ -241,12 +241,8 @@ const orderSlice = createSlice({
     setNovaPoshtaLocation(state, action: PayloadAction<string>) {
       state.novaPoshtaLocation = action.payload;
     },
-    setStreetLocation(state, action: PayloadAction<string>) {
-      state.street_location = action.payload;
-    },
-    setLocation(state, action: PayloadAction<string>) {
-      state.location = action.payload;
-    },
+
+
   },
   extraReducers: (builder) => {
     builder.addCase(getLocations.fulfilled, (state, action) => {
@@ -302,8 +298,6 @@ const orderSlice = createSlice({
 export const {
   setCity,
   setNovaPoshtaLocation,
-  setStreetLocation,
-  setLocation,
   CURRENT_ORDER_setOrder,
   ORDER_setTotal,
   ORDER_setUserLocation,

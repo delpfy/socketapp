@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Fab from '@mui/material/Fab';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import './ButtonUp.css';
 
 export default function ButtonUp  () {

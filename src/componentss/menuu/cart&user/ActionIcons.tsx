@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 
 import {
   Avatar,
@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import {  useAppSelector } from "../../../redux/hooks";
 
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";

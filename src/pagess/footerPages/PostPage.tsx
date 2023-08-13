@@ -9,9 +9,7 @@ import {
 import RecentlyReviewed from "../../componentss/RecentlyReviewed";
 import { useEffect, useState } from "react";
 
-import { TPost } from "../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { deletePost, updatePost } from "../../redux/posts/asyncActions";

@@ -21,9 +21,7 @@ import ErrorDialog from "./ErrorDialog";
 import LoginDialog from "./LoginDialog";
 import InfoDialog from "./InfoDialog";
 import { TShippingItems } from "../../redux/types";
-import { setUserExpences } from "../../redux/user/userSlice";
-import { Update, checkAuthorization } from "../../redux/user/asyncActions";
-import { request } from "http";
+
 
 type Props = {
   openBasket: boolean;
@@ -38,7 +36,6 @@ export default function BasketDialog({
 }: Props) {
   const { itemCurrent } = useAppSelector((state) => state.home);
   const { items } = useAppSelector((state) => state.basket);
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [openLogin, setOpenLogin] = useState(false);

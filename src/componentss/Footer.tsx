@@ -1,4 +1,4 @@
-import { Box, Divider, Link, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Telegram, Instagram, YouTube, Facebook} from "@mui/icons-material";
 

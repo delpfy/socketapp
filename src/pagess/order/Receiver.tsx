@@ -8,12 +8,15 @@ import {
   Radio,
   RadioGroup,
   TextField,
-  Typography,
+
 } from "@mui/material";
-import CitySelectionButton from "./CitySelectButton";
+
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect, useState } from "react";
-import { ORDER_setReceiver, STAGES_receiverContact, STAGES_userContact } from "../../redux/order/orderSlice";
+import {
+  ORDER_setReceiver,
+  STAGES_receiverContact,
+} from "../../redux/order/orderSlice";
 
 export default function Receiver() {
   const [selectedOption, setSelectedOption] = useState("me");
@@ -52,10 +55,9 @@ export default function Receiver() {
           phone: "",
         },
       })
-      
     );
     dispatch(STAGES_receiverContact(true));
-  }, [])
+  }, []);
 
   useEffect(() => {
     const isNameValid = name.trim() !== "";
@@ -64,7 +66,7 @@ export default function Receiver() {
     const isEmailValid = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
 
     setEmailError(!isEmailValid);
-    setPhoneError(!isPhoneValid)
+    setPhoneError(!isPhoneValid);
     if (isNameValid && isSurnameValid && isPhoneValid && isEmailValid) {
       dispatch(
         ORDER_setReceiver({
@@ -92,7 +94,6 @@ export default function Receiver() {
           phone: "",
         },
       })
-      
     );
     dispatch(STAGES_receiverContact(true));
   }

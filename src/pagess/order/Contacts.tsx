@@ -8,16 +8,23 @@ import {
 import CitySelectionButton from "./CitySelectButton";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect, useState } from "react";
-import { ORDER_setUserContact, STAGES_userContact } from "../../redux/order/orderSlice";
+import {
+  ORDER_setUserContact,
+  STAGES_userContact,
+} from "../../redux/order/orderSlice";
 
 export default function Contacts() {
   const { user } = useAppSelector((state) => state.user);
   const { _order } = useAppSelector((state) => state.orders);
   const dispatch = useAppDispatch();
-  const [name, setName] = useState(_order.user_contact.name=== "" ? user.name : _order.user_contact.name);
+  const [name, setName] = useState(
+    _order.user_contact.name === "" ? user.name : _order.user_contact.name
+  );
   const [surname, setSurame] = useState(_order.user_contact.surname);
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState(_order.user_contact.email === "" ? user.email : _order.user_contact.email);
+  const [email, setEmail] = useState(
+    _order.user_contact.email === "" ? user.email : _order.user_contact.email
+  );
   const [phoneError, setPhoneError] = useState(false);
   const [emailError, setEmailError] = useState(false);
 
@@ -37,11 +44,11 @@ export default function Contacts() {
   };
   useEffect(() => {
     const isNameValid = name.trim() !== "";
-    const isSurnameValid = surname.trim() !== ""; 
+    const isSurnameValid = surname.trim() !== "";
     const isPhoneValid = /^\d{9}$/.test(phone);
     const isEmailValid = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email);
-    setEmailError(!isEmailValid)
-    setPhoneError(!isPhoneValid)
+    setEmailError(!isEmailValid);
+    setPhoneError(!isPhoneValid);
     if (isNameValid && isSurnameValid && isPhoneValid && isEmailValid) {
       dispatch(
         ORDER_setUserContact({
@@ -52,14 +59,13 @@ export default function Contacts() {
         })
       );
       dispatch(STAGES_userContact(true));
-    }
-    else{
+    } else {
       dispatch(STAGES_userContact(false));
     }
   }, [phone, name, surname, email]);
 
   return (
-    <Paper  elevation={5} sx={{ marginBottom: 5, height: 360 }}>
+    <Paper elevation={5} sx={{ marginBottom: 5, height: 360 }}>
       <Typography>Ваші контактні дані </Typography>
       <Box
         display={"flex"}

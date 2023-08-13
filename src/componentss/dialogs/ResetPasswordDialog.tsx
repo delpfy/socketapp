@@ -5,27 +5,25 @@ import {
     DialogContent,
     DialogContentText,
     Button,
-    Typography,
-    TextField,
     OutlinedInput,
     InputAdornment,
     IconButton,
   } from "@mui/material";
   import { Dispatch, SetStateAction, useEffect, useState } from "react";
-  import { Authorize, UpdatePassword, checkAuthorization } from "../../redux/user/asyncActions";
+  import { UpdatePassword } from "../../redux/user/asyncActions";
   import { useAppDispatch, useAppSelector } from "../../redux/hooks";
   import { VisibilityOff, Visibility } from "@mui/icons-material";
-import User from "../../pagess/user/User";
+
   
   type Props = {
     ErrorDialog_open: Dispatch<SetStateAction<any>>;
-    ResetPasswordDialog_open: Dispatch<SetStateAction<any>>;
+    
 
     InfoDialog_open: Dispatch<SetStateAction<any>>;
   setInfoMessage: (message: string) => void;
 
     LoginDialog_open: Dispatch<SetStateAction<any>>;
-  LoginDialog_close: () => void;
+  
 
     setErrorMessage: (message: string) => void;
     openResetPassword: boolean;
@@ -36,10 +34,10 @@ import User from "../../pagess/user/User";
     ErrorDialog_open,
     setErrorMessage,
     LoginDialog_open,
-    LoginDialog_close,
+  
     InfoDialog_open,
     setInfoMessage,
-    ResetPasswordDialog_open,
+   
     openResetPassword,
     ResetPasswordDialog_close,
   }: Props) {

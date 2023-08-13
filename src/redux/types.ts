@@ -42,7 +42,6 @@ export type IReviewPOST = {
   disadvantages: string;
 };
 
-export type Combinedreply = TReplyGET | TReplyPOST;
 
 export type Items = {
   _id: string;
