@@ -52,11 +52,17 @@ export default function CitySelectionButton() {
   }, []);
 
   const handleCityClick = (city: any) => {
-    setSelectedCity(city);
+    setSelectedCity(city );
     dispatch(setCity(city));
-    setSelectedLocality(city);
+    setSelectedLocality(city );
     setAfterCitySelect(true);
     dispatch(getLocations({ city: city }));
+    dispatch(
+      ORDER_setUserLocation({
+        city_location: city + ", Україна",
+      })
+    );
+    dispatch(STAGES_city(true));
   };
 
   const handleSave = () => {
@@ -71,6 +77,7 @@ export default function CitySelectionButton() {
     }
 
     if (newInputValue !== "" && newInputValue.length > 2) {
+      
       searchDelayed(newInputValue);
     }
   }

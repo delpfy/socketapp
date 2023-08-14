@@ -148,7 +148,7 @@ export const CatalogField = () => {
             spacing={{ xs: 1, sm: 3, md: 4 }}
             columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
           >
-            {Array.from({ length: 6 }, () => {
+            {Array.from({ length: 6 }, (param, index) => {
               return (
                 <Grid
                   item
@@ -160,6 +160,7 @@ export const CatalogField = () => {
                   md={4}
                   lg={4}
                   xl={5}
+                  key={index}
                 >
                   <Skeleton />
                 </Grid>

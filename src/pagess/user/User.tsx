@@ -157,6 +157,7 @@ export default function User() {
         console.log(user_orders);
       }
     });
+    console.log(afterOrder);
     if(afterOrder){
       dispatch(synchronizeBasket());
       dispatch(setAfterOrder(false))
