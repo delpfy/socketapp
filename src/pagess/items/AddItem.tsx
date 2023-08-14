@@ -231,7 +231,7 @@ export default function AddItem() {
             }}
           />
         </Box>
-        {/* ... Остальные текстовые поля ... */}
+        
         <Box
           width={700}
           paddingBottom={5}
@@ -251,7 +251,7 @@ export default function AddItem() {
           >
             Зображення:
           </Typography>
-          <Box>
+          <Box maxWidth={500}>
             {images.map((imageUrl, index) => (
               <TextField
                 key={index}
