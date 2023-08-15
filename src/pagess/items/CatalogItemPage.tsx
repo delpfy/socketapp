@@ -7,8 +7,15 @@ import {
   Box,
   Button,
   CircularProgress,
+  Paper,
   Rating,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
   Typography,
+  createTheme,
 } from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
 import {
@@ -24,6 +31,347 @@ import {
   setRatingAmount,
 } from "../../redux/review/reviewSlice";
 import { updateItem } from "../../redux/home/asyncActions";
+
+const font = {
+  fontFamily: 'Ubuntu',
+};
+
+const LaptopTable = ({ item }: { item: any }) => {
+  return (
+    <TableContainer component={Paper}  sx = {{width: "50%", alignSelf: 'center', paddingBottom: 4}}>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell style={font}>Процесор:</TableCell>
+            <TableCell>{item.fields.processor}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Пам'ять:</TableCell>
+            <TableCell>{item.fields.memory}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Бренд:</TableCell>
+            <TableCell>{item.fields.brand}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Серія:</TableCell>
+            <TableCell>{item.fields.series}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Конструкція:</TableCell>
+            <TableCell>{item.fields.construction}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Операційна система:</TableCell>
+            <TableCell>{item.fields.operatingSystem}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Діагональ екрану:</TableCell>
+            <TableCell>{item.fields.screenDiagonal}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Тип матриці:</TableCell>
+            <TableCell>{item.fields.matrixType}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Тип покриття:</TableCell>
+            <TableCell>{item.fields.coatingType}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Роздільна здатність:</TableCell>
+            <TableCell>{item.fields.resolution}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Сенсорний екран:</TableCell>
+            <TableCell>{item.fields.touchScreen ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Частота оновлення:</TableCell>
+            <TableCell>{item.fields.refreshRate}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Яскравість:</TableCell>
+            <TableCell>{item.fields.brightness}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Інші характеристики дисплея:</TableCell>
+            <TableCell>{item.fields.otherDisplayFeatures}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Максимальний об'єм ОЗУ:</TableCell>
+            <TableCell>{item.fields.maxRAM}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Тип накопичувача:</TableCell>
+            <TableCell>{item.fields.storageType}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Об'єм накопичувача:</TableCell>
+            <TableCell>{item.fields.storageCapacity}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Оптичний привід:</TableCell>
+            <TableCell>{item.fields.opticalDrive ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Графічний адаптер:</TableCell>
+            <TableCell>{item.fields.gpuAdapter}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Зовнішні порти:</TableCell>
+            <TableCell>{item.fields.externalPorts}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Ридер карток:</TableCell>
+            <TableCell>{item.fields.cardReader ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Веб-камера:</TableCell>
+            <TableCell>{item.fields.webcam ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Підсвітка клавіатури:</TableCell>
+            <TableCell>{item.fields.keyboardBacklight ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Пасивне охолодження:</TableCell>
+            <TableCell>{item.fields.passiveCooling ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Сканер відбитків пальців:</TableCell>
+            <TableCell>{item.fields.fingerprintScanner ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Цифрова клавіатура:</TableCell>
+            <TableCell>{item.fields.numericKeypad ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Сертифікація Intel Evo:</TableCell>
+            <TableCell>{item.fields.intelEvoCertification ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Адаптер Ethernet:</TableCell>
+            <TableCell>{item.fields.ethernetAdapter ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Wi-Fi:</TableCell>
+            <TableCell>{item.fields.wifi}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Bluetooth:</TableCell>
+            <TableCell>{item.fields.bluetooth}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Вага:</TableCell>
+            <TableCell>{item.fields.weight}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Розміри:</TableCell>
+            <TableCell>{item.fields.dimensions.width} x {item.fields.dimensions.height} x {item.fields.dimensions.depth}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Матеріал корпусу:</TableCell>
+            <TableCell>{item.fields.bodyMaterial}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Колір кришки:</TableCell>
+            <TableCell>{item.fields.lidColor}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Колір корпусу:</TableCell>
+            <TableCell>{item.fields.bodyColor}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Робустний ноутбук:</TableCell>
+            <TableCell>{item.fields.ruggedLaptop ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+const TabletTable = ({ item }: { item: any }) => {
+  return (
+    <TableContainer component={Paper} sx = {{width: "50%", alignSelf: 'center', paddingBottom: 4}}>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell style={font}>Бренд:</TableCell>
+            <TableCell>{item.fields.brand}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Лінійка:</TableCell>
+            <TableCell>{item.fields.line}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Попередньо встановлена ОС:</TableCell>
+            <TableCell>{item.fields.preinstalledOS}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Діагональ екрану:</TableCell>
+            <TableCell>{item.fields.screenDiagonal}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Роздільна здатність:</TableCell>
+            <TableCell>{item.fields.resolution}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Тип матриці:</TableCell>
+            <TableCell>{item.fields.matrixType}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Датчик освітленості:</TableCell>
+            <TableCell>{item.fields.lightSensor ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Оперативна пам'ять:</TableCell>
+            <TableCell>{item.fields.memoryRAM}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Вбудована пам'ять:</TableCell>
+            <TableCell>{item.fields.builtInMemory}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Слот розширення пам'яті:</TableCell>
+            <TableCell>{item.fields.memoryExpansionSlot}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Процесор:</TableCell>
+            <TableCell>{item.fields.processor}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Частота процесора:</TableCell>
+            <TableCell>{item.fields.processorFrequency}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Кількість ядер процесора:</TableCell>
+            <TableCell>{item.fields.processorCores}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Вбудовані динаміки:</TableCell>
+            <TableCell>{item.fields.builtInSpeakers ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Ємність батареї:</TableCell>
+            <TableCell>{item.fields.batteryCapacity}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Фронтальна камера:</TableCell>
+            <TableCell>{item.fields.frontCamera}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Тилова камера:</TableCell>
+            <TableCell>{item.fields.rearCamera}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Wi-Fi:</TableCell>
+            <TableCell>{item.fields.wifi}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Мережа 3G / 4G (LTE) / 5G:</TableCell>
+            <TableCell>{item.fields.cellularNetwork}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Голосовий зв'язок в мережах GSM/3G:</TableCell>
+            <TableCell>{item.fields.voiceCommunication ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>GPS:</TableCell>
+            <TableCell>{item.fields.gps}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>NFC:</TableCell>
+            <TableCell>{item.fields.nfc ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Зовнішні порти:</TableCell>
+            <TableCell>{item.fields.externalPorts}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Вага:</TableCell>
+            <TableCell>{item.fields.weight}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Розміри:</TableCell>
+            <TableCell>{item.fields.dimensions.width} x {item.fields.dimensions.height} x {item.fields.dimensions.depth}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Колір кришки:</TableCell>
+            <TableCell>{item.fields.lidColor}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Колір корпусу:</TableCell>
+            <TableCell>{item.fields.bodyColor}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+const MonitorTable = ({ item }: { item: any }) => {
+  return (
+    <TableContainer component={Paper} sx = {{width: "50%", alignSelf: 'center', paddingBottom: 4}}>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell style={font}>Бренд:</TableCell>
+            <TableCell>{item.fields.brand}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Діагональ екрану:</TableCell>
+            <TableCell>{item.fields.screenDiagonal}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Тип матриці:</TableCell>
+            <TableCell>{item.fields.matrixType}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Співвідношення сторін:</TableCell>
+            <TableCell>{item.fields.aspectRatio}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Роздільна здатність:</TableCell>
+            <TableCell>{item.fields.resolution}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Час відгуку:</TableCell>
+            <TableCell>{item.fields.responseTime}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Кут огляду:</TableCell>
+            <TableCell>{item.fields.viewingAngles}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Тип підсвічування:</TableCell>
+            <TableCell>{item.fields.backlightType}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Яскравість:</TableCell>
+            <TableCell>{item.fields.brightness}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Контрастність:</TableCell>
+            <TableCell>{item.fields.contrastRatio}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Покриття екрану:</TableCell>
+            <TableCell>{item.fields.screenCoating}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Зігнутий екран:</TableCell>
+            <TableCell>{item.fields.curvedScreen ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Частота оновлення:</TableCell>
+            <TableCell>{item.fields.refreshRate}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
@@ -42,6 +390,19 @@ export const ItemPage = () => {
       dispatch(setAfterOrder(false));
     }
   }, [dispatch]);
+
+  const renderTable = () => {
+    switch (itemCurrent.category) {
+      case "Ноутбуки":
+        return <LaptopTable item={itemCurrent} />;
+      case "Планшети":
+        return <TabletTable item={itemCurrent} />;
+      case "Монітори":
+        return <MonitorTable item={itemCurrent} />;
+      default:
+        return null;
+    }
+  };
 
   function adjustPrice() {
     if (itemCurrent.sale === 0) {
@@ -237,6 +598,7 @@ export const ItemPage = () => {
             >
               {itemCurrent.description}
             </Typography>
+            {renderTable()}
           </Box>
           <Box>
             <Button

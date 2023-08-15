@@ -28,6 +28,7 @@ const homeSlice = createSlice({
 
     setCurrentItem(state, action: PayloadAction<TShippingItems | Items>) {
       state.itemCurrent = action.payload;
+      console.log(state.itemCurrent.fields);
       state.status = "success";
     },
 
@@ -102,6 +103,7 @@ const homeSlice = createSlice({
       state.status = "success";
       state.itemsCategory = action.payload;
       state.itemsSorted= action.payload;
+      
     });
     builder.addCase(getItemsByCategory.pending, (state) => {
       state.status = "pending";
@@ -129,7 +131,7 @@ const homeSlice = createSlice({
     // get item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;
-      console.log(state.itemCurrent);
+      
     });
     builder.addCase(getItemById.pending, (state) => {});
     builder.addCase(getItemById.rejected, (state) => {});

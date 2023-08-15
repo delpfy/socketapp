@@ -54,6 +54,7 @@ export type Items = {
   reviewsAmount: number;
   image: string[];
   description: string;
+  fields:[];
 };
 
 export type ItemsPOST = {
@@ -79,6 +80,7 @@ export type TShippingItems = {
   amount: number;
   image: string[];
   description: string;
+  fields:[];
 };
 
 export type CombinedItems = Items | TShippingItems;
