@@ -56,7 +56,7 @@ export default function BasketItemBlock(props: TShippingItems) {
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item.name === props.name
       );
-
+        console.log(props.fields);
       if (itemIndex !== -1) {
         basketItems[itemIndex] = {
           _id: props._id,
@@ -68,6 +68,7 @@ export default function BasketItemBlock(props: TShippingItems) {
           rating: props.rating,
           image: props.image,
           amount: props.amount + 1,
+          fields: props.fields,
         };
         
       }
@@ -83,6 +84,7 @@ export default function BasketItemBlock(props: TShippingItems) {
             rating: props.rating,
             image: props.image,
             amount: 1,
+            fields: props.fields,
           }
         )
       }
@@ -112,6 +114,7 @@ export default function BasketItemBlock(props: TShippingItems) {
             rating: props.rating,
             image: props.image,
             amount: props.amount - 1,
+            fields: props.fields,
           };
           localStorage.setItem("basketItems", JSON.stringify(basketItems));
         } else {

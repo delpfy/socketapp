@@ -102,6 +102,7 @@ export default function CatalogCard(props: Items) {
           rating: props.rating,
           image: props.image,
           amount: basketItems[itemIndex].amount + 1,
+          fields: props.fields,
         };
        
       }
@@ -117,6 +118,7 @@ export default function CatalogCard(props: Items) {
             rating: props.rating,
             image: props.image,
             amount: 1,
+            fields: props.fields,
           }
         )
       }

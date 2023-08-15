@@ -433,6 +433,7 @@ export const ItemPage = () => {
           rating: itemCurrent.rating,
           image: itemCurrent.image,
           amount: basketItems[itemIndex].amount + 1,
+          fields: itemCurrent.fields
         };
       } else {
         basketItems.push({
@@ -445,6 +446,7 @@ export const ItemPage = () => {
           rating: itemCurrent.rating,
           image: itemCurrent.image,
           amount: 1,
+          fields: itemCurrent.fields
         });
       }
     }
