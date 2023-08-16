@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Box,
+  Divider,
   FormControl,
   FormControlLabel,
   FormLabel,
@@ -13,7 +14,7 @@ import {
   RadioGroup,
   Slider,
 } from "@mui/material";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   sortByCost_ASC,
   sortByCost_DESC,
@@ -22,14 +23,22 @@ import {
   sortByRelevance_DESC,
   sortByRelevanceRange,
 } from "../../redux/home/homeSlice";
+import LaptopFields from "./LaptopFields";
+import MonitorFields from "./MonitorFields";
+import TabletFields from "./TabletFields";
+
 
 
 export default function SortBy() {
+  const {category} = useAppSelector(state => state.home);
   const [relevanceValue, setRelevanceValue] = React.useState("");
   const [costValue, setCostValue] = React.useState("");
   const [costRangeValue, setCostRangeValue] = React.useState<number[]>([
     0, 70000,
   ]);
+
+
+
   const [relevanceRangeValue, setRelevanceRangeValue] = React.useState<
     number[]
   >([1, 5]);
@@ -75,6 +84,17 @@ export default function SortBy() {
         break;
     }
   };
+
+  function showFieldsSort(){
+    switch(category){
+      case "Ноутбуки":
+        return <LaptopFields/>
+        case "Планшети":
+        return <TabletFields/>
+        case "Монітори":
+        return <MonitorFields/>
+    }
+  }
 
   return (
     <Box
@@ -195,7 +215,17 @@ export default function SortBy() {
               </Box>
             </AccordionDetails>
           </Accordion>
+          <Box paddingTop={4}>
+            <Typography >
+              Характеристики
+            </Typography>
+          </Box>
+          <Divider />
+          {showFieldsSort()
+         
+        }
         </AccordionDetails>
+        
       </Accordion>
     </Box>
   );

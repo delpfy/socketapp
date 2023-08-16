@@ -243,7 +243,7 @@ export interface HomeState {
   id: number;
 
   itemsDisplay: ItemsDisplay;
-  itemsCategory: ItemsDisplay;
+  itemsCategory: any;
   itemsSorted: ItemsDisplay;
   sortedByRange: boolean;
   itemCurrent: TShippingItems | Items;
