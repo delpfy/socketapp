@@ -34,50 +34,93 @@ const homeSlice = createSlice({
     },
 
     sortByCost_ASC(state) {
-      state.sortedByRange = false;
-      state.itemsCategory.items = [...state.itemsCategory.items].sort(
-        (a, b) =>
-          a.price -
-          Math.round((a.price * a.sale) / 100) -
-          (b.price - Math.round((b.price * b.sale) / 100))
-      );
-    },
-    sortByCost_DESC(state) {
-      state.sortedByRange = false;
-      state.itemsCategory.items = [...state.itemsCategory.items]
-        .sort(
+      state.sorted = true;
+      if (state.sorted) {
+        state.itemsSorted.items = [...state.itemsSortedParams.items].sort(
           (a, b) =>
             a.price -
             Math.round((a.price * a.sale) / 100) -
             (b.price - Math.round((b.price * b.sale) / 100))
-        )
-        .reverse();
+        );
+      } else {
+        state.itemsSorted.items = [...state.itemsCategory.items].sort(
+          (a, b) =>
+            a.price -
+            Math.round((a.price * a.sale) / 100) -
+            (b.price - Math.round((b.price * b.sale) / 100))
+        );
+      }
+    },
+    sortByCost_DESC(state) {
+      state.sorted = true;
+      if (state.sorted) {
+        state.itemsSorted.items = [...state.itemsSortedParams.items]
+          .sort(
+            (a, b) =>
+              a.price -
+              Math.round((a.price * a.sale) / 100) -
+              (b.price - Math.round((b.price * b.sale) / 100))
+          )
+          .reverse();
+      } else {
+        state.itemsSorted.items = [...state.itemsCategory.items]
+          .sort(
+            (a, b) =>
+              a.price -
+              Math.round((a.price * a.sale) / 100) -
+              (b.price - Math.round((b.price * b.sale) / 100))
+          )
+          .reverse();
+      }
     },
     sortByRelevance_ASC(state) {
-      state.sortedByRange = false;
-      state.itemsCategory.items = [...state.itemsCategory.items].sort(
-        (a, b) => b.rating - a.rating
-      );
+      state.sorted = true;
+
+      if (state.sorted) {
+        state.itemsSorted.items = [...state.itemsSortedParams.items].sort(
+          (a, b) => b.rating - a.rating
+        );
+      } else {
+        state.itemsSorted.items = [...state.itemsCategory.items].sort(
+          (a, b) => b.rating - a.rating
+        );
+      }
     },
     sortByRelevance_DESC(state) {
-      state.sortedByRange = false;
-      state.itemsCategory.items = [...state.itemsCategory.items]
-        .sort((a, b) => b.rating - a.rating)
-        .reverse();
+      state.sorted = true;
+      if (state.sorted) {
+        state.itemsSorted.items = [...state.itemsSortedParams.items]
+          .sort((a, b) => b.rating - a.rating)
+          .reverse();
+      } else {
+        state.itemsSorted.items = [...state.itemsCategory.items]
+          .sort((a, b) => b.rating - a.rating)
+          .reverse();
+      }
     },
 
     sortByCostRange(state, action: PayloadAction<number[]>) {
-      state.sortedByRange = true;
-      state.itemsSorted.items = state.itemsCategory.items.filter(
-        (item: Items) =>
-          item.price - Math.round((item.price * item.sale) / 100) >=
-            action.payload[0] &&
-          item.price - Math.round((item.price * item.sale) / 100) <=
-            action.payload[1]
-      );
+      state.sorted = true;
+      if (state.sorted) {
+        state.itemsSorted.items = state.itemsSortedParams.items.filter(
+          (item: Items) =>
+            item.price - Math.round((item.price * item.sale) / 100) >=
+              action.payload[0] &&
+            item.price - Math.round((item.price * item.sale) / 100) <=
+              action.payload[1]
+        );
+      } else {
+        state.itemsSorted.items = state.itemsCategory.items.filter(
+          (item: Items) =>
+            item.price - Math.round((item.price * item.sale) / 100) >=
+              action.payload[0] &&
+            item.price - Math.round((item.price * item.sale) / 100) <=
+              action.payload[1]
+        );
+      }
     },
     sortByRelevanceRange(state, action: PayloadAction<number[]>) {
-      state.sortedByRange = true;
+      state.sorted = true;
       state.itemsSorted.items = state.itemsCategory.items.filter(
         (item: Items) =>
           item.rating >= action.payload[0] && item.rating <= action.payload[1]
@@ -88,217 +131,242 @@ const homeSlice = createSlice({
       state,
       action: PayloadAction<{ selectedParams: SelectedSortParams }>
     ) {
-      state.sortedByRange = true;
+      state.sorted = true;
+      state.sorted = true;
       const selectedParams = action.payload.selectedParams;
-      state.itemsSorted.items = state.itemsCategory.items.filter((item: any) => {
-        return Object.keys(selectedParams).every((paramName) => {
-          const paramValues = selectedParams[paramName];
+      state.itemsSorted.items = state.itemsCategory.items.filter(
+        (item: any) => {
+          return Object.keys(selectedParams).every((paramName) => {
+            const paramValues = selectedParams[paramName];
 
-          if (paramValues.length === 0) {
-            return true;
-          }
-
-          return paramValues.some((paramValue) => {
-            switch (paramName) {
-              case "Бренд":
-                return item.fields.brand.toString() === paramValue;
-              case "Тип матриці":
-                return item.fields.matrixType.toString() === paramValue;
-              case "Розмір матриці":
-                return item.fields.screenDiagonal.toString() === paramValue;
-              case "Роздільна здатність":
-                return item.fields.resolution.toString() === paramValue;
-              case "Процесор":
-                return item.fields.processor.toString() === paramValue;
-              case "Обсяг пам'яті":
-                return item.fields.memory.toString() === paramValue;
-              case "Серія":
-                return item.fields.series.toString() === paramValue;
-              case "Тип конструкції":
-                return item.fields.construction.toString() === paramValue;
-              case "Операційна система":
-                return item.fields.operatingSystem.toString() === paramValue;
-              case "Тип покриття матриці":
-                return item.fields.coatingType.toLowerCase() === paramValue;
-              case "Сенсорний екран":
-                return item.fields.touchScreen.toString() === paramValue;
-              case "Частота оновлення":
-                return item.fields.refreshRate.toString() === paramValue;
-              case "Яскравість":
-                
-                return item.fields.brightness.toString() === paramValue;
-              case "Інші функції дисплея":
-                return (
-                  item.fields.otherDisplayFeatures.toString() === paramValue
-                );
-              case "Максимальний обсяг ОЗУ":
-                return item.fields.maxRAM.toString() === paramValue;
-              case "Тип накопичувача":
-                return item.fields.storageType.toString() === paramValue;
-              case "Обсяг накопичувача":
-                return item.fields.storageCapacity.toString() === paramValue;
-              case "Оптичний привід":
-                return item.fields.opticalDrive.toString() === paramValue;
-              case "Рідер карт пам'яті":
-                return item.fields.cardReader.toString() === paramValue;
-              case "Веб-камера":
-                return item.fields.webcam.toString() === paramValue;
-              case "Підсвітка клавіатури":
-                return item.fields.keyboardBacklight.toString() === paramValue;
-              case "Пасивне охолодження":
-                return item.fields.passiveCooling.toString() === paramValue;
-              case "Сканер відбитків пальців":
-                return item.fields.fingerprintScanner.toString() === paramValue;
-              case "Цифрова клавіатура":
-                return item.fields.numericKeypad.toString() === paramValue;
-              case "Адаптер Ethernet":
-                return item.fields.ethernetAdapter.toString() === paramValue;
-              case "Wi-Fi":
-                return item.fields.wifi.toString() === paramValue;
-              case "Bluetooth":
-                return item.fields.bluetooth.toString() === paramValue;
-              case "Вага":
-                return item.fields.weight.toString() === paramValue;
-              case "Матеріал корпусу":
-                return item.fields.bodyMaterial.toLowerCase() === paramValue;
-              case "Колір кришки":
-                return item.fields.lidColor.toLowerCase() === paramValue;
-              case "Колір корпусу":
-                return item.fields.bodyColor.toLowerCase() === paramValue;
-              default:
-                return false;
+            if (paramValues.length === 0) {
+              return true;
             }
-          });
-        });
-      });
 
-     
+            return paramValues.some((paramValue) => {
+              switch (paramName) {
+                case "Бренд":
+                  return item.fields.brand.toString() === paramValue;
+                case "Тип матриці":
+                  return item.fields.matrixType.toString() === paramValue;
+                case "Розмір матриці":
+                  return item.fields.screenDiagonal.toString() === paramValue;
+                case "Роздільна здатність":
+                  return item.fields.resolution.toString() === paramValue;
+                case "Процесор":
+                  return item.fields.processor.toString() === paramValue;
+                case "Обсяг пам'яті":
+                  return item.fields.memory.toString() === paramValue;
+                case "Серія":
+                  return item.fields.series.toString() === paramValue;
+                case "Тип конструкції":
+                  return item.fields.construction.toString() === paramValue;
+                case "Операційна система":
+                  return item.fields.operatingSystem.toString() === paramValue;
+                case "Тип покриття матриці":
+                  return item.fields.coatingType.toLowerCase() === paramValue;
+                case "Сенсорний екран":
+                  return item.fields.touchScreen.toString() === paramValue;
+                case "Частота оновлення":
+                  return item.fields.refreshRate.toString() === paramValue;
+                case "Яскравість":
+                  return item.fields.brightness.toString() === paramValue;
+                case "Інші функції дисплея":
+                  return (
+                    item.fields.otherDisplayFeatures.toString() === paramValue
+                  );
+                case "Максимальний обсяг ОЗУ":
+                  return item.fields.maxRAM.toString() === paramValue;
+                case "Тип накопичувача":
+                  return item.fields.storageType.toString() === paramValue;
+                case "Обсяг накопичувача":
+                  return item.fields.storageCapacity.toString() === paramValue;
+                case "Оптичний привід":
+                  return item.fields.opticalDrive.toString() === paramValue;
+                case "Рідер карт пам'яті":
+                  return item.fields.cardReader.toString() === paramValue;
+                case "Веб-камера":
+                  return item.fields.webcam.toString() === paramValue;
+                case "Підсвітка клавіатури":
+                  return (
+                    item.fields.keyboardBacklight.toString() === paramValue
+                  );
+                case "Пасивне охолодження":
+                  return item.fields.passiveCooling.toString() === paramValue;
+                case "Сканер відбитків пальців":
+                  return (
+                    item.fields.fingerprintScanner.toString() === paramValue
+                  );
+                case "Цифрова клавіатура":
+                  return item.fields.numericKeypad.toString() === paramValue;
+                case "Адаптер Ethernet":
+                  return item.fields.ethernetAdapter.toString() === paramValue;
+                case "Wi-Fi":
+                  return item.fields.wifi.toString() === paramValue;
+                case "Bluetooth":
+                  return item.fields.bluetooth.toString() === paramValue;
+                case "Вага":
+                  return item.fields.weight.toString() === paramValue;
+                case "Матеріал корпусу":
+                  return item.fields.bodyMaterial.toLowerCase() === paramValue;
+                case "Колір кришки":
+                  return item.fields.lidColor.toLowerCase() === paramValue;
+                case "Колір корпусу":
+                  return item.fields.bodyColor.toLowerCase() === paramValue;
+                default:
+                  return false;
+              }
+            });
+          });
+        }
+      );
+
+      state.itemsSortedParams = state.itemsSorted;
     },
 
     sortMonitorsByParameters(
       state,
       action: PayloadAction<{ selectedParams: SelectedSortParams }>
     ) {
-      state.sortedByRange = true;
+      state.sorted = true;
       const selectedParams = action.payload.selectedParams;
-      state.itemsSorted.items = state.itemsCategory.items.filter((item: any) => {
-        return Object.keys(selectedParams).every((paramName) => {
-          const paramValues = selectedParams[paramName];
-    
-          if (paramValues.length === 0) {
-            return true;
-          }
-    
-          return paramValues.some((paramValue) => {
-            switch (paramName) {
-              case "Бренд":
-                return item.fields.brand.toString() === paramValue;
-              case "Тип матриці":
-                return item.fields.matrixType.toString() === paramValue;
-              case "Розмір матриці":
-                return item.fields.screenDiagonal.toString() === paramValue;
-              case "Роздільна здатність":
-                return item.fields.resolution.toString() === paramValue;
-              case "Час відгуку":
-                return item.fields.responseTime.toString() === paramValue;
-              case "Кути огляду":
-                return item.fields.viewingAngles.toString() === paramValue;
-              case "Тип підсвічування":
-                return item.fields.backlightType.toString() === paramValue;
-              case "Яскравість":
-                return item.fields.brightness.toString() === paramValue;
-              case "Співвідношення контрастності":
-                return item.fields.contrastRatio.toString() === paramValue;
-              case "Співвідношення сторін":
-                return item.fields.aspectRatio.toString() === paramValue;
-              case "Покриття екрану":
-                return item.fields.screenCoating.toString() === paramValue;
-              case "Зігнута матриця":
-                return item.fields.curvedScreen.toString() === paramValue;
-              case "Частота оновлення":
-                return item.fields.refreshRate.toString() === paramValue;
-              default:
-                return false;
+      state.itemsSorted.items = state.itemsCategory.items.filter(
+        (item: any) => {
+          return Object.keys(selectedParams).every((paramName) => {
+            const paramValues = selectedParams[paramName];
+
+            if (paramValues.length === 0) {
+              return true;
             }
+
+            return paramValues.some((paramValue) => {
+              switch (paramName) {
+                case "Бренд":
+                  return item.fields.brand.toString() === paramValue;
+                case "Тип матриці":
+                  return item.fields.matrixType.toString() === paramValue;
+                case "Розмір матриці":
+                  return item.fields.screenDiagonal.toString() === paramValue;
+                case "Роздільна здатність":
+                  return item.fields.resolution.toString() === paramValue;
+                case "Час відгуку":
+                  return item.fields.responseTime.toString() === paramValue;
+                case "Кути огляду":
+                  return item.fields.viewingAngles.toString() === paramValue;
+                case "Тип підсвічування":
+                  return item.fields.backlightType.toString() === paramValue;
+                case "Яскравість":
+                  return item.fields.brightness.toString() === paramValue;
+                case "Співвідношення контрастності":
+                  return item.fields.contrastRatio.toString() === paramValue;
+                case "Співвідношення сторін":
+                  return item.fields.aspectRatio.toString() === paramValue;
+                case "Покриття екрану":
+                  return item.fields.screenCoating.toString() === paramValue;
+                case "Зігнута матриця":
+                  return item.fields.curvedScreen.toString() === paramValue;
+                case "Частота оновлення":
+                  return item.fields.refreshRate.toString() === paramValue;
+                default:
+                  return false;
+              }
+            });
           });
-        });
-      });
+        }
+      );
+      state.sorted = true;
+      state.itemsSortedParams = state.itemsSorted;
     },
 
     sortTabletsByParameters(
       state,
       action: PayloadAction<{ selectedParams: SelectedSortParams }>
     ) {
-      state.sortedByRange = true;
+      state.sorted = true;
       const selectedParams = action.payload.selectedParams;
-      state.itemsSorted.items = state.itemsCategory.items.filter((item: any) => {
-        return Object.keys(selectedParams).every((paramName) => {
-          const paramValues = selectedParams[paramName];
-    
-          if (paramValues.length === 0) {
-            return true;
-          }
-    
-          return paramValues.some((paramValue) => {
-            switch (paramName) {
-              case "Бренд":
-                return item.fields.brand.toString() === paramValue;
-              case "Лінійка":
-                return item.fields.line.toString() === paramValue;
-              case "Операційна система":
-                return item.fields.preinstalledOS.toString() === paramValue;
-              case "Розмір матриці":
-                return item.fields.screenDiagonal.toString() === paramValue;
-              case "Роздільна здатність":
-                return item.fields.resolution.toString() === paramValue;
-              case "Тип матриці":
-                return item.fields.matrixType.toString() === paramValue;
-              case "Обсяг пам'яті RAM":
-                return item.fields.memoryRAM.toString() === paramValue;
-              case "Вбудована пам'ять":
-                return item.fields.builtInMemory.toString() === paramValue;
-              case "Слот розширення пам'яті":
-                return item.fields.memoryExpansionSlot.toString() === paramValue;
-              case "Процесор":
-                return item.fields.processor.toString() === paramValue;
-              case "Частота процесора":
-                return item.fields.processorFrequency.toString() === paramValue;
-              case "Кількість ядер процесора":
-                return item.fields.processorCores.toString() === paramValue;
-              case "Вбудовані динаміки":
-                return item.fields.builtInSpeakers.toString() === paramValue;
-              case "Ємність батареї":
-                return item.fields.batteryCapacity.toString() === paramValue;
-              case "Фронтальна камера":
-                return item.fields.frontCamera.toString() === paramValue;
-              case "Тилова камера":
-                return item.fields.rearCamera.toString() === paramValue;
-              case "Wi-Fi":
-                return item.fields.wifi.toString() === paramValue;
-              case "Мобільна мережа":
-                return item.fields.cellularNetwork.toString() === paramValue;
-              case "Голосова комунікація":
-                return item.fields.voiceCommunication.toString() === paramValue;
-              case "GPS":
-                return item.fields.gps.toString() === paramValue;
-              case "NFC":
-                return item.fields.nfc.toString() === paramValue;
-              case "Зовнішні порти":
-                return item.fields.externalPorts.toString() === paramValue;
-              case "Вага":
-                return item.fields.weight.toString() === paramValue;
-              case "Колір корпусу":
-                return item.fields.bodyColor.toLowerCase() === paramValue.toLowerCase();
-              case "Колір фронтальної панелі":
-                return item.fields.frontPanelColor.toLowerCase() === paramValue.toLowerCase();
-              default:
-                return false;
+      state.itemsSorted.items = state.itemsCategory.items.filter(
+        (item: any) => {
+          return Object.keys(selectedParams).every((paramName) => {
+            const paramValues = selectedParams[paramName];
+
+            if (paramValues.length === 0) {
+              return true;
             }
+
+            return paramValues.some((paramValue) => {
+              switch (paramName) {
+                case "Бренд":
+                  return item.fields.brand.toString() === paramValue;
+                case "Лінійка":
+                  return item.fields.line.toString() === paramValue;
+                case "Операційна система":
+                  return item.fields.preinstalledOS.toString() === paramValue;
+                case "Розмір матриці":
+                  return item.fields.screenDiagonal.toString() === paramValue;
+                case "Роздільна здатність":
+                  return item.fields.resolution.toString() === paramValue;
+                case "Тип матриці":
+                  return item.fields.matrixType.toString() === paramValue;
+                case "Обсяг пам'яті RAM":
+                  return item.fields.memoryRAM.toString() === paramValue;
+                case "Вбудована пам'ять":
+                  return item.fields.builtInMemory.toString() === paramValue;
+                case "Слот розширення пам'яті":
+                  return (
+                    item.fields.memoryExpansionSlot.toString() === paramValue
+                  );
+                case "Процесор":
+                  return item.fields.processor.toString() === paramValue;
+                case "Частота процесора":
+                  return (
+                    item.fields.processorFrequency.toString() === paramValue
+                  );
+                case "Кількість ядер процесора":
+                  return item.fields.processorCores.toString() === paramValue;
+                case "Вбудовані динаміки":
+                  return item.fields.builtInSpeakers.toString() === paramValue;
+                case "Ємність батареї":
+                  return item.fields.batteryCapacity.toString() === paramValue;
+                case "Фронтальна камера":
+                  return item.fields.frontCamera.toString() === paramValue;
+                case "Тилова камера":
+                  return item.fields.rearCamera.toString() === paramValue;
+                case "Wi-Fi":
+                  return item.fields.wifi.toString() === paramValue;
+                case "Мобільна мережа":
+                  return item.fields.cellularNetwork.toString() === paramValue;
+                case "Голосова комунікація":
+                  return (
+                    item.fields.voiceCommunication.toString() === paramValue
+                  );
+                case "GPS":
+                  return item.fields.gps.toString() === paramValue;
+                case "NFC":
+                  return item.fields.nfc.toString() === paramValue;
+                case "Зовнішні порти":
+                  return item.fields.externalPorts.toString() === paramValue;
+                case "Вага":
+                  return item.fields.weight.toString() === paramValue;
+                case "Колір корпусу":
+                  return (
+                    item.fields.bodyColor.toLowerCase() ===
+                    paramValue.toLowerCase()
+                  );
+                case "Колір фронтальної панелі":
+                  return (
+                    item.fields.frontPanelColor.toLowerCase() ===
+                    paramValue.toLowerCase()
+                  );
+                default:
+                  return false;
+              }
+            });
           });
-        });
-      });
+        }
+      );
+      state.sorted = true;
+      state.itemsSortedParams = state.itemsSorted;
     },
-    
   },
   extraReducers: (builder) => {
     // All items.
@@ -331,7 +399,6 @@ const homeSlice = createSlice({
       state.itemsCategory = {} as ItemsDisplay;
     });
 
-    // Items by category.
     builder.addCase(searchItems.fulfilled, (state, action) => {
       state.status = "success";
       state.itemsDisplay = action.payload;

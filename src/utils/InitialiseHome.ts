@@ -26,9 +26,11 @@ export const InitialiseHome = () => {
     id: 0,
     status: "" as Status,
     itemsDisplay: {} as ItemsDisplay,
+    itemsSortedParams: {} as ItemsDisplay,
     itemsCategory: {} as any,
     itemsSorted: {} as ItemsDisplay,
-    sortedByRange: false,
+    sorted: false,
+    sortedByParams: false,
     itemCurrent: {} as TShippingItems | Items,
     
     categories,

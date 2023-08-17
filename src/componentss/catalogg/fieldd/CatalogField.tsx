@@ -19,7 +19,7 @@ export const CatalogField = () => {
   
   // ItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
-  const { itemsCategory, itemsSorted, sortedByRange } = useAppSelector(
+  const { itemsCategory, itemsSorted, sorted } = useAppSelector(
     (state) => state.home
   );
 
@@ -82,7 +82,7 @@ export const CatalogField = () => {
             spacing={{ xs: 1, sm: 3, md: 4 }}
             columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
           >
-            {sortedByRange
+            {sorted
               ? itemsSorted.items.map((item: Items) => (
                   <Grid
                     item
