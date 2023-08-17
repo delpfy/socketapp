@@ -252,7 +252,7 @@ export interface HomeState {
   itemsSorted: ItemsDisplay;
   sorted: boolean;
   sortedByParams: boolean;
-  itemCurrent: TShippingItems | Items;
+  itemCurrent: any;
   categories: { id: number; name: string; image: string }[];
   category: string;
 }

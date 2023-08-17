@@ -15,19 +15,19 @@ import {
 
 import { Items, TShippingItems } from "../../../redux/types";
 import { useAppDispatch } from "../../../redux/hooks";
-import {
-  synchronizeBasket,
-} from "../../../redux/basket/basketSlice";
+import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
-
+import { getItemById } from "../../../redux/home/asyncActions";
+import { getItemReviews } from "../../../redux/review/asyncActions";
 
 export default function BasketItemBlock(props: TShippingItems) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   function getCurrentItem() {
-    dispatch(setCurrentItem(props));
+    dispatch(getItemById(props._id));
+    dispatch(getItemReviews(props._id));
     navigate("/catalog/item");
 
     const recentlyReviewed = JSON.parse(
@@ -49,14 +49,13 @@ export default function BasketItemBlock(props: TShippingItems) {
     }
   }
 
-
   async function basketItem_APPEND() {
     const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item.name === props.name
       );
-        console.log(props.fields);
+      console.log(props.fields);
       if (itemIndex !== -1) {
         basketItems[itemIndex] = {
           _id: props._id,
@@ -70,28 +69,24 @@ export default function BasketItemBlock(props: TShippingItems) {
           amount: props.amount + 1,
           fields: props.fields,
         };
-        
-      }
-      else{
-        basketItems.push(
-          {
-            _id: props._id,
-            name: props.name,
-            description: props.description,
-            category: props.category,
-            price: props.price,
-            sale: props.sale,
-            rating: props.rating,
-            image: props.image,
-            amount: 1,
-            fields: props.fields,
-          }
-        )
+      } else {
+        basketItems.push({
+          _id: props._id,
+          name: props.name,
+          description: props.description,
+          category: props.category,
+          price: props.price,
+          sale: props.sale,
+          rating: props.rating,
+          image: props.image,
+          amount: 1,
+          fields: props.fields,
+        });
       }
     }
     localStorage.setItem("basketItems", JSON.stringify(basketItems));
     console.log(props.quantity);
-    
+
     dispatch(synchronizeBasket());
   }
 
@@ -122,7 +117,7 @@ export default function BasketItemBlock(props: TShippingItems) {
         }
       }
     }
-    
+
     dispatch(synchronizeBasket());
   }
 
@@ -132,11 +127,11 @@ export default function BasketItemBlock(props: TShippingItems) {
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item._id === props._id
       );
-      console.log("itemId " + props._id)
+      console.log("itemId " + props._id);
       basketItems.splice(itemIndex, 1);
       localStorage.setItem("basketItems", JSON.stringify(basketItems));
     }
-    
+
     dispatch(synchronizeBasket());
   }
   return (

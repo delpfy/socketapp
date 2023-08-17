@@ -31,6 +31,7 @@ import {
   setRatingAmount,
 } from "../../redux/review/reviewSlice";
 import { updateItem } from "../../redux/home/asyncActions";
+import LoadingPage from "../LoadingPage";
 
 const font = {
   fontFamily: 'Ubuntu',
@@ -392,25 +393,25 @@ export const ItemPage = () => {
   }, [dispatch]);
 
   const renderTable = () => {
-    switch (itemCurrent.category) {
+    switch (itemCurrent.items.category) {
       case "Ноутбуки":
-        return <LaptopTable item={itemCurrent} />;
+        return <LaptopTable item={itemCurrent.items} />;
       case "Планшети":
-        return <TabletTable item={itemCurrent} />;
+        return <TabletTable item={itemCurrent.items} />;
       case "Монітори":
-        return <MonitorTable item={itemCurrent} />;
+        return <MonitorTable item={itemCurrent.items} />;
       default:
         return null;
     }
   };
 
   function adjustPrice() {
-    if (itemCurrent.sale === 0) {
-      return itemCurrent.price;
+    if (itemCurrent.items.sale === 0) {
+      return itemCurrent.items.price;
     } else {
       return (
-        itemCurrent.price -
-        Math.round((itemCurrent.price * itemCurrent.sale) / 100)
+        itemCurrent.items.price -
+        Math.round((itemCurrent.items.price * itemCurrent.items.sale) / 100)
       );
     }
   }
@@ -419,34 +420,34 @@ export const ItemPage = () => {
     const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
       const itemIndex = basketItems.findIndex(
-        (item: TShippingItems) => item.name === itemCurrent.name
+        (item: TShippingItems) => item.name === itemCurrent.items.name
       );
 
       if (itemIndex !== -1) {
         basketItems[itemIndex] = {
-          _id: itemCurrent._id,
-          name: itemCurrent.name,
-          description: itemCurrent.description,
-          category: itemCurrent.category,
+          _id: itemCurrent.items._id,
+          name: itemCurrent.items.name,
+          description: itemCurrent.items.description,
+          category: itemCurrent.items.category,
           price: adjustPrice(),
-          sale: itemCurrent.sale,
-          rating: itemCurrent.rating,
-          image: itemCurrent.image,
+          sale: itemCurrent.items.sale,
+          rating: itemCurrent.items.rating,
+          image: itemCurrent.items.image,
           amount: basketItems[itemIndex].amount + 1,
-          fields: itemCurrent.fields
+          fields: itemCurrent.items.fields
         };
       } else {
         basketItems.push({
-          _id: itemCurrent._id,
-          name: itemCurrent.name,
-          description: itemCurrent.description,
-          category: itemCurrent.category,
+          _id: itemCurrent.items._id,
+          name: itemCurrent.items.name,
+          description: itemCurrent.items.description,
+          category: itemCurrent.items.category,
           price: adjustPrice(),
-          sale: itemCurrent.sale,
-          rating: itemCurrent.rating,
-          image: itemCurrent.image,
+          sale: itemCurrent.items.sale,
+          rating: itemCurrent.items.rating,
+          image: itemCurrent.items.image,
           amount: 1,
-          fields: itemCurrent.fields
+          fields: itemCurrent.items.fields
         });
       }
     }
@@ -461,6 +462,7 @@ export const ItemPage = () => {
 
   const Item = () => {
     return (
+    
       <>
         <Button
           sx={{ fontFamily: "Comfortaa", marginTop: 15, fontSize: 15 }}
@@ -500,14 +502,14 @@ export const ItemPage = () => {
             >
               <Box>
                 <img
-                  src={itemCurrent.image[0]}
+                  src={itemCurrent.items.image[0]}
                   alt="img1"
                   style={{ width: "100%", height: "100%", objectFit: "fill" }}
                 />
               </Box>
               <Box>
                 <img
-                  src={itemCurrent.image[1]}
+                  src={itemCurrent.items.image[1]}
                   alt="img2"
                   style={{
                     width: "100%",
@@ -518,7 +520,7 @@ export const ItemPage = () => {
               </Box>
               <Box>
                 <img
-                  src={itemCurrent.image[2]}
+                  src={itemCurrent.items.image[2]}
                   alt="img3"
                   style={{
                     width: "100%",
@@ -537,13 +539,13 @@ export const ItemPage = () => {
           </Box>
 
           <Box display={"flex"} flexDirection={"column"} alignItems={"left"}>
-            {itemCurrent.quantity <= 10 ? (
+            {itemCurrent.items.quantity <= 10 ? (
               <Typography
                 fontFamily={"Comfortaa"}
                 sx={{ paddingLeft: 0.3, background: "#fdfacf" }}
                 fontSize={25}
               >
-                Товар закінчується! Залишилось: {itemCurrent.quantity}
+                Товар закінчується! Залишилось: {itemCurrent.items.quantity}
               </Typography>
             ) : (
               <></>
@@ -553,7 +555,7 @@ export const ItemPage = () => {
               sx={{ paddingLeft: 0.3 }}
               fontSize={25}
             >
-              {itemCurrent.name}
+              {itemCurrent.items.name}
             </Typography>
 
             <Box
@@ -565,9 +567,9 @@ export const ItemPage = () => {
               <Typography
                 paddingLeft={0.3}
                 fontFamily={"Comfortaa"}
-                color={itemCurrent.sale ? "info" : "error"}
+                color={itemCurrent.items.sale ? "info" : "error"}
                 sx={
-                  itemCurrent.sale
+                  itemCurrent.items.sale
                     ? {
                         fontSize: 17,
                         textDecoration: "line-through !important",
@@ -575,30 +577,30 @@ export const ItemPage = () => {
                     : { fontSize: 22 }
                 }
               >
-                {itemCurrent.price} ₴
+                {itemCurrent.items.price} ₴
               </Typography>
-              {itemCurrent.sale ? (
+              {itemCurrent.items.sale ? (
                 <Typography
                   paddingLeft={0.3}
                   fontSize={22}
                   fontFamily={"Comfortaa"}
                   color={"error"}
                 >
-                  {itemCurrent.price -
-                    Math.round((itemCurrent.price * itemCurrent.sale) / 100)}
+                  {itemCurrent.items.price -
+                    Math.round((itemCurrent.items.price * itemCurrent.items.sale) / 100)}
                   ₴
                 </Typography>
               ) : (
                 <></>
               )}
             </Box>
-            <Rating name="read-only" value={itemCurrent.rating} readOnly />
+            <Rating name="read-only" value={itemCurrent.items.rating} readOnly />
 
             <Typography
               fontFamily={"Comfortaa"}
               sx={{ paddingLeft: 0.3, paddingTop: 3 }}
             >
-              {itemCurrent.description}
+              {itemCurrent.items.description}
             </Typography>
             {renderTable()}
           </Box>
@@ -628,7 +630,7 @@ export const ItemPage = () => {
             >
               Відгуки
             </Typography>
-            <ReviewForm {...itemCurrent} />
+            <ReviewForm {...itemCurrent.items} />
             <Box>{StatusReviewHandler(status_review)}</Box>
           </Box>
         </Box>
@@ -687,19 +689,20 @@ export const ItemPage = () => {
   function StatusItemHandler(status: Status) {
     switch (status) {
       case "success":
-        if (itemCurrent !== undefined) {
+        console.log(itemCurrent.items);
+        if (itemCurrent.items !== undefined) {
           return <Item />;
         } else {
-          navigate("/catalog");
+          navigate('/catalog')
           return <NotFoundPage />;
         }
       case "pending":
-        return <NotFoundPage />;
+        return <LoadingPage/>;
       case "error":
-        navigate("/catalog");
+        navigate('/catalog')
         return <NotFoundPage />;
       default:
-        navigate("/catalog");
+        navigate('/catalog')
         return <NotFoundPage />;
     }
   }

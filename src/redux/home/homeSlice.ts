@@ -5,7 +5,6 @@ import {
   HomeState,
   TShippingItems,
   Items,
-  CombinedItems,
   SelectedSortParams,
 } from "../types";
 import {
@@ -16,6 +15,9 @@ import {
   updateItem,
 } from "./asyncActions";
 import { actualizeData } from "../../utils/actuilizeLocalStorageData";
+import { actualizeBasket } from "../../utils/actuilizeBasket";
+import { actualizeFirstRender } from "../../utils/actualizeFirstLoad";
+import { actualizeFirstRenderBasket } from "../../utils/actuilizeFirstLoadBasket";
 
 const initialState: HomeState = InitialiseHome();
 
@@ -385,9 +387,19 @@ const homeSlice = createSlice({
 
     // Items by category.
     builder.addCase(getItemsByCategory.fulfilled, (state, action) => {
+      const recentlyReviewed = JSON.parse(
+        localStorage.getItem("recentlyReviewed") || "{}"
+      );
+      const basketItems = JSON.parse(
+        localStorage.getItem("basketItems") || "{}"
+      );
       state.status = "success";
       state.itemsCategory = action.payload;
-      console.log(state.itemsCategory);
+      state.itemsCategory.items.map((item: any) => {
+        console.log(item)
+        actualizeFirstRender(recentlyReviewed, item);
+        actualizeFirstRenderBasket(basketItems, item);
+      })
       state.itemsSorted = action.payload;
     });
     builder.addCase(getItemsByCategory.pending, (state) => {
@@ -415,30 +427,40 @@ const homeSlice = createSlice({
     // get item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;
+      state.status = 'success';
     });
-    builder.addCase(getItemById.pending, (state) => {});
-    builder.addCase(getItemById.rejected, (state) => {});
+    builder.addCase(getItemById.pending, (state) => {state.status = 'pending';});
+    builder.addCase(getItemById.rejected, (state) => {state.status = 'error';});
 
     // update.
     builder.addCase(updateItem.fulfilled, (state, action) => {
-      state.itemCurrent = action.payload.item;
-
+      state.itemCurrent = action.payload;
+     
+     
       const recentlyReviewed = JSON.parse(
         localStorage.getItem("recentlyReviewed") || "{}"
       );
       const basketItems = JSON.parse(
         localStorage.getItem("basketItems") || "{}"
       );
+      
 
       actualizeData(recentlyReviewed, action.payload);
+      actualizeBasket(basketItems, action.payload);
+     console.log(basketItems)
 
       localStorage.setItem(
         "recentlyReviewed",
         JSON.stringify(recentlyReviewed)
       );
+      localStorage.setItem(
+        "basketItems",
+        JSON.stringify(basketItems)
+      );
+      state.status = 'success';
     });
-    builder.addCase(updateItem.pending, (state) => {});
-    builder.addCase(updateItem.rejected, (state) => {});
+    builder.addCase(updateItem.pending, (state) => {state.status = 'pending';});
+    builder.addCase(updateItem.rejected, (state) => {state.status = 'error';});
 
     /* // Item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {

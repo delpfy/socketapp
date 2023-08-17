@@ -35,11 +35,11 @@ export const getItemById = createAsyncThunk<Items, string>(
 );
 
 export const updateItem = createAsyncThunk<
-  { item: Items } | { item: TShippingItems },
+  { items: Items } | { items: TShippingItems },
   { itemId: string; params: {} }
 >("home/updateItem", async (params) => {
   const { data } = await axios.patch<
-    { item: Items } | { item: TShippingItems }
+    { items: Items } | { items: TShippingItems }
   >(`/items/${params.itemId}`, params.params, {
     headers: {
       authorization: `Bearer ${window.localStorage.getItem("token")}`,

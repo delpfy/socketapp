@@ -31,7 +31,7 @@ export const InitialiseHome = () => {
     itemsSorted: {} as ItemsDisplay,
     sorted: false,
     sortedByParams: false,
-    itemCurrent: {} as TShippingItems | Items,
+    itemCurrent: {} as any,
     
     categories,
     category: "Монітори",

@@ -20,6 +20,7 @@ import { setCurrentItem } from "../../redux/home/homeSlice";
 import { getItemReviews } from "../../redux/review/asyncActions";
 import BasketDialog from "../../componentss/dialogs/BasketDialog";
 import { ORDER_setItems } from "../../redux/order/orderSlice";
+import { getItemById } from "../../redux/home/asyncActions";
 
 export default function OrderProducts() {
   
@@ -40,7 +41,7 @@ export default function OrderProducts() {
   }
 
   function getCurrentItem(item: TShippingItems) {
-    dispatch(setCurrentItem(item));
+    dispatch(getItemById(item._id));
     dispatch(getItemReviews(item._id));
     navigate("/catalog/item");
   }

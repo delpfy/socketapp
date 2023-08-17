@@ -19,6 +19,7 @@ import {synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
 import { getItemReviews } from "../../../redux/review/asyncActions";
+import { getItemById } from "../../../redux/home/asyncActions";
 
 export default function CatalogCard(props: Items) {
 
@@ -69,7 +70,7 @@ export default function CatalogCard(props: Items) {
   }
 
   function getCurrentItem() {
-    dispatch(setCurrentItem(props));
+    dispatch(getItemById(props._id));
     dispatch(getItemReviews(props._id));
     navigate("/catalog/item");
     setAsRecentlyReviewed();

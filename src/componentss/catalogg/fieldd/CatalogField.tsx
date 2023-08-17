@@ -8,15 +8,16 @@ import Card from "../block/CatalogCard";
 import Skeleton from "../block/CatalogSkeleton";
 import NotFoundPage from "../../../pagess/PageAbsence";
 import { useNavigate } from "react-router-dom";
-import { setAfterOrder, synchronizeBasket } from "../../../redux/basket/basketSlice";
-
-
+import {
+  setAfterOrder,
+  synchronizeBasket,
+} from "../../../redux/basket/basketSlice";
 
 export const CatalogField = () => {
   const { category, status } = useAppSelector((state) => state.home);
   const { user } = useAppSelector((state) => state.user);
   const { afterOrder } = useAppSelector((state) => state.basket);
-  
+
   // ItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
   const { itemsCategory, itemsSorted, sorted } = useAppSelector(
@@ -33,14 +34,14 @@ export const CatalogField = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if(afterOrder){
+    if (afterOrder) {
       dispatch(synchronizeBasket());
       dispatch(setAfterOrder(false));
     }
   }, []);
 
-  function redirectToAddItemPage () {
-    navigate('/add-item')
+  function redirectToAddItemPage() {
+    navigate("/add-item");
   }
 
   const Catalog = () => {
@@ -52,22 +53,28 @@ export const CatalogField = () => {
           alignItems={"center"}
           sx={{ paddingTop: { xs: "20%", md: "13%", lg: "10%" } }}
         >
-          <Box width={'55%'} alignSelf={'flex-end'} marginRight={3} marginBottom={5} sx = {{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-          <Typography
-            variant={"h3"}
-            fontSize={30}
-            
-            fontFamily={"Comfortaa"}
+          <Box
+            width={"55%"}
+            alignSelf={"flex-end"}
+            marginRight={3}
+            marginBottom={5}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
           >
-            {category}
-          </Typography>
-          {user.role === "manager" ? (
-              <Button variant="contained" onClick={redirectToAddItemPage}>Додати товар</Button>
+            <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
+              {category}
+            </Typography>
+            {user.role === "manager" ? (
+              <Button variant="contained" onClick={redirectToAddItemPage}>
+                Додати товар
+              </Button>
             ) : (
               <></>
             )}
           </Box>
-          
         </Box>
         <Box
           display={"flex"}
@@ -117,7 +124,6 @@ export const CatalogField = () => {
                     <Card key={item._id} {...item} />
                   </Grid>
                 ))}
-            
           </Grid>
         </Box>
       </Box>
