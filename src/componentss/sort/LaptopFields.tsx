@@ -8,10 +8,12 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
+  Checkbox,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { sortLaptopsByParameters } from "../../redux/home/homeSlice";
+import { SelectedSortParams } from "../../redux/types";
 
 export default function LaptopFields() {
   const { itemsCategory } = useAppSelector((state) => state.home);
@@ -302,67 +304,35 @@ export default function LaptopFields() {
         )
       : [];
 
-  const [selectedBrand, setSelectedBrand] = React.useState("");
-  const [selectedResolution, setSelectedResolution] = React.useState("");
-  const [selectedProcessor, setSelectedProcessor] = React.useState("");
-  const [selectedMemory, setSelectedMemory] = React.useState("");
-  const [selectedSeries, setSelectedSeries] = React.useState("");
-  const [selectedConstruction, setSelectedConstruction] = React.useState("");
-  const [selectedOperatingSystem, setSelectedOperatingSystem] =
-    React.useState("");
-  const [selectedScreenDiagonal, setSelectedScreenDiagonal] =
-    React.useState("");
-  const [selectedMatrixType, setSelectedMatrixType] = React.useState("");
-  const [selectedCoatingType, setSelectedCoatingType] = React.useState("");
-  const [selectedTouchScreen, setSelectedTouchScreen] = React.useState(false);
-  const [selectedRefreshRate, setSelectedRefreshRate] = React.useState("");
-  const [selectedBrightness, setSelectedBrightness] = React.useState("");
-  const [selectedOtherDisplayFeatures, setSelectedOtherDisplayFeatures] =
-    React.useState("");
-  const [selectedMaxRAM, setSelectedMaxRAM] = React.useState("");
-  const [selectedStorageType, setSelectedStorageType] = React.useState("");
-  const [selectedStorageCapacity, setSelectedStorageCapacity] =
-    React.useState("");
-  const [selectedOpticalDrive, setSelectedOpticalDrive] = React.useState(false);
+  const [selectedSortParams, setSelectedSortParams] =
+    React.useState<SelectedSortParams>({});
 
-  const [selectedCardReader, setSelectedCardReader] = React.useState(false);
-  const [selectedWebcam, setSelectedWebcam] = React.useState(false);
-  const [selectedKeyboardBacklight, setSelectedKeyboardBacklight] =
-    React.useState(false);
-  const [selectedPassiveCooling, setSelectedPassiveCooling] =
-    React.useState(false);
-  const [selectedFingerprintScanner, setSelectedFingerprintScanner] =
-    React.useState(false);
-  const [selectedNumericKeypad, setSelectedNumericKeypad] =
-    React.useState(false);
-
-  const [selectedEthernetAdapter, setSelectedEthernetAdapter] =
-    React.useState(false);
-  const [selectedWifi, setSelectedWifi] = React.useState("");
-  const [selectedBluetooth, setSelectedBluetooth] = React.useState("");
-  const [selectedWeight, setSelectedWeight] = React.useState("");
-  const [selectedBodyMaterial, setSelectedBodyMaterial] = React.useState("");
-  const [selectedLidColor, setSelectedLidColor] = React.useState("");
-  const [selectedBodyColor, setSelectedBodyColor] = React.useState("");
   const dispatch = useAppDispatch();
 
-  function performSort(
-    paramName: string,
-    paramValue: any,
-    setSelectValue: Dispatch<SetStateAction<any>>
-  ) {
-    setSelectValue(paramValue);
-    dispatch(
-      sortLaptopsByParameters({ param: paramName, paramValue: paramValue })
-    );
+  function performSort(paramName: string, paramValue: any) {
+    setSelectedSortParams((prevSelectedParams) => {
+      const updatedParams = { ...prevSelectedParams };
+      if (updatedParams[paramName]) {
+        if (updatedParams[paramName].includes(paramValue.toString())) {
+          updatedParams[paramName] = updatedParams[paramName].filter(
+            (param) => param !== paramValue.toString()
+          );
+        } else {
+          updatedParams[paramName].push(paramValue.toString());
+        }
+
+        if (updatedParams[paramName].length === 0) {
+          delete updatedParams[paramName];
+        }
+      } else {
+        updatedParams[paramName] = [paramValue.toString()];
+      }
+      dispatch(sortLaptopsByParameters({ selectedParams: updatedParams }));
+      return updatedParams;
+    });
   }
 
-  function ParameterAccord(
-    name: string,
-    values: any,
-    selectValue: string | boolean,
-    setSelectValue: Dispatch<SetStateAction<any>>
-  ) {
+  function ParameterAccord(name: string, values: any) {
     return (
       <Accordion>
         <AccordionSummary
@@ -373,25 +343,18 @@ export default function LaptopFields() {
           <Typography>{name}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="brand"
-              name="brand"
-              value={selectValue}
-              onChange={(event) =>
-                performSort(name, event.target.value, setSelectValue)
-              }
-            >
-              {values.map((val: any) => (
-                <FormControlLabel
-                  key={val}
-                  value={val}
-                  control={<Radio />}
-                  label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+          {values.map((val: any) => (
+            <FormControlLabel
+              key={val}
+              control={
+                <Checkbox
+                  checked={selectedSortParams[name]?.includes(val.toString())}
+                  onChange={() => performSort(name, val)}
                 />
-              ))}
-            </RadioGroup>
-          </FormControl>
+              }
+              label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+            />
+          ))}
         </AccordionDetails>
       </Accordion>
     );
@@ -403,196 +366,46 @@ export default function LaptopFields() {
         <></>
       ) : (
         <>
-          {ParameterAccord(
-            "Бренд",
-            uniqueBrands,
-            selectedBrand,
-            setSelectedBrand
-          )}
-          {ParameterAccord(
-            "Тип матриці",
-            uniqueMatrixTypeValues,
-            selectedMatrixType,
-            setSelectedMatrixType
-          )}
-          {ParameterAccord(
-            "Розмір матриці",
-            uniqueScreenDiagonalValues,
-            selectedScreenDiagonal,
-            setSelectedScreenDiagonal
-          )}
-          {ParameterAccord(
-            "Роздільна здатність",
-            uniqueResolutionValues,
-            selectedResolution,
-            setSelectedResolution
-          )}
-          {ParameterAccord(
-            "Процесор",
-            uniqueProcessorValues,
-            selectedProcessor,
-            setSelectedProcessor
-          )}
-          {ParameterAccord(
-            "Обсяг пам'яті",
-            uniqueMemoryValues,
-            selectedMemory,
-            setSelectedMemory
-          )}
-          {ParameterAccord(
-            "Серія",
-            uniqueSeriesValues,
-            selectedSeries,
-            setSelectedSeries
-          )}
-          {ParameterAccord(
-            "Тип конструкції",
-            uniqueConstructionValues,
-            selectedConstruction,
-            setSelectedConstruction
-          )}
-          {ParameterAccord(
-            "Операційна система",
-            uniqueOperatingSystemValues,
-            selectedOperatingSystem,
-            setSelectedOperatingSystem
-          )}
-
-          {ParameterAccord(
-            "Тип покриття матриці",
-            uniqueCoatingTypeValues,
-            selectedCoatingType,
-            setSelectedCoatingType
-          )}
-          {ParameterAccord(
-            "Сенсорний екран",
-            uniqueTouchScreenValues,
-            selectedTouchScreen,
-            setSelectedTouchScreen
-          )}
-          {ParameterAccord(
-            "Частота оновлення",
-            uniqueRefreshRateValues,
-            selectedRefreshRate,
-            setSelectedRefreshRate
-          )}
-          {ParameterAccord(
-            "Яскравість",
-            uniqueBrightnessValues,
-            selectedBrightness,
-            setSelectedBrightness
-          )}
+          {ParameterAccord("Бренд", uniqueBrands)}
+          {ParameterAccord("Тип матриці", uniqueMatrixTypeValues)}
+          {ParameterAccord("Розмір матриці", uniqueScreenDiagonalValues)}
+          {ParameterAccord("Роздільна здатність", uniqueResolutionValues)}
+          {ParameterAccord("Процесор", uniqueProcessorValues)}
+          {ParameterAccord("Обсяг пам'яті", uniqueMemoryValues)}
+          {ParameterAccord("Серія", uniqueSeriesValues)}
+          {ParameterAccord("Тип конструкції", uniqueConstructionValues)}
+          {ParameterAccord("Операційна система", uniqueOperatingSystemValues)}
+          {ParameterAccord("Тип покриття матриці", uniqueCoatingTypeValues)}
+          {ParameterAccord("Сенсорний екран", uniqueTouchScreenValues)}
+          {ParameterAccord("Частота оновлення", uniqueRefreshRateValues)}
+          {ParameterAccord("Яскравість", uniqueBrightnessValues)}
           {ParameterAccord(
             "Інші функції дисплея",
-            uniqueOtherDisplayFeaturesValues,
-            selectedOtherDisplayFeatures,
-            setSelectedOtherDisplayFeatures
+            uniqueOtherDisplayFeaturesValues
           )}
-          {ParameterAccord(
-            "Максимальний обсяг ОЗУ",
-            uniqueMaxRAMValues,
-            selectedMaxRAM,
-            setSelectedMaxRAM
-          )}
-          {ParameterAccord(
-            "Тип накопичувача",
-            uniqueStorageTypeValues,
-            selectedStorageType,
-            setSelectedStorageType
-          )}
-          {ParameterAccord(
-            "Обсяг накопичувача",
-            uniqueStorageCapacityValues,
-            selectedStorageCapacity,
-            setSelectedStorageCapacity
-          )}
-          {ParameterAccord(
-            "Оптичний привід",
-            uniqueOpticalDriveValues,
-            selectedOpticalDrive,
-            setSelectedOpticalDrive
-          )}
-
-          {ParameterAccord(
-            "Рідер карт пам'яті",
-            uniqueCardReaderValues,
-            selectedCardReader,
-            setSelectedCardReader
-          )}
-
-          {ParameterAccord(
-            "Веб-камера",
-            uniqueWebcamValues,
-            selectedWebcam,
-            setSelectedWebcam
-          )}
+          {ParameterAccord("Максимальний обсяг ОЗУ", uniqueMaxRAMValues)}
+          {ParameterAccord("Тип накопичувача", uniqueStorageTypeValues)}
+          {ParameterAccord("Обсяг накопичувача", uniqueStorageCapacityValues)}
+          {ParameterAccord("Оптичний привід", uniqueOpticalDriveValues)}
+          {ParameterAccord("Рідер карт пам'яті", uniqueCardReaderValues)}
+          {ParameterAccord("Веб-камера", uniqueWebcamValues)}
           {ParameterAccord(
             "Підсвітка клавіатури",
-            uniqueKeyboardBacklightValues,
-            selectedKeyboardBacklight,
-            setSelectedKeyboardBacklight
+            uniqueKeyboardBacklightValues
           )}
-          {ParameterAccord(
-            "Пасивне охолодження",
-            uniquePassiveCoolingValues,
-            selectedPassiveCooling,
-            setSelectedPassiveCooling
-          )}
+          {ParameterAccord("Пасивне охолодження", uniquePassiveCoolingValues)}
           {ParameterAccord(
             "Сканер відбитків пальців",
-            uniqueFingerprintScannerValues,
-            selectedFingerprintScanner,
-            setSelectedFingerprintScanner
+            uniqueFingerprintScannerValues
           )}
-          {ParameterAccord(
-            "Цифрова клавіатура",
-            uniqueNumericKeypadValues,
-            selectedNumericKeypad,
-            setSelectedNumericKeypad
-          )}
-
-          {ParameterAccord(
-            "Адаптер Ethernet",
-            uniqueEthernetAdapterValues,
-            selectedEthernetAdapter,
-            setSelectedEthernetAdapter
-          )}
-          {ParameterAccord(
-            "Wi-Fi",
-            uniqueWifiValues,
-            selectedWifi,
-            setSelectedWifi
-          )}
-          {ParameterAccord(
-            "Bluetooth",
-            uniqueBluetoothValues,
-            selectedBluetooth,
-            setSelectedBluetooth
-          )}
-          {ParameterAccord(
-            "Вага",
-            uniqueWeightValues,
-            selectedWeight,
-            setSelectedWeight
-          )}
-          {ParameterAccord(
-            "Матеріал корпусу",
-            uniqueBodyMaterialValues,
-            selectedBodyMaterial,
-            setSelectedBodyMaterial
-          )}
-          {ParameterAccord(
-            "Колір кришки",
-            uniqueLidColorValues,
-            selectedLidColor,
-            setSelectedLidColor
-          )}
-          {ParameterAccord(
-            "Колір корпусу",
-            uniqueBodyColorValues,
-            selectedBodyColor,
-            setSelectedBodyColor
-          )}
+          {ParameterAccord("Цифрова клавіатура", uniqueNumericKeypadValues)}
+          {ParameterAccord("Адаптер Ethernet", uniqueEthernetAdapterValues)}
+          {ParameterAccord("Wi-Fi", uniqueWifiValues)}
+          {ParameterAccord("Bluetooth", uniqueBluetoothValues)}
+          {ParameterAccord("Вага", uniqueWeightValues)}
+          {ParameterAccord("Матеріал корпусу", uniqueBodyMaterialValues)}
+          {ParameterAccord("Колір кришки", uniqueLidColorValues)}
+          {ParameterAccord("Колір корпусу", uniqueBodyColorValues)}
         </>
       )}
     </>

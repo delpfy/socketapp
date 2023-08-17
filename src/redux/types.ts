@@ -230,6 +230,10 @@ export type TOrders = {
   orders: TOrder[];
 };
 
+export interface SelectedSortParams {
+  [paramName: string]: string[];
+}
+
 export interface BasketState {
   status: Status;
   items: TShippingItems[];

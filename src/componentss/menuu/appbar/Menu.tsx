@@ -86,7 +86,13 @@ export default function AppBarMenu() {
       </List>
       <Divider />
       <Box sx= {{width: '100%'}}>
-          <SortBy/>
+        {
+          window.location.pathname.includes("/catalog") 
+          ?<SortBy/>
+          :
+          <></>
+        }
+          
           </Box>
       <List></List>
     </Box>

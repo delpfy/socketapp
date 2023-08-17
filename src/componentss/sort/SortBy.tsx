@@ -27,17 +27,13 @@ import LaptopFields from "./LaptopFields";
 import MonitorFields from "./MonitorFields";
 import TabletFields from "./TabletFields";
 
-
-
 export default function SortBy() {
-  const {category} = useAppSelector(state => state.home);
+  const { category } = useAppSelector((state) => state.home);
   const [relevanceValue, setRelevanceValue] = React.useState("");
   const [costValue, setCostValue] = React.useState("");
   const [costRangeValue, setCostRangeValue] = React.useState<number[]>([
     0, 70000,
   ]);
-
-
 
   const [relevanceRangeValue, setRelevanceRangeValue] = React.useState<
     number[]
@@ -85,21 +81,21 @@ export default function SortBy() {
     }
   };
 
-  function showFieldsSort(){
-    switch(category){
+  function showFieldsSort() {
+    switch (category) {
       case "Ноутбуки":
-        return <LaptopFields/>
-        case "Планшети":
-        return <TabletFields/>
-        case "Монітори":
-        return <MonitorFields/>
+        return <LaptopFields />;
+      case "Планшети":
+        return <TabletFields />;
+      case "Монітори":
+        return <MonitorFields />;
     }
   }
 
   return (
     <Box
       sx={{
-        width: "100%"
+        width: "100%",
       }}
     >
       <Accordion>
@@ -216,16 +212,11 @@ export default function SortBy() {
             </AccordionDetails>
           </Accordion>
           <Box paddingTop={4}>
-            <Typography >
-              Характеристики
-            </Typography>
+            <Typography>Характеристики</Typography>
           </Box>
           <Divider />
-          {showFieldsSort()
-         
-        }
+          {showFieldsSort()}
         </AccordionDetails>
-        
       </Accordion>
     </Box>
   );

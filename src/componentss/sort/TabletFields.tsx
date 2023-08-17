@@ -8,6 +8,7 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
+  Checkbox,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -15,6 +16,7 @@ import {
   sortLaptopsByParameters,
   sortTabletsByParameters,
 } from "../../redux/home/homeSlice";
+import { SelectedSortParams } from "../../redux/types";
 
 export default function TabletFields() {
   const { itemsCategory } = useAppSelector((state) => state.home);
@@ -78,7 +80,6 @@ export default function TabletFields() {
           )
         )
       : [];
-
 
   const uniqueTabletMemoryRAM =
     itemsCategory !== undefined
@@ -272,76 +273,34 @@ export default function TabletFields() {
         )
       : [];
 
-  const [selectedTabletBrand, setSelectedTabletBrand] = React.useState("");
-  const [selectedTabletLine, setSelectedTabletLine] = React.useState("");
-  const [selectedTabletPreinstalledOS, setSelectedTabletPreinstalledOS] =
-    React.useState("");
-  const [selectedTabletScreenDiagonal, setSelectedTabletScreenDiagonal] =
-    React.useState("");
-  const [selectedTabletResolution, setSelectedTabletResolution] =
-    React.useState("");
-  const [selectedTabletMatrixType, setSelectedTabletMatrixType] =
-    React.useState("");
-  
-  const [selectedTabletMemoryRAM, setSelectedTabletMemoryRAM] =
-    React.useState("");
-  const [selectedTabletBuiltInMemory, setSelectedTabletBuiltInMemory] =
-    React.useState("");
-  const [
-    selectedTabletMemoryExpansionSlot,
-    setSelectedTabletMemoryExpansionSlot,
-  ] = React.useState("");
-  const [selectedTabletProcessor, setSelectedTabletProcessor] =
-    React.useState("");
-  const [
-    selectedTabletProcessorFrequency,
-    setSelectedTabletProcessorFrequency,
-  ] = React.useState("");
-  const [selectedTabletProcessorCores, setSelectedTabletProcessorCores] =
-    React.useState("");
-  const [selectedTabletBuiltInSpeakers, setSelectedTabletBuiltInSpeakers] =
-    React.useState("");
-  const [selectedTabletBatteryCapacity, setSelectedTabletBatteryCapacity] =
-    React.useState("");
-  const [selectedTabletFrontCamera, setSelectedTabletFrontCamera] =
-    React.useState("");
-  const [selectedTabletRearCamera, setSelectedTabletRearCamera] =
-    React.useState("");
-  const [selectedTabletWifi, setSelectedTabletWifi] = React.useState("");
-  const [selectedTabletCellularNetwork, setSelectedTabletCellularNetwork] =
-    React.useState("");
-  const [
-    selectedTabletVoiceCommunication,
-    setSelectedTabletVoiceCommunication,
-  ] = React.useState("");
-  const [selectedTabletGPS, setSelectedTabletGPS] = React.useState("");
-  const [selectedTabletNFC, setSelectedTabletNFC] = React.useState("");
-  const [selectedTabletExternalPorts, setSelectedTabletExternalPorts] =
-    React.useState("");
-  const [selectedTabletWeight, setSelectedTabletWeight] = React.useState("");
-  const [selectedTabletBodyColor, setSelectedTabletBodyColor] =
-    React.useState("");
-  const [selectedTabletFrontPanelColor, setSelectedTabletFrontPanelColor] =
-    React.useState("");
+  const [selectedSortParams, setSelectedSortParams] =
+    React.useState<SelectedSortParams>({});
 
   const dispatch = useAppDispatch();
-  function performSort(
-    paramName: string,
-    paramValue: any,
-    setSelectValue: Dispatch<SetStateAction<any>>
-  ) {
-    setSelectValue(paramValue);
-    dispatch(
-      sortTabletsByParameters({ param: paramName, paramValue: paramValue })
-    );
+  function performSort(paramName: string, paramValue: any) {
+    setSelectedSortParams((prevSelectedParams) => {
+      const updatedParams = { ...prevSelectedParams };
+      if (updatedParams[paramName]) {
+        if (updatedParams[paramName].includes(paramValue.toString())) {
+          updatedParams[paramName] = updatedParams[paramName].filter(
+            (param) => param !== paramValue.toString()
+          );
+        } else {
+          updatedParams[paramName].push(paramValue.toString());
+        }
+
+        if (updatedParams[paramName].length === 0) {
+          delete updatedParams[paramName];
+        }
+      } else {
+        updatedParams[paramName] = [paramValue.toString()];
+      }
+      dispatch(sortTabletsByParameters({ selectedParams: updatedParams }));
+      return updatedParams;
+    });
   }
 
-  function ParameterAccord(
-    name: string,
-    values: any,
-    selectValue: string | boolean,
-    setSelectValue: Dispatch<SetStateAction<any>>
-  ) {
+  function ParameterAccord(name: string, values: any) {
     return (
       <Accordion>
         <AccordionSummary
@@ -352,25 +311,18 @@ export default function TabletFields() {
           <Typography>{name}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="brand"
-              name="brand"
-              value={selectValue}
-              onChange={(event) =>
-                performSort(name, event.target.value, setSelectValue)
-              }
-            >
-              {values.map((val: any) => (
-                <FormControlLabel
-                  key={val}
-                  value={val}
-                  control={<Radio />}
-                  label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+          {values.map((val: any) => (
+            <FormControlLabel
+              key={val}
+              control={
+                <Checkbox
+                  checked={selectedSortParams[name]?.includes(val.toString())}
+                  onChange={() => performSort(name, val)}
                 />
-              ))}
-            </RadioGroup>
-          </FormControl>
+              }
+              label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+            />
+          ))}
         </AccordionDetails>
       </Accordion>
     );
@@ -382,156 +334,46 @@ export default function TabletFields() {
         <></>
       ) : (
         <>
-          {ParameterAccord(
-            "Бренд",
-            uniqueTabletBrands,
-            selectedTabletBrand,
-            setSelectedTabletBrand
-          )}
-          {ParameterAccord(
-            "Лінійка",
-            uniqueTabletLines,
-            selectedTabletLine,
-            setSelectedTabletLine
-          )}
-          {ParameterAccord(
-            "Операційна система",
-            uniqueTabletPreinstalledOS,
-            selectedTabletPreinstalledOS,
-            setSelectedTabletPreinstalledOS
-          )}
-          {ParameterAccord(
-            "Розмір матриці",
-            uniqueTabletScreenDiagonals,
-            selectedTabletScreenDiagonal,
-            setSelectedTabletScreenDiagonal
-          )}
-          {ParameterAccord(
-            "Роздільна здатність",
-            uniqueTabletResolutions,
-            selectedTabletResolution,
-            setSelectedTabletResolution
-          )}
-          {ParameterAccord(
-            "Тип матриці",
-            uniqueTabletMatrixTypes,
-            selectedTabletMatrixType,
-            setSelectedTabletMatrixType
-          )}
-          
-          {ParameterAccord(
-            "Обсяг пам'яті RAM",
-            uniqueTabletMemoryRAM,
-            selectedTabletMemoryRAM,
-            setSelectedTabletMemoryRAM
-          )}
-          {ParameterAccord(
-            "Вбудована пам'ять",
-            uniqueTabletBuiltInMemory,
-            selectedTabletBuiltInMemory,
-            setSelectedTabletBuiltInMemory
-          )}
+          {ParameterAccord("Бренд", uniqueTabletBrands)}
+          {ParameterAccord("Лінійка", uniqueTabletLines)}
+          {ParameterAccord("Операційна система", uniqueTabletPreinstalledOS)}
+          {ParameterAccord("Розмір матриці", uniqueTabletScreenDiagonals)}
+          {ParameterAccord("Роздільна здатність", uniqueTabletResolutions)}
+          {ParameterAccord("Тип матриці", uniqueTabletMatrixTypes)}
+
+          {ParameterAccord("Обсяг пам'яті RAM", uniqueTabletMemoryRAM)}
+          {ParameterAccord("Вбудована пам'ять", uniqueTabletBuiltInMemory)}
           {ParameterAccord(
             "Слот розширення пам'яті",
-            uniqueTabletMemoryExpansionSlots,
-            selectedTabletMemoryExpansionSlot,
-            setSelectedTabletMemoryExpansionSlot
+            uniqueTabletMemoryExpansionSlots
           )}
-          {ParameterAccord(
-            "Процесор",
-            uniqueTabletProcessors,
-            selectedTabletProcessor,
-            setSelectedTabletProcessor
-          )}
+          {ParameterAccord("Процесор", uniqueTabletProcessors)}
           {ParameterAccord(
             "Частота процесора",
-            uniqueTabletProcessorFrequencies,
-            selectedTabletProcessorFrequency,
-            setSelectedTabletProcessorFrequency
+            uniqueTabletProcessorFrequencies
           )}
           {ParameterAccord(
             "Кількість ядер процесора",
-            uniqueTabletProcessorCores,
-            selectedTabletProcessorCores,
-            setSelectedTabletProcessorCores
+            uniqueTabletProcessorCores
           )}
-          {ParameterAccord(
-            "Вбудовані динаміки",
-            uniqueTabletBuiltInSpeakers,
-            selectedTabletBuiltInSpeakers,
-            setSelectedTabletBuiltInSpeakers
-          )}
-          {ParameterAccord(
-            "Ємність батареї",
-            uniqueTabletBatteryCapacities,
-            selectedTabletBatteryCapacity,
-            setSelectedTabletBatteryCapacity
-          )}
-          {ParameterAccord(
-            "Фронтальна камера",
-            uniqueTabletFrontCameras,
-            selectedTabletFrontCamera,
-            setSelectedTabletFrontCamera
-          )}
-          {ParameterAccord(
-            "Тилова камера",
-            uniqueTabletRearCameras,
-            selectedTabletRearCamera,
-            setSelectedTabletRearCamera
-          )}
-          {ParameterAccord(
-            "Wi-Fi",
-            uniqueTabletWifi,
-            selectedTabletWifi,
-            setSelectedTabletWifi
-          )}
-          {ParameterAccord(
-            "Мобільна мережа",
-            uniqueTabletCellularNetworks,
-            selectedTabletCellularNetwork,
-            setSelectedTabletCellularNetwork
-          )}
+          {ParameterAccord("Вбудовані динаміки", uniqueTabletBuiltInSpeakers)}
+          {ParameterAccord("Ємність батареї", uniqueTabletBatteryCapacities)}
+          {ParameterAccord("Фронтальна камера", uniqueTabletFrontCameras)}
+          {ParameterAccord("Тилова камера", uniqueTabletRearCameras)}
+          {ParameterAccord("Wi-Fi", uniqueTabletWifi)}
+          {ParameterAccord("Мобільна мережа", uniqueTabletCellularNetworks)}
           {ParameterAccord(
             "Голосова комунікація",
-            uniqueTabletVoiceCommunication,
-            selectedTabletVoiceCommunication,
-            setSelectedTabletVoiceCommunication
+            uniqueTabletVoiceCommunication
           )}
-          {ParameterAccord(
-            "GPS",
-            uniqueTabletGPS,
-            selectedTabletGPS,
-            setSelectedTabletGPS
-          )}
-          {ParameterAccord(
-            "NFC",
-            uniqueTabletNFC,
-            selectedTabletNFC,
-            setSelectedTabletNFC
-          )}
-          {ParameterAccord(
-            "Зовнішні порти",
-            uniqueTabletExternalPorts,
-            selectedTabletExternalPorts,
-            setSelectedTabletExternalPorts
-          )}
-          {ParameterAccord(
-            "Вага",
-            uniqueTabletWeight,
-            selectedTabletWeight,
-            setSelectedTabletWeight
-          )}
-          {ParameterAccord(
-            "Колір корпусу",
-            uniqueTabletBodyColor,
-            selectedTabletBodyColor,
-            setSelectedTabletBodyColor
-          )}
+          {ParameterAccord("GPS", uniqueTabletGPS)}
+          {ParameterAccord("NFC", uniqueTabletNFC)}
+          {ParameterAccord("Зовнішні порти", uniqueTabletExternalPorts)}
+          {ParameterAccord("Вага", uniqueTabletWeight)}
+          {ParameterAccord("Колір корпусу", uniqueTabletBodyColor)}
           {ParameterAccord(
             "Колір фронтальної панелі",
-            uniqueTabletFrontPanelColor,
-            selectedTabletFrontPanelColor,
-            setSelectedTabletFrontPanelColor
+            uniqueTabletFrontPanelColor
           )}
         </>
       )}

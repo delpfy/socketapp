@@ -8,10 +8,12 @@ import {
   AccordionSummary,
   AccordionDetails,
   Typography,
+  Checkbox,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { sortMonitorsByParameters } from "../../redux/home/homeSlice";
+import { SelectedSortParams } from "../../redux/types";
 
 export default function MonitorFields() {
   const { itemsCategory } = useAppSelector((state) => state.home);
@@ -25,125 +27,142 @@ export default function MonitorFields() {
         )
       : [];
 
-  const uniqueScreenDiagonals = itemsCategory !== undefined
+  const uniqueScreenDiagonals =
+    itemsCategory !== undefined
       ? Array.from(
-        new Set(
-          itemsCategory.items?.map((item: any) => item.fields.screenDiagonal)
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.screenDiagonal)
+          )
         )
-      )
-    : [];
+      : [];
 
-  const uniqueMatrixTypes = itemsCategory !== undefined
+  const uniqueMatrixTypes =
+    itemsCategory !== undefined
       ? Array.from(
-        new Set(itemsCategory.items?.map((item: any) => item.fields.matrixType))
-      )
-    : [];
-
-  const uniqueAspectRatios = itemsCategory !== undefined
-      ? Array.from(
-        new Set(itemsCategory.items?.map((item: any) => item.fields.aspectRatio))
-      )
-    : [];
-
-  const uniqueResolutions = itemsCategory !== undefined
-      ? Array.from(
-        new Set(itemsCategory.items?.map((item: any) => item.fields.resolution))
-      )
-    : [];
-
-  const uniqueResponseTimes = itemsCategory !== undefined
-      ? Array.from(
-        new Set(
-          itemsCategory.items?.map((item: any) => item.fields.responseTime)
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.matrixType)
+          )
         )
-      )
-    : [];
+      : [];
 
-  const uniqueViewingAngles = itemsCategory !== undefined
+  const uniqueAspectRatios =
+    itemsCategory !== undefined
       ? Array.from(
-        new Set(
-          itemsCategory.items?.map((item: any) => item.fields.viewingAngles)
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.aspectRatio)
+          )
         )
-      )
-    : [];
+      : [];
 
-  const uniqueBacklightTypes = itemsCategory !== undefined
+  const uniqueResolutions =
+    itemsCategory !== undefined
       ? Array.from(
-        new Set(
-          itemsCategory.items?.map((item: any) => item.fields.backlightType)
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.resolution)
+          )
         )
-      )
-    : [];
+      : [];
 
-  const uniqueBrightnessValues = itemsCategory !== undefined
+  const uniqueResponseTimes =
+    itemsCategory !== undefined
       ? Array.from(
-        new Set(itemsCategory.items?.map((item: any) => item.fields.brightness))
-      )
-    : [];
-
-  const uniqueContrastRatios = itemsCategory !== undefined
-      ? Array.from(
-        new Set(
-          itemsCategory.items?.map((item: any) => item.fields.contrastRatio)
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.responseTime)
+          )
         )
-      )
-    : [];
+      : [];
 
-  const uniqueScreenCoatings = itemsCategory !== undefined
+  const uniqueViewingAngles =
+    itemsCategory !== undefined
       ? Array.from(
-        new Set(
-          itemsCategory.items?.map((item: any) => item.fields.screenCoating)
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.viewingAngles)
+          )
         )
-      )
-    : [];
+      : [];
 
-  const uniqueCurvedScreenValues = itemsCategory !== undefined
+  const uniqueBacklightTypes =
+    itemsCategory !== undefined
       ? Array.from(
-        new Set(
-          itemsCategory.items?.map((item: any) => item.fields.curvedScreen)
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.backlightType)
+          )
         )
-      )
-    : [];
+      : [];
 
-  const uniqueRefreshRates = itemsCategory !== undefined
+  const uniqueBrightnessValues =
+    itemsCategory !== undefined
       ? Array.from(
-        new Set(itemsCategory.items?.map((item: any) => item.fields.refreshRate))
-      )
-    : [];
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.brightness)
+          )
+        )
+      : [];
 
-  const [selectedBrand, setSelectedBrand] = React.useState("");
-  const [selectedScreenDiagonal, setSelectedScreenDiagonal] =
-    React.useState("");
-  const [selectedMatrixType, setSelectedMatrixType] = React.useState("");
-  const [selectedAspectRatio, setSelectedAspectRatio] = React.useState("");
-  const [selectedResolution, setSelectedResolution] = React.useState("");
-  const [selectedResponseTime, setSelectedResponseTime] = React.useState("");
-  const [selectedViewingAngles, setSelectedViewingAngles] = React.useState("");
-  const [selectedBacklightType, setSelectedBacklightType] = React.useState("");
-  const [selectedBrightness, setSelectedBrightness] = React.useState("");
-  const [selectedContrastRatio, setSelectedContrastRatio] = React.useState("");
-  const [selectedScreenCoating, setSelectedScreenCoating] = React.useState("");
-  const [selectedCurvedScreen, setSelectedCurvedScreen] = React.useState("");
-  const [selectedRefreshRate, setSelectedRefreshRate] = React.useState("");
+  const uniqueContrastRatios =
+    itemsCategory !== undefined
+      ? Array.from(
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.contrastRatio)
+          )
+        )
+      : [];
+
+  const uniqueScreenCoatings =
+    itemsCategory !== undefined
+      ? Array.from(
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.screenCoating)
+          )
+        )
+      : [];
+
+  const uniqueCurvedScreenValues =
+    itemsCategory !== undefined
+      ? Array.from(
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.curvedScreen)
+          )
+        )
+      : [];
+
+  const uniqueRefreshRates =
+    itemsCategory !== undefined
+      ? Array.from(
+          new Set(
+            itemsCategory.items?.map((item: any) => item.fields.refreshRate)
+          )
+        )
+      : [];
+
+  const [selectedSortParams, setSelectedSortParams] =
+    React.useState<SelectedSortParams>({});
 
   const dispatch = useAppDispatch();
-  function performSort(
-    paramName: string,
-    paramValue: any,
-    setSelectValue: Dispatch<SetStateAction<any>>
-  ) {
-    setSelectValue(paramValue);
-    dispatch(
-      sortMonitorsByParameters({ param: paramName, paramValue: paramValue })
-    );
+  function performSort(paramName: string, paramValue: any) {
+    setSelectedSortParams((prevSelectedParams) => {
+      const updatedParams = { ...prevSelectedParams };
+      if (updatedParams[paramName]) {
+        if (updatedParams[paramName].includes(paramValue.toString())) {
+          updatedParams[paramName] = updatedParams[paramName].filter(
+            (param) => param !== paramValue.toString()
+          );
+        } else {
+          updatedParams[paramName].push(paramValue.toString());
+        }
+
+        if (updatedParams[paramName].length === 0) {
+          delete updatedParams[paramName];
+        }
+      } else {
+        updatedParams[paramName] = [paramValue.toString()];
+      }
+      dispatch(sortMonitorsByParameters({ selectedParams: updatedParams }));
+      return updatedParams;
+    });
   }
 
-  function ParameterAccord(
-    name: string,
-    values: any,
-    selectValue: string | boolean,
-    setSelectValue: Dispatch<SetStateAction<any>>
-  ) {
+  function ParameterAccord(name: string, values: any) {
     return (
       <Accordion>
         <AccordionSummary
@@ -154,25 +173,18 @@ export default function MonitorFields() {
           <Typography>{name}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="brand"
-              name="brand"
-              value={selectValue}
-              onChange={(event) =>
-                performSort(name, event.target.value, setSelectValue)
-              }
-            >
-              {values.map((val: any) => (
-                <FormControlLabel
-                  key={val}
-                  value={val}
-                  control={<Radio />}
-                  label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+          {values.map((val: any) => (
+            <FormControlLabel
+              key={val}
+              control={
+                <Checkbox
+                  checked={selectedSortParams[name]?.includes(val.toString())}
+                  onChange={() => performSort(name, val)}
                 />
-              ))}
-            </RadioGroup>
-          </FormControl>
+              }
+              label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+            />
+          ))}
         </AccordionDetails>
       </Accordion>
     );
@@ -184,84 +196,22 @@ export default function MonitorFields() {
         <></>
       ) : (
         <>
-          {ParameterAccord(
-            "Бренд",
-            uniqueBrands,
-            selectedBrand,
-            setSelectedBrand
-          )}
-          {ParameterAccord(
-            "Розмір матриці",
-            uniqueScreenDiagonals,
-            selectedScreenDiagonal,
-            setSelectedScreenDiagonal
-          )}
-          {ParameterAccord(
-            "Тип матриці",
-            uniqueMatrixTypes,
-            selectedMatrixType,
-            setSelectedMatrixType
-          )}
-          {ParameterAccord(
-            "Співвідношення сторін",
-            uniqueAspectRatios,
-            selectedAspectRatio,
-            setSelectedAspectRatio
-          )}
-          {ParameterAccord(
-            "Роздільна здатність",
-            uniqueResolutions,
-            selectedResolution,
-            setSelectedResolution
-          )}
-          {ParameterAccord(
-            "Час відгуку",
-            uniqueResponseTimes,
-            selectedResponseTime,
-            setSelectedResponseTime
-          )}
-          {ParameterAccord(
-            "Кути огляду",
-            uniqueViewingAngles,
-            selectedViewingAngles,
-            setSelectedViewingAngles
-          )}
-          {ParameterAccord(
-            "Тип підсвічування",
-            uniqueBacklightTypes,
-            selectedBacklightType,
-            setSelectedBacklightType
-          )}
-          {ParameterAccord(
-            "Яскравість",
-            uniqueBrightnessValues,
-            selectedBrightness,
-            setSelectedBrightness
-          )}
+          {ParameterAccord("Бренд", uniqueBrands)}
+          {ParameterAccord("Розмір матриці", uniqueScreenDiagonals)}
+          {ParameterAccord("Тип матриці", uniqueMatrixTypes)}
+          {ParameterAccord("Співвідношення сторін", uniqueAspectRatios)}
+          {ParameterAccord("Роздільна здатність", uniqueResolutions)}
+          {ParameterAccord("Час відгуку", uniqueResponseTimes)}
+          {ParameterAccord("Кути огляду", uniqueViewingAngles)}
+          {ParameterAccord("Тип підсвічування", uniqueBacklightTypes)}
+          {ParameterAccord("Яскравість", uniqueBrightnessValues)}
           {ParameterAccord(
             "Співвідношення контрастності",
-            uniqueContrastRatios,
-            selectedContrastRatio,
-            setSelectedContrastRatio
+            uniqueContrastRatios
           )}
-          {ParameterAccord(
-            "Покриття екрану",
-            uniqueScreenCoatings,
-            selectedScreenCoating,
-            setSelectedScreenCoating
-          )}
-          {ParameterAccord(
-            "Зігнута матриця",
-            uniqueCurvedScreenValues,
-            selectedCurvedScreen,
-            setSelectedCurvedScreen
-          )}
-          {ParameterAccord(
-            "Частота оновлення",
-            uniqueRefreshRates,
-            selectedRefreshRate,
-            setSelectedRefreshRate
-          )}
+          {ParameterAccord("Покриття екрану", uniqueScreenCoatings)}
+          {ParameterAccord("Зігнута матриця", uniqueCurvedScreenValues)}
+          {ParameterAccord("Частота оновлення", uniqueRefreshRates)}
         </>
       )}
     </>
