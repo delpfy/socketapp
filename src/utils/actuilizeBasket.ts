@@ -1,3 +1,5 @@
+import { synchronizeBasket } from "../redux/basket/basketSlice";
+import { useAppDispatch } from "../redux/hooks";
 import { CombinedItems, Items } from "../redux/types";
 
 export function actualizeBasket(data: any, origin: any) {
@@ -32,4 +34,5 @@ export function actualizeBasket(data: any, origin: any) {
       }
     }
   }
+  
 }

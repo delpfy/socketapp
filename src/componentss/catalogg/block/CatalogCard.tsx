@@ -38,6 +38,7 @@ export default function CatalogCard(props: Items) {
   }
 
   function InfoDialog_close() {
+    dispatch(synchronizeBasket());
     setOpenInfo(false);
   }
   const dispatch = useAppDispatch();
@@ -112,7 +113,7 @@ export default function CatalogCard(props: Items) {
             basketItems.filter((item: any) => item._id !== props._id)
           )
         );
-        dispatch(synchronizeBasket());
+        
       }
     });
   }

@@ -63,6 +63,7 @@ export default function ReviewForm(props: Items | TShippingItems) {
         })
       )
       dispatch(disableNoMoreReviews());
+      dispatch(synchronizeBasket());
     }
 
     dispatch(nullifyTotalRating());
