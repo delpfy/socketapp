@@ -84,13 +84,15 @@ export default function MonitorCategory(props: Category) {
               <MenuItem value={"Ні"}>Ні</MenuItem>
             </Select>
           </FormControl>
-        ) : /^\d*\.?\d*$/.test(value) ? (
+        ) : typeof value === "number" ? (
+           
           <TextField
             fullWidth
             value={value}
             onChange={(event) => {
+                console.log(value)
               if (/^\d*\.?\d*$/.test(event.target.value)) {
-                setValue(event.target.value);
+                setValue(event.target.value.length > 0 ? parseFloat(event.target.value) : 0);
               }
             }}
           />
@@ -99,6 +101,7 @@ export default function MonitorCategory(props: Category) {
             fullWidth
             value={value}
             onChange={(event) => {
+                console.log(value)
               setValue(event.target.value);
             }}
           />

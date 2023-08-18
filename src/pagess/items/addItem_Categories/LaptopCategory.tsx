@@ -156,13 +156,15 @@ export default function LaptopCategory(props: Category) {
               <MenuItem value={"Ні"}>Ні</MenuItem>
             </Select>
           </FormControl>
-        ) : /^\d*\.?\d*$/.test(value) ? (
+        ) : typeof value === "number" ? (
           <TextField
             fullWidth
             value={value}
             onChange={(event) => {
+               
               if (/^\d*\.?\d*$/.test(event.target.value)) {
-                setValue(event.target.value);
+                
+                setValue(event.target.value.length > 0 ? parseFloat(event.target.value) : 0);
               }
             }}
           />
