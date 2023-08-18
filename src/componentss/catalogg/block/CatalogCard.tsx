@@ -70,9 +70,15 @@ export default function CatalogCard(props: Items) {
   }
 
   function getCurrentItem() {
-    dispatch(getItemById(props._id));
-    dispatch(getItemReviews(props._id));
-    navigate("/catalog/item");
+    dispatch(getItemById(props._id)).then((result: any) => {
+      if(result.meta.requestStatus === "fulfilled"){
+        dispatch(getItemReviews(props._id)).then((result: any) => {
+          if(result.meta.requestStatus === "fulfilled"){
+            navigate("/catalog/item");
+          }
+        });
+      }
+    });
     setAsRecentlyReviewed();
   }
 

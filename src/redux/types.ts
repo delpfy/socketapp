@@ -132,6 +132,9 @@ export type UserRegister = {
 };
 
 export type Status = "success" | "pending" | "error";
+export type Category = {
+  category: "Ноутбуки" | "Планшети" | "Монітори"
+};
 
 export type TLocationCity = {
   display_name: string;

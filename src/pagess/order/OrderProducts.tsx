@@ -41,9 +41,16 @@ export default function OrderProducts() {
   }
 
   function getCurrentItem(item: TShippingItems) {
-    dispatch(getItemById(item._id));
-    dispatch(getItemReviews(item._id));
-    navigate("/catalog/item");
+    dispatch(getItemById(item._id)).then((result: any) => {
+      if(result.meta.requestStatus === "fulfilled"){
+        dispatch(getItemReviews(item._id)).then((result: any) => {
+          if(result.meta.requestStatus === "fulfilled"){
+            navigate("/catalog/item");
+          }
+        });
+      }
+    });
+    
   }
 
   useEffect(() => {

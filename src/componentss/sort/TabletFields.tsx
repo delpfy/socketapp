@@ -1,9 +1,6 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import {
-  FormControl,
   FormControlLabel,
-  Radio,
-  RadioGroup,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -13,7 +10,6 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
-  sortLaptopsByParameters,
   sortTabletsByParameters,
 } from "../../redux/home/homeSlice";
 import { SelectedSortParams } from "../../redux/types";

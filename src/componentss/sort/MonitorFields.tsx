@@ -1,9 +1,7 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import {
-  FormControl,
+
   FormControlLabel,
-  Radio,
-  RadioGroup,
   Accordion,
   AccordionSummary,
   AccordionDetails,

@@ -50,7 +50,7 @@ export const updateItem = createAsyncThunk<
 
 export const createItem = createAsyncThunk<
   { item: Items } | { item: TShippingItems },
-  ItemsPOST
+  any
 >("home/createItem", async (params) => {
   const { data } = await axios.post<
     { item: Items } | { item: TShippingItems }

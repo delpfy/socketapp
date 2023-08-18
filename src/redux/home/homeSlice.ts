@@ -396,7 +396,6 @@ const homeSlice = createSlice({
       state.status = "success";
       state.itemsCategory = action.payload;
       state.itemsCategory.items.map((item: any) => {
-        console.log(item)
         actualizeFirstRender(recentlyReviewed, item);
         actualizeFirstRenderBasket(basketItems, item);
       })
