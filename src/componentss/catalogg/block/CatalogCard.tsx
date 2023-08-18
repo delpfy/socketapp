@@ -112,6 +112,7 @@ export default function CatalogCard(props: Items) {
             basketItems.filter((item: any) => item._id !== props._id)
           )
         );
+        dispatch(synchronizeBasket());
       }
     });
   }

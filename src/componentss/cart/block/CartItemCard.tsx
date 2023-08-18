@@ -61,6 +61,7 @@ export default function BasketItemBlock(props: TShippingItems) {
           "basketItems",
           JSON.stringify(basketItems.filter((item: any) => item._id !== props._id))
         );
+        dispatch(synchronizeBasket());
       }
     });
     
