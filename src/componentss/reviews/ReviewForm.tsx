@@ -61,9 +61,13 @@ export default function ReviewForm(props: Items | TShippingItems) {
             reviewsAmount: item_reviewsAmount,
           },
         })
-      )
+      ).then((result: any) => {
+        if(result.meta.requestStatus === "fulfilled") {
+          dispatch(synchronizeBasket());
+        }
+      })
       dispatch(disableNoMoreReviews());
-      dispatch(synchronizeBasket());
+      
     }
 
     dispatch(nullifyTotalRating());
