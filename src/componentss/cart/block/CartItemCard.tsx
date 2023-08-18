@@ -32,6 +32,7 @@ export default function BasketItemBlock(props: TShippingItems) {
   }
 
   function InfoDialog_close() {
+    dispatch(synchronizeBasket());
     setOpenInfo(false);
   }
 
@@ -45,7 +46,7 @@ export default function BasketItemBlock(props: TShippingItems) {
         });
       }
       if (result.meta.requestStatus === "rejected") {
-        setInfoMessage("Такого товару вже нема. Видаліть його");
+        setInfoMessage("Такого товару вже нема. Його буде видалено");
         InfoDialog_open();
         const recentlyReviewed = JSON.parse(
           localStorage.getItem("recentlyReviewed") || "{}"
@@ -61,7 +62,7 @@ export default function BasketItemBlock(props: TShippingItems) {
           "basketItems",
           JSON.stringify(basketItems.filter((item: any) => item._id !== props._id))
         );
-        dispatch(synchronizeBasket());
+        
       }
     });
     
