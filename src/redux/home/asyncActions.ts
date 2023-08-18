@@ -48,16 +48,30 @@ export const updateItem = createAsyncThunk<
   return data;
 });
 
+export const deleteItem = createAsyncThunk<any, { itemId: string } >(
+  "home/deleteItem",
+  async (params) => {
+    const { data } = await axios.delete<any>(`/items/${params.itemId}`, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
 export const createItem = createAsyncThunk<
   { item: Items } | { item: TShippingItems },
   any
 >("home/createItem", async (params) => {
-  const { data } = await axios.post<
-    { item: Items } | { item: TShippingItems }
-  >(`/items/`, params, {
-    headers: {
-      authorization: `Bearer ${window.localStorage.getItem("token")}`,
-    },
-  });
+  const { data } = await axios.post<{ item: Items } | { item: TShippingItems }>(
+    `/items/`,
+    params,
+    {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    }
+  );
   return data;
 });

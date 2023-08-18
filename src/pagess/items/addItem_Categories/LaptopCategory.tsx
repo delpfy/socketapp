@@ -15,11 +15,12 @@ import React, { SetStateAction, Dispatch, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { createItem } from "../../../redux/home/asyncActions";
 import { Category } from "../../../redux/types";
 
 export default function LaptopCategory(props: Category) {
+  
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
@@ -310,7 +311,7 @@ export default function LaptopCategory(props: Category) {
           <Divider />
         </Box>
         {DisplayBox("Процесор:", processor, setProcessor)}
-        {DisplayBox("Пам'ять:", memory, setMemory)}
+        
         {DisplayBox("Бренд:", brand, setBrand)}
         {DisplayBox("Лінійка:", series, setSeries)}
         {DisplayBox("Конструкція:", construction, setConstruction)}
@@ -327,6 +328,7 @@ export default function LaptopCategory(props: Category) {
           otherDisplayFeatures,
           setOtherDisplayFeatures
         )}
+        {DisplayBox("ОЗУ:", memory, setMemory)}
         {DisplayBox("Максимальний обсяг ОЗУ:", maxRAM, setMaxRAM)}
         {DisplayBox("Тип накопичувача:", storageType, setStorageType)}
         {DisplayBox("Обсяг накопичувача:", storageCapacity, setStorageCapacity)}

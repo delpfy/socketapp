@@ -399,6 +399,14 @@ const homeSlice = createSlice({
         actualizeFirstRender(recentlyReviewed, item);
         actualizeFirstRenderBasket(basketItems, item);
       })
+      localStorage.setItem(
+        "recentlyReviewed",
+        JSON.stringify(recentlyReviewed)
+      );
+      localStorage.setItem(
+        "basketItems",
+        JSON.stringify(basketItems)
+      );
       state.itemsSorted = action.payload;
     });
     builder.addCase(getItemsByCategory.pending, (state) => {

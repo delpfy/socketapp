@@ -368,7 +368,7 @@ export default function LaptopFields() {
           {ParameterAccord("Розмір матриці", uniqueScreenDiagonalValues)}
           {ParameterAccord("Роздільна здатність", uniqueResolutionValues)}
           {ParameterAccord("Процесор", uniqueProcessorValues)}
-          {ParameterAccord("Обсяг пам'яті", uniqueMemoryValues)}
+          {ParameterAccord("Обсяг ОЗУ", uniqueMemoryValues)}
           {ParameterAccord("Серія", uniqueSeriesValues)}
           {ParameterAccord("Тип конструкції", uniqueConstructionValues)}
           {ParameterAccord("Операційна система", uniqueOperatingSystemValues)}

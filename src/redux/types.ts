@@ -45,6 +45,7 @@ export type IReviewPOST = {
 
 export type Items = {
   _id: string;
+  user: string;
   category: string;
   name: string;
   price: number;

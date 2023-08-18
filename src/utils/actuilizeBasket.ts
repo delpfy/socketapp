@@ -8,7 +8,7 @@ export function actualizeBasket(data: any, origin: any) {
 
     if (itemIndex !== -1) {
       for (const key in origin.items) {
-        console.log(key === "price");
+        
         if (key === "price") {
           if (origin.items.hasOwnProperty(key)) {
             if (

@@ -46,10 +46,7 @@ const LaptopTable = ({ item }: { item: any }) => {
             <TableCell style={font}>Процесор:</TableCell>
             <TableCell>{item.fields.processor}</TableCell>
           </TableRow>
-          <TableRow>
-            <TableCell style={font}>Пам'ять:</TableCell>
-            <TableCell>{item.fields.memory}</TableCell>
-          </TableRow>
+          
           <TableRow>
             <TableCell style={font}>Бренд:</TableCell>
             <TableCell>{item.fields.brand}</TableCell>
@@ -97,6 +94,10 @@ const LaptopTable = ({ item }: { item: any }) => {
           <TableRow>
             <TableCell style={font}>Інші характеристики дисплея:</TableCell>
             <TableCell>{item.fields.otherDisplayFeatures}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>ОЗУ:</TableCell>
+            <TableCell>{item.fields.memory}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>Максимальний об'єм ОЗУ:</TableCell>
@@ -382,6 +383,14 @@ export const ItemPage = () => {
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
   const { afterOrder } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
+  function InfoDialog_open() {
+    setOpenInfo(true);
+  }
+
+  function InfoDialog_close() {
+    setOpenInfo(false);
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -419,11 +428,25 @@ export const ItemPage = () => {
   async function basketItem_APPEND() {
     const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
+      
+        
+      if(itemCurrent.items.quantity === 0){
+        setInfoMessage("Цей товар закінчився");
+        InfoDialog_open();
+        return;
+      }
+      
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item.name === itemCurrent.items.name
       );
 
       if (itemIndex !== -1) {
+        
+        if(basketItems[itemIndex].amount + 1 > itemCurrent.items.quantity){
+          setInfoMessage("Кількість товару у кошику перевищує його загальну кількість");
+        InfoDialog_open();
+        return;
+        }
         basketItems[itemIndex] = {
           _id: itemCurrent.items._id,
           name: itemCurrent.items.name,
@@ -434,6 +457,7 @@ export const ItemPage = () => {
           rating: itemCurrent.items.rating,
           image: itemCurrent.items.image,
           amount: basketItems[itemIndex].amount + 1,
+          quantity: itemCurrent.items.quantity,
           fields: itemCurrent.items.fields
         };
       } else {
@@ -447,6 +471,7 @@ export const ItemPage = () => {
           rating: itemCurrent.items.rating,
           image: itemCurrent.items.image,
           amount: 1,
+          quantity: itemCurrent.items.quantity,
           fields: itemCurrent.items.fields
         });
       }
@@ -634,6 +659,11 @@ export const ItemPage = () => {
             <Box>{StatusReviewHandler(status_review)}</Box>
           </Box>
         </Box>
+        <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
       </>
     );
   };

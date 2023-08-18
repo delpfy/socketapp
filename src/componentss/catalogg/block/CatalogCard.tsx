@@ -11,27 +11,39 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { useAppDispatch} from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { TShippingItems, Items } from "../../../redux/types";
-import {synchronizeBasket } from "../../../redux/basket/basketSlice";
+import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
 import { getItemReviews } from "../../../redux/review/asyncActions";
-import { getItemById } from "../../../redux/home/asyncActions";
+import {
+  deleteItem,
+  getItemById,
+  getItemsByCategory,
+} from "../../../redux/home/asyncActions";
+import InfoDialog from "../../dialogs/InfoDialog";
+import { useState } from "react";
 
 export default function CatalogCard(props: Items) {
+  const { user } = useAppSelector((state) => state.user);
+  const { category } = useAppSelector((state) => state.home);
+  const [open, setOpen] = useState<boolean>(false);
+  const [openInfo, setOpenInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
+  function InfoDialog_open() {
+    setOpenInfo(true);
+  }
 
-
-  const [open, setOpen] = React.useState<boolean>(false);
-
+  function InfoDialog_close() {
+    setOpenInfo(false);
+  }
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-
   function compareObjects(obj1: any, obj2: any) {
-  
     for (const key in obj1) {
       if (obj1.hasOwnProperty(key)) {
         if (obj1[key] !== obj2[key]) {
@@ -71,15 +83,28 @@ export default function CatalogCard(props: Items) {
 
   function getCurrentItem() {
     dispatch(getItemById(props._id)).then((result: any) => {
-      if(result.meta.requestStatus === "fulfilled"){
+      if (result.meta.requestStatus === "fulfilled") {
         dispatch(getItemReviews(props._id)).then((result: any) => {
-          if(result.meta.requestStatus === "fulfilled"){
+          if (result.meta.requestStatus === "fulfilled") {
             navigate("/catalog/item");
+            setAsRecentlyReviewed();
           }
         });
       }
+      if (result.meta.requestStatus === "rejected") {
+        setInfoMessage("Такого товару вже нема");
+        InfoDialog_open();
+        const recentlyReviewed = JSON.parse(
+          localStorage.getItem("recentlyReviewed") || "{}"
+        );
+        localStorage.setItem(
+          "recentlyReviewed",
+          JSON.stringify(
+            recentlyReviewed.filter((item: any) => item._id !== props._id)
+          )
+        );
+      }
     });
-    setAsRecentlyReviewed();
   }
 
   function adjustPrice() {
@@ -90,16 +115,42 @@ export default function CatalogCard(props: Items) {
     }
   }
 
-
   async function basketItem_APPEND() {
     const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
+      if (props.quantity === 0) {
+        setInfoMessage("Цей товар закінчився");
+        InfoDialog_open();
+        return;
+      }
+
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item.name === props.name
       );
-      console.log(itemIndex)
+
       if (itemIndex !== -1) {
+        if (basketItems[itemIndex].amount + 1 > props.quantity) {
+          setInfoMessage(
+            "Кількість товару у кошику перевищує його загальну кількість"
+          );
+          InfoDialog_open();
+          return;
+        }
         basketItems[itemIndex] = {
+          _id: props._id,
+          name: props.name,
+          description: props.description,
+          category: props.category,
+          price: adjustPrice(),
+          sale: props.sale,
+          quantity: props.quantity,
+          rating: props.rating,
+          image: props.image,
+          amount: basketItems[itemIndex].amount + 1,
+          fields: props.fields,
+        };
+      } else {
+        basketItems.push({
           _id: props._id,
           name: props.name,
           description: props.description,
@@ -108,30 +159,14 @@ export default function CatalogCard(props: Items) {
           sale: props.sale,
           rating: props.rating,
           image: props.image,
-          amount: basketItems[itemIndex].amount + 1,
+          quantity: props.quantity,
+          amount: 1,
           fields: props.fields,
-        };
-       
-      }
-      else{
-        basketItems.push(
-          {
-            _id: props._id,
-            name: props.name,
-            description: props.description,
-            category: props.category,
-            price: adjustPrice(),
-            sale: props.sale,
-            rating: props.rating,
-            image: props.image,
-            amount: 1,
-            fields: props.fields,
-          }
-        )
+        });
       }
     }
     localStorage.setItem("basketItems", JSON.stringify(basketItems));
-    
+
     dispatch(synchronizeBasket());
   }
 
@@ -244,7 +279,12 @@ export default function CatalogCard(props: Items) {
             <Rating name="read-only" value={props.rating} readOnly />
           </Box>
 
-          <Box>
+          <Box
+            display={"flex"}
+            justifyContent={"space-between"}
+            alignItems={"flex-end"}
+            flexDirection={"row"}
+          >
             <ClickAwayListener onClickAway={() => setOpen(false)}>
               <Box>
                 <Tooltip
@@ -270,10 +310,43 @@ export default function CatalogCard(props: Items) {
                 </Tooltip>
               </Box>
             </ClickAwayListener>
+            {props.user === user.id ? (
+              <Box
+                display={"flex"}
+                width={"80%"}
+                alignSelf={"center"}
+                justifyContent={"space-between"}
+                alignItems={"flex-end"}
+                flexDirection={"row"}
+              >
+                <IconButton
+                  onClick={() => {
+                    dispatch(deleteItem({ itemId: props._id })).then(
+                      (result: any) => {
+                        if (result.meta.requestStatus === "fulfilled") {
+                          dispatch(getItemsByCategory(category));
+                        }
+                      }
+                    );
+                  }}
+                >
+                  <DeleteForeverIcon
+                    color="error"
+                    sx={{ width: 40, height: 40 }}
+                  />
+                </IconButton>
+              </Box>
+            ) : (
+              <></>
+            )}
           </Box>
         </CardActions>
       </Card>
-
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
     </>
   );
 }

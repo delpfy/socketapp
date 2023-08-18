@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -20,10 +20,20 @@ import { useNavigate } from "react-router-dom";
 import { setCurrentItem } from "../../../redux/home/homeSlice";
 import { getItemById } from "../../../redux/home/asyncActions";
 import { getItemReviews } from "../../../redux/review/asyncActions";
+import InfoDialog from "../../dialogs/InfoDialog";
 
 export default function BasketItemBlock(props: TShippingItems) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [openInfo, setOpenInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
+  function InfoDialog_open() {
+    setOpenInfo(true);
+  }
+
+  function InfoDialog_close() {
+    setOpenInfo(false);
+  }
 
   function getCurrentItem() {
     dispatch(getItemById(props._id)).then((result: any) => {
@@ -33,6 +43,17 @@ export default function BasketItemBlock(props: TShippingItems) {
             navigate("/catalog/item");
           }
         });
+      }
+      if (result.meta.requestStatus === "rejected") {
+        setInfoMessage("Такого товару вже нема. Видаліть його");
+        InfoDialog_open();
+        const recentlyReviewed = JSON.parse(
+          localStorage.getItem("recentlyReviewed") || "{}"
+        );
+        localStorage.setItem(
+          "recentlyReviewed",
+          JSON.stringify(recentlyReviewed.filter((item: any) => item._id !== props._id))
+        );
       }
     });
     
@@ -60,11 +81,24 @@ export default function BasketItemBlock(props: TShippingItems) {
   async function basketItem_APPEND() {
     const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
+      if(props.quantity === 0){
+        setInfoMessage("Цей товар закінчився");
+        InfoDialog_open();
+        return;
+      }
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item.name === props.name
       );
       console.log(props.fields);
       if (itemIndex !== -1) {
+        
+        if (basketItems[itemIndex].amount + 1 > props.quantity) {
+          setInfoMessage(
+            "Кількість товару у кошику перевищує його загальну кількість"
+          );
+          InfoDialog_open();
+          return;
+        }
         basketItems[itemIndex] = {
           _id: props._id,
           name: props.name,
@@ -73,6 +107,7 @@ export default function BasketItemBlock(props: TShippingItems) {
           price: props.price,
           sale: props.sale,
           rating: props.rating,
+          quantity: props.quantity,
           image: props.image,
           amount: props.amount + 1,
           fields: props.fields,
@@ -85,6 +120,7 @@ export default function BasketItemBlock(props: TShippingItems) {
           category: props.category,
           price: props.price,
           sale: props.sale,
+          quantity: props.quantity,
           rating: props.rating,
           image: props.image,
           amount: 1,
@@ -114,6 +150,7 @@ export default function BasketItemBlock(props: TShippingItems) {
             category: props.category,
             price: props.price,
             sale: props.sale,
+            quantity: props.quantity,
             rating: props.rating,
             image: props.image,
             amount: props.amount - 1,
@@ -279,6 +316,11 @@ export default function BasketItemBlock(props: TShippingItems) {
           </IconButton>
         </Box>
       </Card>
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
     </>
   );
 }

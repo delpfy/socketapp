@@ -21,6 +21,7 @@ import { getItemReviews } from "../../redux/review/asyncActions";
 import BasketDialog from "../../componentss/dialogs/BasketDialog";
 import { ORDER_setItems } from "../../redux/order/orderSlice";
 import { getItemById } from "../../redux/home/asyncActions";
+import InfoDialog from "../../componentss/dialogs/InfoDialog";
 
 export default function OrderProducts() {
   
@@ -28,10 +29,19 @@ export default function OrderProducts() {
   const { items } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.user);
   const [openBasket, setOpenBasket] = useState(false);
+  const [openInfo, setOpenInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  
+  function InfoDialog_open() {
+    setOpenInfo(true);
+  }
 
+  function InfoDialog_close() {
+    setOpenInfo(false);
+  }
   function CartDialog_close() {
     setOpenBasket(false);
   }
@@ -48,6 +58,17 @@ export default function OrderProducts() {
             navigate("/catalog/item");
           }
         });
+      }
+      if (result.meta.requestStatus === "rejected") {
+        setInfoMessage("Такого товару вже нема. Видаліть його");
+        InfoDialog_open();
+        const recentlyReviewed = JSON.parse(
+          localStorage.getItem("recentlyReviewed") || "{}"
+        );
+        localStorage.setItem(
+          "recentlyReviewed",
+          JSON.stringify(recentlyReviewed.filter((recent: any) => recent._id !== item._id))
+        );
       }
     });
     
@@ -143,6 +164,11 @@ export default function OrderProducts() {
         openBasket={openBasket}
         CartDialog_close={CartDialog_close}
         user={user}
+      />
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
       />
     </>
   );

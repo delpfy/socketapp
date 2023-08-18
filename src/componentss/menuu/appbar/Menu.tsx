@@ -36,8 +36,6 @@ type Catgory = {
 
 export default function AppBarMenu() {
   const CATEGORIES = useAppSelector((state) => state.home.categories);
-  const { user } = useAppSelector((state) => state.user);
-  const { itemsAmount } = useAppSelector((state) => state.basket);
   const [active, setActive] = React.useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
