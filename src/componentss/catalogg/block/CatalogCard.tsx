@@ -97,10 +97,19 @@ export default function CatalogCard(props: Items) {
         const recentlyReviewed = JSON.parse(
           localStorage.getItem("recentlyReviewed") || "{}"
         );
+        const basketItems = JSON.parse(
+          localStorage.getItem("basketItems") || "{}"
+        );
         localStorage.setItem(
           "recentlyReviewed",
           JSON.stringify(
             recentlyReviewed.filter((item: any) => item._id !== props._id)
+          )
+        );
+        localStorage.setItem(
+          "basketItems",
+          JSON.stringify(
+            basketItems.filter((item: any) => item._id !== props._id)
           )
         );
       }

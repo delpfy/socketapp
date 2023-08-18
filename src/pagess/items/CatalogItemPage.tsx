@@ -379,7 +379,7 @@ export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { status, itemCurrent } = useAppSelector((state) => state.home);
+  const { item_status, itemCurrent } = useAppSelector((state) => state.home);
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
   const { afterOrder } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);
@@ -737,7 +737,7 @@ export const ItemPage = () => {
     }
   }
 
-  return StatusItemHandler(status);
+  return StatusItemHandler(item_status);
 };
 
 export default ItemPage;

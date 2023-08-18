@@ -434,10 +434,10 @@ const homeSlice = createSlice({
     // get item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;
-      state.status = 'success';
+      state.item_status = 'success';
     });
-    builder.addCase(getItemById.pending, (state) => {state.status = 'pending';});
-    builder.addCase(getItemById.rejected, (state) => {state.status = 'error';});
+    builder.addCase(getItemById.pending, (state) => {state.item_status = 'pending';});
+    builder.addCase(getItemById.rejected, (state) => {state.item_status = 'error';});
 
     // update.
     builder.addCase(updateItem.fulfilled, (state, action) => {
