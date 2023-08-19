@@ -29,7 +29,7 @@ import { useState } from "react";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
-  const { category } = useAppSelector((state) => state.home);
+  const { category, itemCurrent } = useAppSelector((state) => state.home);
   const [open, setOpen] = useState<boolean>(false);
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
@@ -127,20 +127,21 @@ export default function CatalogCard(props: Items) {
   }
 
   async function basketItem_APPEND() {
-    const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
+    dispatch(getItemById(props._id)).then((result: any) => {
+      if(result.meta.requestStatus === 'fulfilled'){
+        if(result.payload.items.quantity === 0){
+          setInfoMessage("Цей товар закінчився");
+          InfoDialog_open();
+          return;
+        }
+        const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
-      if (props.quantity === 0) {
-        setInfoMessage("Цей товар закінчився");
-        InfoDialog_open();
-        return;
-      }
-
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item.name === props.name
       );
 
       if (itemIndex !== -1) {
-        if (basketItems[itemIndex].amount + 1 > props.quantity) {
+        if (basketItems[itemIndex].amount + 1 > result.payload.items.quantity) {
           setInfoMessage(
             "Кількість товару у кошику перевищує його загальну кількість"
           );
@@ -179,6 +180,9 @@ export default function CatalogCard(props: Items) {
     localStorage.setItem("basketItems", JSON.stringify(basketItems));
 
     dispatch(synchronizeBasket());
+      }
+    })
+    
   }
 
   return (

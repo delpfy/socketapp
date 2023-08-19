@@ -38,9 +38,9 @@ export default function BasketItemBlock(props: TShippingItems) {
 
   function getCurrentItem() {
     dispatch(getItemById(props._id)).then((result: any) => {
-      if(result.meta.requestStatus === "fulfilled"){
+      if (result.meta.requestStatus === "fulfilled") {
         dispatch(getItemReviews(props._id)).then((result: any) => {
-          if(result.meta.requestStatus === "fulfilled"){
+          if (result.meta.requestStatus === "fulfilled") {
             navigate("/catalog/item");
           }
         });
@@ -56,17 +56,18 @@ export default function BasketItemBlock(props: TShippingItems) {
         );
         localStorage.setItem(
           "recentlyReviewed",
-          JSON.stringify(recentlyReviewed.filter((item: any) => item._id !== props._id))
+          JSON.stringify(
+            recentlyReviewed.filter((item: any) => item._id !== props._id)
+          )
         );
         localStorage.setItem(
           "basketItems",
-          JSON.stringify(basketItems.filter((item: any) => item._id !== props._id))
+          JSON.stringify(
+            basketItems.filter((item: any) => item._id !== props._id)
+          )
         );
-        
       }
     });
-    
-    
 
     const recentlyReviewed = JSON.parse(
       localStorage.getItem("recentlyReviewed") || "{}"
@@ -90,9 +91,18 @@ export default function BasketItemBlock(props: TShippingItems) {
   async function basketItem_APPEND() {
     const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
-      if(props.quantity === 0){
-        setInfoMessage("Цей товар закінчився");
+      if (props.quantity === 0) {
+        setInfoMessage("Цей товар закінчився. Його буде видалено");
         InfoDialog_open();
+        const basketItems = JSON.parse(
+          localStorage.getItem("basketItems") || "{}"
+        );
+        localStorage.setItem(
+          "basketItems",
+          JSON.stringify(
+            basketItems.filter((item: any) => item._id !== props._id)
+          )
+        );
         return;
       }
       const itemIndex = basketItems.findIndex(
@@ -100,7 +110,6 @@ export default function BasketItemBlock(props: TShippingItems) {
       );
       console.log(props.fields);
       if (itemIndex !== -1) {
-        
         if (basketItems[itemIndex].amount + 1 > props.quantity) {
           setInfoMessage(
             "Кількість товару у кошику перевищує його загальну кількість"

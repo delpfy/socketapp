@@ -29,7 +29,11 @@ export const CatalogField = () => {
 
   // Trying to make request to get items from same category.
   useEffect(() => {
-    dispatch(getItemsByCategory(category));
+    dispatch(getItemsByCategory(category)).then((result: any) => {
+      if(result.meta.requestStatus === 'fulfilled'){
+        dispatch(synchronizeBasket());
+      }
+    });
   }, [category, dispatch]);
 
   useEffect(() => {

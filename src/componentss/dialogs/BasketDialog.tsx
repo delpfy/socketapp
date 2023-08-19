@@ -23,6 +23,7 @@ import InfoDialog from "./InfoDialog";
 import { TShippingItems } from "../../redux/types";
 
 
+
 type Props = {
   openBasket: boolean;
   CartDialog_close: () => void;
@@ -52,10 +53,12 @@ export default function BasketDialog({
   const [fullWidth] = useState(true);
 
   const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
-
+  
   useEffect(() => {
     CartDialog_close();
   }, [itemCurrent]);
+
+ 
 
   function LoginDialog_open() {
     if (user.authorized === true) {

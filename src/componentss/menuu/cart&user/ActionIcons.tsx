@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 
 import {
   Avatar,
@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import {  useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -20,6 +20,9 @@ import LoginDialog from "../../dialogs/LoginDialog";
 import RegisterDialog from "../../dialogs/RegisterDialog";
 import BasketDialog from "../../dialogs/BasketDialog";
 import { useNavigate } from "react-router-dom";
+import { getItemById } from "../../../redux/home/asyncActions";
+import { actualizeBasket } from "../../../utils/actuilizeBasket";
+import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 
 export const ActionIcons = () => {
   const { user, user_status } = useAppSelector((state) => state.user);
@@ -37,7 +40,7 @@ export const ActionIcons = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
-
+  const dispatch = useAppDispatch();
   function CartDialog_open() {
     RegisterDialog_close();
     LoginDialog_close();
@@ -59,7 +62,9 @@ export const ActionIcons = () => {
 
   function closeRegAfterSuccess() {
     setOpenRegister(false);
-    setInfoMessage("На вашу пошту було надіслано повідомлення з підтвердженням");
+    setInfoMessage(
+      "На вашу пошту було надіслано повідомлення з підтвердженням"
+    );
     InfoDialog_open();
   }
 
@@ -129,7 +134,28 @@ export const ActionIcons = () => {
             <></>
           ) : (
             <>
-              <IconButton onClick={CartDialog_open}>
+              <IconButton
+                onClick={() => {
+                  const newBasketItems = JSON.parse(
+                    localStorage.getItem("basketItems") || "{}"
+                  );
+                  const promises = newBasketItems.map(async (item: any) => {
+                    const resultItem = await dispatch(getItemById(item._id));
+                    if (resultItem.meta.requestStatus === "fulfilled") {
+                      actualizeBasket(newBasketItems, resultItem.payload);
+                    }
+                  });
+
+                  Promise.all(promises).then(() => {
+                    localStorage.setItem(
+                      "basketItems",
+                      JSON.stringify(newBasketItems)
+                    );
+                    dispatch(synchronizeBasket());
+                    CartDialog_open();
+                  });
+                }}
+              >
                 {items.length === 0 ? (
                   <Badge badgeContent={"пусто"} color="warning">
                     <ShoppingCartIcon

@@ -22,7 +22,8 @@ export default function BasketPage() {
             <ItemsAbsence />
           ) : (
             items.map((item: TShippingItems) => (
-              <Grid
+
+                <Grid
                 item
                 display={"flex"}
                 justifyContent={"center"}
@@ -37,7 +38,10 @@ export default function BasketPage() {
               >
                 <CartItemCard key={item._id} {...item} />
               </Grid>
-            ))
+            )
+              
+              
+            )
           )}
         </Grid>
       </Box>

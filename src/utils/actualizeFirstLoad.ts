@@ -1,8 +1,7 @@
 import { CombinedItems, Items } from "../redux/types";
 
 export function actualizeFirstRender(data: any, origin: any) {
-  console.log(data)
-  console.log(origin)
+  
   if (data !== undefined) {
     const itemIndex = data.findIndex(
       (items: Items) => items.name === origin.name
@@ -19,7 +18,7 @@ export function actualizeFirstRender(data: any, origin: any) {
       }
     }
     else{
-      console.log("hi")
+     
     }
   }
 }

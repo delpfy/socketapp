@@ -8,13 +8,28 @@ export function actualizeFirstRenderBasket(data: any, origin: any) {
 
     if (itemIndex !== -1) {
       for (const key in origin) {
-        console.log(key === "price");
+        
         if (key === "price") {
           if (origin.hasOwnProperty(key)) {
             if (origin[key as keyof CombinedItems] !== data[itemIndex][key]) {
               data[itemIndex][key] =
                 origin.price - Math.round((origin.price * origin.sale) / 100);
               console.log(data[itemIndex][key]);
+            }
+          }
+        } else if (key === "quantity") {
+          if (origin.hasOwnProperty(key)) {
+            if (origin[key as keyof CombinedItems] !== data[itemIndex][key]) {
+              data[itemIndex][key] = origin[key as keyof CombinedItems];
+              if (origin[key as keyof CombinedItems] < data[itemIndex].amount) {
+                data[itemIndex].amount =
+                  data[itemIndex].amount -
+                  (data[itemIndex].amount - origin[key as keyof CombinedItems]);
+                if (data[itemIndex].amount === 0) {
+                  data.splice(itemIndex, 1);
+                  return;
+                }
+              }
             }
           }
         } else {
