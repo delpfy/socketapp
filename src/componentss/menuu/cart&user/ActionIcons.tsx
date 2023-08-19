@@ -139,10 +139,13 @@ export const ActionIcons = () => {
                   const newBasketItems = JSON.parse(
                     localStorage.getItem("basketItems") || "{}"
                   );
-                  const promises = newBasketItems.map(async (item: any) => {
+                  const promises = newBasketItems.map(async (item: any, index: number) => {
                     const resultItem = await dispatch(getItemById(item._id));
                     if (resultItem.meta.requestStatus === "fulfilled") {
                       actualizeBasket(newBasketItems, resultItem.payload);
+                    }
+                    if(resultItem.meta.requestStatus === "rejected"){
+                      newBasketItems.splice(index,1)
                     }
                   });
 
