@@ -27,6 +27,7 @@ import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 export const ActionIcons = () => {
   const { user, user_status } = useAppSelector((state) => state.user);
   const { items } = useAppSelector((state) => state.basket);
+  const [basketLoading, setBasketLoading] = useState(false);
   const navigate = useNavigate();
 
   const [cartSelected, setCartSelected] = useState(false);
@@ -136,6 +137,7 @@ export const ActionIcons = () => {
             <>
               <IconButton
                 onClick={() => {
+                  setBasketLoading(true);
                   const newBasketItems = JSON.parse(
                     localStorage.getItem("basketItems") || "{}"
                   );
@@ -155,6 +157,7 @@ export const ActionIcons = () => {
                       JSON.stringify(newBasketItems)
                     );
                     dispatch(synchronizeBasket());
+                    setBasketLoading(false);
                     CartDialog_open();
                   });
                 }}
@@ -169,17 +172,23 @@ export const ActionIcons = () => {
                       }}
                     />
                   </Badge>
-                ) : (
-                  <Badge badgeContent={items.length} color="warning">
-                    <ShoppingCartIcon
-                      color={cartSelected ? "info" : "warning"}
-                      sx={{
-                        width: 40,
-                        height: 40,
-                      }}
-                    />
-                  </Badge>
-                )}
+                ) : 
+                basketLoading ?
+                <CircularProgress size={20} />
+                
+              :
+              (
+                <Badge badgeContent={items.length} color="warning">
+                  <ShoppingCartIcon
+                    color={cartSelected ? "info" : "warning"}
+                    sx={{
+                      width: 40,
+                      height: 40,
+                    }}
+                  />
+                </Badge>
+              )
+              }
               </IconButton>
             </>
           )}

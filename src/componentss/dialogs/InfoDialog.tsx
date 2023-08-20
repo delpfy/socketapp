@@ -18,6 +18,7 @@ export default function InfoDialog({
   InfoDialog_close,
   infoMessage,
 }: Props) {
+  
   return (
     <Dialog open={openInfo} onClose={InfoDialog_close}>
       <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>

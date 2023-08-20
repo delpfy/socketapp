@@ -37,7 +37,7 @@ const homeSlice = createSlice({
 
     sortByCost_ASC(state) {
       state.sorted = true;
-      if (state.sorted) {
+      if (state.itemsSortedParams.items) {
         state.itemsSorted.items = [...state.itemsSortedParams.items].sort(
           (a, b) =>
             a.price -
@@ -45,6 +45,7 @@ const homeSlice = createSlice({
             (b.price - Math.round((b.price * b.sale) / 100))
         );
       } else {
+       
         state.itemsSorted.items = [...state.itemsCategory.items].sort(
           (a, b) =>
             a.price -
@@ -55,7 +56,7 @@ const homeSlice = createSlice({
     },
     sortByCost_DESC(state) {
       state.sorted = true;
-      if (state.sorted) {
+      if (state.itemsSortedParams.items) {
         state.itemsSorted.items = [...state.itemsSortedParams.items]
           .sort(
             (a, b) =>
@@ -65,6 +66,7 @@ const homeSlice = createSlice({
           )
           .reverse();
       } else {
+       
         state.itemsSorted.items = [...state.itemsCategory.items]
           .sort(
             (a, b) =>
@@ -78,7 +80,7 @@ const homeSlice = createSlice({
     sortByRelevance_ASC(state) {
       state.sorted = true;
 
-      if (state.sorted) {
+      if (state.itemsSortedParams.items) {
         state.itemsSorted.items = [...state.itemsSortedParams.items].sort(
           (a, b) => b.rating - a.rating
         );
@@ -90,7 +92,7 @@ const homeSlice = createSlice({
     },
     sortByRelevance_DESC(state) {
       state.sorted = true;
-      if (state.sorted) {
+      if (state.itemsSortedParams.items) {
         state.itemsSorted.items = [...state.itemsSortedParams.items]
           .sort((a, b) => b.rating - a.rating)
           .reverse();
@@ -103,7 +105,7 @@ const homeSlice = createSlice({
 
     sortByCostRange(state, action: PayloadAction<number[]>) {
       state.sorted = true;
-      if (state.sorted) {
+      if (state.itemsSortedParams.items) {
         state.itemsSorted.items = state.itemsSortedParams.items.filter(
           (item: Items) =>
             item.price - Math.round((item.price * item.sale) / 100) >=
@@ -123,10 +125,19 @@ const homeSlice = createSlice({
     },
     sortByRelevanceRange(state, action: PayloadAction<number[]>) {
       state.sorted = true;
-      state.itemsSorted.items = state.itemsCategory.items.filter(
-        (item: Items) =>
-          item.rating >= action.payload[0] && item.rating <= action.payload[1]
-      );
+      if (state.itemsSortedParams.items) {
+        state.itemsSorted.items = state.itemsSortedParams.items.filter(
+          (item: Items) =>
+            item.rating >= action.payload[0] && item.rating <= action.payload[1]
+        );
+      } else {
+        state.itemsSorted.items = state.itemsCategory.items.filter(
+          (item: Items) =>
+            item.rating >= action.payload[0] && item.rating <= action.payload[1]
+        );
+      }
+      
+      
     },
 
     sortLaptopsByParameters(
@@ -134,7 +145,7 @@ const homeSlice = createSlice({
       action: PayloadAction<{ selectedParams: SelectedSortParams }>
     ) {
       state.sorted = true;
-      state.sorted = true;
+      
       const selectedParams = action.payload.selectedParams;
       state.itemsSorted.items = state.itemsCategory.items.filter(
         (item: any) => {
@@ -398,15 +409,12 @@ const homeSlice = createSlice({
       state.itemsCategory.items.map((item: any) => {
         actualizeFirstRender(recentlyReviewed, item);
         actualizeFirstRenderBasket(basketItems, item);
-      })
+      });
       localStorage.setItem(
         "recentlyReviewed",
         JSON.stringify(recentlyReviewed)
       );
-      localStorage.setItem(
-        "basketItems",
-        JSON.stringify(basketItems)
-      );
+      localStorage.setItem("basketItems", JSON.stringify(basketItems));
       state.itemsSorted = action.payload;
     });
     builder.addCase(getItemsByCategory.pending, (state) => {
@@ -434,40 +442,38 @@ const homeSlice = createSlice({
     // get item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;
-      state.item_status = 'success';
+      state.item_status = "success";
     });
-    builder.addCase(getItemById.pending, (state) => {state.item_status = 'pending';});
-    builder.addCase(getItemById.rejected, (state) => {state.item_status = 'error';});
+    builder.addCase(getItemById.pending, (state) => {
+      state.item_status = "pending";
+    });
+    builder.addCase(getItemById.rejected, (state) => {
+      state.item_status = "error";
+    });
 
     // update.
     builder.addCase(updateItem.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;
-     
-     
+
       const recentlyReviewed = JSON.parse(
         localStorage.getItem("recentlyReviewed") || "{}"
       );
-      const basketItems = JSON.parse(
-        localStorage.getItem("basketItems") || "{}"
-      );
-      
 
       actualizeData(recentlyReviewed, action.payload);
-      actualizeBasket(basketItems, action.payload);
-     console.log(basketItems)
 
       localStorage.setItem(
         "recentlyReviewed",
         JSON.stringify(recentlyReviewed)
       );
-      localStorage.setItem(
-        "basketItems",
-        JSON.stringify(basketItems)
-      );
-      state.status = 'success';
+
+      state.status = "success";
     });
-    builder.addCase(updateItem.pending, (state) => {state.status = 'pending';});
-    builder.addCase(updateItem.rejected, (state) => {state.status = 'error';});
+    builder.addCase(updateItem.pending, (state) => {
+      state.status = "pending";
+    });
+    builder.addCase(updateItem.rejected, (state) => {
+      state.status = "error";
+    });
 
     /* // Item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {

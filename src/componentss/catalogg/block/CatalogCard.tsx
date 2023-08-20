@@ -1,15 +1,19 @@
 import * as React from "react";
 import {
+  Backdrop,
   Box,
   Card,
   CardActions,
   CardContent,
   CardMedia,
+  CircularProgress,
   ClickAwayListener,
   IconButton,
+  LinearProgress,
   Rating,
   Tooltip,
   Typography,
+  makeStyles,
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -30,14 +34,16 @@ import { useState } from "react";
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
   const { category, itemCurrent } = useAppSelector((state) => state.home);
-  const [open, setOpen] = useState<boolean>(false);
+
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
   function InfoDialog_open() {
+    
     setOpenInfo(true);
   }
 
   function InfoDialog_close() {
+    console.log("dfs 2" )
     dispatch(synchronizeBasket());
     setOpenInfo(false);
   }
@@ -81,7 +87,8 @@ export default function CatalogCard(props: Items) {
       );
     }
   }
-
+ 
+ 
   function getCurrentItem() {
     dispatch(getItemById(props._id)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
@@ -92,6 +99,8 @@ export default function CatalogCard(props: Items) {
           }
         });
       }
+      
+      
       if (result.meta.requestStatus === "rejected") {
         setInfoMessage("Такого товару вже нема");
         InfoDialog_open();
@@ -118,17 +127,19 @@ export default function CatalogCard(props: Items) {
     });
   }
 
-  function adjustPrice() {
-    if (props.sale === 0) {
-      return props.price;
+  function adjustPrice(item: any) {
+    if (item.sale === 0) {
+      return item.price;
     } else {
-      return props.price - Math.round((props.price * props.sale) / 100);
+      return item.price - Math.round((item.price * item.sale) / 100);
     }
   }
 
   async function basketItem_APPEND() {
+    console.log("sdf")
     dispatch(getItemById(props._id)).then((result: any) => {
       if(result.meta.requestStatus === 'fulfilled'){
+        
         if(result.payload.items.quantity === 0){
           setInfoMessage("Цей товар закінчився");
           InfoDialog_open();
@@ -137,11 +148,12 @@ export default function CatalogCard(props: Items) {
         const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
       const itemIndex = basketItems.findIndex(
-        (item: TShippingItems) => item.name === props.name
+        (item: TShippingItems) => item.name === result.payload.items.name
       );
 
       if (itemIndex !== -1) {
         if (basketItems[itemIndex].amount + 1 > result.payload.items.quantity) {
+          
           setInfoMessage(
             "Кількість товару у кошику перевищує його загальну кількість"
           );
@@ -149,37 +161,37 @@ export default function CatalogCard(props: Items) {
           return;
         }
         basketItems[itemIndex] = {
-          _id: props._id,
-          name: props.name,
-          description: props.description,
-          category: props.category,
-          price: adjustPrice(),
-          sale: props.sale,
-          quantity: props.quantity,
-          rating: props.rating,
-          image: props.image,
+          _id: result.payload.items._id,
+          name: result.payload.items.name,
+          description: result.payload.items.description,
+          category: result.payload.items.category,
+          price: adjustPrice(result.payload.items),
+          sale: result.payload.items.sale,
+          quantity: result.payload.items.quantity,
+          rating: result.payload.items.rating,
+          image: result.payload.items.image,
           amount: basketItems[itemIndex].amount + 1,
-          fields: props.fields,
+          fields: result.payload.items.fields,
         };
       } else {
         basketItems.push({
-          _id: props._id,
-          name: props.name,
-          description: props.description,
-          category: props.category,
-          price: adjustPrice(),
-          sale: props.sale,
-          rating: props.rating,
-          image: props.image,
-          quantity: props.quantity,
+          _id: result.payload.items._id,
+          name: result.payload.items.name,
+          description: result.payload.items.description,
+          category: result.payload.items.category,
+          price: adjustPrice(result.payload.items),
+          sale: result.payload.items.sale,
+          rating: result.payload.items.rating,
+          image: result.payload.items.image,
+          quantity: result.payload.items.quantity,
           amount: 1,
-          fields: props.fields,
+          fields: result.payload.items.fields,
         });
       }
     }
     localStorage.setItem("basketItems", JSON.stringify(basketItems));
 
-    dispatch(synchronizeBasket());
+    
       }
     })
     
@@ -187,6 +199,12 @@ export default function CatalogCard(props: Items) {
 
   return (
     <>
+    <>
+    <InfoDialog
+    openInfo={openInfo}
+    InfoDialog_close={InfoDialog_close}
+    infoMessage={infoMessage}
+  />
       <Card
         sx={{
           maxWidth: 345,
@@ -197,6 +215,7 @@ export default function CatalogCard(props: Items) {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "2%",
+          
         }}
       >
         {props.sale ? (
@@ -300,19 +319,9 @@ export default function CatalogCard(props: Items) {
             alignItems={"flex-end"}
             flexDirection={"row"}
           >
-            <ClickAwayListener onClickAway={() => setOpen(false)}>
+            
               <Box>
-                <Tooltip
-                  PopperProps={{
-                    disablePortal: true,
-                  }}
-                  onClose={() => setOpen(false)}
-                  open={open}
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  title="You sould be authorized"
-                >
+                
                   <IconButton
                     sx={{ paddind: 0 }}
                     onClick={() => basketItem_APPEND()}
@@ -322,9 +331,9 @@ export default function CatalogCard(props: Items) {
                       color={"disabled"}
                     />
                   </IconButton>
-                </Tooltip>
+                
               </Box>
-            </ClickAwayListener>
+           
             {props.user === user.id ? (
               <Box
                 display={"flex"}
@@ -356,12 +365,11 @@ export default function CatalogCard(props: Items) {
             )}
           </Box>
         </CardActions>
+        
       </Card>
-      <InfoDialog
-        openInfo={openInfo}
-        InfoDialog_close={InfoDialog_close}
-        infoMessage={infoMessage}
-      />
+      
     </>
+    
+  </>
   );
 }

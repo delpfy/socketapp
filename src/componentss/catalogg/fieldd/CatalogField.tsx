@@ -29,11 +29,7 @@ export const CatalogField = () => {
 
   // Trying to make request to get items from same category.
   useEffect(() => {
-    dispatch(getItemsByCategory(category)).then((result: any) => {
-      if(result.meta.requestStatus === 'fulfilled'){
-        dispatch(synchronizeBasket());
-      }
-    });
+    dispatch(getItemsByCategory(category));
   }, [category, dispatch]);
 
   useEffect(() => {
@@ -47,92 +43,6 @@ export const CatalogField = () => {
   function redirectToAddItemPage() {
     navigate("/add-item");
   }
-
-  const Catalog = () => {
-    return (
-      <Box width={"100%"}>
-        <Box
-          display={"flex"}
-          justifyContent={"flex-end"}
-          alignItems={"center"}
-          sx={{ paddingTop: { xs: "20%", md: "13%", lg: "10%" } }}
-        >
-          <Box
-            width={"55%"}
-            alignSelf={"flex-end"}
-            marginRight={3}
-            marginBottom={5}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
-              {category}
-            </Typography>
-            {user.role === "manager" ? (
-              <Button variant="contained" onClick={redirectToAddItemPage}>
-                Додати товар
-              </Button>
-            ) : (
-              <></>
-            )}
-          </Box>
-        </Box>
-        <Box
-          display={"flex"}
-          flexDirection={"row"}
-          justifyContent={"center"}
-          alignItems={"flex-start"}
-        >
-          <Grid
-            container
-            padding={"2%"}
-            paddingTop={0}
-            spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
-          >
-            {sorted
-              ? itemsSorted.items.map((item: Items) => (
-                  <Grid
-                    item
-                    display={"flex"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    paddingBottom={2}
-                    xs={2}
-                    sm={4}
-                    md={4}
-                    lg={4}
-                    xl={5}
-                    key={item._id}
-                  >
-                    <Card key={item._id} {...item} />
-                  </Grid>
-                ))
-              : itemsCategory.items.map((item: Items) => (
-                  <Grid
-                    item
-                    display={"flex"}
-                    justifyContent={"center"}
-                    alignItems={"center"}
-                    paddingBottom={2}
-                    xs={2}
-                    sm={4}
-                    md={4}
-                    lg={4}
-                    xl={5}
-                    key={item._id}
-                  >
-                    <Card key={item._id} {...item} />
-                  </Grid>
-                ))}
-          </Grid>
-        </Box>
-      </Box>
-    );
-  };
 
   const CatalogSkeletons = () => {
     return (
@@ -189,7 +99,98 @@ export const CatalogField = () => {
           itemsCategory.items !== undefined ||
           itemsSorted.items !== undefined
         ) {
-          return <Catalog />;
+          return (
+            <>
+              <Box width={"100%"}>
+                <Box
+                  display={"flex"}
+                  justifyContent={"flex-end"}
+                  alignItems={"center"}
+                  sx={{ paddingTop: { xs: "20%", md: "13%", lg: "10%" } }}
+                >
+                  <Box
+                    width={"55%"}
+                    alignSelf={"flex-end"}
+                    marginRight={3}
+                    marginBottom={5}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Typography
+                      variant={"h3"}
+                      fontSize={30}
+                      fontFamily={"Comfortaa"}
+                    >
+                      {category}
+                    </Typography>
+                    {user.role === "manager" ? (
+                      <Button
+                        variant="contained"
+                        onClick={redirectToAddItemPage}
+                      >
+                        Додати товар
+                      </Button>
+                    ) : (
+                      <></>
+                    )}
+                  </Box>
+                </Box>
+                <Box
+                  display={"flex"}
+                  flexDirection={"row"}
+                  justifyContent={"center"}
+                  alignItems={"flex-start"}
+                >
+                  <Grid
+                    container
+                    padding={"2%"}
+                    paddingTop={0}
+                    spacing={{ xs: 1, sm: 3, md: 4 }}
+                    columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
+                  >
+                    {sorted
+                      ? itemsSorted.items.map((item: Items) => (
+                          <Grid
+                            item
+                            display={"flex"}
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            paddingBottom={2}
+                            xs={2}
+                            sm={4}
+                            md={4}
+                            lg={4}
+                            xl={5}
+                            key={item._id}
+                          >
+                            <Card key={item._id} {...item} />
+                          </Grid>
+                        ))
+                      : itemsCategory.items.map((item: Items) => (
+                          <Grid
+                            item
+                            display={"flex"}
+                            justifyContent={"center"}
+                            alignItems={"center"}
+                            paddingBottom={2}
+                            xs={2}
+                            sm={4}
+                            md={4}
+                            lg={4}
+                            xl={5}
+                            key={item._id}
+                          >
+                            <Card key={item._id} {...item} />
+                          </Grid>
+                        ))}
+                  </Grid>
+                </Box>
+              </Box>
+            </>
+          );
           //return <CatalogSkeletons />
         } else {
           return <CatalogSkeletons />;
