@@ -257,8 +257,9 @@ export interface HomeState {
   itemsCategory: any;
   itemsSorted: ItemsDisplay;
   sorted: boolean;
-  sortedByParams: boolean;
+ 
   itemCurrent: any;
+  
   categories: { id: number; name: string; image: string }[];
   category: string;
 }

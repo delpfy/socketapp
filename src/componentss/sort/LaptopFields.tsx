@@ -6,6 +6,8 @@ import {
   AccordionDetails,
   Typography,
   Checkbox,
+  Box,
+  Button,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -345,7 +347,15 @@ export default function LaptopFields() {
               key={val}
               control={
                 <Checkbox
-                  checked={selectedSortParams[name]?.includes(val.toString())}
+                  checked={
+                    typeof selectedSortParams[name]?.includes(
+                      val.toString()
+                    ) === "boolean"
+                      ? selectedSortParams[name]?.includes(val.toString())
+                        ? true
+                        : false
+                      : false
+                  }
                   onChange={() => performSort(name, val)}
                 />
               }
@@ -363,6 +373,19 @@ export default function LaptopFields() {
         <></>
       ) : (
         <>
+          <Box display={"flex"} flexDirection={"column"}>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{ justifySelf: "flex-end", margin: 3 }}
+              onClick={() => {
+                setSelectedSortParams({});
+                dispatch(sortLaptopsByParameters({ selectedParams: {} }));
+              }}
+            >
+              сброс
+            </Button>
+          </Box>
           {ParameterAccord("Бренд", uniqueBrands)}
           {ParameterAccord("Тип матриці", uniqueMatrixTypeValues)}
           {ParameterAccord("Розмір матриці", uniqueScreenDiagonalValues)}

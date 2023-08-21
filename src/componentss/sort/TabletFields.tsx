@@ -6,12 +6,12 @@ import {
   AccordionDetails,
   Typography,
   Checkbox,
+  Box,
+  Button,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  sortTabletsByParameters,
-} from "../../redux/home/homeSlice";
+import { sortTabletsByParameters } from "../../redux/home/homeSlice";
 import { SelectedSortParams } from "../../redux/types";
 
 export default function TabletFields() {
@@ -312,7 +312,15 @@ export default function TabletFields() {
               key={val}
               control={
                 <Checkbox
-                  checked={selectedSortParams[name]?.includes(val.toString())}
+                  checked={
+                    typeof selectedSortParams[name]?.includes(
+                      val.toString()
+                    ) === "boolean"
+                      ? selectedSortParams[name]?.includes(val.toString())
+                        ? true
+                        : false
+                      : false
+                  }
                   onChange={() => performSort(name, val)}
                 />
               }
@@ -330,6 +338,19 @@ export default function TabletFields() {
         <></>
       ) : (
         <>
+          <Box display={"flex"} flexDirection={"column"}>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{ justifySelf: "flex-end", margin: 3 }}
+              onClick={() => {
+                setSelectedSortParams({});
+                dispatch(sortTabletsByParameters({ selectedParams: {} }));
+              }}
+            >
+              сброс
+            </Button>
+          </Box>
           {ParameterAccord("Бренд", uniqueTabletBrands)}
           {ParameterAccord("Лінійка", uniqueTabletLines)}
           {ParameterAccord("Операційна система", uniqueTabletPreinstalledOS)}

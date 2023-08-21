@@ -1,4 +1,4 @@
-import { Items, ItemsDisplay, TShippingItems, Status } from "../redux/types";
+import {  ItemsDisplay, Status } from "../redux/types";
 
 export const InitialiseHome = () => {
   const categories = [
@@ -32,7 +32,9 @@ export const InitialiseHome = () => {
     itemsCategory: {} as any,
     itemsSorted: {} as ItemsDisplay,
     sorted: false,
-    sortedByParams: false,
+  
+   
+    
     itemCurrent: {} as any,
     
     categories,

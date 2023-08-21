@@ -9,7 +9,6 @@ import {
   Divider,
   FormControl,
   FormControlLabel,
-  FormLabel,
   Radio,
   RadioGroup,
   Slider,
@@ -215,6 +214,7 @@ export default function SortBy() {
             <Typography>Характеристики</Typography>
           </Box>
           <Divider />
+
           {showFieldsSort()}
         </AccordionDetails>
       </Accordion>

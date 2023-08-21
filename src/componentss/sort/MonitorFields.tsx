@@ -1,12 +1,13 @@
 import React from "react";
 import {
-
   FormControlLabel,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
   Checkbox,
+  Box,
+  Button,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -176,7 +177,15 @@ export default function MonitorFields() {
               key={val}
               control={
                 <Checkbox
-                  checked={selectedSortParams[name]?.includes(val.toString())}
+                  checked={
+                    typeof selectedSortParams[name]?.includes(
+                      val.toString()
+                    ) === "boolean"
+                      ? selectedSortParams[name]?.includes(val.toString())
+                        ? true
+                        : false
+                      : false
+                  }
                   onChange={() => performSort(name, val)}
                 />
               }
@@ -194,6 +203,19 @@ export default function MonitorFields() {
         <></>
       ) : (
         <>
+          <Box display={"flex"} flexDirection={"column"}>
+            <Button
+              variant="contained"
+              size="small"
+              sx={{ justifySelf: "flex-end", margin: 3 }}
+              onClick={() => {
+                setSelectedSortParams({});
+                dispatch(sortMonitorsByParameters({ selectedParams: {} }));
+              }}
+            >
+              сброс
+            </Button>
+          </Box>
           {ParameterAccord("Бренд", uniqueBrands)}
           {ParameterAccord("Розмір матриці", uniqueScreenDiagonals)}
           {ParameterAccord("Тип матриці", uniqueMatrixTypes)}
