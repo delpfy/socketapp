@@ -17,7 +17,7 @@ import { Items, TShippingItems } from "../../../redux/types";
 import { useAppDispatch } from "../../../redux/hooks";
 import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
-import { setCurrentItem } from "../../../redux/home/homeSlice";
+
 import { getItemById } from "../../../redux/home/asyncActions";
 import { getItemReviews } from "../../../redux/review/asyncActions";
 import InfoDialog from "../../dialogs/InfoDialog";

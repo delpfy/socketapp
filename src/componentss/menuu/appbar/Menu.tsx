@@ -85,7 +85,7 @@ export default function AppBarMenu() {
       <Divider />
       <Box sx= {{width: '100%'}}>
         {
-          window.location.pathname.includes("/catalog") 
+          window.location.pathname.includes("/catalog")  && !window.location.pathname.includes("/catalog/item") 
           ?<SortBy/>
           :
           <></>

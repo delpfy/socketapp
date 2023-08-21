@@ -249,6 +249,7 @@ export interface BasketState {
 export interface HomeState {
   status: Status;
   item_status: Status;
+  itemAppendingId: string;
   id: number;
 
   itemsDisplay: ItemsDisplay;

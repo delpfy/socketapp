@@ -21,7 +21,6 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { TShippingItems, Items } from "../../../redux/types";
 import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
-import { setCurrentItem } from "../../../redux/home/homeSlice";
 import { getItemReviews } from "../../../redux/review/asyncActions";
 import {
   deleteItem,
@@ -30,20 +29,22 @@ import {
 } from "../../../redux/home/asyncActions";
 import InfoDialog from "../../dialogs/InfoDialog";
 import { useState } from "react";
+import { setSearchedId } from "../../../redux/home/homeSlice";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
-  const { category, itemCurrent } = useAppSelector((state) => state.home);
+  const { category, item_status, itemAppendingId } = useAppSelector(
+    (state) => state.home
+  );
 
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
   function InfoDialog_open() {
-    
     setOpenInfo(true);
   }
 
   function InfoDialog_close() {
-    console.log("dfs 2" )
+    console.log("dfs 2");
     dispatch(synchronizeBasket());
     setOpenInfo(false);
   }
@@ -87,8 +88,7 @@ export default function CatalogCard(props: Items) {
       );
     }
   }
- 
- 
+
   function getCurrentItem() {
     dispatch(getItemById(props._id)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
@@ -99,8 +99,7 @@ export default function CatalogCard(props: Items) {
           }
         });
       }
-      
-      
+
       if (result.meta.requestStatus === "rejected") {
         setInfoMessage("Такого товару вже нема");
         InfoDialog_open();
@@ -122,7 +121,6 @@ export default function CatalogCard(props: Items) {
             basketItems.filter((item: any) => item._id !== props._id)
           )
         );
-        
       }
     });
   }
@@ -136,240 +134,238 @@ export default function CatalogCard(props: Items) {
   }
 
   async function basketItem_APPEND() {
-    console.log("sdf")
+    dispatch(setSearchedId(props._id));
     dispatch(getItemById(props._id)).then((result: any) => {
-      if(result.meta.requestStatus === 'fulfilled'){
-        
-        if(result.payload.items.quantity === 0){
+      if (result.meta.requestStatus === "fulfilled") {
+        if (result.payload.items.quantity === 0) {
           setInfoMessage("Цей товар закінчився");
           InfoDialog_open();
           return;
         }
-        const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
-    if (basketItems !== undefined) {
-      const itemIndex = basketItems.findIndex(
-        (item: TShippingItems) => item.name === result.payload.items.name
-      );
-
-      if (itemIndex !== -1) {
-        if (basketItems[itemIndex].amount + 1 > result.payload.items.quantity) {
-          
-          setInfoMessage(
-            "Кількість товару у кошику перевищує його загальну кількість"
+        const basketItems = JSON.parse(
+          localStorage.getItem("basketItems") || "{}"
+        );
+        if (basketItems !== undefined) {
+          const itemIndex = basketItems.findIndex(
+            (item: TShippingItems) => item.name === result.payload.items.name
           );
-          InfoDialog_open();
-          return;
-        }
-        basketItems[itemIndex] = {
-          _id: result.payload.items._id,
-          name: result.payload.items.name,
-          description: result.payload.items.description,
-          category: result.payload.items.category,
-          price: adjustPrice(result.payload.items),
-          sale: result.payload.items.sale,
-          quantity: result.payload.items.quantity,
-          rating: result.payload.items.rating,
-          image: result.payload.items.image,
-          amount: basketItems[itemIndex].amount + 1,
-          fields: result.payload.items.fields,
-        };
-      } else {
-        basketItems.push({
-          _id: result.payload.items._id,
-          name: result.payload.items.name,
-          description: result.payload.items.description,
-          category: result.payload.items.category,
-          price: adjustPrice(result.payload.items),
-          sale: result.payload.items.sale,
-          rating: result.payload.items.rating,
-          image: result.payload.items.image,
-          quantity: result.payload.items.quantity,
-          amount: 1,
-          fields: result.payload.items.fields,
-        });
-      }
-    }
-    localStorage.setItem("basketItems", JSON.stringify(basketItems));
 
-    
+          if (itemIndex !== -1) {
+            if (
+              basketItems[itemIndex].amount + 1 >
+              result.payload.items.quantity
+            ) {
+              setInfoMessage(
+                "Кількість товару у кошику перевищує його загальну кількість"
+              );
+              InfoDialog_open();
+              return;
+            }
+            basketItems[itemIndex] = {
+              _id: result.payload.items._id,
+              name: result.payload.items.name,
+              description: result.payload.items.description,
+              category: result.payload.items.category,
+              price: adjustPrice(result.payload.items),
+              sale: result.payload.items.sale,
+              quantity: result.payload.items.quantity,
+              rating: result.payload.items.rating,
+              image: result.payload.items.image,
+              amount: basketItems[itemIndex].amount + 1,
+              fields: result.payload.items.fields,
+            };
+          } else {
+            basketItems.push({
+              _id: result.payload.items._id,
+              name: result.payload.items.name,
+              description: result.payload.items.description,
+              category: result.payload.items.category,
+              price: adjustPrice(result.payload.items),
+              sale: result.payload.items.sale,
+              rating: result.payload.items.rating,
+              image: result.payload.items.image,
+              quantity: result.payload.items.quantity,
+              amount: 1,
+              fields: result.payload.items.fields,
+            });
+          }
+        }
+        localStorage.setItem("basketItems", JSON.stringify(basketItems));
       }
-    })
-    
+    });
   }
 
   return (
     <>
-    <>
-    <InfoDialog
-    openInfo={openInfo}
-    InfoDialog_close={InfoDialog_close}
-    infoMessage={infoMessage}
-  />
-      <Card
-        sx={{
-          maxWidth: 345,
-          minWidth: 345,
-          minHeight: 490,
-          maxHeight: 490,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "2%",
-          
-        }}
-      >
-        {props.sale ? (
-          <img
-            style={{ position: "absolute", zIndex: 1, height: 70, width: 70 }}
-            src="https://www.svgrepo.com/show/250306/percentage-percent.svg"
-            alt=""
-          />
-        ) : (
-          <></>
-        )}
-        <CardMedia
-          sx={{
-            maxHeight: 200,
-            minHeight: 200,
-            objectFit: "fill",
-            overflow: "hidden",
-          }}
-          image={props.image[0]}
-          title={props.name}
-          onClick={getCurrentItem}
+      <>
+        <InfoDialog
+          openInfo={openInfo}
+          InfoDialog_close={InfoDialog_close}
+          infoMessage={infoMessage}
         />
-
-        <CardContent sx={{ paddingBottom: 2 }}>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            minHeight={60}
-            maxHeight={60}
-            overflow={"hidden"}
-            fontFamily={"Comfortaa"}
-            textAlign={"justify"}
-            paddingBottom={1}
-          >
-            {props.name}
-          </Typography>
-          <Typography
-            variant="body2"
-            maxHeight={100}
-            minHeight={100}
-            color="text.secondary"
-            overflow={"hidden"}
-            fontFamily={"Comfortaa"}
-            textAlign={"justify"}
-          >
-            {props.description}
-          </Typography>
-        </CardContent>
-        <CardActions
+        <Card
           sx={{
+            maxWidth: 345,
+            minWidth: 345,
+            minHeight: 490,
+            maxHeight: 490,
             display: "flex",
-            alignItems: "center",
+            flexDirection: "column",
             justifyContent: "space-between",
-            paddingTop: 0,
-            paddingLeft: "16px",
-            paddingRight: "16px",
+            padding: "2%",
           }}
         >
-          <Box display={"flex"} flexDirection={"column"}>
+          {props.sale ? (
+            <img
+              style={{ position: "absolute", zIndex: 1, height: 70, width: 70 }}
+              src="https://www.svgrepo.com/show/250306/percentage-percent.svg"
+              alt=""
+            />
+          ) : (
+            <></>
+          )}
+          <CardMedia
+            sx={{
+              maxHeight: 200,
+              minHeight: 200,
+              objectFit: "fill",
+              overflow: "hidden",
+            }}
+            image={props.image[0]}
+            title={props.name}
+            onClick={getCurrentItem}
+          />
+
+          <CardContent sx={{ paddingBottom: 2 }}>
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              minHeight={60}
+              maxHeight={60}
+              overflow={"hidden"}
+              fontFamily={"Comfortaa"}
+              textAlign={"justify"}
+              paddingBottom={1}
+            >
+              {props.name}
+            </Typography>
+            <Typography
+              variant="body2"
+              maxHeight={100}
+              minHeight={100}
+              color="text.secondary"
+              overflow={"hidden"}
+              fontFamily={"Comfortaa"}
+              textAlign={"justify"}
+            >
+              {props.description}
+            </Typography>
+          </CardContent>
+          <CardActions
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingTop: 0,
+              paddingLeft: "16px",
+              paddingRight: "16px",
+            }}
+          >
+            <Box display={"flex"} flexDirection={"column"}>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                flexDirection={"row"}
+              >
+                <Typography
+                  paddingLeft={0.3}
+                  fontFamily={"Comfortaa"}
+                  color={props.sale ? "info" : "error"}
+                  sx={
+                    props.sale
+                      ? {
+                          fontSize: 17,
+                          textDecoration: "line-through !important",
+                        }
+                      : { fontSize: 22 }
+                  }
+                >
+                  {props.price} ₴
+                </Typography>
+                {props.sale ? (
+                  <Typography
+                    paddingLeft={0.3}
+                    fontSize={22}
+                    fontFamily={"Comfortaa"}
+                    color={"error"}
+                  >
+                    {props.price - Math.round((props.price * props.sale) / 100)}{" "}
+                    ₴
+                  </Typography>
+                ) : (
+                  <></>
+                )}
+              </Box>
+
+              <Rating name="read-only" value={props.rating} readOnly />
+            </Box>
+
             <Box
               display={"flex"}
               justifyContent={"space-between"}
+              alignItems={"flex-end"}
               flexDirection={"row"}
             >
-              <Typography
-                paddingLeft={0.3}
-                fontFamily={"Comfortaa"}
-                color={props.sale ? "info" : "error"}
-                sx={
-                  props.sale
-                    ? {
-                        fontSize: 17,
-                        textDecoration: "line-through !important",
-                      }
-                    : { fontSize: 22 }
-                }
-              >
-                {props.price} ₴
-              </Typography>
-              {props.sale ? (
-                <Typography
-                  paddingLeft={0.3}
-                  fontSize={22}
-                  fontFamily={"Comfortaa"}
-                  color={"error"}
-                >
-                  {props.price - Math.round((props.price * props.sale) / 100)} ₴
-                </Typography>
-              ) : (
-                <></>
-              )}
-            </Box>
-
-            <Rating name="read-only" value={props.rating} readOnly />
-          </Box>
-
-          <Box
-            display={"flex"}
-            justifyContent={"space-between"}
-            alignItems={"flex-end"}
-            flexDirection={"row"}
-          >
-            
               <Box>
-                
-                  <IconButton
-                    sx={{ paddind: 0 }}
-                    onClick={() => basketItem_APPEND()}
-                  >
+                <IconButton
+                  sx={{ paddind: 0 }}
+                  onClick={() => basketItem_APPEND()}
+                >
+                  {itemAppendingId === props._id ? (
+                    <CircularProgress size={20} />
+                  ) : (
                     <AddShoppingCartIcon
                       sx={{ height: 35, width: 35 }}
                       color={"disabled"}
                     />
-                  </IconButton>
-                
-              </Box>
-           
-            {props.user === user.id ? (
-              <Box
-                display={"flex"}
-                width={"80%"}
-                alignSelf={"center"}
-                justifyContent={"space-between"}
-                alignItems={"flex-end"}
-                flexDirection={"row"}
-              >
-                <IconButton
-                  onClick={() => {
-                    dispatch(deleteItem({ itemId: props._id })).then(
-                      (result: any) => {
-                        if (result.meta.requestStatus === "fulfilled") {
-                          dispatch(getItemsByCategory(category));
-                        }
-                      }
-                    );
-                  }}
-                >
-                  <DeleteForeverIcon
-                    color="error"
-                    sx={{ width: 40, height: 40 }}
-                  />
+                  )}
                 </IconButton>
               </Box>
-            ) : (
-              <></>
-            )}
-          </Box>
-        </CardActions>
-        
-      </Card>
-      
+
+              {props.user === user.id ? (
+                <Box
+                  display={"flex"}
+                  width={"80%"}
+                  alignSelf={"center"}
+                  justifyContent={"space-between"}
+                  alignItems={"flex-end"}
+                  flexDirection={"row"}
+                >
+                  <IconButton
+                    onClick={() => {
+                      dispatch(deleteItem({ itemId: props._id })).then(
+                        (result: any) => {
+                          if (result.meta.requestStatus === "fulfilled") {
+                            dispatch(getItemsByCategory(category));
+                          }
+                        }
+                      );
+                    }}
+                  >
+                    <DeleteForeverIcon
+                      color="error"
+                      sx={{ width: 40, height: 40 }}
+                    />
+                  </IconButton>
+                </Box>
+              ) : (
+                <></>
+              )}
+            </Box>
+          </CardActions>
+        </Card>
+      </>
     </>
-    
-  </>
   );
 }

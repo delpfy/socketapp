@@ -16,7 +16,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TShippingItems } from "../../redux/types";
-import { setCurrentItem } from "../../redux/home/homeSlice";
 import { getItemReviews } from "../../redux/review/asyncActions";
 import BasketDialog from "../../componentss/dialogs/BasketDialog";
 import { ORDER_setItems } from "../../redux/order/orderSlice";

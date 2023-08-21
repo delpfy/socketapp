@@ -4,7 +4,6 @@ import { Items } from "../../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { getItemById, searchItems } from "../../../redux/home/asyncActions";
 import { useNavigate } from "react-router-dom";
-import { setCurrentItem } from "../../../redux/home/homeSlice";
 import { getItemReviews } from "../../../redux/review/asyncActions";
 
 export default function Search() {

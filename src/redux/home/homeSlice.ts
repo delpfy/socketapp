@@ -29,11 +29,11 @@ const homeSlice = createSlice({
       state.category = action.payload;
     },
 
-    setCurrentItem(state, action: PayloadAction<TShippingItems | Items>) {
-      state.itemCurrent = action.payload;
-      console.log(state.itemCurrent.fields);
-      state.status = "success";
+    setSearchedId(state, action: PayloadAction<string>) {
+      state.itemAppendingId = action.payload;
     },
+
+
 
     sortByCost_ASC(state) {
       state.sorted = true;
@@ -442,13 +442,16 @@ const homeSlice = createSlice({
     // get item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;
+      state.itemAppendingId = "";
       state.item_status = "success";
     });
-    builder.addCase(getItemById.pending, (state) => {
+    builder.addCase(getItemById.pending, (state,action) => {
       state.item_status = "pending";
+      
     });
     builder.addCase(getItemById.rejected, (state) => {
       state.item_status = "error";
+      state.itemAppendingId = "";
     });
 
     // update.
@@ -496,7 +499,7 @@ const homeSlice = createSlice({
 
 export const {
   SetCategory,
-  setCurrentItem,
+  setSearchedId,
   sortByCost_ASC,
   sortByCost_DESC,
   sortByRelevance_ASC,
