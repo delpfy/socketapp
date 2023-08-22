@@ -432,7 +432,10 @@ export default function LaptopCategory(props: Category) {
       weight <= 0 ||
       dimensions.height <= 0 ||
       dimensions.width <= 0 ||
-      dimensions.depth <= 0
+      dimensions.depth <= 0 ||
+      images[0].length === 0 ||
+      images[1].length === 0 ||
+      images[2].length === 0 
     ) {
       InfoDialog_open();
       setInfoMessage("Не всі поля було заповнено коректно");
@@ -567,6 +570,12 @@ export default function LaptopCategory(props: Category) {
                 key={index}
                 fullWidth
                 value={imageUrl}
+                error={imageUrl.length === 0 ? true : false}
+                helperText={
+                  imageUrl.length === 0
+                    ? "Вкажіть зображення"
+                    : ""
+                }
                 onChange={(event) => handleImageChange(index, event)}
               />
             ))}
