@@ -108,8 +108,9 @@ export default function LaptopCategory(props: Category) {
     index: "width" | "height" | "depth",
     event: any
   ) => {
-    console.log(event.target.value);
+    
     const newDimentions = { ...dimensions };
+    console.log(event)
     newDimentions[index] = event;
     setDimensions(newDimentions);
   };
