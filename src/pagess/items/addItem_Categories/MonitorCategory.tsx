@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../redux/hooks";
 import { createItem } from "../../../redux/home/asyncActions";
 import { Category } from "../../../redux/types";
+import InfoDialog from "../../../componentss/dialogs/InfoDialog";
 
 export default function MonitorCategory(props: Category) {
   const [name, setName] = useState("");
@@ -44,11 +45,27 @@ export default function MonitorCategory(props: Category) {
   const [curvedScreen, setCurvedScreen] = useState(false);
   const [refreshRate, setRefreshRate] = useState(0);
 
+  const [openInfo, setOpenInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
+  function InfoDialog_open() {
+    setOpenInfo(true);
+  }
+
+  function InfoDialog_close() {
+    setOpenInfo(false);
+  }
   function DisplayBox(
     name: string,
     value: any,
-    setValue: Dispatch<SetStateAction<any>>
+    setValue: Dispatch<SetStateAction<any>>,
+    validation: (value: any) => boolean,
+    errorText: string
   ) {
+    const isError =
+      !validation(value) || (typeof value === "string" && /^\d+$/.test(value));
+    if (typeof value === "string" && validation(value)) {
+      errorText = "Це поле не може містити тільки цифри";
+    }
     return (
       <Box
         width={700}
@@ -85,14 +102,18 @@ export default function MonitorCategory(props: Category) {
             </Select>
           </FormControl>
         ) : typeof value === "number" ? (
-           
           <TextField
             fullWidth
             value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
             onChange={(event) => {
-                console.log(value)
               if (/^\d*\.?\d*$/.test(event.target.value)) {
-                setValue(event.target.value.length > 0 ? parseFloat(event.target.value) : 0);
+                setValue(
+                  event.target.value.length > 0
+                    ? parseFloat(event.target.value)
+                    : 0
+                );
               }
             }}
           />
@@ -100,8 +121,9 @@ export default function MonitorCategory(props: Category) {
           <TextField
             fullWidth
             value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
             onChange={(event) => {
-                console.log(value)
               setValue(event.target.value);
             }}
           />
@@ -111,6 +133,29 @@ export default function MonitorCategory(props: Category) {
   }
 
   function handleAddItem() {
+    if (
+      name.trim() === "" ||
+      brand.trim() === "" ||
+      description.trim() === "" ||
+      price <= 0 ||
+      quantity <= 0 ||
+      sale < 0 ||
+      screenDiagonal <= 0 ||
+      refreshRate < 0 ||
+      brightness < 0 ||
+      aspectRatio.trim() === "" ||
+      resolution.trim() === "" ||
+      responseTime <= 0 ||
+      viewingAngles.trim() === "" ||
+      backlightType.trim() === "" ||
+      contrastRatio.trim() === "" ||
+      screenCoating.trim() === "" ||
+      matrixType.trim() === ""
+    ) {
+      InfoDialog_open();
+      setInfoMessage("Не всі поля було заповнено коректно");
+      return;
+    }
     dispatch(
       createItem({
         name,
@@ -164,6 +209,11 @@ export default function MonitorCategory(props: Category) {
 
   return (
     <>
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
       <Box
         paddingTop={15}
         paddingBottom={15}
@@ -171,11 +221,41 @@ export default function MonitorCategory(props: Category) {
         flexDirection={"column"}
         alignItems={"center"}
       >
-        {DisplayBox("Назва:", name, setName)}
-        {DisplayBox("Опис:", description, setDescription)}
-        {DisplayBox("Ціна:", price, setPrice)}
-        {DisplayBox("Кількість:", quantity, setQuantity)}
-        {DisplayBox("Знижка:", sale, setSale)}
+        {DisplayBox(
+          "Назва:",
+          name,
+          setName,
+          (value) => value.trim() !== "",
+          "Це поле не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Опис:",
+          description,
+          setDescription,
+          (value) => value.trim() !== "",
+          "Це поле не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Ціна:",
+          price,
+          setPrice,
+          (value) => parseFloat(value) > 0,
+          "Введіть дійсне значення не менше 1"
+        )}
+        {DisplayBox(
+          "Кількість:",
+          quantity,
+          setQuantity,
+          (value) => parseInt(value) > 0,
+          "Введіть дійсне значення не менше 1"
+        )}
+        {DisplayBox(
+          "Знижка:",
+          sale,
+          setSale,
+          (value) => parseFloat(value) >= 0,
+          "Введіть дійсне значення не менше 0"
+        )}
         <Box
           width={700}
           paddingBottom={5}
@@ -213,19 +293,97 @@ export default function MonitorCategory(props: Category) {
           </Box>
         </Box>
 
-        {DisplayBox("Бренд:", brand, setBrand)}
-        {DisplayBox("Діагональ екрану:", screenDiagonal, setScreenDiagonal)}
-        {DisplayBox("Тип матриці:", matrixType, setMatrixType)}
-        {DisplayBox("Співвідношення сторін:", aspectRatio, setAspectRatio)}
-        {DisplayBox("Роздільна здатність:", resolution, setResolution)}
-        {DisplayBox("Час відгуку:", responseTime, setResponseTime)}
-        {DisplayBox("Кути огляду:", viewingAngles, setViewingAngles)}
-        {DisplayBox("Тип підсвічування:", backlightType, setBacklightType)}
-        {DisplayBox("Яскравість:", brightness, setBrightness)}
-        {DisplayBox("Контрастність:", contrastRatio, setContrastRatio)}
-        {DisplayBox("Покриття екрану:", screenCoating, setScreenCoating)}
-        {DisplayBox("Зігнутий екран:", curvedScreen, setCurvedScreen)}
-        {DisplayBox("Частота оновлення:", refreshRate, setRefreshRate)}
+        {DisplayBox(
+          "Бренд:",
+          brand,
+          setBrand,
+          (value) => value.trim() !== "",
+          "Це поле не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Діагональ екрану:",
+          screenDiagonal,
+          setScreenDiagonal,
+          (value) => value > 0,
+          "Введіть дійсне значення не менше 1"
+        )}
+        {DisplayBox(
+          "Тип матриці:",
+          matrixType,
+          setMatrixType,
+          (value) => value.trim() !== "",
+          "Це поле не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Співвідношення сторін:",
+          aspectRatio,
+          setAspectRatio,
+          (value) => value.trim() !== "",
+          "Це поле не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Роздільна здатність:",
+          resolution,
+          setResolution,
+          (value) => value.trim() !== "",
+          "Поле 'Роздільна здатність' не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Час відгуку:",
+          responseTime,
+          setResponseTime,
+          (value) => value > 0,
+          "Введіть дійсне значення не менше 1"
+        )}
+        {DisplayBox(
+          "Кути огляду:",
+          viewingAngles,
+          setViewingAngles,
+          (value) => value.trim() !== "",
+          "Це поле не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Тип підсвічування:",
+          backlightType,
+          setBacklightType,
+          (value) => value.trim() !== "",
+          "Це поле не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Яскравість:",
+          brightness,
+          setBrightness,
+          (value) => value > 0,
+          "Введіть дійсне значення не менше 1"
+        )}
+        {DisplayBox(
+          "Контрастність:",
+          contrastRatio,
+          setContrastRatio,
+          (value) => value.trim() !== "",
+          "Це поле не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Покриття екрану:",
+          screenCoating,
+          setScreenCoating,
+          (value) => value.trim() !== "",
+          "Це поле не може бути порожнім"
+        )}
+        {DisplayBox(
+          "Зігнутий екран:",
+          curvedScreen,
+          setCurvedScreen,
+          () => true,
+          ""
+        )}
+        {DisplayBox(
+          "Частота оновлення:",
+          refreshRate,
+          setRefreshRate,
+          (value) => value > 0,
+          "Введіть дійсне значення не менше 1"
+        )}
 
         <Button
           variant="contained"
