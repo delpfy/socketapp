@@ -170,7 +170,7 @@ const homeSlice = createSlice({
                 case "Процесор":
                   return item.fields.processor.toString() === paramValue;
                 case "Обсяг пам'яті":
-                  return item.fields.memory.toString() === paramValue;
+                  return item.fields.RAM.toString() === paramValue;
                 case "Серія":
                   return item.fields.series.toString() === paramValue;
                 case "Тип конструкції":
@@ -222,11 +222,11 @@ const homeSlice = createSlice({
                 case "Вага":
                   return item.fields.weight.toString() === paramValue;
                 case "Матеріал корпусу":
-                  return item.fields.bodyMaterial.toLowerCase() === paramValue;
+                  return item.fields.bodyMaterial === paramValue;
                 case "Колір кришки":
-                  return item.fields.lidColor.toLowerCase() === paramValue;
+                  return item.fields.lidColor === paramValue;
                 case "Колір корпусу":
-                  return item.fields.bodyColor.toLowerCase() === paramValue;
+                  return item.fields.bodyColor === paramValue;
                 default:
                   return false;
               }

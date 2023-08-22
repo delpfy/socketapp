@@ -97,7 +97,7 @@ const LaptopTable = ({ item }: { item: any }) => {
           </TableRow>
           <TableRow>
             <TableCell style={font}>ОЗУ:</TableCell>
-            <TableCell>{item.fields.memory}</TableCell>
+            <TableCell>{item.fields.RAM}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>Максимальний об'єм ОЗУ:</TableCell>

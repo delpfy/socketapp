@@ -4,6 +4,7 @@ import {
   Divider,
   FormControl,
   IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -111,6 +112,111 @@ export default function TabletCategory(props: Category) {
             </Select>
           </FormControl>
         ) : typeof value === "number" ? (
+          SpecificNumericalField(value, isError, errorText, setValue, name)
+        ) : (
+          SpecificLiteralField(value, isError, errorText, setValue, name)
+        )}
+      </Box>
+    );
+  }
+  function SpecificLiteralField(
+    value: any,
+    isError: boolean,
+    errorText: string,
+    setValue: Dispatch<SetStateAction<any>>,
+    name: string
+  ) {
+    switch (name) {
+      case "Бренд:":
+        return (
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">+380</InputAdornment>
+              ),
+            }}
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              setValue(event.target.value);
+            }}
+          />
+        );
+      default:
+        return (
+          <TextField
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              setValue(event.target.value);
+            }}
+          />
+        );
+    }
+  }
+
+  function SpecificNumericalField(
+    value: any,
+    isError: boolean,
+    errorText: string,
+    setValue: Dispatch<SetStateAction<any>>,
+    name: string
+  ) {
+    switch (name) {
+      case "Ціна:":
+        return (
+          <TextField
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">грн</InputAdornment>
+            ),
+          }}
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              if (/^\d*\.?\d*$/.test(event.target.value)) {
+                setValue(
+                  event.target.value.length > 0
+                    ? parseFloat(event.target.value)
+                    : 0
+                );
+              }
+            }}
+          />
+          
+        );
+        case "Знижка:":
+        return (
+          <TextField
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">%</InputAdornment>
+            ),
+          }}
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              if (/^\d*\.?\d*$/.test(event.target.value)) {
+                setValue(
+                  event.target.value.length > 0
+                    ? parseFloat(event.target.value)
+                    : 0
+                );
+              }
+            }}
+          />
+          
+        );
+      default:
+        return (
           <TextField
             fullWidth
             value={value}
@@ -126,21 +232,9 @@ export default function TabletCategory(props: Category) {
               }
             }}
           />
-        ) : (
-          <TextField
-            fullWidth
-            value={value}
-            error={isError}
-            helperText={isError ? errorText : ""}
-            onChange={(event) => {
-              setValue(event.target.value);
-            }}
-          />
-        )}
-      </Box>
-    );
+        );
+    }
   }
-
   function handleAddItem() {
     if (
       name.trim() === "" ||

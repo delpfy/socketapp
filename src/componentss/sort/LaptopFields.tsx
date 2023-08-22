@@ -46,7 +46,7 @@ export default function LaptopFields() {
     itemsCategory !== undefined
       ? Array.from(
           new Set(
-            itemsCategory.items?.map((item: any) => item.fields.memory) ?? []
+            itemsCategory.items?.map((item: any) => item.fields.RAM) ?? []
           )
         )
       : [];
@@ -101,7 +101,7 @@ export default function LaptopFields() {
       ? Array.from(
           new Set(
             itemsCategory.items?.map((item: any) =>
-              item.fields.coatingType?.toLowerCase()
+              item.fields.coatingType
             ) ?? []
           )
         )
@@ -277,7 +277,7 @@ export default function LaptopFields() {
       ? Array.from(
           new Set(
             itemsCategory.items?.map((item: any) =>
-              item.fields.bodyMaterial?.toLowerCase()
+              item.fields.bodyMaterial
             ) ?? []
           )
         )
@@ -287,7 +287,7 @@ export default function LaptopFields() {
       ? Array.from(
           new Set(
             itemsCategory.items?.map((item: any) =>
-              item.fields.lidColor?.toLowerCase()
+              item.fields.lidColor
             ) ?? []
           )
         )
@@ -297,7 +297,7 @@ export default function LaptopFields() {
       ? Array.from(
           new Set(
             itemsCategory.items?.map((item: any) =>
-              item.fields.bodyColor?.toLowerCase()
+              item.fields.bodyColor
             ) ?? []
           )
         )

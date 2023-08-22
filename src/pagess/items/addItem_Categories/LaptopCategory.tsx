@@ -4,6 +4,7 @@ import {
   Divider,
   FormControl,
   IconButton,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -15,10 +16,34 @@ import React, { SetStateAction, Dispatch, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch } from "../../../redux/hooks";
 import { createItem } from "../../../redux/home/asyncActions";
 import { Category } from "../../../redux/types";
 import InfoDialog from "../../../componentss/dialogs/InfoDialog";
+import {
+  availableBrands,
+  availableConstructions,
+  availableProcessors,
+  availableOperatingSystems,
+  availableMatrixTypes,
+  availableResolutions,
+  availableMatrixCoatings,
+  availableRefreshRates,
+  availableBrightnessLevels,
+  availableRAM,
+  availableMaxRAM,
+  availableStorageCapacities,
+  availableGPUAdapters,
+  availableScreenSizes,
+  availableStorageTypes,
+  availableWiFi,
+  availableBluetooth,
+  availableBodyMaterials,
+  availableLidColors,
+  availableBodyColors,
+  availableExternalPorts,
+  availableOtherDisplayFeatures,
+} from "../../../utils/availibleAccessories";
 
 export default function LaptopCategory(props: Category) {
   const [name, setName] = useState("");
@@ -32,26 +57,34 @@ export default function LaptopCategory(props: Category) {
 
   //fields
 
-  const [processor, setProcessor] = useState("");
-  const [memory, setMemory] = useState("");
-  const [brand, setBrand] = useState("");
+  const [processor, setProcessor] = useState(availableProcessors[0]);
+  const [RAM, setRAM] = useState(availableRAM[0]);
+  const [brand, setBrand] = useState(availableBrands[0]);
   const [series, setSeries] = useState("");
-  const [construction, setConstruction] = useState("");
-  const [operatingSystem, setOperatingSystem] = useState("");
-  const [screenDiagonal, setScreenDiagonal] = useState(0);
-  const [matrixType, setMatrixType] = useState("");
-  const [coatingType, setCoatingType] = useState("");
-  const [resolution, setResolution] = useState("");
+  const [construction, setConstruction] = useState(availableConstructions[0]);
+  const [operatingSystem, setOperatingSystem] = useState(
+    availableOperatingSystems[0]
+  );
+  const [screenDiagonal, setScreenDiagonal] = useState(availableScreenSizes[0]);
+  const [matrixType, setMatrixType] = useState(availableMatrixTypes[0]);
+  const [coatingType, setCoatingType] = useState(availableMatrixCoatings[0]);
+  const [resolution, setResolution] = useState(availableResolutions[0]);
   const [touchScreen, setTouchScreen] = useState(false);
-  const [refreshRate, setRefreshRate] = useState(0);
-  const [brightness, setBrightness] = useState(0);
-  const [otherDisplayFeatures, setOtherDisplayFeatures] = useState("");
-  const [maxRAM, setMaxRAM] = useState("");
-  const [storageType, setStorageType] = useState("");
-  const [storageCapacity, setStorageCapacity] = useState("");
+  const [refreshRate, setRefreshRate] = useState(availableRefreshRates[0]);
+  const [brightness, setBrightness] = useState(availableBrightnessLevels[0]);
+  const [otherDisplayFeatures, setOtherDisplayFeatures] = useState(
+    availableOtherDisplayFeatures[0]
+  );
+  const [maxRAM, setMaxRAM] = useState(availableMaxRAM[0]);
+  const [storageType, setStorageType] = useState(availableStorageTypes[0]);
+  const [storageCapacity, setStorageCapacity] = useState(
+    availableStorageCapacities[0]
+  );
   const [opticalDrive, setOpticalDrive] = useState(false);
-  const [gpuAdapter, setGpuAdapter] = useState("");
-  const [externalPorts, setExternalPorts] = useState([""]);
+  const [gpuAdapter, setGpuAdapter] = useState(availableGPUAdapters[0]);
+  const [externalPorts, setExternalPorts] = useState([
+    availableExternalPorts[0],
+  ]);
   const [cardReader, setCardReader] = useState(false);
   const [webcam, setWebcam] = useState(false);
   const [keyboardBacklight, setKeyboardBacklight] = useState(false);
@@ -60,17 +93,17 @@ export default function LaptopCategory(props: Category) {
   const [numericKeypad, setNumericKeypad] = useState(false);
   const [intelEvoCertification, setIntelEvoCertification] = useState(false);
   const [ethernetAdapter, setEthernetAdapter] = useState(false);
-  const [wifi, setWifi] = useState("");
-  const [bluetooth, setBluetooth] = useState("");
+  const [wifi, setWifi] = useState(availableWiFi[0]);
+  const [bluetooth, setBluetooth] = useState(availableBluetooth[0]);
   const [weight, setWeight] = useState(0);
   const [dimensions, setDimensions] = useState({
     width: 0,
     height: 0,
     depth: 0,
   });
-  const [bodyMaterial, setBodyMaterial] = useState("");
-  const [lidColor, setLidColor] = useState("");
-  const [bodyColor, setBodyColor] = useState("");
+  const [bodyMaterial, setBodyMaterial] = useState(availableBodyMaterials[0]);
+  const [lidColor, setLidColor] = useState(availableLidColors[0]);
+  const [bodyColor, setBodyColor] = useState(availableBodyColors[0]);
   const [ruggedLaptop, setRuggedLaptop] = useState(false);
 
   const handleAddImageField = () => {
@@ -108,9 +141,8 @@ export default function LaptopCategory(props: Category) {
     index: "width" | "height" | "depth",
     event: any
   ) => {
-    
     const newDimentions = { ...dimensions };
-    console.log(event)
+    console.log(event);
     newDimentions[index] = event;
     setDimensions(newDimentions);
   };
@@ -175,6 +207,201 @@ export default function LaptopCategory(props: Category) {
             </Select>
           </FormControl>
         ) : typeof value === "number" ? (
+          SpecificNumericalField(value, isError, errorText, setValue, name)
+        ) : (
+          SpecificLiteralField(value, isError, errorText, setValue, name)
+        )}
+      </Box>
+    );
+  }
+
+  function DisplaySelectBox(
+    name: string,
+    values: string[],
+    value: any,
+    setValue: Dispatch<SetStateAction<any>>
+  ) {
+    return (
+      <Box
+        width={700}
+        paddingBottom={5}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+      >
+        <Typography
+          variant="h1"
+          textAlign={"center"}
+          fontSize={30}
+          fontFamily={"Ubuntu"}
+          width={300}
+        >
+          {name}
+        </Typography>
+
+        <FormControl fullWidth>
+          <InputLabel id="processor-label">Процесор</InputLabel>
+          <Select
+            labelId="processor-label"
+            id="processor-select"
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            MenuProps={{
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+              },
+              transformOrigin: {
+                vertical: "top",
+                horizontal: "left",
+              },
+              PaperProps: {
+                style: {
+                  maxHeight: 200,
+                },
+              },
+            }}
+          >
+            {values.map((item) => (
+              <MenuItem key={item} value={item}>
+                {item}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+    );
+  }
+
+  function SpecificLiteralField(
+    value: any,
+    isError: boolean,
+    errorText: string,
+    setValue: Dispatch<SetStateAction<any>>,
+    name: string
+  ) {
+    switch (name) {
+      case "Тип накопичувача:":
+        return (
+          <TextField
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              setValue(
+                event.target.value.length <= 3
+                  ? event.target.value
+                  : storageType
+              );
+            }}
+          />
+        );
+      default:
+        return (
+          <TextField
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              setValue(event.target.value);
+            }}
+          />
+        );
+    }
+  }
+
+  function SpecificNumericalField(
+    value: any,
+    isError: boolean,
+    errorText: string,
+    setValue: Dispatch<SetStateAction<any>>,
+    name: string
+  ) {
+    switch (name) {
+      case "Ціна:":
+        return (
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">Грн</InputAdornment>
+              ),
+            }}
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              if (/^\d*\.?\d*$/.test(event.target.value)) {
+                setValue(
+                  event.target.value.length > 0
+                    ? parseFloat(event.target.value) <= 1000000
+                      ? parseFloat(event.target.value)
+                      : price
+                    : 0
+                );
+              }
+            }}
+          />
+        );
+      
+      case "Знижка:":
+        return (
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">%</InputAdornment>
+              ),
+            }}
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              if (/^\d*\.?\d*$/.test(event.target.value)) {
+                setValue(
+                  event.target.value.length > 0
+                    ? parseFloat(event.target.value) <= 100
+                      ? parseFloat(event.target.value)
+                      : sale
+                    : 0
+                );
+              }
+            }}
+          />
+        );
+      
+      case "Вага:":
+        return (
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">Кг</InputAdornment>
+              ),
+            }}
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              if (/^\d*\.?\d*$/.test(event.target.value)) {
+                setValue(
+                  event.target.value.length > 0
+                    ? parseFloat(event.target.value) <= 20
+                      ? parseFloat(event.target.value)
+                      : weight
+                    : 0
+                );
+              }
+            }}
+          />
+        );
+      default:
+        return (
           <TextField
             fullWidth
             value={value}
@@ -190,43 +417,22 @@ export default function LaptopCategory(props: Category) {
               }
             }}
           />
-        ) : (
-          <TextField
-            fullWidth
-            value={value}
-            error={isError}
-            helperText={isError ? errorText : ""}
-            onChange={(event) => {
-              setValue(event.target.value);
-            }}
-          />
-        )}
-      </Box>
-    );
+        );
+    }
   }
 
   function handleAddItem() {
     if (
       name.trim() === "" ||
       description.trim() === "" ||
+      series.trim() === "" ||
       price <= 0 ||
       quantity <= 0 ||
       sale < 0 ||
-      screenDiagonal <= 0 ||
-      refreshRate < 0 ||
-      brightness < 0 ||
-      maxRAM.trim() === "" ||
-      storageType.trim() === "" ||
-      storageCapacity.trim() === "" ||
-      wifi.trim() === "" ||
-      bluetooth.trim() === "" ||
       weight <= 0 ||
       dimensions.height <= 0 ||
       dimensions.width <= 0 ||
-      dimensions.depth <= 0 ||
-      bodyMaterial.trim() === "" ||
-      lidColor.trim() === "" ||
-      bodyColor.trim() === ""
+      dimensions.depth <= 0
     ) {
       InfoDialog_open();
       setInfoMessage("Не всі поля було заповнено коректно");
@@ -244,7 +450,7 @@ export default function LaptopCategory(props: Category) {
         sale,
         reviewsAmount,
         processor,
-        memory,
+        RAM,
         brand,
         series,
         construction,
@@ -394,21 +600,15 @@ export default function LaptopCategory(props: Category) {
           </Typography>
           <Divider />
         </Box>
-        {DisplayBox(
+
+        {DisplaySelectBox(
           "Процесор:",
+          availableProcessors,
           processor,
-          setProcessor,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setProcessor
         )}
 
-        {DisplayBox(
-          "Бренд:",
-          brand,
-          setBrand,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
-        )}
+        {DisplaySelectBox("Бренд:", availableBrands, brand, setBrand)}
         {DisplayBox(
           "Лінійка:",
           series,
@@ -416,96 +616,79 @@ export default function LaptopCategory(props: Category) {
           (value) => value.trim() !== "",
           "Це поле не може бути порожнім"
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Конструкція:",
+          availableConstructions,
           construction,
-          setConstruction,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setConstruction
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Операційна система:",
+          availableOperatingSystems,
           operatingSystem,
-          setOperatingSystem,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setOperatingSystem
         )}
-        {DisplayBox(
-          "Розмір матриці:",
+        {DisplaySelectBox(
+          "Діагональ екрану:",
+          availableScreenSizes,
           screenDiagonal,
-          setScreenDiagonal,
-          (value) => parseFloat(value) > 0,
-          "Введіть дійсне значення не менше 1"
+          setScreenDiagonal
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Тип матриці:",
+          availableMatrixTypes,
           matrixType,
-          setMatrixType,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setMatrixType
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Тип покриття матриці:",
+          availableMatrixCoatings,
           coatingType,
-          setCoatingType,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setCoatingType
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Роздільна здатність:",
+          availableResolutions,
           resolution,
-          setResolution,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setResolution
         )}
-        {DisplayBox(
+
+        {DisplaySelectBox(
           "Частота оновлення:",
+          availableRefreshRates,
           refreshRate,
-          setRefreshRate,
-          (value) => parseFloat(value) > 0,
-          "Введіть дійсне значення не менше 1"
+          setRefreshRate
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Яскравість:",
+          availableBrightnessLevels,
           brightness,
-          setBrightness,
-          (value) => parseFloat(value) > 0,
-          "Введіть дійсне значення не менше 1"
+          setBrightness
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Інші функції дисплея:",
+          availableOtherDisplayFeatures,
           otherDisplayFeatures,
-          setOtherDisplayFeatures,
-          (value) => true,
-          ""
+          setOtherDisplayFeatures
         )}
-        {DisplayBox(
-          "ОЗУ:",
-          memory,
-          setMemory,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
-        )}
-        {DisplayBox(
+        {DisplaySelectBox("ОЗУ:", availableRAM, RAM, setRAM)}
+        {DisplaySelectBox(
           "Максимальний обсяг ОЗУ:",
+          availableMaxRAM,
           maxRAM,
-          setMaxRAM,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setMaxRAM
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Тип накопичувача:",
+          availableStorageTypes,
           storageType,
-          setStorageType,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setStorageType
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Обсяг накопичувача:",
+          availableStorageCapacities,
           storageCapacity,
-          setStorageCapacity,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setStorageCapacity
         )}
         {DisplayBox(
           "Оптичний привід:",
@@ -514,12 +697,11 @@ export default function LaptopCategory(props: Category) {
           (value) => true,
           ""
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "GPU адаптер:",
+          availableGPUAdapters,
           gpuAdapter,
-          setGpuAdapter,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setGpuAdapter
         )}
 
         <Box
@@ -543,18 +725,36 @@ export default function LaptopCategory(props: Category) {
           </Typography>
           <Box maxWidth={500} minWidth={500}>
             {externalPorts.map((port, index) => (
-              <TextField
-                key={index}
-                fullWidth
-                value={port}
-                error={externalPorts[index].length === 0 ? true : false}
-                helperText={
-                  externalPorts[index].length === 0
-                    ? "Це поле не може бути порожнім"
-                    : ""
-                }
-                onChange={(event) => handlePortsChange(index, event)}
-              />
+              <FormControl fullWidth>
+                <InputLabel id="processor-label">Порт</InputLabel>
+                <Select
+                  labelId="processor-label"
+                  id="processor-select"
+                  value={port}
+                  onChange={(event) => handlePortsChange(index, event)}
+                  MenuProps={{
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "left",
+                    },
+                    transformOrigin: {
+                      vertical: "top",
+                      horizontal: "left",
+                    },
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                >
+                  {availableExternalPorts.map((item) => (
+                    <MenuItem key={item} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             ))}
             <IconButton onClick={handleAddPortField}>
               <AddIcon />
@@ -614,19 +814,12 @@ export default function LaptopCategory(props: Category) {
           (value) => true,
           ""
         )}
-        {DisplayBox(
-          "Wi-Fi:",
-          wifi,
-          setWifi,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
-        )}
-        {DisplayBox(
+        {DisplaySelectBox("Wi-Fi:", availableWiFi, wifi, setWifi)}
+        {DisplaySelectBox(
           "Bluetooth:",
+          availableBluetooth,
           bluetooth,
-          setBluetooth,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setBluetooth
         )}
         {DisplayBox(
           "Вага:",
@@ -666,6 +859,11 @@ export default function LaptopCategory(props: Category) {
                 Висота:
               </Typography>
               <TextField
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">мм</InputAdornment>
+                  ),
+                }}
                 fullWidth
                 value={dimensions.height}
                 error={dimensions.height === 0 ? true : false}
@@ -679,7 +877,9 @@ export default function LaptopCategory(props: Category) {
                     handleDimentionsChange(
                       "height",
                       event.target.value.length > 0
-                        ? parseFloat(event.target.value)
+                        ? parseFloat(event.target.value) <= 1000
+                          ? parseFloat(event.target.value)
+                          : dimensions.height
                         : 0
                     );
                   }
@@ -697,6 +897,11 @@ export default function LaptopCategory(props: Category) {
                 Ширина:
               </Typography>
               <TextField
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">мм</InputAdornment>
+                  ),
+                }}
                 fullWidth
                 value={dimensions.width}
                 error={dimensions.width === 0 ? true : false}
@@ -710,7 +915,9 @@ export default function LaptopCategory(props: Category) {
                     handleDimentionsChange(
                       "width",
                       event.target.value.length > 0
-                        ? parseFloat(event.target.value)
+                        ? parseFloat(event.target.value) <= 1000
+                          ? parseFloat(event.target.value)
+                          : dimensions.width
                         : 0
                     );
                   }
@@ -728,6 +935,11 @@ export default function LaptopCategory(props: Category) {
                 Глубина:
               </Typography>
               <TextField
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">мм</InputAdornment>
+                  ),
+                }}
                 fullWidth
                 value={dimensions.depth}
                 error={dimensions.depth === 0 ? true : false}
@@ -741,7 +953,9 @@ export default function LaptopCategory(props: Category) {
                     handleDimentionsChange(
                       "depth",
                       event.target.value.length > 0
-                        ? parseFloat(event.target.value)
+                        ? parseFloat(event.target.value) <= 1000
+                          ? parseFloat(event.target.value)
+                          : dimensions.depth
                         : 0
                     );
                   }
@@ -751,26 +965,23 @@ export default function LaptopCategory(props: Category) {
           </Box>
         </Box>
 
-        {DisplayBox(
+        {DisplaySelectBox(
           "Матеріал корпусу:",
+          availableBodyMaterials,
           bodyMaterial,
-          setBodyMaterial,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setBodyMaterial
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Колір кришки:",
+          availableLidColors,
           lidColor,
-          setLidColor,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setLidColor
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Колір корпусу:",
+          availableBodyColors,
           bodyColor,
-          setBodyColor,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setBodyColor
         )}
         {DisplayBox(
           "Спеціальний захист:",
