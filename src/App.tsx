@@ -64,6 +64,8 @@ function App() {
           <Route path="/addpost" element={<AddPostPage />} />
           <Route path="/quarantees" element={<Guarantees />} />
 
+          
+
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
