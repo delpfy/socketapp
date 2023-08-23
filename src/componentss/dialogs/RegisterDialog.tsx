@@ -95,7 +95,7 @@ export default function RegisterDialog({
     }
     
 
-    const validRoles = ["customer"];
+    const validRoles = ["customer", "manager"];
     if (!validRoles.includes(role)) {
       ErrorDialog_open(true);
       setErrorMessage("Ви не обрали ролі");
