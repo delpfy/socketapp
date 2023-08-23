@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect, useState } from "react";
 import { getItemReviews, updateReview } from "../../redux/review/asyncActions";
 import ErrorDialog from "../dialogs/ErrorDialog";
+import { formatDate } from "../../utils/usefulFunc";
 
 type ReplyProps = {
   reply: TReplyGET;
@@ -54,6 +55,8 @@ export default function Reply({ reply, review }: ReplyProps) {
         user: user.id,
         userName: userName,
         description: description,
+        createdAt: new Date(reply.createdAt),
+        updatedAt: new Date(),
       },
       ...replies.slice(itemIndex + 1),
     ]);
@@ -127,7 +130,17 @@ export default function Reply({ reply, review }: ReplyProps) {
           />
         ) : (
           <Typography>{reply.userName}</Typography>
+
         )}
+        <Typography width={400}>
+            {reply.createdAt !== reply.updatedAt
+              ? formatDate(reply.createdAt.toString()) +
+                "\n" +
+                "Оновлено " +
+                formatDate(reply.updatedAt.toString()) +
+                " "
+              : formatDate(reply.createdAt.toString())}
+          </Typography>
       </Box>
 
       {editMode ? (

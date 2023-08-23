@@ -96,6 +96,8 @@ export type TReplyGET = {
   user: string;
   userName: string;
   description: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type User = {
