@@ -243,11 +243,11 @@ export default function RegisterDialog({
               control={<Radio onChange={handleChange} />}
               label="Користувач"
             />
-            {/* <FormControlLabel
+            <FormControlLabel
                 value="manager"
                 control={<Radio onChange={handleChange} />}
                 label="Менеджер"
-              /> */}
+              />
           </RadioGroup>
         </FormControl>
       </DialogContent>
