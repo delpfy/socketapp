@@ -12,9 +12,12 @@ import {
   setAfterOrder,
   synchronizeBasket,
 } from "../../../redux/basket/basketSlice";
+import { setEditItemMode } from "../../../redux/home/homeSlice";
 
 export const CatalogField = () => {
-  const { category, status } = useAppSelector((state) => state.home);
+  const { category, status, editItemMode } = useAppSelector(
+    (state) => state.home
+  );
   const { user } = useAppSelector((state) => state.user);
   const { afterOrder } = useAppSelector((state) => state.basket);
 
@@ -37,6 +40,9 @@ export const CatalogField = () => {
     if (afterOrder) {
       dispatch(synchronizeBasket());
       dispatch(setAfterOrder(false));
+    }
+    if (editItemMode) {
+      dispatch(setEditItemMode(false));
     }
   }, []);
 

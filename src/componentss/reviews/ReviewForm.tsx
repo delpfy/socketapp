@@ -11,12 +11,11 @@ import {
 } from "../../redux/review/reviewSlice";
 import { updateItem } from "../../redux/home/asyncActions";
 import { Items, TShippingItems } from "../../redux/types";
-import { actualizeData } from "../../utils/actuilizeLocalStorageData";
 import { synchronizeBasket } from "../../redux/basket/basketSlice";
 
 export default function ReviewForm(props: Items | TShippingItems) {
   const { user } = useAppSelector((state) => state.user);
-  const {itemCurrent} = useAppSelector((state) => state.home);
+  const { category } = useAppSelector((state) => state.home);
   const { item_totalRating, item_reviewsAmount, item_noMoreReviews } =
     useAppSelector((state) => state.reviews);
 
@@ -57,17 +56,17 @@ export default function ReviewForm(props: Items | TShippingItems) {
         updateItem({
           itemId: props._id,
           params: {
+            category: category,
             rating: item_totalRating,
             reviewsAmount: item_reviewsAmount,
           },
         })
       ).then((result: any) => {
-        if(result.meta.requestStatus === "fulfilled") {
+        if (result.meta.requestStatus === "fulfilled") {
           dispatch(synchronizeBasket());
         }
-      })
+      });
       dispatch(disableNoMoreReviews());
-      
     }
 
     dispatch(nullifyTotalRating());

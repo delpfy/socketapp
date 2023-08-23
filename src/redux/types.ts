@@ -42,7 +42,6 @@ export type IReviewPOST = {
   disadvantages: string;
 };
 
-
 export type Items = {
   _id: string;
   user: string;
@@ -55,7 +54,7 @@ export type Items = {
   reviewsAmount: number;
   image: string[];
   description: string;
-  fields:[];
+  fields: any;
 };
 
 export type ItemsPOST = {
@@ -81,7 +80,7 @@ export type TShippingItems = {
   amount: number;
   image: string[];
   description: string;
-  fields:[];
+  fields: any;
 };
 
 export type CombinedItems = Items | TShippingItems;
@@ -134,7 +133,7 @@ export type UserRegister = {
 
 export type Status = "success" | "pending" | "error";
 export type Category = {
-  category: "Ноутбуки" | "Планшети" | "Монітори"
+  category: "Ноутбуки" | "Планшети" | "Монітори";
 };
 
 export type TLocationCity = {
@@ -251,15 +250,15 @@ export interface HomeState {
   item_status: Status;
   itemAppendingId: string;
   id: number;
-
+  editItemMode: boolean;
   itemsDisplay: ItemsDisplay;
   itemsSortedParams: ItemsDisplay;
   itemsCategory: any;
   itemsSorted: ItemsDisplay;
   sorted: boolean;
- 
+
   itemCurrent: any;
-  
+
   categories: { id: number; name: string; image: string }[];
   category: string;
 }

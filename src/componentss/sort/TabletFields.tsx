@@ -229,17 +229,6 @@ export default function TabletFields() {
         )
       : [];
 
-  const uniqueTabletExternalPorts =
-    itemsCategory !== undefined
-      ? Array.from(
-          new Set(
-            itemsCategory.items?.map(
-              (item: any) => item.fields.externalPorts
-            ) ?? []
-          )
-        )
-      : [];
-
   const uniqueTabletWeight =
     itemsCategory !== undefined
       ? Array.from(
@@ -385,7 +374,7 @@ export default function TabletFields() {
           )}
           {ParameterAccord("GPS", uniqueTabletGPS)}
           {ParameterAccord("NFC", uniqueTabletNFC)}
-          {ParameterAccord("Зовнішні порти", uniqueTabletExternalPorts)}
+
           {ParameterAccord("Вага", uniqueTabletWeight)}
           {ParameterAccord("Колір корпусу", uniqueTabletBodyColor)}
           {ParameterAccord(

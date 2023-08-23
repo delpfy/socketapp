@@ -202,6 +202,7 @@ export default function BasketItemBlock(props: TShippingItems) {
       <Card
         sx={{
           maxWidth: 345,
+          minWidth: 345,
           minHeight: 490,
           maxHeight: 490,
           display: "flex",

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { Items, ItemsDisplay, ItemsPOST, TShippingItems } from "../types";
+import { Items, ItemsDisplay, TShippingItems } from "../types";
 
 export const getAllItems = createAsyncThunk<ItemsDisplay>(
   "home/getAllItems",
@@ -34,6 +34,14 @@ export const getItemById = createAsyncThunk<Items, string>(
   }
 );
 
+export const checkItemById = createAsyncThunk<Items, string>(
+  "home/checkItemById",
+  async (params) => {
+    const { data } = await axios.get<Items>(`/items/${params}`);
+    return data;
+  }
+);
+
 export const updateItem = createAsyncThunk<
   { items: Items } | { items: TShippingItems },
   { itemId: string; params: {} }
@@ -48,7 +56,21 @@ export const updateItem = createAsyncThunk<
   return data;
 });
 
-export const deleteItem = createAsyncThunk<any, { itemId: string } >(
+export const updateItemFields = createAsyncThunk<
+  { items: Items } | { items: TShippingItems },
+  { itemId: string; params: {} }
+>("home/updateItemFields", async (params) => {
+  const { data } = await axios.patch<
+    { items: Items } | { items: TShippingItems }
+  >(`/items/update/${params.itemId}`, params.params, {
+    headers: {
+      authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
+  });
+  return data;
+});
+
+export const deleteItem = createAsyncThunk<any, { itemId: string }>(
   "home/deleteItem",
   async (params) => {
     const { data } = await axios.delete<any>(`/items/${params.itemId}`, {

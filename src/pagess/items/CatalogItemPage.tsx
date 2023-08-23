@@ -15,7 +15,6 @@ import {
   TableContainer,
   TableRow,
   Typography,
-  createTheme,
 } from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
 import {
@@ -30,23 +29,26 @@ import {
   setReviewsAmount,
   setRatingAmount,
 } from "../../redux/review/reviewSlice";
-import { updateItem } from "../../redux/home/asyncActions";
 import LoadingPage from "../LoadingPage";
+import { setEditItemMode } from "../../redux/home/homeSlice";
 
 const font = {
-  fontFamily: 'Ubuntu',
+  fontFamily: "Ubuntu",
 };
 
 const LaptopTable = ({ item }: { item: any }) => {
   return (
-    <TableContainer component={Paper}  sx = {{width: "50%", alignSelf: 'center', paddingBottom: 4}}>
+    <TableContainer
+      component={Paper}
+      sx={{ width: "50%", alignSelf: "center", paddingBottom: 4 }}
+    >
       <Table>
         <TableBody>
           <TableRow>
             <TableCell style={font}>Процесор:</TableCell>
             <TableCell>{item.fields.processor}</TableCell>
           </TableRow>
-          
+
           <TableRow>
             <TableCell style={font}>Бренд:</TableCell>
             <TableCell>{item.fields.brand}</TableCell>
@@ -133,7 +135,9 @@ const LaptopTable = ({ item }: { item: any }) => {
           </TableRow>
           <TableRow>
             <TableCell style={font}>Підсвітка клавіатури:</TableCell>
-            <TableCell>{item.fields.keyboardBacklight ? "Так" : "Ні"}</TableCell>
+            <TableCell>
+              {item.fields.keyboardBacklight ? "Так" : "Ні"}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>Пасивне охолодження:</TableCell>
@@ -141,7 +145,9 @@ const LaptopTable = ({ item }: { item: any }) => {
           </TableRow>
           <TableRow>
             <TableCell style={font}>Сканер відбитків пальців:</TableCell>
-            <TableCell>{item.fields.fingerprintScanner ? "Так" : "Ні"}</TableCell>
+            <TableCell>
+              {item.fields.fingerprintScanner ? "Так" : "Ні"}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>Цифрова клавіатура:</TableCell>
@@ -149,7 +155,9 @@ const LaptopTable = ({ item }: { item: any }) => {
           </TableRow>
           <TableRow>
             <TableCell style={font}>Сертифікація Intel Evo:</TableCell>
-            <TableCell>{item.fields.intelEvoCertification ? "Так" : "Ні"}</TableCell>
+            <TableCell>
+              {item.fields.intelEvoCertification ? "Так" : "Ні"}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>Адаптер Ethernet:</TableCell>
@@ -169,7 +177,10 @@ const LaptopTable = ({ item }: { item: any }) => {
           </TableRow>
           <TableRow>
             <TableCell style={font}>Розміри:</TableCell>
-            <TableCell>{item.fields.dimensions.width} x {item.fields.dimensions.height} x {item.fields.dimensions.depth}</TableCell>
+            <TableCell>
+              {item.fields.dimensions.width} x {item.fields.dimensions.height} x{" "}
+              {item.fields.dimensions.depth}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>Матеріал корпусу:</TableCell>
@@ -195,7 +206,10 @@ const LaptopTable = ({ item }: { item: any }) => {
 
 const TabletTable = ({ item }: { item: any }) => {
   return (
-    <TableContainer component={Paper} sx = {{width: "50%", alignSelf: 'center', paddingBottom: 4}}>
+    <TableContainer
+      component={Paper}
+      sx={{ width: "50%", alignSelf: "center", paddingBottom: 4 }}
+    >
       <Table>
         <TableBody>
           <TableRow>
@@ -275,8 +289,12 @@ const TabletTable = ({ item }: { item: any }) => {
             <TableCell>{item.fields.cellularNetwork}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Голосовий зв'язок в мережах GSM/3G:</TableCell>
-            <TableCell>{item.fields.voiceCommunication ? "Так" : "Ні"}</TableCell>
+            <TableCell style={font}>
+              Голосовий зв'язок в мережах GSM/3G:
+            </TableCell>
+            <TableCell>
+              {item.fields.voiceCommunication ? "Так" : "Ні"}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>GPS:</TableCell>
@@ -296,11 +314,14 @@ const TabletTable = ({ item }: { item: any }) => {
           </TableRow>
           <TableRow>
             <TableCell style={font}>Розміри:</TableCell>
-            <TableCell>{item.fields.dimensions.width} x {item.fields.dimensions.height} x {item.fields.dimensions.depth}</TableCell>
+            <TableCell>
+              {item.fields.dimensions.width} x {item.fields.dimensions.height} x{" "}
+              {item.fields.dimensions.depth}
+            </TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>Колір кришки:</TableCell>
-            <TableCell>{item.fields.lidColor}</TableCell>
+            <TableCell>{item.fields.frontPanelColor}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>Колір корпусу:</TableCell>
@@ -314,7 +335,10 @@ const TabletTable = ({ item }: { item: any }) => {
 
 const MonitorTable = ({ item }: { item: any }) => {
   return (
-    <TableContainer component={Paper} sx = {{width: "50%", alignSelf: 'center', paddingBottom: 4}}>
+    <TableContainer
+      component={Paper}
+      sx={{ width: "50%", alignSelf: "center", paddingBottom: 4 }}
+    >
       <Table>
         <TableBody>
           <TableRow>
@@ -379,7 +403,9 @@ export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { item_status, itemCurrent } = useAppSelector((state) => state.home);
+  const { item_status, itemCurrent, editItemMode } = useAppSelector(
+    (state) => state.home
+  );
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
   const { afterOrder } = useAppSelector((state) => state.basket);
   const [openInfo, setOpenInfo] = useState(false);
@@ -398,6 +424,9 @@ export const ItemPage = () => {
     if (afterOrder) {
       dispatch(synchronizeBasket());
       dispatch(setAfterOrder(false));
+    }
+    if (editItemMode) {
+      dispatch(setEditItemMode(false));
     }
   }, [dispatch]);
 
@@ -428,24 +457,23 @@ export const ItemPage = () => {
   async function basketItem_APPEND() {
     const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
-      
-        
-      if(itemCurrent.items.quantity === 0){
+      if (itemCurrent.items.quantity === 0) {
         setInfoMessage("Цей товар закінчився");
         InfoDialog_open();
         return;
       }
-      
+
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item.name === itemCurrent.items.name
       );
 
       if (itemIndex !== -1) {
-        
-        if(basketItems[itemIndex].amount + 1 > itemCurrent.items.quantity){
-          setInfoMessage("Кількість товару у кошику перевищує його загальну кількість");
-        InfoDialog_open();
-        return;
+        if (basketItems[itemIndex].amount + 1 > itemCurrent.items.quantity) {
+          setInfoMessage(
+            "Кількість товару у кошику перевищує його загальну кількість"
+          );
+          InfoDialog_open();
+          return;
         }
         basketItems[itemIndex] = {
           _id: itemCurrent.items._id,
@@ -458,7 +486,7 @@ export const ItemPage = () => {
           image: itemCurrent.items.image,
           amount: basketItems[itemIndex].amount + 1,
           quantity: itemCurrent.items.quantity,
-          fields: itemCurrent.items.fields
+          fields: itemCurrent.items.fields,
         };
       } else {
         basketItems.push({
@@ -472,7 +500,7 @@ export const ItemPage = () => {
           image: itemCurrent.items.image,
           amount: 1,
           quantity: itemCurrent.items.quantity,
-          fields: itemCurrent.items.fields
+          fields: itemCurrent.items.fields,
         });
       }
     }
@@ -487,7 +515,6 @@ export const ItemPage = () => {
 
   const Item = () => {
     return (
-    
       <>
         <Button
           sx={{ fontFamily: "Comfortaa", marginTop: 15, fontSize: 15 }}
@@ -529,7 +556,7 @@ export const ItemPage = () => {
                 <img
                   src={itemCurrent.items.image[0]}
                   alt="img1"
-                  style={{ width: "100%", height: "100%", objectFit: "fill" }}
+                  style={{ width: "100%", height: 700, objectFit: "contain" }}
                 />
               </Box>
               <Box>
@@ -538,7 +565,7 @@ export const ItemPage = () => {
                   alt="img2"
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: 700,
                     objectFit: "contain",
                   }}
                 />
@@ -549,7 +576,7 @@ export const ItemPage = () => {
                   alt="img3"
                   style={{
                     width: "100%",
-                    height: "100%",
+                    height: 700,
                     objectFit: "contain",
                   }}
                 />
@@ -563,7 +590,12 @@ export const ItemPage = () => {
             </Carousel>
           </Box>
 
-          <Box display={"flex"} flexDirection={"column"} alignItems={"left"}>
+          <Box
+            display={"flex"}
+            width={"90%"}
+            flexDirection={"column"}
+            alignItems={"left"}
+          >
             {itemCurrent.items.quantity <= 10 ? (
               <Typography
                 fontFamily={"Comfortaa"}
@@ -612,14 +644,20 @@ export const ItemPage = () => {
                   color={"error"}
                 >
                   {itemCurrent.items.price -
-                    Math.round((itemCurrent.items.price * itemCurrent.items.sale) / 100)}
+                    Math.round(
+                      (itemCurrent.items.price * itemCurrent.items.sale) / 100
+                    )}
                   ₴
                 </Typography>
               ) : (
                 <></>
               )}
             </Box>
-            <Rating name="read-only" value={itemCurrent.items.rating} readOnly />
+            <Rating
+              name="read-only"
+              value={itemCurrent.items.rating}
+              readOnly
+            />
 
             <Typography
               fontFamily={"Comfortaa"}
@@ -660,10 +698,10 @@ export const ItemPage = () => {
           </Box>
         </Box>
         <InfoDialog
-        openInfo={openInfo}
-        InfoDialog_close={InfoDialog_close}
-        infoMessage={infoMessage}
-      />
+          openInfo={openInfo}
+          InfoDialog_close={InfoDialog_close}
+          infoMessage={infoMessage}
+        />
       </>
     );
   };
@@ -723,16 +761,16 @@ export const ItemPage = () => {
         if (itemCurrent.items !== undefined) {
           return <Item />;
         } else {
-          navigate('/catalog')
+          navigate("/catalog");
           return <NotFoundPage />;
         }
       case "pending":
-        return <LoadingPage/>;
+        return <LoadingPage />;
       case "error":
-        navigate('/catalog')
+        navigate("/catalog");
         return <NotFoundPage />;
       default:
-        navigate('/catalog')
+        navigate("/catalog");
         return <NotFoundPage />;
     }
   }

@@ -1,21 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseHome } from "../../utils/InitialiseHome";
+import { ItemsDisplay, HomeState, Items, SelectedSortParams } from "../types";
 import {
-  ItemsDisplay,
-  HomeState,
-  TShippingItems,
-  Items,
-  SelectedSortParams,
-} from "../types";
-import {
+  checkItemById,
   getAllItems,
   getItemById,
   getItemsByCategory,
   searchItems,
   updateItem,
+  updateItemFields,
 } from "./asyncActions";
 import { actualizeData } from "../../utils/actuilizeLocalStorageData";
-import { actualizeBasket } from "../../utils/actuilizeBasket";
 import { actualizeFirstRender } from "../../utils/actualizeFirstLoad";
 import { actualizeFirstRenderBasket } from "../../utils/actuilizeFirstLoadBasket";
 
@@ -33,8 +28,9 @@ const homeSlice = createSlice({
       state.itemAppendingId = action.payload;
     },
 
-   
-
+    setEditItemMode(state, action: PayloadAction<boolean>) {
+      state.editItemMode = action.payload;
+    },
 
     sortByCost_ASC(state) {
       state.sorted = true;
@@ -46,7 +42,6 @@ const homeSlice = createSlice({
             (b.price - Math.round((b.price * b.sale) / 100))
         );
       } else {
-       
         state.itemsSorted.items = [...state.itemsCategory.items].sort(
           (a, b) =>
             a.price -
@@ -67,7 +62,6 @@ const homeSlice = createSlice({
           )
           .reverse();
       } else {
-       
         state.itemsSorted.items = [...state.itemsCategory.items]
           .sort(
             (a, b) =>
@@ -137,8 +131,6 @@ const homeSlice = createSlice({
             item.rating >= action.payload[0] && item.rating <= action.payload[1]
         );
       }
-      
-      
     },
 
     sortLaptopsByParameters(
@@ -146,7 +138,7 @@ const homeSlice = createSlice({
       action: PayloadAction<{ selectedParams: SelectedSortParams }>
     ) {
       state.sorted = true;
-      
+
       const selectedParams = action.payload.selectedParams;
       state.itemsSorted.items = state.itemsCategory.items.filter(
         (item: any) => {
@@ -357,20 +349,12 @@ const homeSlice = createSlice({
                   return item.fields.gps.toString() === paramValue;
                 case "NFC":
                   return item.fields.nfc.toString() === paramValue;
-                case "Зовнішні порти":
-                  return item.fields.externalPorts.toString() === paramValue;
                 case "Вага":
                   return item.fields.weight.toString() === paramValue;
                 case "Колір корпусу":
-                  return (
-                    item.fields.bodyColor.toLowerCase() ===
-                    paramValue.toLowerCase()
-                  );
+                  return item.fields.bodyColor === paramValue;
                 case "Колір фронтальної панелі":
-                  return (
-                    item.fields.frontPanelColor.toLowerCase() ===
-                    paramValue.toLowerCase()
-                  );
+                  return item.fields.frontPanelColor === paramValue;
                 default:
                   return false;
               }
@@ -446,11 +430,22 @@ const homeSlice = createSlice({
       state.itemAppendingId = "";
       state.item_status = "success";
     });
-    builder.addCase(getItemById.pending, (state,action) => {
+    builder.addCase(getItemById.pending, (state, action) => {
       state.item_status = "pending";
-      
     });
     builder.addCase(getItemById.rejected, (state) => {
+      state.item_status = "error";
+      state.itemAppendingId = "";
+    });
+
+    builder.addCase(checkItemById.fulfilled, (state, action) => {
+      state.itemAppendingId = "";
+      state.item_status = "success";
+    });
+    builder.addCase(checkItemById.pending, (state, action) => {
+      state.item_status = "pending";
+    });
+    builder.addCase(checkItemById.rejected, (state) => {
       state.item_status = "error";
       state.itemAppendingId = "";
     });
@@ -479,6 +474,17 @@ const homeSlice = createSlice({
       state.status = "error";
     });
 
+    builder.addCase(updateItemFields.fulfilled, (state, action) => {
+      state.itemCurrent = action.payload;
+      state.status = "success";
+    });
+    builder.addCase(updateItemFields.pending, (state) => {
+      state.status = "pending";
+    });
+    builder.addCase(updateItemFields.rejected, (state) => {
+      state.status = "error";
+    });
+
     /* // Item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.status = "success";
@@ -501,6 +507,7 @@ const homeSlice = createSlice({
 export const {
   SetCategory,
   setSearchedId,
+  setEditItemMode,
   sortByCost_ASC,
   sortByCost_DESC,
   sortByRelevance_ASC,

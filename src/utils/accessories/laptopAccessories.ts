@@ -42,7 +42,7 @@ export const availableOperatingSystems = [
   "Linux",
   "Chrome OS",
   "FreeBSD",
-  "Немає"
+  "Немає",
 ];
 
 export const availableMatrixTypes = [
@@ -84,14 +84,14 @@ export const availableRefreshRates = [
 ];
 
 export const availableBrightnessLevels = [
-  "250 Нит",
-  "300 Нит",
-  "350 Нит",
-  "400 Нит",
-  "450 Нит",
-  "500 Нит",
-  "600 Нит",
-  "800 Нит",
+  "250 Ніт",
+  "300 Ніт",
+  "350 Ніт",
+  "400 Ніт",
+  "450 Ніт",
+  "500 Ніт",
+  "600 Ніт",
+  "800 Ніт",
 ];
 
 export const availableRAM = [
@@ -132,86 +132,80 @@ export const availableGPUAdapters = [
   "AMD Radeon RX 5600M",
   "AMD Radeon RX 6700M",
   "Intel Xe Graphics",
-  "Немає"
+  "Немає",
 ];
 
 export const availableScreenSizes = [
-    "14 дюймів",
-    "15.6 дюймів",
-    "17.3 дюймів",
-    "13.3 дюймів",
-    "14.1 дюймів",
-    "15 дюймів",
-    "16 дюймів",
-    "18.4 дюймів",
-    
-  ];
-  
-  export const availableWiFi = [
-    "Wi-Fi 4 (802.11n)",
-    "Wi-Fi 5 (802.11ac)",
-    "Wi-Fi 6 (802.11ax)",
-    "Wi-Fi 6E (802.11ax)",
-    
-  ];
-  
-  export const availableBluetooth = [
-    "Bluetooth 4.0",
-    "Bluetooth 4.1",
-    "Bluetooth 4.2",
-    "Bluetooth 5.0",
-    "Bluetooth 5.1",
-    "Bluetooth 5.2",
-    
-  ];
-  
-  export const availableBodyMaterials = [
-    "Алюміній",
-    "Пластик",
-    "Магнезій",
-    "Карбонове волокно",
-    
-  ];
-  
-  export const availableLidColors = [
-    "Чорний",
-    "Сріблястий",
-    "Сірий",
-    "Золотистий",
-    "Червоний",
-    "Синій",
-    
-  ];
-  
-  export const availableBodyColors = [
-    "Чорний",
-    "Сріблястий",
-    "Сірий",
-    "Білий",
-    "Червоний",
-    "Синій",
-  ];
+  "14 дюймів",
+  "15.6 дюймів",
+  "17.3 дюймів",
+  "13.3 дюймів",
+  "14.1 дюймів",
+  "15 дюймів",
+  "16 дюймів",
+  "18.4 дюймів",
+];
 
-  
-  export const availableExternalPorts = [
-    "USB 3.0",
-    "USB 3.1",
-    "USB Type-C",
-    "HDMI",
-    "DisplayPort",
-    "Thunderbolt 3",
-    "Ethernet (RJ-45)",
-    "Audio Jack",
-  ];
-  
-  export const availableOtherDisplayFeatures = [
-    "Сенсорний екран",
-    "HDR",
-    "G-Sync",
-    "FreeSync",
-    "IPS",
-    "TN",
-    "VA",
-    "144Hz оновлення",
-    "Немає"
-  ];
+export const availableWiFi = [
+  "Wi-Fi 4 (802.11n)",
+  "Wi-Fi 5 (802.11ac)",
+  "Wi-Fi 6 (802.11ax)",
+  "Wi-Fi 6E (802.11ax)",
+];
+
+export const availableBluetooth = [
+  "Bluetooth 4.0",
+  "Bluetooth 4.1",
+  "Bluetooth 4.2",
+  "Bluetooth 5.0",
+  "Bluetooth 5.1",
+  "Bluetooth 5.2",
+];
+
+export const availableBodyMaterials = [
+  "Алюміній",
+  "Пластик",
+  "Магнезій",
+  "Карбонове волокно",
+];
+
+export const availableLidColors = [
+  "Чорний",
+  "Сріблястий",
+  "Сірий",
+  "Золотистий",
+  "Червоний",
+  "Синій",
+];
+
+export const availableBodyColors = [
+  "Чорний",
+  "Сріблястий",
+  "Сірий",
+  "Білий",
+  "Червоний",
+  "Синій",
+];
+
+export const availableExternalPorts = [
+  "USB 3.0",
+  "USB 3.1",
+  "USB Type-C",
+  "HDMI",
+  "DisplayPort",
+  "Thunderbolt 3",
+  "Ethernet (RJ-45)",
+  "Audio Jack",
+];
+
+export const availableOtherDisplayFeatures = [
+  "Сенсорний екран",
+  "HDR",
+  "G-Sync",
+  "FreeSync",
+  "IPS",
+  "TN",
+  "VA",
+  "144Hz оновлення",
+  "Немає",
+];

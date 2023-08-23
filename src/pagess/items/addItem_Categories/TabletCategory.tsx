@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Divider,
   FormControl,
   IconButton,
   InputAdornment,
@@ -16,53 +15,166 @@ import React, { SetStateAction, Dispatch, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../redux/hooks";
-import { createItem } from "../../../redux/home/asyncActions";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { createItem, updateItemFields } from "../../../redux/home/asyncActions";
 import { Category } from "../../../redux/types";
 import InfoDialog from "../../../componentss/dialogs/InfoDialog";
+import {
+  availableExternalTabletPorts,
+  availableTabletBrands,
+  availableOperatingSystems,
+  availableScreenSizes,
+  availableResolutions,
+  availableMatrixTypes,
+  availableRAMOptions,
+  availableBuiltInMemoryOptions,
+  availableMemoryExpansionOptions,
+  availableTabletProcessors,
+  availableProcessorFrequencies,
+  availableProcessorCores,
+  availableBatteryCapacities,
+  availableFrontCameras,
+  availableRearCameras,
+  availableWifiOptions,
+  available4GNetworkOptions,
+  availableGPSTypes,
+  availableBodyColors,
+  availableFrontPanelColors,
+} from "../../../utils/accessories/tabletAccessories";
 
 export default function TabletCategory(props: Category) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(1);
-  const [rating, setRating] = useState(0);
-  const [images, setImages] = useState(["", "", ""]);
-  const [sale, setSale] = useState(0);
-  const [reviewsAmount, setReviewsAmount] = useState(0);
+  const { editItemMode, itemCurrent } = useAppSelector((state) => state.home);
 
-  // fields
-  const [brand, setBrand] = useState("");
-  const [line, setLine] = useState("");
-  const [preinstalledOS, setPreinstalledOS] = useState("");
-  const [screenDiagonal, setScreenDiagonal] = useState(0);
-  const [resolution, setResolution] = useState("");
-  const [matrixType, setMatrixType] = useState("");
-  const [lightSensor, setLightSensor] = useState(false);
-  const [memoryRAM, setMemoryRAM] = useState("");
-  const [builtInMemory, setBuiltInMemory] = useState("");
-  const [memoryExpansionSlot, setMemoryExpansionSlot] = useState("");
-  const [processor, setProcessor] = useState("");
-  const [processorFrequency, setProcessorFrequency] = useState("");
-  const [processorCores, setProcessorCores] = useState(0);
-  const [builtInSpeakers, setBuiltInSpeakers] = useState(false);
-  const [batteryCapacity, setBatteryCapacity] = useState("");
-  const [frontCamera, setFrontCamera] = useState("");
-  const [rearCamera, setRearCamera] = useState("");
-  const [wifi, setWifi] = useState("");
-  const [cellularNetwork, setCellularNetwork] = useState("");
-  const [voiceCommunication, setVoiceCommunication] = useState(false);
-  const [gps, setGPS] = useState("");
-  const [nfc, setNFC] = useState(false);
-  const [externalPorts, setExternalPorts] = useState("");
-  const [weight, setWeight] = useState(0);
+  const [name, setName] = useState(editItemMode ? itemCurrent.items.name : "");
+  const [description, setDescription] = useState(
+    editItemMode ? itemCurrent.items.description : ""
+  );
+  const [price, setPrice] = useState(
+    editItemMode ? itemCurrent.items.price : 0
+  );
+  const [quantity, setQuantity] = useState(
+    editItemMode ? itemCurrent.items.quantity : 1
+  );
+  const [rating] = useState(0);
+  const [images, setImages] = useState(
+    editItemMode
+      ? (itemCurrent.items.image as string[])
+      : [
+          "https://via.placeholder.com/1712x1712",
+          "https://via.placeholder.com/1712x1712",
+          "https://via.placeholder.com/1712x1712",
+        ]
+  );
+  const [sale, setSale] = useState(editItemMode ? itemCurrent.items.sale : 0);
+  const [reviewsAmount] = useState(0);
+
+  const [brand, setBrand] = useState(
+    editItemMode ? itemCurrent.items.fields.brand : availableTabletBrands[0]
+  );
+  const [line, setLine] = useState(
+    editItemMode ? itemCurrent.items.fields.line : ""
+  );
+  const [preinstalledOS, setPreinstalledOS] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.preinstalledOS
+      : availableOperatingSystems[0]
+  );
+  const [screenDiagonal, setScreenDiagonal] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.screenDiagonal
+      : availableScreenSizes[0]
+  );
+  const [resolution, setResolution] = useState(
+    editItemMode ? itemCurrent.items.fields.resolution : availableResolutions[0]
+  );
+  const [matrixType, setMatrixType] = useState(
+    editItemMode ? itemCurrent.items.fields.matrixType : availableMatrixTypes[0]
+  );
+  const [lightSensor, setLightSensor] = useState(
+    editItemMode ? itemCurrent.items.fields.lightSensor : false
+  );
+  const [memoryRAM, setMemoryRAM] = useState(
+    editItemMode ? itemCurrent.items.fields.memoryRAM : availableRAMOptions[0]
+  );
+  const [builtInMemory, setBuiltInMemory] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.builtInMemory
+      : availableBuiltInMemoryOptions[0]
+  );
+  const [memoryExpansionSlot, setMemoryExpansionSlot] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.memoryExpansionSlot
+      : availableMemoryExpansionOptions[0]
+  );
+  const [processor, setProcessor] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.processor
+      : availableTabletProcessors[0]
+  );
+  const [processorFrequency, setProcessorFrequency] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.processorFrequency
+      : availableProcessorFrequencies[0]
+  );
+  const [processorCores, setProcessorCores] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.processorCores
+      : availableProcessorCores[0]
+  );
+  const [builtInSpeakers, setBuiltInSpeakers] = useState(
+    editItemMode ? itemCurrent.items.fields.builtInSpeakers : false
+  );
+  const [batteryCapacity, setBatteryCapacity] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.batteryCapacity
+      : availableBatteryCapacities[0]
+  );
+  const [frontCamera, setFrontCamera] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.frontCamera
+      : availableFrontCameras[0]
+  );
+  const [rearCamera, setRearCamera] = useState(
+    editItemMode ? itemCurrent.items.fields.rearCamera : availableRearCameras[0]
+  );
+  const [wifi, setWifi] = useState(
+    editItemMode ? itemCurrent.items.fields.wifi : availableWifiOptions[0]
+  );
+  const [cellularNetwork, setCellularNetwork] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.cellularNetwork
+      : available4GNetworkOptions[0]
+  );
+  const [voiceCommunication, setVoiceCommunication] = useState(
+    editItemMode ? itemCurrent.items.fields.voiceCommunication : false
+  );
+  const [gps, setGPS] = useState(
+    editItemMode ? itemCurrent.items.fields.gps : availableGPSTypes[0]
+  );
+  const [nfc, setNFC] = useState(
+    editItemMode ? itemCurrent.items.fields.nfc : false
+  );
+  const [externalPorts, setExternalPorts] = useState(
+    editItemMode
+      ? (itemCurrent.items.fields.externalPorts as string[])
+      : [availableExternalTabletPorts[0]]
+  );
+  const [weight, setWeight] = useState(
+    editItemMode ? itemCurrent.items.fields.weight : 0
+  );
   const [dimensions, setDimensions] = useState({
-    width: 0,
-    height: 0,
-    depth: 0,
+    width: editItemMode ? itemCurrent.items.fields.dimensions.width : 0,
+    height: editItemMode ? itemCurrent.items.fields.dimensions.height : 0,
+    depth: editItemMode ? itemCurrent.items.fields.dimensions.depth : 0,
   });
-  const [bodyColor, setBodyColor] = useState("");
-  const [frontPanelColor, setFrontPanelColor] = useState("");
+  const [bodyColor, setBodyColor] = useState(
+    editItemMode ? itemCurrent.items.fields.bodyColor : availableBodyColors[0]
+  );
+  const [frontPanelColor, setFrontPanelColor] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.frontPanelColor
+      : availableFrontPanelColors[0]
+  );
 
   function DisplayBox(
     name: string,
@@ -119,6 +231,68 @@ export default function TabletCategory(props: Category) {
       </Box>
     );
   }
+
+  function DisplaySelectBox(
+    name: string,
+    values: string[],
+    value: any,
+    setValue: Dispatch<SetStateAction<any>>
+  ) {
+    return (
+      <Box
+        width={700}
+        paddingBottom={5}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+      >
+        <Typography
+          variant="h1"
+          textAlign={"center"}
+          fontSize={30}
+          fontFamily={"Ubuntu"}
+          width={300}
+        >
+          {name}
+        </Typography>
+
+        <FormControl fullWidth>
+          <InputLabel id="processor-label">{name}</InputLabel>
+          <Select
+            labelId="processor-label"
+            id="processor-select"
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            MenuProps={{
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+              },
+              transformOrigin: {
+                vertical: "top",
+                horizontal: "left",
+              },
+              PaperProps: {
+                style: {
+                  maxHeight: 200,
+                },
+              },
+            }}
+          >
+            {values.map((item) => (
+              <MenuItem key={item} value={item}>
+                {item}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+    );
+  }
+
   function SpecificLiteralField(
     value: any,
     isError: boolean,
@@ -127,23 +301,6 @@ export default function TabletCategory(props: Category) {
     name: string
   ) {
     switch (name) {
-      case "Бренд:":
-        return (
-          <TextField
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">+380</InputAdornment>
-              ),
-            }}
-            fullWidth
-            value={value}
-            error={isError}
-            helperText={isError ? errorText : ""}
-            onChange={(event) => {
-              setValue(event.target.value);
-            }}
-          />
-        );
       default:
         return (
           <TextField
@@ -170,11 +327,11 @@ export default function TabletCategory(props: Category) {
       case "Ціна:":
         return (
           <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">грн</InputAdornment>
-            ),
-          }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">Грн</InputAdornment>
+              ),
+            }}
             fullWidth
             value={value}
             error={isError}
@@ -183,22 +340,24 @@ export default function TabletCategory(props: Category) {
               if (/^\d*\.?\d*$/.test(event.target.value)) {
                 setValue(
                   event.target.value.length > 0
-                    ? parseFloat(event.target.value)
+                    ? parseFloat(event.target.value) <= 1000000
+                      ? parseFloat(event.target.value)
+                      : price
                     : 0
                 );
               }
             }}
           />
-          
         );
-        case "Знижка:":
+
+      case "Знижка:":
         return (
           <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">%</InputAdornment>
-            ),
-          }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">%</InputAdornment>
+              ),
+            }}
             fullWidth
             value={value}
             error={isError}
@@ -207,13 +366,40 @@ export default function TabletCategory(props: Category) {
               if (/^\d*\.?\d*$/.test(event.target.value)) {
                 setValue(
                   event.target.value.length > 0
-                    ? parseFloat(event.target.value)
+                    ? parseFloat(event.target.value) <= 100
+                      ? parseFloat(event.target.value)
+                      : sale
                     : 0
                 );
               }
             }}
           />
-          
+        );
+
+      case "Вага:":
+        return (
+          <TextField
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">Кг</InputAdornment>
+              ),
+            }}
+            fullWidth
+            value={value}
+            error={isError}
+            helperText={isError ? errorText : ""}
+            onChange={(event) => {
+              if (/^\d*\.?\d*$/.test(event.target.value)) {
+                setValue(
+                  event.target.value.length > 0
+                    ? parseFloat(event.target.value) <= 20
+                      ? parseFloat(event.target.value)
+                      : weight
+                    : 0
+                );
+              }
+            }}
+          />
         );
       default:
         return (
@@ -238,79 +424,115 @@ export default function TabletCategory(props: Category) {
   function handleAddItem() {
     if (
       name.trim() === "" ||
-      brand.trim() === "" ||
       description.trim() === "" ||
+      line.trim() === "" ||
       price <= 0 ||
       quantity <= 0 ||
       sale < 0 ||
-      screenDiagonal <= 0 ||
-      matrixType.trim() === "" ||
-      resolution.trim() === "" ||
-      processor.trim() === "" ||
-      processorFrequency.trim() === "" ||
-      processorCores <= 0 ||
-      batteryCapacity.trim() === "" ||
-      frontCamera.trim() === "" ||
-      rearCamera.trim() === "" ||
-      wifi.trim() === "" ||
-      cellularNetwork.trim() === "" ||
-      gps.trim() === "" ||
-      externalPorts.trim() === "" ||
       weight <= 0 ||
-      dimensions.width <= 0 ||
       dimensions.height <= 0 ||
+      dimensions.width <= 0 ||
       dimensions.depth <= 0 ||
-      bodyColor.trim() === "" ||
-      frontPanelColor.trim() === ""
+      images[0].length === 0 ||
+      images[1].length === 0 ||
+      images[2].length === 0
     ) {
       InfoDialog_open();
       setInfoMessage("Не всі поля було заповнено коректно");
       return;
     }
-    dispatch(
-      createItem({
-        name,
-        category: props.category,
-        description,
-        quantity,
-        price,
-        rating,
-        image: images,
-        sale,
-        reviewsAmount,
-        brand,
-        line,
-        preinstalledOS,
-        screenDiagonal,
-        resolution,
-        matrixType,
-        lightSensor,
-        memoryRAM,
-        builtInMemory,
-        memoryExpansionSlot,
-        processor,
-        processorFrequency,
-        processorCores,
-        builtInSpeakers,
-        batteryCapacity,
-        frontCamera,
-        rearCamera,
-        wifi,
-        cellularNetwork,
-        voiceCommunication,
-        gps,
-        nfc,
-        externalPorts,
-        weight,
-        dimensions,
-        bodyColor,
-        frontPanelColor,
-      })
-    ).then((result) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        navigate("/catalog");
-      }
-    });
+    editItemMode
+      ? dispatch(
+          updateItemFields({
+            itemId: itemCurrent.items._id,
+            params: {
+              name,
+              category: props.category,
+              description,
+              quantity,
+              price,
+              rating,
+              image: images,
+              sale,
+              reviewsAmount,
+              brand,
+              line,
+              preinstalledOS,
+              screenDiagonal,
+              resolution,
+              matrixType,
+              lightSensor,
+              memoryRAM,
+              builtInMemory,
+              memoryExpansionSlot,
+              processor,
+              processorFrequency,
+              processorCores,
+              builtInSpeakers,
+              batteryCapacity,
+              frontCamera,
+              rearCamera,
+              wifi,
+              cellularNetwork,
+              voiceCommunication,
+              gps,
+              nfc,
+              externalPorts,
+              weight,
+              dimensions,
+              bodyColor,
+              frontPanelColor,
+            },
+          })
+        ).then((result) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            navigate("/catalog");
+          }
+        })
+      : dispatch(
+          createItem({
+            name,
+            category: props.category,
+            description,
+            quantity,
+            price,
+            rating,
+            image: images,
+            sale,
+            reviewsAmount,
+            brand,
+            line,
+            preinstalledOS,
+            screenDiagonal,
+            resolution,
+            matrixType,
+            lightSensor,
+            memoryRAM,
+            builtInMemory,
+            memoryExpansionSlot,
+            processor,
+            processorFrequency,
+            processorCores,
+            builtInSpeakers,
+            batteryCapacity,
+            frontCamera,
+            rearCamera,
+            wifi,
+            cellularNetwork,
+            voiceCommunication,
+            gps,
+            nfc,
+            externalPorts,
+            weight,
+            dimensions,
+            bodyColor,
+            frontPanelColor,
+          })
+        ).then((result) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            navigate("/catalog");
+          }
+        });
   }
 
   const handleDimentionsChange = (
@@ -323,7 +545,7 @@ export default function TabletCategory(props: Category) {
   };
 
   const handleAddImageField = () => {
-    setImages([...images, ""]);
+    setImages([...images, "https://via.placeholder.com/1712x1712"]);
   };
 
   const handleRemoveImageField = () => {
@@ -336,6 +558,22 @@ export default function TabletCategory(props: Category) {
     const newImages = [...images];
     newImages[index] = event.target.value;
     setImages(newImages);
+  };
+
+  const handleAddPortField = () => {
+    setExternalPorts([...externalPorts, availableExternalTabletPorts[0]]);
+  };
+
+  const handleRemovePortField = () => {
+    if (externalPorts.length > 1) {
+      setExternalPorts(externalPorts.slice(0, externalPorts.length - 1));
+    }
+  };
+
+  const handlePortsChange = (index: any, event: any) => {
+    const newPorts = [...externalPorts];
+    newPorts[index] = event.target.value;
+    setExternalPorts(newPorts);
   };
 
   const dispatch = useAppDispatch();
@@ -422,6 +660,8 @@ export default function TabletCategory(props: Category) {
               <TextField
                 key={index}
                 fullWidth
+                error={imageUrl.length === 0 ? true : false}
+                helperText={imageUrl.length === 0 ? "Вкажіть зображення" : ""}
                 value={imageUrl}
                 onChange={(event) => handleImageChange(index, event)}
               />
@@ -434,13 +674,8 @@ export default function TabletCategory(props: Category) {
             </IconButton>
           </Box>
         </Box>
-        {DisplayBox(
-          "Бренд:",
-          brand,
-          setBrand,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
-        )}
+
+        {DisplaySelectBox("Бренд:", availableTabletBrands, brand, setBrand)}
         {DisplayBox(
           "Лінійка:",
           line,
@@ -448,33 +683,29 @@ export default function TabletCategory(props: Category) {
           (value) => value.trim() !== "",
           "Це поле не може бути порожнім"
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Операційна система:",
+          availableOperatingSystems,
           preinstalledOS,
-          setPreinstalledOS,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setPreinstalledOS
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Розмір матриці:",
+          availableScreenSizes,
           screenDiagonal,
-          setScreenDiagonal,
-          (value) => parseFloat(value) > 0,
-          "Введіть дійсне значення не менше 1"
+          setScreenDiagonal
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Роздільна здатність:",
+          availableResolutions,
           resolution,
-          setResolution,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setResolution
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Тип матриці:",
+          availableMatrixTypes,
           matrixType,
-          setMatrixType,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setMatrixType
         )}
         {DisplayBox(
           "Датчик освітленості:",
@@ -483,47 +714,44 @@ export default function TabletCategory(props: Category) {
           () => true,
           ""
         )}
-        {DisplayBox(
-          "ОЗУ:",
-          memoryRAM,
-          setMemoryRAM,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
-        )}
-        {DisplayBox(
+        {DisplaySelectBox("ОЗУ:", availableRAMOptions, memoryRAM, setMemoryRAM)}
+        {DisplaySelectBox(
           "Вбудована пам'ять:",
+          availableBuiltInMemoryOptions,
           builtInMemory,
-          setBuiltInMemory,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setBuiltInMemory
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Слот розширення пам'яті:",
+          availableMemoryExpansionOptions,
           memoryExpansionSlot,
-          setMemoryExpansionSlot,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setMemoryExpansionSlot
         )}
-        {DisplayBox(
+        {/*  availableTabletProcessors
+availableProcessorFrequencies,
+availableProcessorCores,
+availableBatteryCapacities,
+availableFrontCameras,
+availableRearCameras,
+availableWifiOptions,
+available4GNetworkOptions, */}
+        {DisplaySelectBox(
           "Процесор:",
+          availableTabletProcessors,
           processor,
-          setProcessor,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setProcessor
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Частота процесора:",
+          availableProcessorFrequencies,
           processorFrequency,
-          setProcessorFrequency,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setProcessorFrequency
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Кількість ядер процесора:",
+          availableProcessorCores,
           processorCores,
-          setProcessorCores,
-          (value) => parseFloat(value) > 0,
-          "Введіть дійсне значення не менше 1"
+          setProcessorCores
         )}
         {DisplayBox(
           "Вбудовані динаміки:",
@@ -533,40 +761,30 @@ export default function TabletCategory(props: Category) {
           ""
         )}
 
-        {DisplayBox(
+        {DisplaySelectBox(
           "Загальна ємність батареї:",
+          availableBatteryCapacities,
           batteryCapacity,
-          setBatteryCapacity,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setBatteryCapacity
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Фронтальна камера:",
+          availableFrontCameras,
           frontCamera,
-          setFrontCamera,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setFrontCamera
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Задня камера:",
+          availableRearCameras,
           rearCamera,
-          setRearCamera,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setRearCamera
         )}
-        {DisplayBox(
-          "Wi-Fi:",
-          wifi,
-          setWifi,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
-        )}
-        {DisplayBox(
+        {DisplaySelectBox("Wi-Fi:", availableWifiOptions, wifi, setWifi)}
+        {DisplaySelectBox(
           "Мережа 4G:",
+          available4GNetworkOptions,
           cellularNetwork,
-          setCellularNetwork,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setCellularNetwork
         )}
         {DisplayBox(
           "Голосовий зв'язок:",
@@ -575,21 +793,68 @@ export default function TabletCategory(props: Category) {
           () => true,
           ""
         )}
-        {DisplayBox(
-          "GPS:",
-          gps,
-          setGPS,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
-        )}
+        {DisplaySelectBox("GPS:", availableGPSTypes, gps, setGPS)}
         {DisplayBox("NFC:", nfc, setNFC, () => true, "")}
-        {DisplayBox(
-          "Зовнішні порти:",
-          externalPorts,
-          setExternalPorts,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
-        )}
+        <Box
+          width={700}
+          paddingBottom={5}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+          }}
+        >
+          <Typography
+            variant="h1"
+            textAlign={"center"}
+            fontSize={30}
+            fontFamily={"Ubuntu"}
+            width={300}
+          >
+            Зовнішні порти:
+          </Typography>
+          <Box maxWidth={500} minWidth={500}>
+            {externalPorts.map((port, index) => (
+              <FormControl fullWidth>
+                <InputLabel id="processor-label">Порт</InputLabel>
+                <Select
+                  labelId="processor-label"
+                  id="processor-select"
+                  value={port}
+                  onChange={(event) => handlePortsChange(index, event)}
+                  MenuProps={{
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "left",
+                    },
+                    transformOrigin: {
+                      vertical: "top",
+                      horizontal: "left",
+                    },
+                    PaperProps: {
+                      style: {
+                        maxHeight: 200,
+                      },
+                    },
+                  }}
+                >
+                  {availableExternalTabletPorts.map((item) => (
+                    <MenuItem key={item} value={item}>
+                      {item}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            ))}
+            <IconButton onClick={handleAddPortField}>
+              <AddIcon />
+            </IconButton>
+            <IconButton onClick={handleRemovePortField}>
+              <RemoveIcon />
+            </IconButton>
+          </Box>
+        </Box>
         {DisplayBox(
           "Вага:",
           weight,
@@ -628,6 +893,11 @@ export default function TabletCategory(props: Category) {
                 Висота:
               </Typography>
               <TextField
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">мм</InputAdornment>
+                  ),
+                }}
                 fullWidth
                 value={dimensions.height}
                 error={dimensions.height === 0 ? true : false}
@@ -641,7 +911,9 @@ export default function TabletCategory(props: Category) {
                     handleDimentionsChange(
                       "height",
                       event.target.value.length > 0
-                        ? parseFloat(event.target.value)
+                        ? parseFloat(event.target.value) <= 1000
+                          ? parseFloat(event.target.value)
+                          : dimensions.height
                         : 0
                     );
                   }
@@ -659,6 +931,11 @@ export default function TabletCategory(props: Category) {
                 Ширина:
               </Typography>
               <TextField
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">мм</InputAdornment>
+                  ),
+                }}
                 fullWidth
                 value={dimensions.width}
                 error={dimensions.width === 0 ? true : false}
@@ -672,7 +949,9 @@ export default function TabletCategory(props: Category) {
                     handleDimentionsChange(
                       "width",
                       event.target.value.length > 0
-                        ? parseFloat(event.target.value)
+                        ? parseFloat(event.target.value) <= 1000
+                          ? parseFloat(event.target.value)
+                          : dimensions.width
                         : 0
                     );
                   }
@@ -690,6 +969,11 @@ export default function TabletCategory(props: Category) {
                 Глубина:
               </Typography>
               <TextField
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">мм</InputAdornment>
+                  ),
+                }}
                 fullWidth
                 value={dimensions.depth}
                 error={dimensions.depth === 0 ? true : false}
@@ -703,7 +987,9 @@ export default function TabletCategory(props: Category) {
                     handleDimentionsChange(
                       "depth",
                       event.target.value.length > 0
-                        ? parseFloat(event.target.value)
+                        ? parseFloat(event.target.value) <= 1000
+                          ? parseFloat(event.target.value)
+                          : dimensions.depth
                         : 0
                     );
                   }
@@ -712,19 +998,18 @@ export default function TabletCategory(props: Category) {
             </Box>
           </Box>
         </Box>
-        {DisplayBox(
+
+        {DisplaySelectBox(
           "Колір корпусу:",
+          availableBodyColors,
           bodyColor,
-          setBodyColor,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setBodyColor
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Колір панелі передньої частини:",
+          availableFrontPanelColors,
           frontPanelColor,
-          setFrontPanelColor,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setFrontPanelColor
         )}
         <Button
           variant="contained"
@@ -732,7 +1017,7 @@ export default function TabletCategory(props: Category) {
           color="warning"
           onClick={handleAddItem}
         >
-          Додати товар
+          {editItemMode ? "Зберігти зміни" : "Додати товар"}
         </Button>
       </Box>
     </>

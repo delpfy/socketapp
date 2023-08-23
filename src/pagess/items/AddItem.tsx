@@ -5,23 +5,24 @@ import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import LaptopCategory from "./addItem_Categories/LaptopCategory";
 import TabletCategory from "./addItem_Categories/TabletCategory";
 import MonitorCategory from "./addItem_Categories/MonitorCategory";
-
+import { useAppSelector } from "../../redux/hooks";
 
 export default function AddItem() {
-  const [category, setCategory] = useState("");
+  const { category, editItemMode } = useAppSelector((state) => state.home);
+  const [categoryLocal, setCategory] = useState(editItemMode ? category : "");
 
   function handleCategoryChange(e: any) {
     setCategory(e.target.value);
   }
 
   function DisplayParams() {
-    switch (category) {
+    switch (categoryLocal) {
       case "Ноутбуки":
-        return <LaptopCategory category={category} />;
+        return <LaptopCategory category={categoryLocal} />;
       case "Планшети":
-        return <TabletCategory category={category} />;
+        return <TabletCategory category={categoryLocal} />;
       case "Монітори":
-        return <MonitorCategory category={category} />;;
+        return <MonitorCategory category={categoryLocal} />;
     }
   }
 
@@ -58,7 +59,7 @@ export default function AddItem() {
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={category}
+              value={categoryLocal}
               label="Age"
               onChange={handleCategoryChange}
             >

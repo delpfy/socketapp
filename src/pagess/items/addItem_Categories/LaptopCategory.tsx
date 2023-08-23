@@ -16,8 +16,8 @@ import React, { SetStateAction, Dispatch, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../redux/hooks";
-import { createItem } from "../../../redux/home/asyncActions";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { createItem, updateItemFields } from "../../../redux/home/asyncActions";
 import { Category } from "../../../redux/types";
 import InfoDialog from "../../../componentss/dialogs/InfoDialog";
 import {
@@ -43,71 +43,170 @@ import {
   availableBodyColors,
   availableExternalPorts,
   availableOtherDisplayFeatures,
-} from "../../../utils/availibleAccessories";
+} from "../../../utils/accessories/laptopAccessories";
 
 export default function LaptopCategory(props: Category) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(1);
-  const [rating, setRating] = useState(0);
-  const [images, setImages] = useState(["", "", ""]);
-  const [sale, setSale] = useState(0);
-  const [reviewsAmount, setReviewsAmount] = useState(0);
+  const { editItemMode, itemCurrent } = useAppSelector((state) => state.home);
+
+  const [name, setName] = useState(editItemMode ? itemCurrent.items.name : "");
+  const [description, setDescription] = useState(
+    editItemMode ? itemCurrent.items.description : ""
+  );
+  const [price, setPrice] = useState(
+    editItemMode ? itemCurrent.items.price : 0
+  );
+  const [quantity, setQuantity] = useState(
+    editItemMode ? itemCurrent.items.quantity : 1
+  );
+  const [rating] = useState(0);
+  const [images, setImages] = useState(
+    editItemMode
+      ? (itemCurrent.items.image as string[])
+      : [
+          "https://via.placeholder.com/1712x1712",
+          "https://via.placeholder.com/1712x1712",
+          "https://via.placeholder.com/1712x1712",
+        ]
+  );
+  const [sale, setSale] = useState(editItemMode ? itemCurrent.items.sale : 0);
+  const [reviewsAmount] = useState(0);
 
   //fields
-
-  const [processor, setProcessor] = useState(availableProcessors[0]);
-  const [RAM, setRAM] = useState(availableRAM[0]);
-  const [brand, setBrand] = useState(availableBrands[0]);
-  const [series, setSeries] = useState("");
-  const [construction, setConstruction] = useState(availableConstructions[0]);
+  const [processor, setProcessor] = useState(
+    editItemMode ? itemCurrent.items.fields.processor : availableProcessors[0]
+  );
+  const [RAM, setRAM] = useState(
+    editItemMode ? itemCurrent.items.fields.RAM : availableRAM[0]
+  );
+  const [brand, setBrand] = useState(
+    editItemMode ? itemCurrent.items.fields.brand : availableBrands[0]
+  );
+  const [series, setSeries] = useState(
+    editItemMode ? itemCurrent.items.fields.series : ""
+  );
+  const [construction, setConstruction] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.construction
+      : availableConstructions[0]
+  );
   const [operatingSystem, setOperatingSystem] = useState(
-    availableOperatingSystems[0]
+    editItemMode
+      ? itemCurrent.items.fields.operatingSystem
+      : availableOperatingSystems[0]
   );
-  const [screenDiagonal, setScreenDiagonal] = useState(availableScreenSizes[0]);
-  const [matrixType, setMatrixType] = useState(availableMatrixTypes[0]);
-  const [coatingType, setCoatingType] = useState(availableMatrixCoatings[0]);
-  const [resolution, setResolution] = useState(availableResolutions[0]);
-  const [touchScreen, setTouchScreen] = useState(false);
-  const [refreshRate, setRefreshRate] = useState(availableRefreshRates[0]);
-  const [brightness, setBrightness] = useState(availableBrightnessLevels[0]);
+  const [screenDiagonal, setScreenDiagonal] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.screenDiagonal
+      : availableScreenSizes[0]
+  );
+  const [matrixType, setMatrixType] = useState(
+    editItemMode ? itemCurrent.items.fields.matrixType : availableMatrixTypes[0]
+  );
+  const [coatingType, setCoatingType] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.coatingType
+      : availableMatrixCoatings[0]
+  );
+  const [resolution, setResolution] = useState(
+    editItemMode ? itemCurrent.items.fields.resolution : availableResolutions[0]
+  );
+  const [touchScreen, setTouchScreen] = useState(
+    editItemMode ? itemCurrent.items.fields.touchScreen : false
+  );
+  const [refreshRate, setRefreshRate] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.refreshRate
+      : availableRefreshRates[0]
+  );
+  const [brightness, setBrightness] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.brightness
+      : availableBrightnessLevels[0]
+  );
   const [otherDisplayFeatures, setOtherDisplayFeatures] = useState(
-    availableOtherDisplayFeatures[0]
+    editItemMode
+      ? itemCurrent.items.fields.otherDisplayFeatures
+      : availableOtherDisplayFeatures[0]
   );
-  const [maxRAM, setMaxRAM] = useState(availableMaxRAM[0]);
-  const [storageType, setStorageType] = useState(availableStorageTypes[0]);
+  const [maxRAM, setMaxRAM] = useState(
+    editItemMode ? itemCurrent.items.fields.maxRAM : availableMaxRAM[0]
+  );
+  const [storageType, setStorageType] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.storageType
+      : availableStorageTypes[0]
+  );
   const [storageCapacity, setStorageCapacity] = useState(
-    availableStorageCapacities[0]
+    editItemMode
+      ? itemCurrent.items.fields.storageCapacity
+      : availableStorageCapacities[0]
   );
-  const [opticalDrive, setOpticalDrive] = useState(false);
-  const [gpuAdapter, setGpuAdapter] = useState(availableGPUAdapters[0]);
-  const [externalPorts, setExternalPorts] = useState([
-    availableExternalPorts[0],
-  ]);
-  const [cardReader, setCardReader] = useState(false);
-  const [webcam, setWebcam] = useState(false);
-  const [keyboardBacklight, setKeyboardBacklight] = useState(false);
-  const [passiveCooling, setPassiveCooling] = useState(false);
-  const [fingerprintScanner, setFingerprintScanner] = useState(false);
-  const [numericKeypad, setNumericKeypad] = useState(false);
-  const [intelEvoCertification, setIntelEvoCertification] = useState(false);
-  const [ethernetAdapter, setEthernetAdapter] = useState(false);
-  const [wifi, setWifi] = useState(availableWiFi[0]);
-  const [bluetooth, setBluetooth] = useState(availableBluetooth[0]);
-  const [weight, setWeight] = useState(0);
+  const [opticalDrive, setOpticalDrive] = useState(
+    editItemMode ? itemCurrent.items.fields.opticalDrive : false
+  );
+  const [gpuAdapter, setGpuAdapter] = useState(
+    editItemMode ? itemCurrent.items.fields.gpuAdapter : availableGPUAdapters[0]
+  );
+  const [externalPorts, setExternalPorts] = useState(
+    editItemMode
+      ? (itemCurrent.items.fields.externalPorts as string[])
+      : [availableExternalPorts[0]]
+  );
+  const [cardReader, setCardReader] = useState(
+    editItemMode ? itemCurrent.items.fields.cardReader : false
+  );
+  const [webcam, setWebcam] = useState(
+    editItemMode ? itemCurrent.items.fields.webcam : false
+  );
+  const [keyboardBacklight, setKeyboardBacklight] = useState(
+    editItemMode ? itemCurrent.items.fields.keyboardBacklight : false
+  );
+  const [passiveCooling, setPassiveCooling] = useState(
+    editItemMode ? itemCurrent.items.fields.passiveCooling : false
+  );
+  const [fingerprintScanner, setFingerprintScanner] = useState(
+    editItemMode ? itemCurrent.items.fields.fingerprintScanner : false
+  );
+  const [numericKeypad, setNumericKeypad] = useState(
+    editItemMode ? itemCurrent.items.fields.numericKeypad : false
+  );
+  const [intelEvoCertification, setIntelEvoCertification] = useState(
+    editItemMode ? itemCurrent.items.fields.intelEvoCertification : false
+  );
+  const [ethernetAdapter, setEthernetAdapter] = useState(
+    editItemMode ? itemCurrent.items.fields.ethernetAdapter : false
+  );
+  const [wifi, setWifi] = useState(
+    editItemMode ? itemCurrent.items.fields.wifi : availableWiFi[0]
+  );
+  const [bluetooth, setBluetooth] = useState(
+    editItemMode ? itemCurrent.items.fields.bluetooth : availableBluetooth[0]
+  );
+  const [weight, setWeight] = useState(
+    editItemMode ? itemCurrent.items.fields.weight : 0
+  );
   const [dimensions, setDimensions] = useState({
-    width: 0,
-    height: 0,
-    depth: 0,
+    width: editItemMode ? itemCurrent.items.fields.dimensions.width : 0,
+    height: editItemMode ? itemCurrent.items.fields.dimensions.height : 0,
+    depth: editItemMode ? itemCurrent.items.fields.dimensions.depth : 0,
   });
-  const [bodyMaterial, setBodyMaterial] = useState(availableBodyMaterials[0]);
-  const [lidColor, setLidColor] = useState(availableLidColors[0]);
-  const [bodyColor, setBodyColor] = useState(availableBodyColors[0]);
-  const [ruggedLaptop, setRuggedLaptop] = useState(false);
+  const [bodyMaterial, setBodyMaterial] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.bodyMaterial
+      : availableBodyMaterials[0]
+  );
+  const [lidColor, setLidColor] = useState(
+    editItemMode ? itemCurrent.items.fields.lidColor : availableLidColors[0]
+  );
+  const [bodyColor, setBodyColor] = useState(
+    editItemMode ? itemCurrent.items.fields.bodyColor : availableBodyColors[0]
+  );
+  const [ruggedLaptop, setRuggedLaptop] = useState(
+    editItemMode ? itemCurrent.items.fields.ruggedLaptop : false
+  );
 
   const handleAddImageField = () => {
-    setImages([...images, ""]);
+    setImages([...images, "https://via.placeholder.com/1712x1712"]);
   };
 
   const handleRemoveImageField = () => {
@@ -123,7 +222,7 @@ export default function LaptopCategory(props: Category) {
   };
 
   const handleAddPortField = () => {
-    setExternalPorts([...externalPorts, ""]);
+    setExternalPorts([...externalPorts, availableExternalPorts[0]]);
   };
 
   const handleRemovePortField = () => {
@@ -243,7 +342,7 @@ export default function LaptopCategory(props: Category) {
         </Typography>
 
         <FormControl fullWidth>
-          <InputLabel id="processor-label">Процесор</InputLabel>
+          <InputLabel id="processor-label">{name}</InputLabel>
           <Select
             labelId="processor-label"
             id="processor-select"
@@ -284,22 +383,6 @@ export default function LaptopCategory(props: Category) {
     name: string
   ) {
     switch (name) {
-      case "Тип накопичувача:":
-        return (
-          <TextField
-            fullWidth
-            value={value}
-            error={isError}
-            helperText={isError ? errorText : ""}
-            onChange={(event) => {
-              setValue(
-                event.target.value.length <= 3
-                  ? event.target.value
-                  : storageType
-              );
-            }}
-          />
-        );
       default:
         return (
           <TextField
@@ -348,7 +431,7 @@ export default function LaptopCategory(props: Category) {
             }}
           />
         );
-      
+
       case "Знижка:":
         return (
           <TextField
@@ -374,7 +457,7 @@ export default function LaptopCategory(props: Category) {
             }}
           />
         );
-      
+
       case "Вага:":
         return (
           <TextField
@@ -435,65 +518,122 @@ export default function LaptopCategory(props: Category) {
       dimensions.depth <= 0 ||
       images[0].length === 0 ||
       images[1].length === 0 ||
-      images[2].length === 0 
+      images[2].length === 0
     ) {
       InfoDialog_open();
       setInfoMessage("Не всі поля було заповнено коректно");
       return;
     }
-    dispatch(
-      createItem({
-        name,
-        category: props.category,
-        description,
-        quantity,
-        price,
-        rating,
-        image: images,
-        sale,
-        reviewsAmount,
-        processor,
-        RAM,
-        brand,
-        series,
-        construction,
-        operatingSystem,
-        screenDiagonal,
-        matrixType,
-        coatingType,
-        resolution,
-        touchScreen,
-        refreshRate,
-        brightness,
-        otherDisplayFeatures,
-        maxRAM,
-        storageType,
-        storageCapacity,
-        opticalDrive,
-        gpuAdapter,
-        externalPorts,
-        cardReader,
-        webcam,
-        keyboardBacklight,
-        passiveCooling,
-        fingerprintScanner,
-        numericKeypad,
-        intelEvoCertification,
-        ethernetAdapter,
-        wifi,
-        bluetooth,
-        weight,
-        dimensions,
-        bodyMaterial,
-        lidColor,
-        bodyColor,
-        ruggedLaptop,
-      })
-    ).then((result) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        navigate("/catalog");
-      }
-    });
+    editItemMode
+      ? dispatch(
+          updateItemFields({
+            itemId: itemCurrent.items._id,
+            params: {
+              name,
+              category: props.category,
+              description,
+              quantity,
+              price,
+              rating,
+              image: images,
+              sale,
+              reviewsAmount,
+              processor,
+              RAM,
+              brand,
+              series,
+              construction,
+              operatingSystem,
+              screenDiagonal,
+              matrixType,
+              coatingType,
+              resolution,
+              touchScreen,
+              refreshRate,
+              brightness,
+              otherDisplayFeatures,
+              maxRAM,
+              storageType,
+              storageCapacity,
+              opticalDrive,
+              gpuAdapter,
+              externalPorts,
+              cardReader,
+              webcam,
+              keyboardBacklight,
+              passiveCooling,
+              fingerprintScanner,
+              numericKeypad,
+              intelEvoCertification,
+              ethernetAdapter,
+              wifi,
+              bluetooth,
+              weight,
+              dimensions,
+              bodyMaterial,
+              lidColor,
+              bodyColor,
+              ruggedLaptop,
+            },
+          })
+        ).then((result) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            navigate("/catalog");
+          }
+        })
+      : dispatch(
+          createItem({
+            name,
+            category: props.category,
+            description,
+            quantity,
+            price,
+            rating,
+            image: images,
+            sale,
+            reviewsAmount,
+            processor,
+            RAM,
+            brand,
+            series,
+            construction,
+            operatingSystem,
+            screenDiagonal,
+            matrixType,
+            coatingType,
+            resolution,
+            touchScreen,
+            refreshRate,
+            brightness,
+            otherDisplayFeatures,
+            maxRAM,
+            storageType,
+            storageCapacity,
+            opticalDrive,
+            gpuAdapter,
+            externalPorts,
+            cardReader,
+            webcam,
+            keyboardBacklight,
+            passiveCooling,
+            fingerprintScanner,
+            numericKeypad,
+            intelEvoCertification,
+            ethernetAdapter,
+            wifi,
+            bluetooth,
+            weight,
+            dimensions,
+            bodyMaterial,
+            lidColor,
+            bodyColor,
+            ruggedLaptop,
+          })
+        ).then((result) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            navigate("/catalog");
+          }
+        });
   }
   return (
     <>
@@ -571,11 +711,7 @@ export default function LaptopCategory(props: Category) {
                 fullWidth
                 value={imageUrl}
                 error={imageUrl.length === 0 ? true : false}
-                helperText={
-                  imageUrl.length === 0
-                    ? "Вкажіть зображення"
-                    : ""
-                }
+                helperText={imageUrl.length === 0 ? "Вкажіть зображення" : ""}
                 onChange={(event) => handleImageChange(index, event)}
               />
             ))}
@@ -703,6 +839,13 @@ export default function LaptopCategory(props: Category) {
           "Оптичний привід:",
           opticalDrive,
           setOpticalDrive,
+          (value) => true,
+          ""
+        )}
+        {DisplayBox(
+          "Сенсорний екран:",
+          touchScreen,
+          setTouchScreen,
           (value) => true,
           ""
         )}
@@ -1005,7 +1148,7 @@ export default function LaptopCategory(props: Category) {
           color="warning"
           onClick={handleAddItem}
         >
-          Додати товар
+          {editItemMode ? "Зберігти зміни" : "Додати товар"}
         </Button>
       </Box>
     </>

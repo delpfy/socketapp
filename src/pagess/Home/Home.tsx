@@ -9,6 +9,7 @@ import {
   setAfterOrder,
   synchronizeBasket,
 } from "../../redux/basket/basketSlice";
+import { setEditItemMode } from "../../redux/home/homeSlice";
 
 /* const MenuContent = () => {
   return (
@@ -42,7 +43,7 @@ import {
 }; */
 
 export const Home = () => {
-  const { categories } = useAppSelector((state) => state.home);
+  const { categories, editItemMode } = useAppSelector((state) => state.home);
   const { afterOrder } = useAppSelector((state) => state.basket);
 
   const dispatch = useAppDispatch();
@@ -67,9 +68,10 @@ export const Home = () => {
       dispatch(synchronizeBasket());
       dispatch(setAfterOrder(false));
     }
+    if (editItemMode) {
+      dispatch(setEditItemMode(false));
+    }
   }, []);
-
-  
 
   return (
     <>

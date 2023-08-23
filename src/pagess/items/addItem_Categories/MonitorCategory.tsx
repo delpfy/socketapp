@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Divider,
   FormControl,
   IconButton,
   InputAdornment,
@@ -16,35 +15,113 @@ import React, { SetStateAction, Dispatch, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../../redux/hooks";
-import { createItem } from "../../../redux/home/asyncActions";
+import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { createItem, updateItemFields } from "../../../redux/home/asyncActions";
 import { Category } from "../../../redux/types";
 import InfoDialog from "../../../componentss/dialogs/InfoDialog";
+import {
+  availableMonitorBrands,
+  availableScreenDiagonals,
+  availableMonitorMatrixTypes,
+  availableAspectRatio,
+  availableMonitorResolutions,
+  availableResponseTimes,
+  availableViewingAngles,
+  availableBacklightTypes,
+  availableBrightnessLevels,
+  availableContrastRatios,
+  availableScreenCoatings,
+  availableRefreshRates,
+} from "../../../utils/accessories/monitorAccessories";
 
 export default function MonitorCategory(props: Category) {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(1);
-  const [rating, setRating] = useState(0);
-  const [images, setImages] = useState(["", "", ""]);
-  const [sale, setSale] = useState(0);
-  const [reviewsAmount, setReviewsAmount] = useState(0);
+  const { editItemMode, itemCurrent } = useAppSelector((state) => state.home);
+
+  const [name, setName] = useState(editItemMode ? itemCurrent.items.name : "");
+  const [description, setDescription] = useState(
+    editItemMode ? itemCurrent.items.description : ""
+  );
+  const [price, setPrice] = useState(
+    editItemMode ? itemCurrent.items.price : 0
+  );
+  const [quantity, setQuantity] = useState(
+    editItemMode ? itemCurrent.items.quantity : 1
+  );
+  const [rating] = useState(0);
+  const [images, setImages] = useState(
+    editItemMode
+      ? (itemCurrent.items.image as string[])
+      : [
+          "https://via.placeholder.com/1712x1712",
+          "https://via.placeholder.com/1712x1712",
+          "https://via.placeholder.com/1712x1712",
+        ]
+  );
+  const [sale, setSale] = useState(editItemMode ? itemCurrent.items.sale : 0);
+  const [reviewsAmount] = useState(0);
 
   // fields
-  const [brand, setBrand] = useState("");
-  const [screenDiagonal, setScreenDiagonal] = useState(0);
-  const [matrixType, setMatrixType] = useState("");
-  const [aspectRatio, setAspectRatio] = useState("");
-  const [resolution, setResolution] = useState("");
-  const [responseTime, setResponseTime] = useState(0);
-  const [viewingAngles, setViewingAngles] = useState("");
-  const [backlightType, setBacklightType] = useState("");
-  const [brightness, setBrightness] = useState(0);
-  const [contrastRatio, setContrastRatio] = useState("");
-  const [screenCoating, setScreenCoating] = useState("");
-  const [curvedScreen, setCurvedScreen] = useState(false);
-  const [refreshRate, setRefreshRate] = useState(0);
+  const [brand, setBrand] = useState(
+    editItemMode ? itemCurrent.items.fields.brand : availableMonitorBrands[0]
+  );
+  const [screenDiagonal, setScreenDiagonal] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.screenDiagonal
+      : availableScreenDiagonals[0]
+  );
+  const [matrixType, setMatrixType] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.matrixType
+      : availableMonitorMatrixTypes[0]
+  );
+  const [aspectRatio, setAspectRatio] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.aspectRatio
+      : availableAspectRatio[0]
+  );
+  const [resolution, setResolution] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.resolution
+      : availableMonitorResolutions[0]
+  );
+  const [responseTime, setResponseTime] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.responseTime
+      : availableResponseTimes[0]
+  );
+  const [viewingAngles, setViewingAngles] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.viewingAngles
+      : availableViewingAngles[0]
+  );
+  const [backlightType, setBacklightType] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.backlightType
+      : availableBacklightTypes[0]
+  );
+  const [brightness, setBrightness] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.brightness
+      : availableBrightnessLevels[0]
+  );
+  const [contrastRatio, setContrastRatio] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.contrastRatio
+      : availableContrastRatios[0]
+  );
+  const [screenCoating, setScreenCoating] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.screenCoating
+      : availableScreenCoatings[0]
+  );
+  const [curvedScreen, setCurvedScreen] = useState(
+    editItemMode ? itemCurrent.items.fields.curvedScreen : false
+  );
+  const [refreshRate, setRefreshRate] = useState(
+    editItemMode
+      ? itemCurrent.items.fields.refreshRate
+      : availableRefreshRates[0]
+  );
 
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
@@ -110,6 +187,68 @@ export default function MonitorCategory(props: Category) {
       </Box>
     );
   }
+
+  function DisplaySelectBox(
+    name: string,
+    values: string[],
+    value: any,
+    setValue: Dispatch<SetStateAction<any>>
+  ) {
+    return (
+      <Box
+        width={700}
+        paddingBottom={5}
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+        }}
+      >
+        <Typography
+          variant="h1"
+          textAlign={"center"}
+          fontSize={30}
+          fontFamily={"Ubuntu"}
+          width={300}
+        >
+          {name}
+        </Typography>
+
+        <FormControl fullWidth>
+          <InputLabel id="processor-label">{name}</InputLabel>
+          <Select
+            labelId="processor-label"
+            id="processor-select"
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            MenuProps={{
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+              },
+              transformOrigin: {
+                vertical: "top",
+                horizontal: "left",
+              },
+              PaperProps: {
+                style: {
+                  maxHeight: 200,
+                },
+              },
+            }}
+          >
+            {values.map((item) => (
+              <MenuItem key={item} value={item}>
+                {item}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+    );
+  }
+
   function SpecificLiteralField(
     value: any,
     isError: boolean,
@@ -118,23 +257,6 @@ export default function MonitorCategory(props: Category) {
     name: string
   ) {
     switch (name) {
-      case "Бренд:":
-        return (
-          <TextField
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">+380</InputAdornment>
-              ),
-            }}
-            fullWidth
-            value={value}
-            error={isError}
-            helperText={isError ? errorText : ""}
-            onChange={(event) => {
-              setValue(event.target.value);
-            }}
-          />
-        );
       default:
         return (
           <TextField
@@ -161,11 +283,11 @@ export default function MonitorCategory(props: Category) {
       case "Ціна:":
         return (
           <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">грн</InputAdornment>
-            ),
-          }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">Грн</InputAdornment>
+              ),
+            }}
             fullWidth
             value={value}
             error={isError}
@@ -174,22 +296,24 @@ export default function MonitorCategory(props: Category) {
               if (/^\d*\.?\d*$/.test(event.target.value)) {
                 setValue(
                   event.target.value.length > 0
-                    ? parseFloat(event.target.value)
+                    ? parseFloat(event.target.value) <= 1000000
+                      ? parseFloat(event.target.value)
+                      : price
                     : 0
                 );
               }
             }}
           />
-          
         );
-        case "Знижка:":
+
+      case "Знижка:":
         return (
           <TextField
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">%</InputAdornment>
-            ),
-          }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">%</InputAdornment>
+              ),
+            }}
             fullWidth
             value={value}
             error={isError}
@@ -198,13 +322,14 @@ export default function MonitorCategory(props: Category) {
               if (/^\d*\.?\d*$/.test(event.target.value)) {
                 setValue(
                   event.target.value.length > 0
-                    ? parseFloat(event.target.value)
+                    ? parseFloat(event.target.value) <= 100
+                      ? parseFloat(event.target.value)
+                      : sale
                     : 0
                 );
               }
             }}
           />
-          
         );
       default:
         return (
@@ -230,61 +355,86 @@ export default function MonitorCategory(props: Category) {
   function handleAddItem() {
     if (
       name.trim() === "" ||
-      brand.trim() === "" ||
       description.trim() === "" ||
       price <= 0 ||
       quantity <= 0 ||
       sale < 0 ||
-      screenDiagonal <= 0 ||
-      refreshRate < 0 ||
-      brightness < 0 ||
-      aspectRatio.trim() === "" ||
-      resolution.trim() === "" ||
-      responseTime <= 0 ||
-      viewingAngles.trim() === "" ||
-      backlightType.trim() === "" ||
-      contrastRatio.trim() === "" ||
-      screenCoating.trim() === "" ||
-      matrixType.trim() === ""
+      images[0].length === 0 ||
+      images[1].length === 0 ||
+      images[2].length === 0
     ) {
       InfoDialog_open();
       setInfoMessage("Не всі поля було заповнено коректно");
       return;
     }
-    dispatch(
-      createItem({
-        name,
-        category: props.category,
-        description,
-        quantity,
-        price,
-        rating,
-        image: images,
-        sale,
-        reviewsAmount,
-        brand,
-        screenDiagonal,
-        matrixType,
-        aspectRatio,
-        resolution,
-        responseTime,
-        viewingAngles,
-        backlightType,
-        brightness,
-        contrastRatio,
-        screenCoating,
-        curvedScreen,
-        refreshRate,
-      })
-    ).then((result) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        navigate("/catalog");
-      }
-    });
+    editItemMode
+      ? dispatch(
+          updateItemFields({
+            itemId: itemCurrent.items._id,
+            params: {
+              name,
+              category: props.category,
+              description,
+              quantity,
+              price,
+              rating,
+              image: images,
+              sale,
+              reviewsAmount,
+              brand,
+              screenDiagonal,
+              matrixType,
+              aspectRatio,
+              resolution,
+              responseTime,
+              viewingAngles,
+              backlightType,
+              brightness,
+              contrastRatio,
+              screenCoating,
+              curvedScreen,
+              refreshRate,
+            },
+          })
+        ).then((result) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            navigate("/catalog");
+          }
+        })
+      : dispatch(
+          createItem({
+            name,
+            category: props.category,
+            description,
+            quantity,
+            price,
+            rating,
+            image: images,
+            sale,
+            reviewsAmount,
+            brand,
+            screenDiagonal,
+            matrixType,
+            aspectRatio,
+            resolution,
+            responseTime,
+            viewingAngles,
+            backlightType,
+            brightness,
+            contrastRatio,
+            screenCoating,
+            curvedScreen,
+            refreshRate,
+          })
+        ).then((result) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            navigate("/catalog");
+          }
+        });
   }
 
   const handleAddImageField = () => {
-    setImages([...images, ""]);
+    setImages([...images, "https://via.placeholder.com/1712x1712"]);
   };
 
   const handleRemoveImageField = () => {
@@ -376,6 +526,8 @@ export default function MonitorCategory(props: Category) {
                 key={index}
                 fullWidth
                 value={imageUrl}
+                error={imageUrl.length === 0 ? true : false}
+                helperText={imageUrl.length === 0 ? "Вкажіть зображення" : ""}
                 onChange={(event) => handleImageChange(index, event)}
               />
             ))}
@@ -388,82 +540,66 @@ export default function MonitorCategory(props: Category) {
           </Box>
         </Box>
 
-        {DisplayBox(
-          "Бренд:",
-          brand,
-          setBrand,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
-        )}
-        {DisplayBox(
+        {DisplaySelectBox("Бренд:", availableMonitorBrands, brand, setBrand)}
+        {DisplaySelectBox(
           "Діагональ екрану:",
+          availableScreenDiagonals,
           screenDiagonal,
-          setScreenDiagonal,
-          (value) => value > 0,
-          "Введіть дійсне значення не менше 1"
+          setScreenDiagonal
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Тип матриці:",
+          availableMonitorMatrixTypes,
           matrixType,
-          setMatrixType,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setMatrixType
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Співвідношення сторін:",
+          availableAspectRatio,
           aspectRatio,
-          setAspectRatio,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setAspectRatio
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Роздільна здатність:",
+          availableMonitorResolutions,
           resolution,
-          setResolution,
-          (value) => value.trim() !== "",
-          "Поле 'Роздільна здатність' не може бути порожнім"
+          setResolution
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Час відгуку:",
+          availableResponseTimes,
           responseTime,
-          setResponseTime,
-          (value) => value > 0,
-          "Введіть дійсне значення не менше 1"
+          setResponseTime
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Кути огляду:",
+          availableViewingAngles,
           viewingAngles,
-          setViewingAngles,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setViewingAngles
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Тип підсвічування:",
+          availableBacklightTypes,
           backlightType,
-          setBacklightType,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setBacklightType
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Яскравість:",
+          availableBrightnessLevels,
           brightness,
-          setBrightness,
-          (value) => value > 0,
-          "Введіть дійсне значення не менше 1"
+          setBrightness
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Контрастність:",
+          availableContrastRatios,
           contrastRatio,
-          setContrastRatio,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setContrastRatio
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Покриття екрану:",
+          availableScreenCoatings,
           screenCoating,
-          setScreenCoating,
-          (value) => value.trim() !== "",
-          "Це поле не може бути порожнім"
+          setScreenCoating
         )}
         {DisplayBox(
           "Зігнутий екран:",
@@ -472,12 +608,11 @@ export default function MonitorCategory(props: Category) {
           () => true,
           ""
         )}
-        {DisplayBox(
+        {DisplaySelectBox(
           "Частота оновлення:",
+          availableRefreshRates,
           refreshRate,
-          setRefreshRate,
-          (value) => value > 0,
-          "Введіть дійсне значення не менше 1"
+          setRefreshRate
         )}
 
         <Button
@@ -486,7 +621,7 @@ export default function MonitorCategory(props: Category) {
           color="warning"
           onClick={handleAddItem}
         >
-          Додати товар
+          {editItemMode ? "Зберігти зміни" : "Додати товар"}
         </Button>
       </Box>
     </>

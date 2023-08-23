@@ -1,41 +1,36 @@
 import * as React from "react";
 import {
-  Backdrop,
   Box,
   Card,
   CardActions,
   CardContent,
   CardMedia,
   CircularProgress,
-  ClickAwayListener,
   IconButton,
-  LinearProgress,
   Rating,
-  Tooltip,
   Typography,
-  makeStyles,
 } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import EditIcon from "@mui/icons-material/Edit";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { TShippingItems, Items } from "../../../redux/types";
 import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 import { getItemReviews } from "../../../redux/review/asyncActions";
 import {
+  checkItemById,
   deleteItem,
   getItemById,
   getItemsByCategory,
 } from "../../../redux/home/asyncActions";
 import InfoDialog from "../../dialogs/InfoDialog";
 import { useState } from "react";
-import { setSearchedId } from "../../../redux/home/homeSlice";
+import { setEditItemMode, setSearchedId } from "../../../redux/home/homeSlice";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
-  const { category, item_status, itemAppendingId } = useAppSelector(
-    (state) => state.home
-  );
+  const { category, itemAppendingId } = useAppSelector((state) => state.home);
 
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
@@ -44,7 +39,6 @@ export default function CatalogCard(props: Items) {
   }
 
   function InfoDialog_close() {
-    console.log("dfs 2");
     dispatch(synchronizeBasket());
     setOpenInfo(false);
   }
@@ -135,7 +129,7 @@ export default function CatalogCard(props: Items) {
 
   async function basketItem_APPEND() {
     dispatch(setSearchedId(props._id));
-    dispatch(getItemById(props._id)).then((result: any) => {
+    dispatch(checkItemById(props._id)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         if (result.payload.items.quantity === 0) {
           setInfoMessage("Цей товар закінчився");
@@ -191,10 +185,41 @@ export default function CatalogCard(props: Items) {
           }
         }
         localStorage.setItem("basketItems", JSON.stringify(basketItems));
+        dispatch(synchronizeBasket());
+      }
+      if (result.meta.requestStatus === "rejected") {
+        setInfoMessage("Такого товару вже нема");
+        InfoDialog_open();
+        const recentlyReviewed = JSON.parse(
+          localStorage.getItem("recentlyReviewed") || "{}"
+        );
+        const basketItems = JSON.parse(
+          localStorage.getItem("basketItems") || "{}"
+        );
+        localStorage.setItem(
+          "recentlyReviewed",
+          JSON.stringify(
+            recentlyReviewed.filter((item: any) => item._id !== props._id)
+          )
+        );
+        localStorage.setItem(
+          "basketItems",
+          JSON.stringify(
+            basketItems.filter((item: any) => item._id !== props._id)
+          )
+        );
       }
     });
   }
-
+  function redirectToAddItemPage() {
+    dispatch(setEditItemMode(true));
+    dispatch(setSearchedId(props._id));
+    dispatch(getItemById(props._id)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        navigate("/add-item");
+      }
+    });
+  }
   return (
     <>
       <>
@@ -317,22 +342,6 @@ export default function CatalogCard(props: Items) {
               alignItems={"flex-end"}
               flexDirection={"row"}
             >
-              <Box>
-                <IconButton
-                  sx={{ paddind: 0 }}
-                  onClick={() => basketItem_APPEND()}
-                >
-                  {itemAppendingId === props._id ? (
-                    <CircularProgress size={20} />
-                  ) : (
-                    <AddShoppingCartIcon
-                      sx={{ height: 35, width: 35 }}
-                      color={"disabled"}
-                    />
-                  )}
-                </IconButton>
-              </Box>
-
               {props.user === user.id ? (
                 <Box
                   display={"flex"}
@@ -358,10 +367,35 @@ export default function CatalogCard(props: Items) {
                       sx={{ width: 40, height: 40 }}
                     />
                   </IconButton>
+                  {itemAppendingId === props._id ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    <IconButton onClick={redirectToAddItemPage}>
+                      <EditIcon
+                        color="warning"
+                        sx={{ width: 40, height: 40 }}
+                      />
+                    </IconButton>
+                  )}
                 </Box>
               ) : (
                 <></>
               )}
+              <Box>
+                <IconButton
+                  sx={{ paddind: 0 }}
+                  onClick={() => basketItem_APPEND()}
+                >
+                  {itemAppendingId === props._id ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    <AddShoppingCartIcon
+                      sx={{ height: 35, width: 35 }}
+                      color={"disabled"}
+                    />
+                  )}
+                </IconButton>
+              </Box>
             </Box>
           </CardActions>
         </Card>

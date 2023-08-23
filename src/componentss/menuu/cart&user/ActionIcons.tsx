@@ -20,7 +20,7 @@ import LoginDialog from "../../dialogs/LoginDialog";
 import RegisterDialog from "../../dialogs/RegisterDialog";
 import BasketDialog from "../../dialogs/BasketDialog";
 import { useNavigate } from "react-router-dom";
-import { getItemById } from "../../../redux/home/asyncActions";
+import { checkItemById } from "../../../redux/home/asyncActions";
 import { actualizeBasket } from "../../../utils/actuilizeBasket";
 import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 
@@ -141,15 +141,19 @@ export const ActionIcons = () => {
                   const newBasketItems = JSON.parse(
                     localStorage.getItem("basketItems") || "{}"
                   );
-                  const promises = newBasketItems.map(async (item: any, index: number) => {
-                    const resultItem = await dispatch(getItemById(item._id));
-                    if (resultItem.meta.requestStatus === "fulfilled") {
-                      actualizeBasket(newBasketItems, resultItem.payload);
+                  const promises = newBasketItems.map(
+                    async (item: any, index: number) => {
+                      const resultItem = await dispatch(
+                        checkItemById(item._id)
+                      );
+                      if (resultItem.meta.requestStatus === "fulfilled") {
+                        actualizeBasket(newBasketItems, resultItem.payload);
+                      }
+                      if (resultItem.meta.requestStatus === "rejected") {
+                        newBasketItems.splice(index, 1);
+                      }
                     }
-                    if(resultItem.meta.requestStatus === "rejected"){
-                      newBasketItems.splice(index,1)
-                    }
-                  });
+                  );
 
                   Promise.all(promises).then(() => {
                     localStorage.setItem(
@@ -172,23 +176,19 @@ export const ActionIcons = () => {
                       }}
                     />
                   </Badge>
-                ) : 
-                basketLoading ?
-                <CircularProgress size={20} />
-                
-              :
-              (
-                <Badge badgeContent={items.length} color="warning">
-                  <ShoppingCartIcon
-                    color={cartSelected ? "info" : "warning"}
-                    sx={{
-                      width: 40,
-                      height: 40,
-                    }}
-                  />
-                </Badge>
-              )
-              }
+                ) : basketLoading ? (
+                  <CircularProgress size={20} />
+                ) : (
+                  <Badge badgeContent={items.length} color="warning">
+                    <ShoppingCartIcon
+                      color={cartSelected ? "info" : "warning"}
+                      sx={{
+                        width: 40,
+                        height: 40,
+                      }}
+                    />
+                  </Badge>
+                )}
               </IconButton>
             </>
           )}
