@@ -22,6 +22,7 @@ import UserOrder from "./pagess/order/UserOrder";
 import ConfirmEmail from "./pagess/ConfirmEmail";
 import Layout from "./componentss/Layout";
 import Guarantees from "./pagess/footerPages/Guarantees";
+import { synchronizeComparison, synchronizeFavorites } from "./redux/home/homeSlice";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -44,7 +45,9 @@ function App() {
 
   React.useEffect(() => {
     dispatch(synchronizeBasket());
-  }, [dispatch, JSON.parse(localStorage.getItem("basketItems") || "{}")]);
+    dispatch(synchronizeFavorites());
+    dispatch(synchronizeComparison());
+  }, [dispatch]);
   return (
     <>
       <Routes>
