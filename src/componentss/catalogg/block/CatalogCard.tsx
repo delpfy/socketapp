@@ -42,6 +42,8 @@ export default function CatalogCard(props: Items) {
 
   function InfoDialog_close() {
     dispatch(synchronizeBasket());
+    dispatch(synchronizeFavorites());
+    dispatch(synchronizeComparison());
     setOpenInfo(false);
   }
   const dispatch = useAppDispatch();
