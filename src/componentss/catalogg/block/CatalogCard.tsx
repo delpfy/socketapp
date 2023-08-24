@@ -28,7 +28,12 @@ import {
 } from "../../../redux/home/asyncActions";
 import InfoDialog from "../../dialogs/InfoDialog";
 import { useState } from "react";
-import { setEditItemMode, setSearchedId, synchronizeComparison, synchronizeFavorites } from "../../../redux/home/homeSlice";
+import {
+  setEditItemMode,
+  setSearchedId,
+  synchronizeComparison,
+  synchronizeFavorites,
+} from "../../../redux/home/homeSlice";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
@@ -200,6 +205,12 @@ export default function CatalogCard(props: Items) {
         const basketItems = JSON.parse(
           localStorage.getItem("basketItems") || "{}"
         );
+        const favoriteItems = JSON.parse(
+          localStorage.getItem("favoriteItems") || "{}"
+        );
+        const comparisonItems = JSON.parse(
+          localStorage.getItem("comparisonItems") || "{}"
+        );
         localStorage.setItem(
           "recentlyReviewed",
           JSON.stringify(
@@ -210,6 +221,18 @@ export default function CatalogCard(props: Items) {
           "basketItems",
           JSON.stringify(
             basketItems.filter((item: any) => item._id !== props._id)
+          )
+        );
+        localStorage.setItem(
+          "favoriteItems",
+          JSON.stringify(
+            favoriteItems.filter((item: any) => item._id !== props._id)
+          )
+        );
+        localStorage.setItem(
+          "comparisonItems",
+          JSON.stringify(
+            comparisonItems.filter((item: any) => item._id !== props._id)
           )
         );
       }
@@ -234,8 +257,13 @@ export default function CatalogCard(props: Items) {
           );
 
           if (itemIndex !== -1) {
-            localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems.filter((item: any) => item._id !== props._id)));
-        dispatch(synchronizeFavorites());
+            localStorage.setItem(
+              "favoriteItems",
+              JSON.stringify(
+                favoriteItems.filter((item: any) => item._id !== props._id)
+              )
+            );
+            dispatch(synchronizeFavorites());
             return;
           } else {
             favoriteItems.push({
@@ -264,6 +292,12 @@ export default function CatalogCard(props: Items) {
         const basketItems = JSON.parse(
           localStorage.getItem("basketItems") || "{}"
         );
+        const favoriteItems = JSON.parse(
+          localStorage.getItem("favoriteItems") || "{}"
+        );
+        const comparisonItems = JSON.parse(
+          localStorage.getItem("comparisonItems") || "{}"
+        );
         localStorage.setItem(
           "recentlyReviewed",
           JSON.stringify(
@@ -276,10 +310,21 @@ export default function CatalogCard(props: Items) {
             basketItems.filter((item: any) => item._id !== props._id)
           )
         );
+        localStorage.setItem(
+          "favoriteItems",
+          JSON.stringify(
+            favoriteItems.filter((item: any) => item._id !== props._id)
+          )
+        );
+        localStorage.setItem(
+          "comparisonItems",
+          JSON.stringify(
+            comparisonItems.filter((item: any) => item._id !== props._id)
+          )
+        );
       }
     });
   }
-
 
   async function comparisonItem_APPEND() {
     dispatch(setSearchedId(props._id));
@@ -299,8 +344,13 @@ export default function CatalogCard(props: Items) {
           );
 
           if (itemIndex !== -1) {
-            localStorage.setItem("comparisonItems", JSON.stringify(comparisonItems.filter((item: any) => item._id !== props._id)));
-        dispatch(synchronizeComparison());
+            localStorage.setItem(
+              "comparisonItems",
+              JSON.stringify(
+                comparisonItems.filter((item: any) => item._id !== props._id)
+              )
+            );
+            dispatch(synchronizeComparison());
             return;
           } else {
             comparisonItems.push({
@@ -317,7 +367,10 @@ export default function CatalogCard(props: Items) {
             });
           }
         }
-        localStorage.setItem("comparisonItems", JSON.stringify(comparisonItems));
+        localStorage.setItem(
+          "comparisonItems",
+          JSON.stringify(comparisonItems)
+        );
         dispatch(synchronizeComparison());
       }
       if (result.meta.requestStatus === "rejected") {
@@ -329,6 +382,12 @@ export default function CatalogCard(props: Items) {
         const basketItems = JSON.parse(
           localStorage.getItem("basketItems") || "{}"
         );
+        const favoriteItems = JSON.parse(
+          localStorage.getItem("favoriteItems") || "{}"
+        );
+        const comparisonItems = JSON.parse(
+          localStorage.getItem("comparisonItems") || "{}"
+        );
         localStorage.setItem(
           "recentlyReviewed",
           JSON.stringify(
@@ -339,6 +398,18 @@ export default function CatalogCard(props: Items) {
           "basketItems",
           JSON.stringify(
             basketItems.filter((item: any) => item._id !== props._id)
+          )
+        );
+        localStorage.setItem(
+          "favoriteItems",
+          JSON.stringify(
+            favoriteItems.filter((item: any) => item._id !== props._id)
+          )
+        );
+        localStorage.setItem(
+          "comparisonItems",
+          JSON.stringify(
+            comparisonItems.filter((item: any) => item._id !== props._id)
           )
         );
       }
@@ -384,9 +455,14 @@ export default function CatalogCard(props: Items) {
             <></>
           )}
           <IconButton
-            sx={{ position: "absolute", zIndex: 1, height: 50, width: 50, right: 0 }}
+            sx={{
+              position: "absolute",
+              zIndex: 1,
+              height: 50,
+              width: 50,
+              right: 0,
+            }}
             onClick={() => comparisonItem_APPEND()}
-            
           >
             <ScaleIcon
               color={"warning"}
@@ -397,7 +473,14 @@ export default function CatalogCard(props: Items) {
             />
           </IconButton>
           <IconButton
-            sx={{ position: "absolute", zIndex: 1, height: 50, width: 50, right: 0 , top: 80}}
+            sx={{
+              position: "absolute",
+              zIndex: 1,
+              height: 50,
+              width: 50,
+              right: 0,
+              top: 80,
+            }}
             onClick={() => favoriteItem_APPEND()}
           >
             <FavoriteBorderIcon
