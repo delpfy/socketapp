@@ -33,7 +33,8 @@ export const InitialiseHome = () => {
     itemsSorted: {} as ItemsDisplay,
     sorted: false,
     editItemMode: false,
-
+    itemsComparison: [],
+    itemsFavorites: [],
     itemCurrent: {} as any,
 
     categories,

@@ -13,6 +13,8 @@ import {
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import EditIcon from "@mui/icons-material/Edit";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ScaleIcon from "@mui/icons-material/Scale";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { TShippingItems, Items } from "../../../redux/types";
 import { synchronizeBasket } from "../../../redux/basket/basketSlice";
@@ -26,7 +28,7 @@ import {
 } from "../../../redux/home/asyncActions";
 import InfoDialog from "../../dialogs/InfoDialog";
 import { useState } from "react";
-import { setEditItemMode, setSearchedId } from "../../../redux/home/homeSlice";
+import { setEditItemMode, setSearchedId, synchronizeComparison, synchronizeFavorites } from "../../../redux/home/homeSlice";
 
 export default function CatalogCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
@@ -211,6 +213,136 @@ export default function CatalogCard(props: Items) {
       }
     });
   }
+
+  async function favoriteItem_APPEND() {
+    dispatch(setSearchedId(props._id));
+    dispatch(checkItemById(props._id)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        if (result.payload.items.quantity === 0) {
+          setInfoMessage("Цей товар закінчився");
+          InfoDialog_open();
+          return;
+        }
+        const favoriteItems = JSON.parse(
+          localStorage.getItem("favoriteItems") || "{}"
+        );
+        if (favoriteItems !== undefined) {
+          const itemIndex = favoriteItems.findIndex(
+            (item: TShippingItems) => item.name === result.payload.items.name
+          );
+
+          if (itemIndex !== -1) {
+            localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems.filter((item: any) => item._id !== props._id)));
+        dispatch(synchronizeFavorites());
+            return;
+          } else {
+            favoriteItems.push({
+              _id: result.payload.items._id,
+              name: result.payload.items.name,
+              description: result.payload.items.description,
+              category: result.payload.items.category,
+              price: result.payload.items.price,
+              sale: result.payload.items.sale,
+              rating: result.payload.items.rating,
+              image: result.payload.items.image,
+              quantity: result.payload.items.quantity,
+              fields: result.payload.items.fields,
+            });
+          }
+        }
+        localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
+        dispatch(synchronizeFavorites());
+      }
+      if (result.meta.requestStatus === "rejected") {
+        setInfoMessage("Такого товару вже нема");
+        InfoDialog_open();
+        const recentlyReviewed = JSON.parse(
+          localStorage.getItem("recentlyReviewed") || "{}"
+        );
+        const basketItems = JSON.parse(
+          localStorage.getItem("basketItems") || "{}"
+        );
+        localStorage.setItem(
+          "recentlyReviewed",
+          JSON.stringify(
+            recentlyReviewed.filter((item: any) => item._id !== props._id)
+          )
+        );
+        localStorage.setItem(
+          "basketItems",
+          JSON.stringify(
+            basketItems.filter((item: any) => item._id !== props._id)
+          )
+        );
+      }
+    });
+  }
+
+
+  async function comparisonItem_APPEND() {
+    dispatch(setSearchedId(props._id));
+    dispatch(checkItemById(props._id)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        if (result.payload.items.quantity === 0) {
+          setInfoMessage("Цей товар закінчився");
+          InfoDialog_open();
+          return;
+        }
+        const comparisonItems = JSON.parse(
+          localStorage.getItem("comparisonItems") || "{}"
+        );
+        if (comparisonItems !== undefined) {
+          const itemIndex = comparisonItems.findIndex(
+            (item: TShippingItems) => item.name === result.payload.items.name
+          );
+
+          if (itemIndex !== -1) {
+            localStorage.setItem("comparisonItems", JSON.stringify(comparisonItems.filter((item: any) => item._id !== props._id)));
+        dispatch(synchronizeComparison());
+            return;
+          } else {
+            comparisonItems.push({
+              _id: result.payload.items._id,
+              name: result.payload.items.name,
+              description: result.payload.items.description,
+              category: result.payload.items.category,
+              price: result.payload.items.price,
+              sale: result.payload.items.sale,
+              rating: result.payload.items.rating,
+              image: result.payload.items.image,
+              quantity: result.payload.items.quantity,
+              fields: result.payload.items.fields,
+            });
+          }
+        }
+        localStorage.setItem("comparisonItems", JSON.stringify(comparisonItems));
+        dispatch(synchronizeComparison());
+      }
+      if (result.meta.requestStatus === "rejected") {
+        setInfoMessage("Такого товару вже нема");
+        InfoDialog_open();
+        const recentlyReviewed = JSON.parse(
+          localStorage.getItem("recentlyReviewed") || "{}"
+        );
+        const basketItems = JSON.parse(
+          localStorage.getItem("basketItems") || "{}"
+        );
+        localStorage.setItem(
+          "recentlyReviewed",
+          JSON.stringify(
+            recentlyReviewed.filter((item: any) => item._id !== props._id)
+          )
+        );
+        localStorage.setItem(
+          "basketItems",
+          JSON.stringify(
+            basketItems.filter((item: any) => item._id !== props._id)
+          )
+        );
+      }
+    });
+  }
+
   function redirectToAddItemPage() {
     dispatch(setEditItemMode(true));
     dispatch(setSearchedId(props._id));
@@ -249,6 +381,31 @@ export default function CatalogCard(props: Items) {
           ) : (
             <></>
           )}
+          <IconButton
+            sx={{ position: "absolute", zIndex: 1, height: 50, width: 50, right: 0 }}
+            onClick={() => comparisonItem_APPEND()}
+            
+          >
+            <ScaleIcon
+              color={"warning"}
+              sx={{
+                width: 30,
+                height: 30,
+              }}
+            />
+          </IconButton>
+          <IconButton
+            sx={{ position: "absolute", zIndex: 1, height: 50, width: 50, right: 0 , top: 80}}
+            onClick={() => favoriteItem_APPEND()}
+          >
+            <FavoriteBorderIcon
+              color={"warning"}
+              sx={{
+                width: 30,
+                height: 30,
+              }}
+            />
+          </IconButton>
           <CardMedia
             sx={{
               maxHeight: 200,

@@ -2,12 +2,12 @@ import React from "react";
 import { useAppSelector } from "../../redux/hooks";
 
 import { Box, Grid } from "@mui/material";
-import { TShippingItems } from "../../redux/types";
-import CartItemCard from "../../componentss/cart/block/CartItemCard";
+import { Items } from "../../redux/types";
 import ItemsAbsence from "../ItemsAbsence";
+import CatalogCard from "../../componentss/catalogg/block/CatalogCard";
 
-export default function BasketPage() {
-  const { items } = useAppSelector((state) => state.basket);
+export default function ComparisonPage() {
+  const { itemsComparison } = useAppSelector((state) => state.home);
 
   return (
     <Box width={"100%"} paddingTop={"2%"}>
@@ -18,10 +18,10 @@ export default function BasketPage() {
           spacing={{ xs: 1, sm: 3, md: 4 }}
           columns={{ xs: 1, sm: 4, md: 8, lg: 8, xl: 10 }}
         >
-          {items.length === 0 ? (
+          {itemsComparison.length === 0 ? (
             <ItemsAbsence />
           ) : (
-            items.map((item: TShippingItems) => (
+            itemsComparison.map((item: Items) => (
               <Grid
                 item
                 display={"flex"}
@@ -35,7 +35,7 @@ export default function BasketPage() {
                 xl={5}
                 key={item._id}
               >
-                <CartItemCard key={item._id} {...item} />
+                <CatalogCard key={item._id} {...item} />
               </Grid>
             ))
           )}

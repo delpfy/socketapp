@@ -20,7 +20,6 @@ const basketSlice = createSlice({
       state.items = JSON.parse(
         localStorage.getItem("basketItems") || "{}"
       );
-      
     },
     setAfterOrder(state, action: PayloadAction<boolean>){
       state.afterOrder = action.payload;

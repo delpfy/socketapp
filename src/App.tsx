@@ -31,6 +31,12 @@ function App() {
   if (!localStorage.getItem("basketItems")) {
     localStorage.setItem("basketItems", JSON.stringify([]));
   }
+  if (!localStorage.getItem("favoriteItems")) {
+    localStorage.setItem("favoriteItems", JSON.stringify([]));
+  }
+  if (!localStorage.getItem("comparisonItems")) {
+    localStorage.setItem("comparisonItems", JSON.stringify([]));
+  }
 
   useEffect(() => {
     dispatch(checkAuthorization());

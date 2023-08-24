@@ -257,6 +257,9 @@ export interface HomeState {
   itemsSortedParams: ItemsDisplay;
   itemsCategory: any;
   itemsSorted: ItemsDisplay;
+
+  itemsComparison: any,
+  itemsFavorites: any,
   sorted: boolean;
 
   itemCurrent: any;
