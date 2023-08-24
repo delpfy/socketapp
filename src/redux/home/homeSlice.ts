@@ -31,12 +31,12 @@ const homeSlice = createSlice({
     setEditItemMode(state, action: PayloadAction<boolean>) {
       state.editItemMode = action.payload;
     },
-    synchronizeFavorites(state){
+    synchronizeFavorites(state) {
       state.itemsFavorites = JSON.parse(
         localStorage.getItem("favoriteItems") || "{}"
       );
     },
-    synchronizeComparison(state){
+    synchronizeComparison(state) {
       state.itemsComparison = JSON.parse(
         localStorage.getItem("comparisonItems") || "{}"
       );
@@ -171,7 +171,7 @@ const homeSlice = createSlice({
                   return item.fields.resolution.toString() === paramValue;
                 case "Процесор":
                   return item.fields.processor.toString() === paramValue;
-                case "Обсяг пам'яті":
+                case "Обсяг ОЗУ":
                   return item.fields.RAM.toString() === paramValue;
                 case "Серія":
                   return item.fields.series.toString() === paramValue;
@@ -180,7 +180,7 @@ const homeSlice = createSlice({
                 case "Операційна система":
                   return item.fields.operatingSystem.toString() === paramValue;
                 case "Тип покриття матриці":
-                  return item.fields.coatingType.toLowerCase() === paramValue;
+                  return item.fields.coatingType === paramValue;
                 case "Сенсорний екран":
                   return item.fields.touchScreen.toString() === paramValue;
                 case "Частота оновлення":
@@ -376,6 +376,7 @@ const homeSlice = createSlice({
       state.itemsSortedParams = state.itemsSorted;
     },
   },
+  
   extraReducers: (builder) => {
     // All items.
     builder.addCase(getAllItems.fulfilled, (state, action) => {
@@ -519,7 +520,7 @@ export const {
   setSearchedId,
   setEditItemMode,
   synchronizeFavorites,
-synchronizeComparison,
+  synchronizeComparison,
   sortByCost_ASC,
   sortByCost_DESC,
   sortByRelevance_ASC,

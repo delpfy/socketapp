@@ -161,6 +161,57 @@ export default function MonitorFields() {
     });
   }
 
+  function displayItemParameterAmount(parameterName: any, parameterValue: any) {
+    console.log();
+    const selectedParams = {
+      [parameterName]: [parameterValue],
+    } as SelectedSortParams;
+
+    const itemAmount = itemsCategory.items.filter((item: any) => {
+      return Object.keys(selectedParams).every((paramName: any) => {
+        const paramValues = selectedParams[paramName];
+
+        if (paramValues.length === 0) {
+          return true;
+        }
+
+        return paramValues.some((paramValue) => {
+          switch (paramName) {
+            case "Бренд":
+              return item.fields.brand?.toString() === paramValue;
+            case "Тип матриці":
+              return item.fields.matrixType?.toString() === paramValue;
+            case "Розмір матриці":
+              return item.fields.screenDiagonal?.toString() === paramValue;
+            case "Роздільна здатність":
+              return item.fields.resolution?.toString() === paramValue;
+            case "Час відгуку":
+              return item.fields.responseTime?.toString() === paramValue;
+            case "Кути огляду":
+              return item.fields.viewingAngles?.toString() === paramValue;
+            case "Тип підсвічування":
+              return item.fields.backlightType?.toString() === paramValue;
+            case "Яскравість":
+              return item.fields.brightness?.toString() === paramValue;
+            case "Співвідношення контрастності":
+              return item.fields.contrastRatio?.toString() === paramValue;
+            case "Співвідношення сторін":
+              return item.fields.aspectRatio?.toString() === paramValue;
+            case "Покриття екрану":
+              return item.fields.screenCoating?.toString() === paramValue;
+            case "Зігнута матриця":
+              return item.fields.curvedScreen === paramValue;
+            case "Частота оновлення":
+              return item.fields.refreshRate?.toString() === paramValue;
+            default:
+              return false;
+          }
+        });
+      });
+    });
+    return itemAmount.length.toString();
+  }
+
   function ParameterAccord(name: string, values: any) {
     return (
       <Accordion>
@@ -173,24 +224,29 @@ export default function MonitorFields() {
         </AccordionSummary>
         <AccordionDetails>
           {values.map((val: any) => (
-            <FormControlLabel
-              key={val}
-              control={
-                <Checkbox
-                  checked={
-                    typeof selectedSortParams[name]?.includes(
-                      val.toString()
-                    ) === "boolean"
-                      ? selectedSortParams[name]?.includes(val.toString())
-                        ? true
+            <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+              <FormControlLabel
+                key={val}
+                control={
+                  <Checkbox
+                    checked={
+                      typeof selectedSortParams[name]?.includes(
+                        val.toString()
+                      ) === "boolean"
+                        ? selectedSortParams[name]?.includes(val.toString())
+                          ? true
+                          : false
                         : false
-                      : false
-                  }
-                  onChange={() => performSort(name, val)}
-                />
-              }
-              label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
-            />
+                    }
+                    onChange={() => performSort(name, val)}
+                  />
+                }
+                label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+              />
+              <Typography color={"error"}>
+                {displayItemParameterAmount(name, val)}
+              </Typography>
+            </Box>
           ))}
         </AccordionDetails>
       </Accordion>
