@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Fab from '@mui/material/Fab';
-import './ButtonUp.css';
+
 
 export default function ButtonUp  () {
   const [showButton, setShowButton] = useState(false);
@@ -34,7 +34,13 @@ export default function ButtonUp  () {
     left: '10px',
     width: '60px',
     height: '60px',
-    backgroundColor: '#3498db',
+    backgroundColor: '#281E5D',
+    "&:hover" : {
+      backgroundColor: '#3944BC',
+    },
+    "&:unhover" : {
+      backgroundColor: '#281E5D'
+    },
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',

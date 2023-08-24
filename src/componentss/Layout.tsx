@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import AppBarMenu from './menuu/appbar/Menu';
-import ButtonUp from './ButtonUpComponent/ButtonUp';
+import ButtonUp from './ButtonUp';
 import Footer from './Footer';
 
 

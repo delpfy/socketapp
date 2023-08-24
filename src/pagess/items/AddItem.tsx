@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
@@ -14,7 +14,9 @@ export default function AddItem() {
   function handleCategoryChange(e: any) {
     setCategory(e.target.value);
   }
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+}, []);
   function DisplayParams() {
     switch (categoryLocal) {
       case "Ноутбуки":

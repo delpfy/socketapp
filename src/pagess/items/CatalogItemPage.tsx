@@ -7,6 +7,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
   Paper,
   Rating,
   Table,
@@ -30,8 +31,10 @@ import {
   setRatingAmount,
 } from "../../redux/review/reviewSlice";
 import LoadingPage from "../LoadingPage";
-import { setEditItemMode } from "../../redux/home/homeSlice";
-
+import { setEditItemMode, setSearchedId } from "../../redux/home/homeSlice";
+import { deleteItem, getItemById, getItemsByCategory } from "../../redux/home/asyncActions";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import EditIcon from "@mui/icons-material/Edit";
 const font = {
   fontFamily: "Ubuntu",
 };
@@ -399,17 +402,31 @@ const MonitorTable = ({ item }: { item: any }) => {
   );
 };
 
+
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { item_status, itemCurrent, editItemMode } = useAppSelector(
+  const { category, itemAppendingId, itemCurrent, item_status, editItemMode } = useAppSelector(
     (state) => state.home
   );
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
   const { afterOrder } = useAppSelector((state) => state.basket);
+  const { user } = useAppSelector((state) => state.user);
+
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
+
+  function redirectToAddItemPage() {
+    dispatch(setEditItemMode(true));
+    dispatch(setSearchedId(itemCurrent.items._id));
+    dispatch(getItemById(itemCurrent.items._id)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        navigate("/add-item");
+      }
+    });
+  }
+  
   function InfoDialog_open() {
     setOpenInfo(true);
   }
@@ -666,9 +683,58 @@ export const ItemPage = () => {
               {itemCurrent.items.description}
             </Typography>
             {renderTable()}
+            </Box>
           </Box>
-          <Box>
-            <Button
+          <Box
+              display={"flex"}
+              justifyContent={"center"}
+              
+              alignItems={"center"}
+              width={"100%"}
+              flexDirection={"row"}
+            >
+              {itemCurrent.items.user === user.id ? (
+                <Box
+                  display={"flex"}
+                  
+                  alignSelf={"center"}
+                  justifyContent={"space-between"}
+                  alignItems={"flex-end"}
+                  flexDirection={"row"}
+                >
+                  <IconButton
+                    onClick={() => {
+                      dispatch(deleteItem({ itemId: itemCurrent.items._id })).then(
+                        (result: any) => {
+                          if (result.meta.requestStatus === "fulfilled") {
+                            dispatch(getItemsByCategory(category));
+                            navigate('/catalog')
+                          }
+                        }
+                      );
+                    }}
+                  >
+                    <DeleteForeverIcon
+                      color="error"
+                      sx={{ width: 40, height: 40 }}
+                    />
+                  </IconButton>
+                  {itemAppendingId === itemCurrent.items._id ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    <IconButton onClick={redirectToAddItemPage}>
+                      <EditIcon
+                        color="warning"
+                        sx={{ width: 40, height: 40 }}
+                      />
+                    </IconButton>
+                  )}
+                </Box>
+              ) : (
+                <></>
+              )}
+              <Box>
+              <Button
               onClick={() => basketItem_APPEND()}
               sx={{
                 width: {
@@ -684,7 +750,9 @@ export const ItemPage = () => {
             >
               Покласти у кошик
             </Button>
-          </Box>
+            </Box>
+            </Box>
+          
           <Box paddingTop={10}>
             <Typography
               fontFamily={"Comfortaa"}
@@ -696,7 +764,7 @@ export const ItemPage = () => {
             <ReviewForm {...itemCurrent.items} />
             <Box>{StatusReviewHandler(status_review)}</Box>
           </Box>
-        </Box>
+       
         <InfoDialog
           openInfo={openInfo}
           InfoDialog_close={InfoDialog_close}

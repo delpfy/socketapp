@@ -532,6 +532,12 @@ export default function TabletCategory(props: Category) {
           if (result.meta.requestStatus === "fulfilled") {
             navigate("/catalog");
           }
+          if (result.meta.requestStatus === "rejected") {
+            InfoDialog_open();
+            setInfoMessage(
+              "Схоже ви намагались додати товар, ім'я якого вже зайняте"
+            );
+          }
         });
   }
 
