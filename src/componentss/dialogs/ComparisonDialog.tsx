@@ -37,10 +37,10 @@ export default function ComparisonDialog({
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
   const [scroll] = useState<DialogProps["scroll"]>("paper");
-  const [maxWidth] = useState<DialogProps["maxWidth"]>("md");
+  const [maxWidth] = useState<DialogProps["maxWidth"]>("xl");
   const [fullWidth] = useState(true);
 
-  const fullScreen = useMediaQuery(useTheme().breakpoints.down("md"));
+  const fullScreen = useMediaQuery(useTheme().breakpoints.down("xl"));
 
   useEffect(() => {
     ComparisonDialog_close();

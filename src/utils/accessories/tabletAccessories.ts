@@ -81,6 +81,7 @@ export const availableExternalTabletPorts = [
   "USB-A",
   "Micro USB",
   "HDMI",
+  "3.5 mm headphone jack",
 ];
 
 export const availableBodyColors = ["Чорний", "Білий", "Сріблястий", "Сірий"];

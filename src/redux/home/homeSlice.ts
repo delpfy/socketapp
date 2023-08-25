@@ -31,6 +31,9 @@ const homeSlice = createSlice({
     setEditItemMode(state, action: PayloadAction<boolean>) {
       state.editItemMode = action.payload;
     },
+    setDifferencesMode(state, action: PayloadAction<boolean>) {
+      state.differencesMode = action.payload;
+    },
     synchronizeFavorites(state) {
       state.itemsFavorites = JSON.parse(
         localStorage.getItem("favoriteItems") || "{}"
@@ -519,6 +522,7 @@ export const {
   SetCategory,
   setSearchedId,
   setEditItemMode,
+  setDifferencesMode,
   synchronizeFavorites,
   synchronizeComparison,
   sortByCost_ASC,

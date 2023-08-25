@@ -36,7 +36,7 @@ export const InitialiseHome = () => {
     itemsComparison: [],
     itemsFavorites: [],
     itemCurrent: {} as any,
-
+    differencesMode: false,
     categories,
     category: "Монітори",
   };

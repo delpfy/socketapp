@@ -253,6 +253,7 @@ export interface HomeState {
   itemAppendingId: string;
   id: number;
   editItemMode: boolean;
+  differencesMode: boolean;
   itemsDisplay: ItemsDisplay;
   itemsSortedParams: ItemsDisplay;
   itemsCategory: any;
