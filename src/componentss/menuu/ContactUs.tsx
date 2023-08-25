@@ -3,9 +3,9 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import { Box, Divider, Link, Typography } from "@mui/material";
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { Telegram } from "@mui/icons-material";
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
 
 export default function ContactUs() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -66,8 +66,8 @@ export default function ContactUs() {
             </Box>
           </Box>
           <Divider light />
-          
-<Box
+
+          <Box
             sx={{
               display: "flex",
               flexDirection: "row",
@@ -78,7 +78,7 @@ export default function ContactUs() {
           >
             <QuestionAnswerIcon
               color="warning"
-              sx={{ padding: 1,  paddingRight: 2 }}
+              sx={{ padding: 1, paddingRight: 2 }}
             />
             <Box
               sx={{
@@ -88,18 +88,11 @@ export default function ContactUs() {
               }}
             >
               <Typography fontSize={15}>Чат на сайті</Typography>
-            
             </Box>
           </Box>
           <Divider light />
-            <Link href="https://web.telegram.org/k/"  sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              padding: 1,
-            }}>
- <Box
+          <Link
+            href="https://web.telegram.org/k/"
             sx={{
               display: "flex",
               flexDirection: "row",
@@ -108,91 +101,97 @@ export default function ContactUs() {
               padding: 1,
             }}
           >
-            <Telegram
-              color="warning"
-              sx={{  paddingRight: 2 }}
-            />
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography fontSize={15}>Telegram</Typography>
-              
-            </Box>
-            
-          </Box>
-            </Link>
-         
-            <Divider light />
-          <Link href="https://www.viber.com/"  sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              padding: 1,
-            }}>
-          <Box
-            sx={{
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "flex-start",
                 padding: 1,
               }}
+            >
+              <Telegram color="warning" sx={{ paddingRight: 2 }} />
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography fontSize={15}>Telegram</Typography>
+              </Box>
+            </Box>
+          </Link>
+
+          <Divider light />
+          <Link
+            href="https://www.viber.com/"
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              padding: 1,
+            }}
           >
-            
-              <img src="https://cdn-icons-png.flaticon.com/512/3938/3938039.png" alt="" style={{width: 25, height: 25, padding: 1, paddingRight: 17 }}/>
-              
-            
             <Box
               sx={{
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                padding: 1,
               }}
             >
-              <Typography fontSize={15}>Viber</Typography>
-              
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/3938/3938039.png"
+                alt=""
+                style={{ width: 25, height: 25, padding: 1, paddingRight: 17 }}
+              />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography fontSize={15}>Viber</Typography>
+              </Box>
             </Box>
-            
-          </Box>
           </Link>
           <Divider light />
-          <Link href="https://support.google.com/mail/answer/56256?hl=en"  sx={{
+          <Link
+            href="https://support.google.com/mail/answer/56256?hl=en"
+            sx={{
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "flex-start",
               padding: 1,
-            }}>
-          <Box
-            sx={{
+            }}
+          >
+            <Box
+              sx={{
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "flex-start",
                 padding: 1,
               }}
-          >
-            
-            <EmailIcon sx={{  paddingRight: 2 }} />
-              
-            
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
             >
-              <Typography fontSize={15}>Email: gmailacc@gmail.com</Typography>
-              
+              <EmailIcon sx={{ paddingRight: 2 }} />
+
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography fontSize={15}>Email: gmailacc@gmail.com</Typography>
+              </Box>
             </Box>
-            
-          </Box>
           </Link>
         </Box>
       </Menu>

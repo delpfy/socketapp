@@ -6,15 +6,17 @@ import {
   Box,
   CircularProgress,
   IconButton,
+  Link,
   Typography,
+  makeStyles,
 } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 
 import LockPersonRoundedIcon from "@mui/icons-material/LockPersonRounded";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ScaleIcon from '@mui/icons-material/Scale';
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import ScaleIcon from "@mui/icons-material/Scale";
 import InfoDialog from "../../dialogs/InfoDialog";
 import ErrorDialog from "../../dialogs/ErrorDialog";
 import LoginDialog from "../../dialogs/LoginDialog";
@@ -24,14 +26,20 @@ import { useNavigate } from "react-router-dom";
 import { checkItemById } from "../../../redux/home/asyncActions";
 import { actualizeBasket } from "../../../utils/actuilizeBasket";
 import { synchronizeBasket } from "../../../redux/basket/basketSlice";
-import { synchronizeComparison, synchronizeFavorites } from "../../../redux/home/homeSlice";
+import {
+  synchronizeComparison,
+  synchronizeFavorites,
+} from "../../../redux/home/homeSlice";
 import FavoritesDialog from "../../dialogs/FavoritesDialog";
 import ComparisonDialog from "../../dialogs/ComparisonDialog";
+import "./iconsStyles.css";
 
 export const ActionIcons = () => {
   const { user, user_status } = useAppSelector((state) => state.user);
   const { items } = useAppSelector((state) => state.basket);
-  const { itemsComparison, itemsFavorites  } = useAppSelector((state) => state.home);
+  const { itemsComparison, itemsFavorites } = useAppSelector(
+    (state) => state.home
+  );
   const [basketLoading, setBasketLoading] = useState(false);
   const [comparisonLoading, setComparisonLoading] = useState(false);
   const [favoritesLoading, setFavoritesLoading] = useState(false);
@@ -74,7 +82,6 @@ export const ActionIcons = () => {
     setOpenFavorites(false);
     setFavoritesSelected(false);
   }
-
 
   function ComparisonDialog_open() {
     RegisterDialog_close();
@@ -127,9 +134,11 @@ export const ActionIcons = () => {
   const Locker = () => {
     if (user.authorized === true) {
       return user.avatar === undefined ? (
-        <Typography sx={{ color: "#fff" }} fontFamily={"Comfortaa"}>
-          {user.name}
-        </Typography>
+        <img
+          src={require("../../../img/userIcon.png")}
+          style={{ width: 30, height: 30 }}
+          alt="sdf"
+        />
       ) : (
         <Avatar
           alt="user_avatar"
@@ -156,133 +165,156 @@ export const ActionIcons = () => {
     <>
       <Box
         display={"flex"}
-        justifyContent={"space-between"}
+        justifyContent={"flex-start"}
         alignItems={"center"}
-        maxWidth={250}
+        maxWidth={500}
       >
         <Box
           display={"flex"}
           justifyContent={"space-between"}
           alignItems={"center"}
-          maxWidth={170}
-          minWidth={170}
+          paddingRight={8}
+          maxWidth={210}
+          minWidth={210}
         >
-
-<>
-              <IconButton
-                onClick={() => {
-                  setComparisonLoading(true);
-                  const newComparison= JSON.parse(
-                    localStorage.getItem("comparisonItems") || "{}"
-                  );
-                  const promises = newComparison.map(
-                    async (item: any, index: number) => {
-                      const resultItem = await dispatch(
-                        checkItemById(item._id)
-                      );
-                      if (resultItem.meta.requestStatus === "fulfilled") {
-                        actualizeBasket(newComparison, resultItem.payload);
-                      }
-                      if (resultItem.meta.requestStatus === "rejected") {
-                        newComparison.splice(index, 1);
-                      }
+          <>
+            <IconButton
+              onClick={() => {
+                setComparisonLoading(true);
+                const newComparison = JSON.parse(
+                  localStorage.getItem("comparisonItems") || "{}"
+                );
+                const promises = newComparison.map(
+                  async (item: any, index: number) => {
+                    const resultItem = await dispatch(checkItemById(item._id));
+                    if (resultItem.meta.requestStatus === "fulfilled") {
+                      actualizeBasket(newComparison, resultItem.payload);
                     }
-                  );
+                    if (resultItem.meta.requestStatus === "rejected") {
+                      newComparison.splice(index, 1);
+                    }
+                  }
+                );
 
-                  Promise.all(promises).then(() => {
-                    localStorage.setItem(
-                      "comparisonItems",
-                      JSON.stringify(newComparison)
-                    );
-                    dispatch(synchronizeComparison());
-                    setComparisonLoading(false);
-                    ComparisonDialog_open();
-                  });
-                }}
-              >
-                {itemsComparison.length === 0 ? (
-                  <Badge badgeContent={"пусто"} color="warning">
-                    <ScaleIcon
-                      color={comparisonSelected ? "info" : "warning"}
-                      sx={{
-                        width: 30,
-                        height: 30,
-                      }}
-                    />
-                  </Badge>
-                ) : comparisonLoading ? (
-                  <CircularProgress size={20} />
-                ) : (
-                  <Badge badgeContent={itemsComparison.length} color="warning">
-                    <ScaleIcon
-                      color={comparisonSelected ? "info" : "warning"}
-                      sx={{
-                        width: 30,
-                        height: 30,
-                      }}
-                    />
-                  </Badge>
-                )}
-              </IconButton>
-            </>
+                Promise.all(promises).then(() => {
+                  localStorage.setItem(
+                    "comparisonItems",
+                    JSON.stringify(newComparison)
+                  );
+                  dispatch(synchronizeComparison());
+                  setComparisonLoading(false);
+                  ComparisonDialog_open();
+                });
+              }}
+            >
+              {itemsComparison.length === 0 ? (
+                <Badge
+                  badgeContent={"пусто"}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  classes={{ badge: "transparent-badge" }}
+                >
+                  <ScaleIcon
+                    color={comparisonSelected ? "info" : "warning"}
+                    sx={{
+                      width: 30,
+                      height: 30,
+                    }}
+                  />
+                </Badge>
+              ) : comparisonLoading ? (
+                <CircularProgress size={20} />
+              ) : (
+                <Badge
+                  badgeContent={itemsComparison.length}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  classes={{ badge: "transparent-badge" }}
+                >
+                  <ScaleIcon
+                    color={comparisonSelected ? "info" : "warning"}
+                    sx={{
+                      width: 30,
+                      height: 30,
+                    }}
+                  />
+                </Badge>
+              )}
+            </IconButton>
+          </>
 
           <>
-              <IconButton
-                onClick={() => {
-                  setFavoritesLoading(true);
-                  const newFavorites = JSON.parse(
-                    localStorage.getItem("favoriteItems") || "{}"
-                  );
-                  const promises = newFavorites.map(
-                    async (item: any, index: number) => {
-                      const resultItem = await dispatch(
-                        checkItemById(item._id)
-                      );
-                      if (resultItem.meta.requestStatus === "fulfilled") {
-                        actualizeBasket(newFavorites, resultItem.payload);
-                      }
-                      if (resultItem.meta.requestStatus === "rejected") {
-                        newFavorites.splice(index, 1);
-                      }
+            <IconButton
+              onClick={() => {
+                setFavoritesLoading(true);
+                const newFavorites = JSON.parse(
+                  localStorage.getItem("favoriteItems") || "{}"
+                );
+                const promises = newFavorites.map(
+                  async (item: any, index: number) => {
+                    const resultItem = await dispatch(checkItemById(item._id));
+                    if (resultItem.meta.requestStatus === "fulfilled") {
+                      actualizeBasket(newFavorites, resultItem.payload);
                     }
-                  );
+                    if (resultItem.meta.requestStatus === "rejected") {
+                      newFavorites.splice(index, 1);
+                    }
+                  }
+                );
 
-                  Promise.all(promises).then(() => {
-                    localStorage.setItem(
-                      "favoriteItems",
-                      JSON.stringify(newFavorites)
-                    );
-                    dispatch(synchronizeFavorites());
-                    setFavoritesLoading(false);
-                    FavoritesDialog_open();
-                  });
-                }}
-              >
-                {itemsFavorites.length === 0 ? (
-                  <Badge badgeContent={"пусто"} color="warning">
-                    <FavoriteBorderIcon
+                Promise.all(promises).then(() => {
+                  localStorage.setItem(
+                    "favoriteItems",
+                    JSON.stringify(newFavorites)
+                  );
+                  dispatch(synchronizeFavorites());
+                  setFavoritesLoading(false);
+                  FavoritesDialog_open();
+                });
+              }}
+            >
+              {itemsFavorites.length === 0 ? (
+                <Badge
+                  badgeContent={"пусто"}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  classes={{ badge: "transparent-badge" }}
+                >
+                  <img
+                    src={require("../../../img/favoritesIcon.png")}
+                    style={{ width: 27, height: 25 }}
+                    alt="sdf"
+                  />
+                  {/* <FavoriteBorderIcon
                       color={favoritesSelected ? "info" : "warning"}
                       sx={{
                         width: 30,
                         height: 30,
                       }}
-                    />
-                  </Badge>
-                ) : favoritesLoading ? (
-                  <CircularProgress size={20} />
-                ) : (
-                  <Badge badgeContent={itemsFavorites.length} color="warning">
-                    <FavoriteBorderIcon
+                    /> */}
+                </Badge>
+              ) : favoritesLoading ? (
+                <CircularProgress size={20} />
+              ) : (
+                <Badge
+                  sx={{ fontSize: 23 }}
+                  badgeContent={itemsFavorites.length}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  classes={{ badge: "transparent-badge" }}
+                >
+                  <img
+                    src={require("../../../img/favoritesIcon.png")}
+                    style={{ width: 27, height: 25 }}
+                    alt="sdf"
+                  />
+                  {/* <FavoriteBorderIcon
                       color={favoritesSelected ? "info" : "warning"}
                       sx={{
                         width: 30,
                         height: 30,
                       }}
-                    />
-                  </Badge>
-                )}
-              </IconButton>
-            </>
+                    /> */}
+                </Badge>
+              )}
+            </IconButton>
+          </>
 
           {window.location.pathname.includes("/order") ? (
             <></>
@@ -320,36 +352,104 @@ export const ActionIcons = () => {
                 }}
               >
                 {items.length === 0 ? (
-                  <Badge badgeContent={"пусто"} color="warning">
-                    <ShoppingCartIcon
+                  <Badge
+                    badgeContent={"пусто"}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    classes={{ badge: "transparent-badge" }}
+                  >
+                    <img
+                      src={require("../../../img/cartIcon.png")}
+                      style={{ width: 27, height: 25 }}
+                      alt="sdf"
+                    />
+
+                    {/* <ShoppingCartIcon
                       color={cartSelected ? "info" : "warning"}
                       sx={{
                         width: 30,
                         height: 30,
                       }}
-                    />
+                    /> */}
                   </Badge>
                 ) : basketLoading ? (
                   <CircularProgress size={20} />
                 ) : (
-                  <Badge badgeContent={items.length} color="warning">
-                    <ShoppingCartIcon
+                  <Badge
+                    sx={{ fontFamily: "Ubuntu" }}
+                    badgeContent={items.length}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    classes={{ badge: "transparent-badge" }}
+                  >
+                    <img
+                      src={require("../../../img/cartIcon.png")}
+                      style={{ width: 27, height: 25 }}
+                      alt="sdf"
+                    />
+
+                    {/* <ShoppingCartIcon
                       color={cartSelected ? "info" : "warning"}
                       sx={{
                         width: 30,
                         height: 30,
                       }}
-                    />
+                    /> */}
                   </Badge>
                 )}
               </IconButton>
             </>
           )}
+          <Box>
+            <IconButton onClick={LoginDialog_open}>
+              <Locker />
+            </IconButton>
+          </Box>
         </Box>
-        <Box>
-          <IconButton onClick={LoginDialog_open}>
-            <Locker />
+        <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          alignItems={"flex-end"}
+          paddingRight={5}
+          maxWidth={190}
+          minWidth={190}
+        >
+          <Link href="https://www.facebook.com/">
+            <IconButton>
+              <img
+                src={require("../../../img/facebookIcon.png")}
+                style={{ width: 15, height: 28 }}
+                alt="sdf"
+              />
+            </IconButton>
+          </Link>
+          <Link href="https://twitter.com/">
+          <IconButton>
+            <img
+              src={require("../../../img/twitterIcon.png")}
+              style={{ width: 30, height: 25 }}
+              alt="sdf"
+            />
           </IconButton>
+          </Link>
+          
+          <Link href="https://www.linkedin.com">
+          <IconButton>
+            <img
+              src={require("../../../img/inIcon.png")}
+              style={{ width: 27, height: 25 }}
+              alt="sdf"
+            />
+          </IconButton>
+          </Link>
+          
+          <Link href="https://www.instagram.com/">
+            <IconButton>
+              <img
+                src={require("../../../img/instaIcon.png")}
+                style={{ width: 27, height: 25 }}
+                alt="sdf"
+              />
+            </IconButton>
+          </Link>
         </Box>
       </Box>
 
@@ -395,13 +495,11 @@ export const ActionIcons = () => {
       <FavoritesDialog
         openFavorites={openFavorites}
         FavoritesDialog_close={FavoritesDialog_close}
-        
       />
 
-<ComparisonDialog
+      <ComparisonDialog
         openComparison={openComparison}
-        ComparisonDialog_close ={ComparisonDialog_close}
-        
+        ComparisonDialog_close={ComparisonDialog_close}
       />
     </>
   );

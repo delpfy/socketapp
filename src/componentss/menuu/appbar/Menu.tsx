@@ -113,7 +113,7 @@ export default function AppBarMenu() {
         width={"100%"}
         position={"fixed"}
         zIndex={2}
-        sx={{ backgroundColor: "#0c061a", backgroundAttachment: "fixed" }}
+        sx={{ backgroundColor: "black", backgroundAttachment: "fixed" }}
       >
         <Box
           width={"95%"}
@@ -150,7 +150,7 @@ export default function AppBarMenu() {
             </Box>
           </Box>
           <Search />
-          <ContactUs/>
+          {/* <ContactUs/> */}
           <Box>
             <Basket />
           </Box>
