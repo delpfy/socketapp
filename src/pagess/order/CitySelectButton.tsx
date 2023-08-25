@@ -136,6 +136,7 @@ export default function CitySelectionButton() {
 
           <Box>
             <Autocomplete
+            placeholder="Пошук..."
               options={options === undefined ? [] : options}
               inputValue={selectedLocality}
               onInputChange={handleSearchChange}
@@ -149,7 +150,7 @@ export default function CitySelectionButton() {
                   dispatch(STAGES_city(true));
                 }
               }}
-              renderInput={(params) => <TextField {...params} required />}
+              renderInput={(params) => <TextField {...params} label="Оберіть місто"/>}
               style={{ marginBottom: 16 }}
               getOptionLabel={(option) => option.display_name || ""}
               fullWidth

@@ -42,9 +42,10 @@ export default function Search() {
     <>
       <Box sx={{ width: 500 }}>
         <Autocomplete
-          color="success"
+        
+          
           size="small"
-          sx={{ marginTop: 3, background: "white" }}
+          sx={{ marginTop: 3, backgroundColor: "white", borderRadius: 2}}
           options={searchResults === undefined ? [] : searchResults}
           inputValue={searchQuery}
           onInputChange={handleSearchChange}
@@ -63,9 +64,9 @@ export default function Search() {
             }
           }}
           renderInput={(params) => (
-            <TextField {...params} color="success" required />
+            <TextField {...params} sx={{color: "white"}}   label="Пошук..."/>
           )}
-          style={{ marginBottom: 16 }}
+          style={{ marginBottom: 16 , fontFamily: 'Roboto', color: "white"}}
           getOptionLabel={(option) => option.name || ""}
           fullWidth
           noOptionsText={"(·_·)"}
