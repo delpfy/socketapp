@@ -215,7 +215,7 @@ export const ActionIcons = () => {
                 >
                   <img
                 src={require("../../../img/comparisonIcon.png")}
-                style={{ width: 15, height: 28 }}
+                style={{ width: 50, height: 25 }}
                 alt="sdf"
               />
                   
