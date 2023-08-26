@@ -34,8 +34,42 @@ export default function Search() {
 
   const searchDelayed = useMemo(() => debounce(loadLocations, 300), []);
 
-  function setAsRecentlyReviewed() {
-    throw new Error("Function not implemented.");
+  function compareObjects(obj1: any, obj2: any) {
+    for (const key in obj1) {
+      if (obj1.hasOwnProperty(key)) {
+        if (obj1[key] !== obj2[key]) {
+          obj2[key] = obj1[key];
+        }
+      }
+    }
+
+    for (const key in obj2) {
+      if (obj2.hasOwnProperty(key) && !obj1.hasOwnProperty(key)) {
+        delete obj2[key];
+      }
+    }
+  }
+
+  function setAsRecentlyReviewed(currItem: any) {
+    const recentlyReviewed = JSON.parse(
+      localStorage.getItem("recentlyReviewed") || "{}"
+    );
+
+    if (recentlyReviewed !== undefined) {
+      const itemIndex = recentlyReviewed.findIndex(
+        (item: Items) => item.name === currItem.name
+      );
+
+      if (itemIndex === -1) {
+        recentlyReviewed.push(currItem);
+      } else {
+        compareObjects(currItem, recentlyReviewed[itemIndex]);
+      }
+      localStorage.setItem(
+        "recentlyReviewed",
+        JSON.stringify(recentlyReviewed)
+      );
+    }
   }
 
   return (
@@ -55,8 +89,9 @@ export default function Search() {
                 if (result.meta.requestStatus === "fulfilled") {
                   dispatch(getItemReviews(value._id)).then((result: any) => {
                     if (result.meta.requestStatus === "fulfilled") {
+                      setAsRecentlyReviewed(value);
                       navigate("/catalog/item");
-                      setAsRecentlyReviewed();
+                      
                     }
                   });
                 }
