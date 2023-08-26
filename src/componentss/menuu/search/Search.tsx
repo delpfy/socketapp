@@ -1,4 +1,10 @@
-import { Autocomplete, Box, TextField, debounce } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  InputAdornment,
+  TextField,
+  debounce,
+} from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import { Items } from "../../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
@@ -29,8 +35,6 @@ export default function Search() {
   function loadLocations(newInputValue: any) {
     dispatch(searchItems(newInputValue.toString()));
   }
-
-  
 
   const searchDelayed = useMemo(() => debounce(loadLocations, 300), []);
 
@@ -74,12 +78,11 @@ export default function Search() {
 
   return (
     <>
-      <Box sx={{ width: 500 }}>
+      <Box sx={{ width: "45%" }} paddingRight={7}>
         <Autocomplete
-        
-          
           size="small"
-          sx={{ marginTop: 3, backgroundColor: "white", borderRadius: 2}}
+          
+          sx={{ marginTop: 3, backgroundColor: "white", borderRadius: 2,  fontFamily: "'Roboto light', sans-serif!important",}}
           options={searchResults === undefined ? [] : searchResults}
           inputValue={searchQuery}
           onInputChange={handleSearchChange}
@@ -91,7 +94,6 @@ export default function Search() {
                     if (result.meta.requestStatus === "fulfilled") {
                       setAsRecentlyReviewed(value);
                       navigate("/catalog/item");
-                      
                     }
                   });
                 }
@@ -99,9 +101,32 @@ export default function Search() {
             }
           }}
           renderInput={(params) => (
-            <TextField {...params} sx={{color: "white"}}   label="Пошук..."/>
+            <TextField
+              {...params}
+              
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <img
+                      src={require("../../../img/searchIcon.png")}
+                      style={{ width: 23, height: 23, paddingLeft: 5 }}
+                      alt="sdf"
+                    />
+                  </InputAdornment>
+                ),
+              }}
+              size="small"
+              variant="outlined"
+              placeholder="Пошук..."
+            />
           )}
-          style={{ marginBottom: 16 , fontFamily: 'Roboto', color: "white"}}
+          
+          style={{
+            marginBottom: 16,
+            fontFamily: "'Roboto light', sans-serif !important",
+            color: "white",
+          }}
           getOptionLabel={(option) => option.name || ""}
           fullWidth
           noOptionsText={"(·_·)"}

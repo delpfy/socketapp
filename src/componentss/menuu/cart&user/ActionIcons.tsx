@@ -167,15 +167,15 @@ export const ActionIcons = () => {
         display={"flex"}
         justifyContent={"flex-start"}
         alignItems={"center"}
-        maxWidth={500}
+        maxWidth={520}
       >
         <Box
           display={"flex"}
           justifyContent={"space-between"}
           alignItems={"center"}
           paddingRight={8}
-          maxWidth={210}
-          minWidth={210}
+          maxWidth={230}
+          minWidth={230}
         >
           <>
             <IconButton
@@ -213,13 +213,12 @@ export const ActionIcons = () => {
                   anchorOrigin={{ vertical: "top", horizontal: "right" }}
                   classes={{ badge: "transparent-badge" }}
                 >
-                  <ScaleIcon
-                    color={comparisonSelected ? "info" : "warning"}
-                    sx={{
-                      width: 30,
-                      height: 30,
-                    }}
-                  />
+                  <img
+                src={require("../../../img/comparisonIcon.png")}
+                style={{ width: 15, height: 28 }}
+                alt="sdf"
+              />
+                  
                 </Badge>
               ) : comparisonLoading ? (
                 <CircularProgress size={20} />
@@ -229,13 +228,11 @@ export const ActionIcons = () => {
                   anchorOrigin={{ vertical: "top", horizontal: "right" }}
                   classes={{ badge: "transparent-badge" }}
                 >
-                  <ScaleIcon
-                    color={comparisonSelected ? "info" : "warning"}
-                    sx={{
-                      width: 30,
-                      height: 30,
-                    }}
-                  />
+                   <img
+                src={require("../../../img/comparisonIcon.png")}
+                style={{ width: 50, height: 25 }}
+                alt="sdf"
+              />
                 </Badge>
               )}
             </IconButton>
@@ -375,7 +372,7 @@ export const ActionIcons = () => {
                   <CircularProgress size={20} />
                 ) : (
                   <Badge
-                    sx={{ fontFamily: "Ubuntu" }}
+                    sx={{ fontFamily: "'Roboto light', sans-serif" }}
                     badgeContent={items.length}
                     anchorOrigin={{ vertical: "top", horizontal: "right" }}
                     classes={{ badge: "transparent-badge" }}
@@ -413,6 +410,8 @@ export const ActionIcons = () => {
           minWidth={190}
         >
           <Link href="https://www.facebook.com/">
+          
+          
             <IconButton>
               <img
                 src={require("../../../img/facebookIcon.png")}

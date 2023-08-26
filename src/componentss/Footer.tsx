@@ -1,53 +1,122 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Box, IconButton, Link, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { Telegram, Instagram, YouTube, Facebook} from "@mui/icons-material";
+import { Telegram, Instagram, YouTube, Facebook } from "@mui/icons-material";
+import LogoFooter from "./menuu/logotype/LogoFooter";
 
 export default function Footer() {
   const navigate = useNavigate();
   return (
     <Box
       sx={{
-        backgroundColor: "#0c061a",
+        backgroundColor: "black",
       }}
     >
       <Box
         width="100%"
-        
         sx={{
           display: "flex",
-          
+          paddingTop: 7,
           justifyContent: "flex-start",
         }}
       >
         <Box
           sx={{
             display: "flex",
-            width: "30%",
+            height: '100%',
+            width: "21%",
+            
             flexDirection: "column",
-            alignItems: "center",
-            paddingTop: 10,
-            justifyContent: "flex-start",
+            alignItems: "flex-start",
+            
+            paddingLeft: "15%",
+            justifyContent: "space-between",
           }}
         >
-          <Typography fontFamily={"Comfortaa"} fontSize={30} color="white">
-            Сокет
-          </Typography>
-          <Typography fontFamily={"Comfortaa"} color="white">
-            Created by
-            <Link href="https://github.com/delpfy"> &copy;Delpfy</Link>
+          <LogoFooter />
+          <Box paddingTop={2}>
+            <Typography fontFamily={"Comfortaa"}  fontSize={18} color="white">
+              Консультація
+            </Typography>
+
+            <Typography fontFamily={"Comfortaa"} fontSize={13} color="white">
+              0-800-707-400
+            </Typography>
+          </Box>
+
+          <Box paddingTop={1}>
+            <Typography fontFamily={"Comfortaa"} fontSize={19} color="white">
+              Контакти
+            </Typography>
+
+            <Typography fontFamily={"Comfortaa"} fontSize={13} color="white">
+              info@socket.store.ua
+            </Typography>
+          </Box>
+          <Box
+          display={"flex"}
+          justifyContent={"space-between"}
+          alignItems={"flex-end"}
+          paddingTop={1}
+          maxWidth={150}
+          minWidth={150}
+        >
+          <Link  href="https://www.facebook.com/">
+          
+          
+            <IconButton sx= {{paddingLeft: 0}}>
+              <img
+                src={require("../img/facebookIcon.png")}
+                style={{ width: 8, height: 18 }}
+                alt="sdf"
+              />
+            </IconButton>
+          </Link>
+          <Link href="https://twitter.com/">
+          <IconButton sx= {{paddingLeft: 0}}>
+            <img
+              src={require("../img/twitterIcon.png")}
+              style={{ width: 23, height: 18 }}
+              alt="sdf"
+            />
+          </IconButton>
+          </Link>
+          
+          <Link href="https://www.linkedin.com">
+          <IconButton sx= {{paddingLeft: 0}}>
+            <img
+              src={require("../img/inIcon.png")}
+              style={{ width: 20, height: 18 }}
+              alt="sdf"
+            />
+          </IconButton>
+          </Link>
+          
+          <Link href="https://www.instagram.com/">
+            <IconButton sx= {{paddingLeft: 0}}>
+              <img
+                src={require("../img/instaIcon.png")}
+                style={{ width: 20, height: 18 }}
+                alt="sdf"
+              />
+            </IconButton>
+          </Link>
+        </Box>
+
+          <Typography fontFamily={"Comfortaa"} marginTop={"21%"} marginBottom={"6%"} color="white">
+          &copy; 2023 Socket.store
+            
           </Typography>
         </Box>
 
         <Box
           width="40%"
-          height={400}
+          
           sx={{
+            paddingTop: 4,
             display: "flex",
-            
-            alignItems: "center",
-            paddingTop: 9,
+            alignItems: "flex-start",
             flexDirection: "column",
-            justifyContent: "space-evenly",
+            justifyContent: "space-between",
           }}
         >
           <Box
@@ -55,9 +124,9 @@ export default function Footer() {
               display: "flex",
               alignItems: "center",
               flexDirection: "row",
-              alignSelf: 'flex-start',
+              alignSelf: "flex-start",
               width: "60%",
-              height: 300,
+              height: "40%",
               justifyContent: "space-between",
             }}
           >
@@ -66,8 +135,8 @@ export default function Footer() {
                 display: "flex",
                 height: "100%",
                 flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "space-around",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
               }}
             >
               <Typography fontFamily={"Comfortaa"} fontSize={20} color="white">
@@ -77,8 +146,6 @@ export default function Footer() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-
-                  height: 170,
                   justifyContent: "space-between",
                 }}
               >
@@ -95,6 +162,32 @@ export default function Footer() {
                 >
                   О компанії
                 </Typography>
+                <Typography
+                  sx={{
+                    color: "rgba(255,255,255,.5)",
+                    cursor: "pointer",
+                    "&:hover": { color: "#fff" },
+                    transition: "color .2s ease",
+                  }}
+                  fontFamily={"Comfortaa"}
+                  color="white"
+                  onClick={() => navigate("/posts")}
+                >
+                  Статті
+                </Typography>
+<Typography
+                  sx={{
+                    color: "rgba(255,255,255,.5)",
+                    cursor: "pointer",
+                    "&:hover": { color: "#fff" },
+                    transition: "color .2s ease",
+                  }}
+                  fontFamily={"Comfortaa"}
+                  color="white"
+                  onClick={() => navigate("/contact")}
+                >
+                  Контакти
+                </Typography>
               </Box>
             </Box>
 
@@ -103,8 +196,8 @@ export default function Footer() {
                 display: "flex",
                 height: "100%",
                 flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "space-around",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
               }}
             >
               <Typography fontFamily={"Comfortaa"} fontSize={20} color="white">
@@ -114,7 +207,7 @@ export default function Footer() {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  height: 170,
+                  
                   justifyContent: "space-between",
                 }}
               >
@@ -144,32 +237,8 @@ export default function Footer() {
                 >
                   Доставка
                 </Typography>
-                <Typography
-                  sx={{
-                    color: "rgba(255,255,255,.5)",
-                    cursor: "pointer",
-                    "&:hover": { color: "#fff" },
-                    transition: "color .2s ease",
-                  }}
-                  fontFamily={"Comfortaa"}
-                  color="white"
-                  onClick={() => navigate("/posts")}
-                >
-                  Статті
-                </Typography>
-                <Typography
-                  sx={{
-                    color: "rgba(255,255,255,.5)",
-                    cursor: "pointer",
-                    "&:hover": { color: "#fff" },
-                    transition: "color .2s ease",
-                  }}
-                  fontFamily={"Comfortaa"}
-                  color="white"
-                  onClick={() => navigate("/contact")}
-                >
-                  Контакти
-                </Typography>
+                
+                
                 <Typography
                   sx={{
                     color: "rgba(255,255,255,.5)",
@@ -184,51 +253,6 @@ export default function Footer() {
                   Гарантії
                 </Typography>
               </Box>
-            </Box>
-          </Box>
-
-          <Box
-            height={150}
-            width={"100%"}
-            sx={{
-              display: "flex",
-              alignSelf: 'flex-start',
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography
-              sx={{
-                color: "#fff"
-              }}
-              fontFamily={"Comfortaa"}
-            >
-              Ми в соцмережах: 
-            </Typography>
-            <Box sx={{
-              display: "flex",
-              width: "70%",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}>
-              <Link href="https://web.telegram.org/">
-              <Telegram color="info" sx= {{paddingRight: 2}}/>
-              </Link>
-              <Link href="https://www.instagram.com/">
-              <Instagram color="info" sx= {{paddingRight: 2}}/>
-              </Link>
-              <Link href="https://www.youtube.com/">
-              <YouTube color="info" sx= {{paddingRight: 2}}/>
-              </Link>
-              <Link href="https://www.facebook.com/">
-              <Facebook color="info" sx= {{paddingRight: 2}}/>
-              </Link>
-              <Link href="https://www.viber.com/">
-              <img src="https://cdn-icons-png.flaticon.com/512/3938/3938039.png" alt="" style={{width: 25, height: 25}}/>
-              </Link>
-             
             </Box>
           </Box>
         </Box>

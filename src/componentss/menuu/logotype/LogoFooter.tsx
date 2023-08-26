@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-export const Logo = () => {
+export const LogoFooter = () => {
   const navigate = useNavigate();
   return (
     <Box
@@ -19,8 +19,8 @@ export const Logo = () => {
     >
       <Typography
         variant={"h3"}
-        fontSize={30}
-        height={30}
+        fontSize={42}
+        height={42}
       
         /* paddingTop={1} */
         fontFamily={"'Roboto light', sans-serif"}
@@ -29,8 +29,8 @@ export const Logo = () => {
       </Typography>
       <Typography
         variant={"h3"}
-        fontSize={20}
-        height={20}
+        fontSize={32}
+        height={32}
         paddingBottom={3}
         fontFamily={"'Roboto light', sans-serif"}
       >
@@ -40,4 +40,4 @@ export const Logo = () => {
   );
 };
 
-export default Logo;
+export default LogoFooter;

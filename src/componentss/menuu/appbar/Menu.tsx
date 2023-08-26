@@ -125,20 +125,22 @@ export default function AppBarMenu() {
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+          <Box display={"flex"} width={'23%'} justifyContent={"space-evenly"} flexDirection={"row"} alignItems={"center"}>
             <IconButton
               size="large"
               edge="start"
-              color="inherit"
+              
               aria-label="menu"
               sx={{
                 mr: 2,
+                
               }}
               onClick={toggleDrawer("left", true)}
             >
               <MenuIcon
                 color="info"
                 sx={{
+                  color: 'white',
                   height: 35,
 
                   width: 35,
@@ -149,9 +151,10 @@ export default function AppBarMenu() {
               <Logo />
             </Box>
           </Box>
+          <Box display={"flex"}  width={'77%'} flexDirection={"row"} alignItems={"center"} justifyContent={'space-evenly'}>
           <Search />
           {/* <ContactUs/> */}
-          <Box>
+          
             <Basket />
           </Box>
         </Box>

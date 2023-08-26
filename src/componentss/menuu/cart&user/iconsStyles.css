@@ -1,7 +1,7 @@
 .transparent-badge {
-    background-color: black; 
-    margin-left: 15px;
-    color: white; 
-    
-    
-  }
+  font-size: 0.8rem !important;
+  background-color: black;
+  margin-left: 15px;
+  color: white;
+  font-family: "Roboto light", sans-serif !important;
+}
