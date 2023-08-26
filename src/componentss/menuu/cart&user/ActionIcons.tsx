@@ -207,20 +207,7 @@ export const ActionIcons = () => {
                 });
               }}
             >
-              {itemsComparison.length === 0 ? (
-                <Badge
-                  badgeContent={"пусто"}
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  classes={{ badge: "transparent-badge" }}
-                >
-                  <img
-                src={require("../../../img/comparisonIcon.png")}
-                style={{ width: 50, height: 25 }}
-                alt="sdf"
-              />
-                  
-                </Badge>
-              ) : comparisonLoading ? (
+              {comparisonLoading ? (
                 <CircularProgress size={20} />
               ) : (
                 <Badge
@@ -268,26 +255,7 @@ export const ActionIcons = () => {
                 });
               }}
             >
-              {itemsFavorites.length === 0 ? (
-                <Badge
-                  badgeContent={"пусто"}
-                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                  classes={{ badge: "transparent-badge" }}
-                >
-                  <img
-                    src={require("../../../img/favoritesIcon.png")}
-                    style={{ width: 27, height: 25 }}
-                    alt="sdf"
-                  />
-                  {/* <FavoriteBorderIcon
-                      color={favoritesSelected ? "info" : "warning"}
-                      sx={{
-                        width: 30,
-                        height: 30,
-                      }}
-                    /> */}
-                </Badge>
-              ) : favoritesLoading ? (
+              {favoritesLoading ? (
                 <CircularProgress size={20} />
               ) : (
                 <Badge
@@ -309,7 +277,7 @@ export const ActionIcons = () => {
                       }}
                     /> */}
                 </Badge>
-              )}
+                )}
             </IconButton>
           </>
 
@@ -348,50 +316,32 @@ export const ActionIcons = () => {
                   });
                 }}
               >
-                {items.length === 0 ? (
-                  <Badge
-                    badgeContent={"пусто"}
-                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                    classes={{ badge: "transparent-badge" }}
-                  >
-                    <img
-                      src={require("../../../img/cartIcon.png")}
-                      style={{ width: 27, height: 25 }}
-                      alt="sdf"
-                    />
-
-                    {/* <ShoppingCartIcon
-                      color={cartSelected ? "info" : "warning"}
-                      sx={{
-                        width: 30,
-                        height: 30,
-                      }}
-                    /> */}
-                  </Badge>
-                ) : basketLoading ? (
-                  <CircularProgress size={20} />
-                ) : (
-                  <Badge
-                    sx={{ fontFamily: "'Roboto light', sans-serif" }}
-                    badgeContent={items.length}
-                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                    classes={{ badge: "transparent-badge" }}
-                  >
-                    <img
-                      src={require("../../../img/cartIcon.png")}
-                      style={{ width: 27, height: 25 }}
-                      alt="sdf"
-                    />
-
-                    {/* <ShoppingCartIcon
-                      color={cartSelected ? "info" : "warning"}
-                      sx={{
-                        width: 30,
-                        height: 30,
-                      }}
-                    /> */}
-                  </Badge>
-                )}
+                {
+                  basketLoading ? (
+                    <CircularProgress size={20} />
+                  ) : (
+                    <Badge
+                      sx={{ fontFamily: "'Roboto light', sans-serif" }}
+                      badgeContent={items.length}
+                      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                      classes={{ badge: "transparent-badge" }}
+                    >
+                      <img
+                        src={require("../../../img/cartIcon.png")}
+                        style={{ width: 27, height: 25 }}
+                        alt="sdf"
+                      />
+  
+                      {/* <ShoppingCartIcon
+                        color={cartSelected ? "info" : "warning"}
+                        sx={{
+                          width: 30,
+                          height: 30,
+                        }}
+                      /> */}
+                    </Badge>
+                  )
+                 }
               </IconButton>
             </>
           )}
