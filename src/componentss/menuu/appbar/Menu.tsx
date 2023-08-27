@@ -19,7 +19,7 @@ import {
   ListItemText,
   SwipeableDrawer,
 } from "@mui/material";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import Search from "../search/Search";
 import SortBy from "../../sort/SortBy";
@@ -49,7 +49,6 @@ export default function AppBarMenu() {
     dispatch(checkAuthorization());
   }, []);
 
-
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
     (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -66,13 +65,11 @@ export default function AppBarMenu() {
     };
 
   const list = (anchor: Anchor) => (
-    <Box
-      width={250}
-      role="presentation"
-      
-    >
-      <List onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}>
+    <Box width={250} role="presentation">
+      <List
+        onClick={toggleDrawer(anchor, false)}
+        onKeyDown={toggleDrawer(anchor, false)}
+      >
         {CATEGORIES.map((category) => (
           <ListItem key={category.id} disablePadding>
             <ListItemButton onClick={() => handleCategoryChange(category)}>
@@ -83,15 +80,14 @@ export default function AppBarMenu() {
         ))}
       </List>
       <Divider />
-      <Box sx= {{width: '100%'}}>
-        {
-          window.location.pathname.includes("/catalog")  && !window.location.pathname.includes("/catalog/item") 
-          ?<SortBy/>
-          :
+      <Box sx={{ width: "100%" }}>
+        {window.location.pathname.includes("/catalog") &&
+        !window.location.pathname.includes("/catalog/item") ? (
+          <SortBy />
+        ) : (
           <></>
-        }
-          
-          </Box>
+        )}
+      </Box>
       <List></List>
     </Box>
   );
@@ -112,35 +108,40 @@ export default function AppBarMenu() {
       <Box
         width={"100%"}
         position={"fixed"}
+        margin={0}
         zIndex={2}
         sx={{ backgroundColor: "black", backgroundAttachment: "fixed" }}
       >
         <Box
           width={"95%"}
           height={"90%"}
-          margin={"auto"}
+          margin={"0"}
           justifySelf={"center"}
           display={"flex"}
           flexDirection={"row"}
           alignItems={"center"}
           justifyContent={"space-between"}
         >
-          <Box display={"flex"} width={'23%'} justifyContent={"space-evenly"} flexDirection={"row"} alignItems={"center"}>
+          <Box
+            display={"flex"}
+            width={"23%"}
+            justifyContent={"space-evenly"}
+            flexDirection={"row"}
+            alignItems={"center"}
+          >
             <IconButton
               size="large"
               edge="start"
-              
               aria-label="menu"
               sx={{
                 mr: 2,
-                
               }}
               onClick={toggleDrawer("left", true)}
             >
               <MenuIcon
                 color="info"
                 sx={{
-                  color: 'white',
+                  color: "white",
                   height: 35,
 
                   width: 35,
@@ -151,10 +152,16 @@ export default function AppBarMenu() {
               <Logo />
             </Box>
           </Box>
-          <Box display={"flex"}  width={'77%'} flexDirection={"row"} alignItems={"center"} justifyContent={'space-evenly'}>
-          <Search />
-          {/* <ContactUs/> */}
-          
+          <Box
+            display={"flex"}
+            width={"77%"}
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"space-evenly"}
+          >
+            <Search />
+            {/* <ContactUs/> */}
+
             <Basket />
           </Box>
         </Box>

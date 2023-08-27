@@ -10,6 +10,7 @@ import {
   synchronizeBasket,
 } from "../../redux/basket/basketSlice";
 import { setEditItemMode } from "../../redux/home/homeSlice";
+import Carousel from "react-material-ui-carousel";
 
 /* const MenuContent = () => {
   return (
@@ -76,81 +77,187 @@ export const Home = () => {
   return (
     <>
       <Box
-        width={"100%"}
-        height={"100vh"}
+        width={"75%"}
+        height={460}
         display={"flex"}
         flexDirection={"column"}
         alignItems={"center"}
         justifyContent={"center"}
+        margin={"0 auto"}
+        top={127}
+        padding={"2%"}
+        alignSelf={"center"}
+       
         sx={{
-          background:
-            "linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7) ), url(https://static.tildacdn.com/tild3736-3037-4334-b863-353562353039/d946dbce69a24e0288d5.jpg)",
+          background: " black",
           backgroundAttachment: "fixed",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
         }}
       >
-        <Box
-          height={"52%"}
+        <Carousel
+        navButtonsAlwaysVisible
+        navButtonsProps={{          
+          style: {
+              backgroundColor: 'black',
+              borderRadius: 0
+          }
+      }}
+          NextIcon={
+            <img
+              style={{ width: 40, height: 40 }}
+              src={require("../../img/swipeRightIcon.png")}
+            />
+          }
+          PrevIcon={
+            <img
+              style={{ width: 40, height: 40 }}
+              src={require("../../img/swipeLeftIcon.png")}
+            />
+          }
           sx={{
             color: "#fff",
             width: {
-              xs: "95%",
-              lg: "70%",
+              xs: "100%",
+              lg: "100%",
             },
             display: "flex",
             alignItems: "center",
-            textAlign: "center",
+            textAlign: "left",
             justifyContent: "space-around",
             flexDirection: "column",
-            padding: "20px",
+            margin: "0 auto",
             boxSizing: "border-box",
           }}
         >
-          <Typography
-            variant={"h3"}
-            fontSize={23}
-            height={23}
-            fontFamily={"Comfortaa"}
-          >
-            Інтернет магазин сучасної техніки
-          </Typography>
-
           <Box
-            height={"50%"}
-            display={"flex"}
-            flexDirection={"column"}
-            justifyContent={"space-around"}
+            height={"90%"}
+            sx={{
+              color: "#fff",
+              width: {
+                xs: "80%",
+                lg: "80%",
+              },
+              display: "flex",
+              alignItems: "center",
+              textAlign: "left",
+              justifyContent: "space-around",
+              flexDirection: "column",
+              margin: "0 auto",
+              boxSizing: "border-box",
+            }}
           >
-            <Typography
-              variant={"h3"}
-              fontSize={57}
-              height={57}
-              fontFamily={"Comfortaa"}
+            <Box
+              display={"flex"}
+              height={460}
+              width={"100%"}
+              flexDirection={"row"}
+              justifyContent={"space-around"}
+              alignItems={"flex-start"}
             >
-              Сокет
-            </Typography>
-            <Typography
-              variant={"h3"}
-              fontSize={23}
-              height={23}
-              fontFamily={"Comfortaa"}
-            >
-              Технічний вишитий покров відкриє тобі дива, у нашому
-              інтернет-магазині знайдеш усе для сучасного світу технологій.
-            </Typography>
+              <Box
+                height={"46%"}
+                display={"flex"}
+                alignItems={"flex-start"}
+                flexDirection={"column"}
+                justifyContent={"space-around"}
+              >
+                <Typography
+                  variant={"h3"}
+                  fontSize={36}
+                  height={35}
+                  fontFamily={"Comfortaa"}
+                >
+                  Отримай кешбек <br /> 1% вартості товару
+                </Typography>
+                <Typography
+                  variant={"h3"}
+                  fontSize={16}
+                  height={18}
+                  fontFamily={"Comfortaa"}
+                >
+                  кешбек 1% при оплаті карткою Приват24
+                </Typography>
+              </Box>
+              <Box>
+                <img
+                  src={require("../../img/socketHandImage.png")}
+                  style={{ width: 460, height: 460 }}
+                  alt="sdf"
+                />
+              </Box>
+            </Box>
           </Box>
-        </Box>
-        <Box marginTop={10} onClick={() => executeScroll()}>
+          <Box
+            height={"90%"}
+            sx={{
+              color: "#fff",
+              width: {
+                xs: "80%",
+                lg: "80%",
+              },
+              display: "flex",
+              alignItems: "center",
+              textAlign: "left",
+              justifyContent: "space-around",
+              flexDirection: "column",
+              margin: "0 auto",
+              boxSizing: "border-box",
+            }}
+          >
+            <Box
+              display={"flex"}
+              height={460}
+              width={"100%"}
+              flexDirection={"row"}
+              justifyContent={"space-around"}
+              alignItems={"flex-start"}
+            >
+              <Box
+                height={"46%"}
+                display={"flex"}
+                alignItems={"flex-start"}
+                flexDirection={"column"}
+                justifyContent={"space-around"}
+              >
+                <Typography
+                  variant={"h3"}
+                  fontSize={36}
+                  height={35}
+                  fontFamily={"Comfortaa"}
+                >
+                  Отримай кешбек <br /> 1% вартості товару
+                </Typography>
+                <Typography
+                  variant={"h3"}
+                  fontSize={16}
+                  height={18}
+                  fontFamily={"Comfortaa"}
+                >
+                  кешбек 1% при оплаті карткою Приват24
+                </Typography>
+              </Box>
+              <Box>
+                <img
+                  src={require("../../img/socketHandImage.png")}
+                  style={{ width: 460, height: 460 }}
+                  alt="sdf"
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Carousel>
+
+        {/* <Box marginTop={10} onClick={() => executeScroll()}>
           <div className="bouncing-icon-container">
             <ExpandMoreIcon
               color="info"
               sx={{ height: 70, width: 70, animation: "bounce 2s infinite" }}
             />
           </div>
-        </Box>
+        </Box> */}
       </Box>
-      <Box width={"100%"}>
+      <Box marginTop={"7%"} width={"100%"}>
         {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
           <></>
         ) : (
