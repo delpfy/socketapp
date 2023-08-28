@@ -379,20 +379,45 @@ const homeSlice = createSlice({
       state.itemsSortedParams = state.itemsSorted;
     },
   },
-  
+
   extraReducers: (builder) => {
     // All items.
     builder.addCase(getAllItems.fulfilled, (state, action) => {
       state.status = "success";
       state.itemsDisplay = action.payload;
+      state.itemsPromotionOffer = action.payload;
+      console.log(action.payload)
+      state.itemsNew = action.payload.items.sort(
+        (a: Items, b: Items) =>
+          new Date(b.createdAt).getTime() -
+          new Date(a.createdAt).getTime()
+      );
+      state.itemsTopSale = action.payload.items.sort(
+        (a: Items, b: Items) =>
+          a.quantity -
+          b.quantity
+      );
+      state.itemsTopRating = action.payload.items.sort(
+        (a: Items, b: Items) =>
+          a.rating -
+          b.rating
+      );;
     });
     builder.addCase(getAllItems.pending, (state) => {
       state.status = "pending";
       state.itemsDisplay = {} as ItemsDisplay;
+      state.itemsPromotionOffer = {} as ItemsDisplay;
+      state.itemsNew = {} as ItemsDisplay;
+      state.itemsTopSale = {} as ItemsDisplay;
+      state.itemsTopRating = {} as ItemsDisplay;
     });
     builder.addCase(getAllItems.rejected, (state) => {
       state.status = "error";
       state.itemsDisplay = {} as ItemsDisplay;
+      state.itemsPromotionOffer = {} as ItemsDisplay;
+      state.itemsNew = {} as ItemsDisplay;
+      state.itemsTopSale = {} as ItemsDisplay;
+      state.itemsTopRating = {} as ItemsDisplay;
     });
 
     // Items by category.

@@ -55,6 +55,7 @@ export type Items = {
   image: string[];
   description: string;
   fields: any;
+  createdAt: string;
 };
 
 export type ItemsPOST = {
@@ -259,8 +260,14 @@ export interface HomeState {
   itemsCategory: any;
   itemsSorted: ItemsDisplay;
 
-  itemsComparison: any,
-  itemsFavorites: any,
+  itemsComparison: any;
+  itemsFavorites: any;
+
+  itemsPromotionOffer: any;
+  itemsNew: any;
+  itemsTopSale: any;
+  itemsTopRating: any;
+
   sorted: boolean;
 
   itemCurrent: any;

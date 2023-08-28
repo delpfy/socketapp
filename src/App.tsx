@@ -23,6 +23,7 @@ import ConfirmEmail from "./pagess/ConfirmEmail";
 import Layout from "./componentss/Layout";
 import Guarantees from "./pagess/footerPages/Guarantees";
 import { synchronizeComparison, synchronizeFavorites } from "./redux/home/homeSlice";
+import { getAllItems } from "./redux/home/asyncActions";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -40,7 +41,12 @@ function App() {
   }
 
   useEffect(() => {
+    console.log("HI")
+    dispatch(getAllItems());
+    console.log("BYE")
+
     dispatch(checkAuthorization());
+    
   }, []);
 
   React.useEffect(() => {

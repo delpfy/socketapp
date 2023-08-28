@@ -11,6 +11,10 @@ import {
 } from "../../redux/basket/basketSlice";
 import { setEditItemMode } from "../../redux/home/homeSlice";
 import Carousel from "react-material-ui-carousel";
+import PromotionalOffers from "../../componentss/PromotionalOffers";
+import NewItems from "../../componentss/NewItems";
+import SalesHit from "../../componentss/SalesHit";
+import RatingHit from "../../componentss/RatingHit";
 
 /* const MenuContent = () => {
   return (
@@ -95,7 +99,6 @@ export const Home = () => {
         }}
       >
         <Carousel
-        
           navButtonsAlwaysVisible
           navButtonsProps={{
             style: {
@@ -225,7 +228,6 @@ export const Home = () => {
                   fontSize={36}
                   height={35}
                   fontFamily={"Comfortaa"}
-                  
                 >
                   Отримай кешбек <br /> 1% вартості товару
                 </Typography>
@@ -258,8 +260,8 @@ export const Home = () => {
           </div>
         </Box> */}
       </Box>
-      
-      <Box width={"85%"}  margin={'0 auto'} alignSelf={'center'} >
+
+      <Box width={"85%"} margin={"0 auto"} alignSelf={"center"}>
         <Box
           width={"100%"}
           height={"100%"}
@@ -267,10 +269,8 @@ export const Home = () => {
           flexDirection={"column"}
           alignItems={"center"}
           textAlign={"center"}
-         marginTop={"12%"}
+          marginTop={"12%"}
         >
-         
-
           <Grid
             container
             padding={"2%"}
@@ -305,7 +305,69 @@ export const Home = () => {
           </Grid>
         </Box>
       </Box>
-      <Box  width={"100%"}>
+      <Box width={"100%"}>
+        
+          
+            <Typography
+              variant={"h3"}
+              fontSize={37}
+              fontFamily={"Comfortaa"}
+              paddingTop={7}
+              paddingBottom={2}
+              textAlign={"center"}
+            >
+              Aкційні пропозиції
+            </Typography>
+            <PromotionalOffers />
+          
+        
+      </Box>
+      <Box width={"100%"}>
+        
+            <Typography
+              variant={"h3"}
+              fontSize={37}
+              fontFamily={"Comfortaa"}
+              paddingTop={7}
+              paddingBottom={2}
+              textAlign={"center"}
+            >
+              Новинки
+            </Typography>
+            <NewItems />
+         
+      </Box>
+      <Box width={"100%"}>
+        
+            <Typography
+              variant={"h3"}
+              fontSize={37}
+              fontFamily={"Comfortaa"}
+              paddingTop={7}
+              paddingBottom={2}
+              textAlign={"center"}
+            >
+              Топ продаж
+            </Typography>
+            <SalesHit />
+         
+      </Box>
+      <Box width={"100%"}>
+        
+        <Typography
+          variant={"h3"}
+          fontSize={37}
+          fontFamily={"Comfortaa"}
+          paddingTop={7}
+          paddingBottom={2}
+          textAlign={"center"}
+        >
+          Топ рейтинг
+        </Typography>
+        <RatingHit />
+     
+  </Box>
+      <Box width={"100%"}>
         {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
           <></>
         ) : (
