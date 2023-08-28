@@ -124,7 +124,7 @@ export default function AppBarMenu() {
         >
           <Box
             display={"flex"}
-            width={"23%"}
+            width={"25%"}
             justifyContent={"space-evenly"}
             flexDirection={"row"}
             alignItems={"center"}
@@ -152,14 +152,15 @@ export default function AppBarMenu() {
               <Logo />
             </Box>
           </Box>
+          <Search />
           <Box
             display={"flex"}
-            width={"70%"}
+            width={"32%"}
             flexDirection={"row"}
             alignItems={"center"}
             justifyContent={"space-evenly"}
           >
-            <Search />
+           
             {/* <ContactUs/> */}
 
             <Basket />

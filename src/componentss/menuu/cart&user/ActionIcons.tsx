@@ -165,7 +165,7 @@ export const ActionIcons = () => {
         display={"flex"}
         justifyContent={"flex-start"}
         alignItems={"center"}
-        maxWidth={'80%'}
+        maxWidth={"80%"}
         paddingLeft={3}
       >
         <Box
@@ -173,11 +173,20 @@ export const ActionIcons = () => {
           justifyContent={"space-between"}
           alignItems={"center"}
           paddingRight={8}
-          maxWidth={'43%'}
-          minWidth={'43%'}
+          maxWidth={"43%"}
+          minWidth={"43%"}
         >
           <>
             <IconButton
+            sx={{
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-3px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
+              },
+            }}
               onClick={() => {
                 setComparisonLoading(true);
                 const newComparison = JSON.parse(
@@ -214,11 +223,11 @@ export const ActionIcons = () => {
                   anchorOrigin={{ vertical: "top", horizontal: "right" }}
                   classes={{ badge: "transparent-badge" }}
                 >
-                   <img
-                src={require("../../../img/comparisonIcon.png")}
-                style={{ width: 50, height: 25 }}
-                alt="sdf"
-              />
+                  <img
+                    src={require("../../../img/comparisonIcon.png")}
+                    style={{ width: 48, height: 23 }}
+                    alt="sdf"
+                  />
                 </Badge>
               )}
             </IconButton>
@@ -226,6 +235,15 @@ export const ActionIcons = () => {
 
           <>
             <IconButton
+            sx={{
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-3px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
+              },
+            }}
               onClick={() => {
                 setFavoritesLoading(true);
                 const newFavorites = JSON.parse(
@@ -255,7 +273,7 @@ export const ActionIcons = () => {
               }}
             >
               {favoritesLoading ? (
-                <CircularProgress size={27} />
+                <CircularProgress size={25} />
               ) : (
                 <Badge
                   sx={{ fontSize: 23 }}
@@ -265,7 +283,7 @@ export const ActionIcons = () => {
                 >
                   <img
                     src={require("../../../img/favoritesIcon.png")}
-                    style={{ width: 27, height: 25 }}
+                    style={{ width: 25, height: 23 }}
                     alt="sdf"
                   />
                   {/* <FavoriteBorderIcon
@@ -276,7 +294,7 @@ export const ActionIcons = () => {
                       }}
                     /> */}
                 </Badge>
-                )}
+              )}
             </IconButton>
           </>
 
@@ -285,6 +303,15 @@ export const ActionIcons = () => {
           ) : (
             <>
               <IconButton
+                sx={{
+                  transition: "transform 0.3s ease",
+                  "&:hover": {
+                    transform: "translateY(-3px)",
+                  },
+                  "&:active": {
+                    transform: "translateY(0)",
+                  },
+                }}
                 onClick={() => {
                   setBasketLoading(true);
                   const newBasketItems = JSON.parse(
@@ -315,37 +342,43 @@ export const ActionIcons = () => {
                   });
                 }}
               >
-                {
-                  basketLoading ? (
-                    <CircularProgress size={27} />
-                  ) : (
-                    <Badge
-                      sx={{ fontFamily: "'Roboto light', sans-serif" }}
-                      badgeContent={items.length}
-                      anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                      classes={{ badge: "transparent-badge" }}
-                    >
-                      <img
-                        src={require("../../../img/cartIcon.png")}
-                        style={{ width: 27, height: 25 }}
-                        alt="sdf"
-                      />
-  
-                      {/* <ShoppingCartIcon
+                {basketLoading ? (
+                  <CircularProgress size={25} />
+                ) : (
+                  <Badge
+                    sx={{ fontFamily: "'Roboto light', sans-serif" }}
+                    badgeContent={items.length}
+                    anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                    classes={{ badge: "transparent-badge" }}
+                  >
+                    <img
+                      src={require("../../../img/cartIcon.png")}
+                      style={{ width: 25, height: 23 }}
+                      alt="sdf"
+                    />
+
+                    {/* <ShoppingCartIcon
                         color={cartSelected ? "info" : "warning"}
                         sx={{
                           width: 30,
                           height: 30,
                         }}
                       /> */}
-                    </Badge>
-                  )
-                 }
+                  </Badge>
+                )}
               </IconButton>
             </>
           )}
           <Box>
-            <IconButton onClick={LoginDialog_open}>
+            <IconButton sx={{
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-3px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
+              },
+            }} onClick={LoginDialog_open}>
               <Locker />
             </IconButton>
           </Box>
@@ -355,45 +388,43 @@ export const ActionIcons = () => {
           justifyContent={"space-between"}
           alignItems={"flex-end"}
           paddingRight={5}
-          maxWidth={'40%'}
-          minWidth={'40%'}
+          maxWidth={"40%"}
+          minWidth={"40%"}
         >
           <Link href="https://www.facebook.com/">
-          
-          
             <IconButton>
               <img
                 src={require("../../../img/facebookIcon.png")}
-                style={{ width: 15, height: 28 }}
+                style={{ width: 13, height: 26 }}
                 alt="sdf"
               />
             </IconButton>
           </Link>
           <Link href="https://twitter.com/">
-          <IconButton>
-            <img
-              src={require("../../../img/twitterIcon.png")}
-              style={{ width: 30, height: 25 }}
-              alt="sdf"
-            />
-          </IconButton>
+            <IconButton>
+              <img
+                src={require("../../../img/twitterIcon.png")}
+                style={{ width: 28, height: 23 }}
+                alt="sdf"
+              />
+            </IconButton>
           </Link>
-          
+
           <Link href="https://www.linkedin.com">
-          <IconButton>
-            <img
-              src={require("../../../img/inIcon.png")}
-              style={{ width: 27, height: 25 }}
-              alt="sdf"
-            />
-          </IconButton>
+            <IconButton>
+              <img
+                src={require("../../../img/inIcon.png")}
+                style={{ width: 25, height: 23 }}
+                alt="sdf"
+              />
+            </IconButton>
           </Link>
-          
+
           <Link href="https://www.instagram.com/">
             <IconButton>
               <img
                 src={require("../../../img/instaIcon.png")}
-                style={{ width: 27, height: 25 }}
+                style={{ width: 25, height: 23 }}
                 alt="sdf"
               />
             </IconButton>
