@@ -148,14 +148,12 @@ export const ActionIcons = () => {
       );
     } else {
       return user_status === "pending" ? (
-        <CircularProgress size={20} />
+        <CircularProgress size={30} />
       ) : (
-        <LockPersonRoundedIcon
-          color="warning"
-          sx={{
-            width: 40,
-            height: 40,
-          }}
+        <img
+          src={require("../../../img/userIcon.png")}
+          style={{ width: 30, height: 30 }}
+          alt="sdf"
         />
       );
     }
@@ -167,15 +165,16 @@ export const ActionIcons = () => {
         display={"flex"}
         justifyContent={"flex-start"}
         alignItems={"center"}
-        maxWidth={520}
+        maxWidth={'80%'}
+        paddingLeft={3}
       >
         <Box
           display={"flex"}
           justifyContent={"space-between"}
           alignItems={"center"}
           paddingRight={8}
-          maxWidth={230}
-          minWidth={230}
+          maxWidth={'43%'}
+          minWidth={'43%'}
         >
           <>
             <IconButton
@@ -208,7 +207,7 @@ export const ActionIcons = () => {
               }}
             >
               {comparisonLoading ? (
-                <CircularProgress size={20} />
+                <CircularProgress size={40} />
               ) : (
                 <Badge
                   badgeContent={itemsComparison.length}
@@ -256,7 +255,7 @@ export const ActionIcons = () => {
               }}
             >
               {favoritesLoading ? (
-                <CircularProgress size={20} />
+                <CircularProgress size={27} />
               ) : (
                 <Badge
                   sx={{ fontSize: 23 }}
@@ -318,7 +317,7 @@ export const ActionIcons = () => {
               >
                 {
                   basketLoading ? (
-                    <CircularProgress size={20} />
+                    <CircularProgress size={27} />
                   ) : (
                     <Badge
                       sx={{ fontFamily: "'Roboto light', sans-serif" }}
@@ -356,8 +355,8 @@ export const ActionIcons = () => {
           justifyContent={"space-between"}
           alignItems={"flex-end"}
           paddingRight={5}
-          maxWidth={190}
-          minWidth={190}
+          maxWidth={'40%'}
+          minWidth={'40%'}
         >
           <Link href="https://www.facebook.com/">
           

@@ -23,18 +23,18 @@ export default function CategoryCard(props: {
         sx={{
           cursor: 'pointer',
           maxWidth: {
-            xs: 350,
+            xs: 330,
             md: 330,
           },
           minWidth: {
-            xs: 350,
+            xs: 330,
             md: 330,
           },
           /* maxWidth: 'calc(100% - 30px)',
           minWidth: 'calc(100% - 30px)', */
 
-          minHeight: 380,
-          maxHeight: 380,
+          minHeight: 370,
+          maxHeight: 370,
 
           /* maxHeight: {
             xs : 430,
@@ -58,8 +58,8 @@ export default function CategoryCard(props: {
         component="img"
           sx={{
             display: "flex",
-            maxHeight: 180,
-            minHeight: 180,
+            maxHeight: 170,
+            minHeight: 170,
             
 
             objectFit: "contain",

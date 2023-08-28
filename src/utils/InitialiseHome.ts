@@ -10,45 +10,47 @@ export const InitialiseHome = () => {
     },
     {
       id: 2,
-      name: "Монітори",
+      name: "Комп'ютери",
       image:
-      require("../img/categories/monitors.png"),
+      require("../img/categories/computers.png"),
     },
+    
     /* {
       id: 3,
       name: "Планшети",
       image:
         "https://thumb.tildacdn.com/tild3065-3839-4132-b038-343138333930/-/format/webp/premium_photo-168037.jpg",
     }, */
+    
     {
-      id: 4,
-      name: "Комп'ютери",
-      image:
-      require("../img/categories/computers.png"),
-    },
-    {
-      id: 5,
+      id: 3,
       name: "Комп'ютерні комплектуючі",
       image:
       require("../img/categories/computers.png"),},
     
     {
-      id: 6,
+      id: 4,
       name: "Геймінг",
       image:
       require("../img/categories/computers.png"),},
+      {
+        id: 5,
+        name: "Монітори",
+        image:
+        require("../img/categories/monitors.png"),
+      },
     {
-      id: 7,
+      id: 6,
       name: "Мережеве обладнання",
       image:
       require("../img/categories/network.png"),},
     {
-      id: 8,
+      id: 7,
       name: "Аксесуари для електроніки",
       image:
       require("../img/categories/electronic.png"),},
     {
-      id: 9,
+      id: 8,
       name: "Кабелі та перехідники",
       image:
       require("../img/categories/cabels.png"),},

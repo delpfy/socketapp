@@ -610,7 +610,7 @@ export default function CatalogCard(props: Items) {
                     />
                   </IconButton>
                   {itemAppendingId === props._id ? (
-                    <CircularProgress size={20} />
+                    <CircularProgress size={40} />
                   ) : (
                     <IconButton onClick={redirectToAddItemPage}>
                       <EditIcon
@@ -629,7 +629,7 @@ export default function CatalogCard(props: Items) {
                   onClick={() => basketItem_APPEND()}
                 >
                   {itemAppendingId === props._id ? (
-                    <CircularProgress size={20} />
+                    <CircularProgress size={35} />
                   ) : (
                     <AddShoppingCartIcon
                       sx={{ height: 35, width: 35 }}

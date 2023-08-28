@@ -272,6 +272,7 @@ export const Home = () => {
           <Grid
             container
             padding={"2%"}
+            justifyContent="center"
             spacing={{ xs: 1, sm: 3, md: 4 }}
             columns={{ xs: 2, sm: 2, md: 4, lg: 4, xl: 20 }}
           >
@@ -292,7 +293,7 @@ export const Home = () => {
                   sm={2}
                   md={4}
                   lg={4}
-                  xl={5}
+                  xl={4}
                   key={item.id}
                 >
                   <Card category={item.name} image={item.image} />
