@@ -26,13 +26,13 @@ export const InitialiseHome = () => {
       id: 3,
       name: "Комп'ютерні комплектуючі",
       image:
-      require("../img/categories/computers.png"),},
+      require("../img/categories/compl.png"),},
     
     {
       id: 4,
       name: "Геймінг",
       image:
-      require("../img/categories/computers.png"),},
+      require("../img/categories/gayming.png"),},
       {
         id: 5,
         name: "Монітори",

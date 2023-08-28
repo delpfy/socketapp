@@ -78,7 +78,7 @@ export default function Search() {
 
   return (
     <>
-      <Box sx={{ width: "55%", alignSelf: 'flex-start' }} >
+      <Box sx={{ width: "55%", alignSelf: 'flex-start'}} >
         <Autocomplete
           size="small"
           

@@ -95,6 +95,7 @@ export const Home = () => {
         }}
       >
         <Carousel
+        
           navButtonsAlwaysVisible
           navButtonsProps={{
             style: {
@@ -188,7 +189,7 @@ export const Home = () => {
             </Box>
           </Box>
           <Box
-            height={"90%"}
+            height={"100%"}
             sx={{
               color: "#fff",
               width: {
@@ -224,6 +225,7 @@ export const Home = () => {
                   fontSize={36}
                   height={35}
                   fontFamily={"Comfortaa"}
+                  
                 >
                   Отримай кешбек <br /> 1% вартості товару
                 </Typography>
