@@ -115,7 +115,7 @@ export default function AppBarMenu() {
         <Box
           width={"95%"}
           height={"90%"}
-          margin={"0"}
+          margin={"0 auto"}
           justifySelf={"center"}
           display={"flex"}
           flexDirection={"row"}
