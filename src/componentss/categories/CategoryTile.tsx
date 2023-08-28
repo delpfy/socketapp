@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { useAppDispatch } from "../../redux/hooks";
 import { SetCategory } from "../../redux/home/homeSlice";
 import { useNavigate } from "react-router-dom";
@@ -19,21 +19,22 @@ export default function CategoryCard(props: {
 
   return (
     <>
-      <Card
+      <Box
         sx={{
+          cursor: 'pointer',
           maxWidth: {
             xs: 350,
-            md: 560,
+            md: 330,
           },
           minWidth: {
             xs: 350,
-            md: 560,
+            md: 330,
           },
           /* maxWidth: 'calc(100% - 30px)',
           minWidth: 'calc(100% - 30px)', */
 
-          minHeight: 469,
-          maxHeight: 469,
+          minHeight: 380,
+          maxHeight: 380,
 
           /* maxHeight: {
             xs : 430,
@@ -47,42 +48,44 @@ export default function CategoryCard(props: {
           maxHeight: 469, */
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
           /* padding: "2%", */
           objectFit: "fill",
         }}
         onClick={RedirectToCatalog}
       >
         <CardMedia
+        component="img"
           sx={{
             display: "flex",
-            maxHeight: 369,
-            minHeight: 369,
+            maxHeight: 180,
+            minHeight: 180,
+            
 
-            objectFit: "fill",
+            objectFit: "contain",
             overflow: "hidden",
           }}
           image={props.image}
           title={props.category}
         />
-
+        
         <CardContent
-          sx={{ paddingBottom: 2, paddingTop: 5, textAlign: "center" }}
+          sx={{ paddingBottom: 2, paddingTop: 0, textAlign: "center" }}
         >
           <Typography
             gutterBottom
             variant="h5"
             component="div"
             minHeight={60}
-            maxHeight={60}
+            maxHeight={73}
             overflow={"hidden"}
             fontFamily={"Comfortaa"}
-            fontSize={29}
+            fontSize={24}
           >
             {props.category}
           </Typography>
         </CardContent>
-      </Card>
+      </Box>
     </>
   );
 }

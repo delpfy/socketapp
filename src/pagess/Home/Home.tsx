@@ -87,7 +87,6 @@ export const Home = () => {
         top={127}
         padding={"2%"}
         alignSelf={"center"}
-       
         sx={{
           background: " black",
           backgroundAttachment: "fixed",
@@ -96,13 +95,13 @@ export const Home = () => {
         }}
       >
         <Carousel
-        navButtonsAlwaysVisible
-        navButtonsProps={{          
-          style: {
-              backgroundColor: 'black',
-              borderRadius: 0
-          }
-      }}
+          navButtonsAlwaysVisible
+          navButtonsProps={{
+            style: {
+              backgroundColor: "black",
+              borderRadius: 0,
+            },
+          }}
           NextIcon={
             <img
               style={{ width: 40, height: 40 }}
@@ -257,7 +256,53 @@ export const Home = () => {
           </div>
         </Box> */}
       </Box>
-      <Box marginTop={"7%"} width={"100%"}>
+      
+      <Box width={"85%"}  margin={'0 auto'} alignSelf={'center'} >
+        <Box
+          width={"100%"}
+          height={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+          alignItems={"center"}
+          textAlign={"center"}
+         marginTop={"12%"}
+        >
+         
+
+          <Grid
+            container
+            padding={"2%"}
+            spacing={{ xs: 1, sm: 3, md: 4 }}
+            columns={{ xs: 2, sm: 2, md: 4, lg: 4, xl: 20 }}
+          >
+            {categories.map(
+              (item: { id: number; name: string; image: string }) => (
+                <Grid
+                  item
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  sx={{
+                    paddingBottom: {
+                      xs: 5,
+                      md: 0,
+                    },
+                  }}
+                  xs={2}
+                  sm={2}
+                  md={4}
+                  lg={4}
+                  xl={5}
+                  key={item.id}
+                >
+                  <Card category={item.name} image={item.image} />
+                </Grid>
+              )
+            )}
+          </Grid>
+        </Box>
+      </Box>
+      <Box  width={"100%"}>
         {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
           <></>
         ) : (
@@ -275,58 +320,6 @@ export const Home = () => {
             <RecentlyReviewed />
           </>
         )}
-      </Box>
-      <Box width={"80%"} margin={"auto"} padding={"100px 10px 30px "}>
-        <Box
-          width={"100%"}
-          height={"100%"}
-          display={"flex"}
-          flexDirection={"column"}
-          alignItems={"center"}
-          textAlign={"center"}
-        >
-          <Typography
-            variant={"h3"}
-            fontSize={37}
-            fontFamily={"Comfortaa"}
-            paddingBottom={7}
-            ref={myRef}
-          >
-            Категорії товарів
-          </Typography>
-
-          <Grid
-            container
-            padding={"2%"}
-            spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 2, md: 4, lg: 4, xl: 10 }}
-          >
-            {categories.map(
-              (item: { id: number; name: string; image: string }) => (
-                <Grid
-                  item
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  sx={{
-                    paddingBottom: {
-                      xs: 5,
-                      md: 1,
-                    },
-                  }}
-                  xs={2}
-                  sm={2}
-                  md={4}
-                  lg={4}
-                  xl={5}
-                  key={item.id}
-                >
-                  <Card category={item.name} image={item.image} />
-                </Grid>
-              )
-            )}
-          </Grid>
-        </Box>
       </Box>
     </>
   );
