@@ -392,7 +392,15 @@ export const ActionIcons = () => {
           minWidth={"40%"}
         >
           <Link href="https://www.facebook.com/">
-            <IconButton>
+            <IconButton sx={{
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-3px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
+              },
+            }}>
               <img
                 src={require("../../../img/facebookIcon.png")}
                 style={{ width: 13, height: 26 }}
@@ -401,7 +409,15 @@ export const ActionIcons = () => {
             </IconButton>
           </Link>
           <Link href="https://twitter.com/">
-            <IconButton>
+            <IconButton sx={{
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-3px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
+              },
+            }}>
               <img
                 src={require("../../../img/twitterIcon.png")}
                 style={{ width: 28, height: 23 }}
@@ -411,7 +427,15 @@ export const ActionIcons = () => {
           </Link>
 
           <Link href="https://www.linkedin.com">
-            <IconButton>
+            <IconButton sx={{
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-3px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
+              },
+            }}>
               <img
                 src={require("../../../img/inIcon.png")}
                 style={{ width: 25, height: 23 }}
@@ -421,7 +445,15 @@ export const ActionIcons = () => {
           </Link>
 
           <Link href="https://www.instagram.com/">
-            <IconButton>
+            <IconButton sx={{
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-3px)",
+              },
+              "&:active": {
+                transform: "translateY(0)",
+              },
+            }}>
               <img
                 src={require("../../../img/instaIcon.png")}
                 style={{ width: 25, height: 23 }}

@@ -416,7 +416,6 @@ export default function HomeCard(props: Items) {
     });
   }
 
-  
   return (
     <>
       <>
@@ -429,8 +428,8 @@ export default function HomeCard(props: Items) {
           sx={{
             maxWidth: 200,
             minWidth: 200,
-            minHeight: 310,
-            maxHeight: 310,
+            minHeight: 320,
+            maxHeight: 320,
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
@@ -476,107 +475,136 @@ export default function HomeCard(props: Items) {
             onClick={getCurrentItem}
           />
 
-          <CardContent sx={{ paddingBottom: 3, paddingLeft: 1.2, }}>
+          <CardContent sx={{ paddingBottom: 3, paddingLeft: 1.2 }}>
             <Typography
               padding={0}
-              minHeight={38}
-              maxHeight={38}
+              minHeight={50}
+              maxHeight={50}
               overflow={"hidden"}
               fontSize={16}
               textAlign={"left"}
-              paddingBottom={1}
+              marginBottom={3}
             >
               {props.name}
             </Typography>
-            
           </CardContent>
           <CardActions
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+minHeight: "40%",
+maxHeight: "40%",
               paddingTop: 0,
-              
             }}
           >
-            <Box display={"flex"} width={'70%'} flexDirection={"column"}>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                flexDirection={"column"}
-                alignItems={'flex-start'}
+            <Box display={"flex"} flexDirection={"column"} width={'100%'} textAlign= {'left'} justifyContent={'flex-start'}>
+              <Typography
+                paddingLeft={0.3}
+                
+                fontFamily={"Comfortaa"}
+                color={props.sale ? "info" : "error"}
+                sx={
+                  props.sale
+                    ? {
+                        fontSize: 15,
+                        textDecoration: "line-through !important",
+                      }
+                    : { fontSize: 18, color: 'white', userSelect: "none"}
+                }
               >
-                <Typography
-                  paddingLeft={0.3}
-                  fontFamily={"Comfortaa"}
-                  color={props.sale ? "info" : "error"}
-                  sx={
-                    props.sale
-                      ? {
-                          fontSize: 15,
-                          textDecoration: "line-through !important",
-                        }
-                      : { fontSize: 18 }
-                  }
-                >
-                  {props.price} ₴
-                </Typography>
-                {props.sale ? (
-                  <Typography
-                    paddingLeft={0.3}
-                    fontSize={18}
-                    fontFamily={"Comfortaa"}
-                    color={"error"}
+                {props.price + "₴"}
+              </Typography>
+              <Box display={"flex"} alignItems={'center'} flexDirection={"row"} width={'100%'}  justifyContent={'space-between'}>
+                <Box display={"flex"}  width={"100%"}  justifyContent={'center'} flexDirection={"column"}>
+                  <Box
+                    display={"flex"}
+                    justifyContent={"flex-end"}
+                    flexDirection={"column"}
+                    alignItems={"flex-start"}
+                    
                   >
-                    {props.price - Math.round((props.price * props.sale) / 100)}{" "}
-                    ₴
-                  </Typography>
-                ) : (
-                  <></>
-                )}
-              </Box>
-            </Box>
+                    <Typography
+                      paddingLeft={0.3}
+                      paddingTop={0}
+                        
+                      fontSize={18}
+                      fontFamily={"Comfortaa"}
+                      color={"error"}
+                    >
+                      {props.sale
+                        ? props.price -
+                          Math.round((props.price * props.sale) / 100)
+                        : props.price}{" "}
+                      ₴
+                    </Typography>
+                  </Box>
+                </Box>
 
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              
-              alignItems={"flex-end"}
-              flexDirection={"row"}
-            >
-              
-               <Box  display={'flex'} flexDirection={'row'} alignItems={'center'} justifyContent={'space-evenly'}>
-              <IconButton
-                sx={{
-                  height: 50,
-                  width: 50,
-                }}
-                onClick={() => favoriteItem_APPEND()}
-              >
-                <img
-              src={require("../../../img/favoritesIconBlack.png")}
-              style={{ width: 24, height: 22 }}
-              alt="sdf"
-            />
-              </IconButton>
-             
-                <IconButton
-                  sx={{
-                    height: 50,
-                    width: 50,
-                  }}
-                  onClick={() => basketItem_APPEND()}
+                <Box
+                  display={"flex"}
+                  justifyContent={"space-between"}
+                  alignItems={"flex-start"}
+                  flexDirection={"row"}
                 >
-                  {itemAppendingId === props._id ? (
-                    <CircularProgress size={35} />
-                  ) : (
-                    <img
-              src={require("../../../img/cartIconBlack.png")}
-              style={{ width: 24, height: 22 }}
-              alt="sdf"
-            />
-                  )}
-                </IconButton>
+                  <Box
+                    display={"flex"}
+                    flexDirection={"row"}
+                    alignItems={'flex-start'}
+                    justifyContent={"space-evenly"}
+                   height={50}
+                  >
+                    <IconButton
+                      sx={{
+                        paddingTop:0,
+                        paddingBottom:0,
+                        height: 50,
+                        width: 50,
+                        transition: "transform 0.3s ease",
+                        "&:hover": {
+                          transform: "translateY(-3px)",
+                        },
+                        "&:active": {
+                          transform: "translateY(0)",
+                        },
+                      }}
+                      onClick={() => favoriteItem_APPEND()}
+                    >
+                      <img
+                        src={require("../../../img/favoritesIconBlack.png")}
+                        style={{ width: 24, height: 22 }}
+                        alt="sdf"
+                      />
+                    </IconButton>
+
+                    <IconButton
+                      sx={{
+                        paddingTop:0,
+                        paddingBottom:0,
+                        height: 50,
+                        width: 50,
+                        transition: "transform 0.3s ease",
+                        "&:hover": {
+                          transform: "translateY(-3px)",
+                        },
+                        "&:active": {
+                          transform: "translateY(0)",
+                        },
+                      }}
+                      onClick={() => basketItem_APPEND()}
+                    >
+                      {itemAppendingId === props._id ? (
+                        <CircularProgress size={35} />
+                      ) : (
+                        <img
+                          src={require("../../../img/cartIconBlack.png")}
+                          style={{ width: 24, height: 22 }}
+                          alt="sdf"
+                        />
+                      )}
+                    </IconButton>
+                  </Box>
+                </Box>
               </Box>
             </Box>
           </CardActions>

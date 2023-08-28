@@ -15,7 +15,14 @@ export const Logo = () => {
       width={137}
       /* paddingBottom={1} */
       onClick={() => navigate("/")}
-      sx={{ cursor: "pointer", color: "white" }}
+      sx={{ cursor: "pointer", color: "white", transition: "transform 0.3s ease",
+      "&:hover": {
+        transform: "translateY(-3px)",
+      },
+      "&:active": {
+        transform: "translateY(0)",
+      }, }}
+      
     >
       <Typography
         variant={"h3"}

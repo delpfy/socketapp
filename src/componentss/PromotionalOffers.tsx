@@ -2,6 +2,7 @@ import { Box, Grid } from "@mui/material";
 import { Items } from "../redux/types";
 import HomeCard from "./catalogg/block/HomeCard";
 import { useAppSelector } from "../redux/hooks";
+import HomeSkeleton from "./catalogg/block/HomeSkeleton";
 
 export default function PromotionalOffers() {
   const { itemsPromotionOffer, status } = useAppSelector((state) => state.home);
@@ -52,7 +53,29 @@ export default function PromotionalOffers() {
                 </Grid>
               ))
             ) : (
-                <></>
+                Array.from({ length: 6 }, (param, index) => {
+                    return (
+                      <Grid
+                      item
+                      display={"flex"}
+                      justifyContent={"center"}
+                      alignItems={"center"}
+                      sx={{
+                        paddingBottom: {
+                          xs: 5,
+                          md: 0,
+                        },
+                      }}
+                      xs={2}
+                      sm={2}
+                      md={4}
+                      lg={4}
+                      xl={5}
+                      >
+                       <HomeSkeleton/>
+                      </Grid>
+                    );
+                  })
             )}
           </Grid>
         </Box>

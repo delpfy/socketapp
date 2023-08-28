@@ -306,54 +306,45 @@ export const Home = () => {
         </Box>
       </Box>
       <Box width={"100%"}>
-        
-          
-            <Typography
-              variant={"h3"}
-              fontSize={37}
-              fontFamily={"Comfortaa"}
-              paddingTop={7}
-              paddingBottom={2}
-              textAlign={"center"}
-            >
-              Aкційні пропозиції
-            </Typography>
-            <PromotionalOffers />
-          
-        
+        <Typography
+          variant={"h3"}
+          fontSize={37}
+          fontFamily={"Comfortaa"}
+          paddingTop={7}
+          paddingBottom={2}
+          textAlign={"center"}
+        >
+          Aкційні пропозиції
+        </Typography>
+        <PromotionalOffers />
       </Box>
       <Box width={"100%"}>
-        
-            <Typography
-              variant={"h3"}
-              fontSize={37}
-              fontFamily={"Comfortaa"}
-              paddingTop={7}
-              paddingBottom={2}
-              textAlign={"center"}
-            >
-              Новинки
-            </Typography>
-            <NewItems />
-         
+        <Typography
+          variant={"h3"}
+          fontSize={37}
+          fontFamily={"Comfortaa"}
+          paddingTop={7}
+          paddingBottom={2}
+          textAlign={"center"}
+        >
+          Новинки
+        </Typography>
+        <NewItems />
       </Box>
       <Box width={"100%"}>
-        
-            <Typography
-              variant={"h3"}
-              fontSize={37}
-              fontFamily={"Comfortaa"}
-              paddingTop={7}
-              paddingBottom={2}
-              textAlign={"center"}
-            >
-              Топ продаж
-            </Typography>
-            <SalesHit />
-         
+        <Typography
+          variant={"h3"}
+          fontSize={37}
+          fontFamily={"Comfortaa"}
+          paddingTop={7}
+          paddingBottom={2}
+          textAlign={"center"}
+        >
+          Топ продаж
+        </Typography>
+        <SalesHit />
       </Box>
       <Box width={"100%"}>
-        
         <Typography
           variant={"h3"}
           fontSize={37}
@@ -365,8 +356,7 @@ export const Home = () => {
           Топ рейтинг
         </Typography>
         <RatingHit />
-     
-  </Box>
+      </Box>
       <Box width={"100%"}>
         {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
           <></>
