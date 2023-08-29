@@ -36,8 +36,8 @@ import {
 } from "../../../redux/home/homeSlice";
 
 export default function HomeCard(props: Items) {
-  const { user } = useAppSelector((state) => state.user);
-  const { category, itemAppendingId } = useAppSelector((state) => state.home);
+  const { items } = useAppSelector((state) => state.basket);
+  const { category, itemAppendingId, itemsComparison, itemsFavorites } = useAppSelector((state) => state.home);
 
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
@@ -578,11 +578,20 @@ export default function HomeCard(props: Items) {
                       }}
                       onClick={() => favoriteItem_APPEND()}
                     >
-                      <img
-                        src={require("../../../img/favoritesIconBlack.png")}
-                        style={{ width: 24, height: 22 }}
-                        alt="sdf"
-                      />
+                      {
+itemsFavorites.findIndex((item: any) => item._id === props._id) !== -1
+?<img
+src={require("../../../img/favoritesAddedIcon.png")}
+style={{ width: 24, height: 22 }}
+alt="sdf"
+/>
+:<img
+src={require("../../../img/favoritesIconBlack.png")}
+style={{ width: 24, height: 22 }}
+alt="sdf"
+/>
+                      }
+                      
                     </IconButton>
 
                     <IconButton
@@ -602,8 +611,18 @@ export default function HomeCard(props: Items) {
                       onClick={() => basketItem_APPEND()}
                     >
                       {itemAppendingId === props._id ? (
-                        <CircularProgress size={35} />
+                        <CircularProgress size={30} />
                       ) : (
+                        
+                          items.findIndex((item: any) => item._id === props._id) !== -1
+                          ?
+                          <img
+                          src={require("../../../img/cartAddedIcon.png")}
+                          style={{ width: 23, height: 21 }}
+                          alt="sdf"
+                        />
+                          :
+                        
                         <img
                           src={require("../../../img/cartIconBlack.png")}
                           style={{ width: 24, height: 22 }}
