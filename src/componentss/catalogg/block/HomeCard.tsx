@@ -154,29 +154,13 @@ export default function HomeCard(props: Items) {
           );
 
           if (itemIndex !== -1) {
-            if (
-              basketItems[itemIndex].amount + 1 >
-              result.payload.items.quantity
-            ) {
-              setInfoMessage(
-                "Кількість товару у кошику перевищує його загальну кількість"
-              );
-              InfoDialog_open();
-              return;
-            }
-            basketItems[itemIndex] = {
-              _id: result.payload.items._id,
-              name: result.payload.items.name,
-              description: result.payload.items.description,
-              category: result.payload.items.category,
-              price: adjustPrice(result.payload.items),
-              sale: result.payload.items.sale,
-              quantity: result.payload.items.quantity,
-              rating: result.payload.items.rating,
-              image: result.payload.items.image,
-              amount: basketItems[itemIndex].amount + 1,
-              fields: result.payload.items.fields,
-            };
+            localStorage.setItem(
+              "basketItems",
+              JSON.stringify(
+                basketItems.filter((item: any) => item._id !== props._id)
+              )
+            );
+            dispatch(synchronizeBasket());
           } else {
             basketItems.push({
               _id: result.payload.items._id,
@@ -191,10 +175,12 @@ export default function HomeCard(props: Items) {
               amount: 1,
               fields: result.payload.items.fields,
             });
+
+            localStorage.setItem("basketItems", JSON.stringify(basketItems));
+        dispatch(synchronizeBasket());
           }
         }
-        localStorage.setItem("basketItems", JSON.stringify(basketItems));
-        dispatch(synchronizeBasket());
+        
       }
       if (result.meta.requestStatus === "rejected") {
         setInfoMessage("Такого товару вже нема");
