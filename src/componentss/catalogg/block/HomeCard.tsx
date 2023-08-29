@@ -449,8 +449,8 @@ export default function HomeCard(props: Items) {
             sx={{
               position: "absolute",
               zIndex: 1,
-              height: 50,
-              width: 50,
+              height: 40,
+              width: 40,
               right: 0,
             }}
             onClick={() => comparisonItem_APPEND()}
@@ -475,7 +475,7 @@ export default function HomeCard(props: Items) {
             onClick={getCurrentItem}
           />
 
-          <CardContent sx={{ paddingBottom: 3, paddingLeft: 1.2 }}>
+          <CardContent sx={{ paddingLeft: 1.2 }}>
             <Typography
               padding={0}
               minHeight={50}
@@ -493,15 +493,20 @@ export default function HomeCard(props: Items) {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-minHeight: "40%",
-maxHeight: "40%",
+              minHeight: "40%",
+              maxHeight: "40%",
               paddingTop: 0,
             }}
           >
-            <Box display={"flex"} flexDirection={"column"} width={'100%'} textAlign= {'left'} justifyContent={'flex-start'}>
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              width={"100%"}
+              textAlign={"left"}
+              justifyContent={"flex-start"}
+            >
               <Typography
                 paddingLeft={0.3}
-                
                 fontFamily={"Comfortaa"}
                 color={props.sale ? "info" : "error"}
                 sx={
@@ -510,24 +515,33 @@ maxHeight: "40%",
                         fontSize: 15,
                         textDecoration: "line-through !important",
                       }
-                    : { fontSize: 18, color: 'white', userSelect: "none"}
+                    : { fontSize: 18, color: "white", userSelect: "none" }
                 }
               >
                 {props.price + "₴"}
               </Typography>
-              <Box display={"flex"} alignItems={'center'} flexDirection={"row"} width={'100%'}  justifyContent={'space-between'}>
-                <Box display={"flex"}  width={"100%"}  justifyContent={'center'} flexDirection={"column"}>
+              <Box
+                display={"flex"}
+                alignItems={"center"}
+                flexDirection={"row"}
+                width={"100%"}
+                justifyContent={"space-between"}
+              >
+                <Box
+                  display={"flex"}
+                  width={"100%"}
+                  justifyContent={"center"}
+                  flexDirection={"column"}
+                >
                   <Box
                     display={"flex"}
                     justifyContent={"flex-end"}
                     flexDirection={"column"}
                     alignItems={"flex-start"}
-                    
                   >
                     <Typography
                       paddingLeft={0.3}
                       paddingTop={0}
-                        
                       fontSize={18}
                       fontFamily={"Comfortaa"}
                       color={"error"}
@@ -543,23 +557,25 @@ maxHeight: "40%",
 
                 <Box
                   display={"flex"}
-                  justifyContent={"space-between"}
-                  alignItems={"flex-start"}
+                  justifyContent={"flex-end"}
+                  alignItems={"center"}
                   flexDirection={"row"}
+                  width={"100%"}
                 >
                   <Box
                     display={"flex"}
                     flexDirection={"row"}
-                    alignItems={'flex-start'}
+                    alignItems={"center"}
                     justifyContent={"space-evenly"}
-                   height={50}
+                    height={30}
+                    width={"100%"}
                   >
                     <IconButton
                       sx={{
-                        paddingTop:0,
-                        paddingBottom:0,
-                        height: 50,
-                        width: 50,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        height: 30,
+                        width: 30,
                         transition: "transform 0.3s ease",
                         "&:hover": {
                           transform: "translateY(-3px)",
@@ -579,10 +595,10 @@ maxHeight: "40%",
 
                     <IconButton
                       sx={{
-                        paddingTop:0,
-                        paddingBottom:0,
-                        height: 50,
-                        width: 50,
+                        paddingTop: 0,
+                        paddingBottom: 0,
+                        height: 30,
+                        width: 30,
                         transition: "transform 0.3s ease",
                         "&:hover": {
                           transform: "translateY(-3px)",
