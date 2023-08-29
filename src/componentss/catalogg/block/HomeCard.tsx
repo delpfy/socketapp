@@ -29,7 +29,9 @@ import {
 import InfoDialog from "../../dialogs/InfoDialog";
 import { useState } from "react";
 import {
+  setComparisonId,
   setEditItemMode,
+  setFavoritesId,
   setSearchedId,
   synchronizeComparison,
   synchronizeFavorites,
@@ -37,7 +39,14 @@ import {
 
 export default function HomeCard(props: Items) {
   const { items } = useAppSelector((state) => state.basket);
-  const { category, itemAppendingId, itemsComparison, itemsFavorites } = useAppSelector((state) => state.home);
+  const {
+    category,
+    itemAppendingId,
+    itemCompareId,
+    itemFavoritesId,
+    itemsComparison,
+    itemsFavorites,
+  } = useAppSelector((state) => state.home);
 
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
@@ -177,10 +186,9 @@ export default function HomeCard(props: Items) {
             });
 
             localStorage.setItem("basketItems", JSON.stringify(basketItems));
-        dispatch(synchronizeBasket());
+            dispatch(synchronizeBasket());
           }
         }
-        
       }
       if (result.meta.requestStatus === "rejected") {
         setInfoMessage("Такого товару вже нема");
@@ -226,7 +234,7 @@ export default function HomeCard(props: Items) {
   }
 
   async function favoriteItem_APPEND() {
-    dispatch(setSearchedId(props._id));
+    dispatch(setFavoritesId(props._id));
     dispatch(checkItemById(props._id)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         if (result.payload.items.quantity === 0) {
@@ -313,7 +321,7 @@ export default function HomeCard(props: Items) {
   }
 
   async function comparisonItem_APPEND() {
-    dispatch(setSearchedId(props._id));
+    dispatch(setComparisonId(props._id));
     dispatch(checkItemById(props._id)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         if (result.payload.items.quantity === 0) {
@@ -422,7 +430,6 @@ export default function HomeCard(props: Items) {
             padding: "11%",
           }}
         >
-          
           <IconButton
             sx={{
               position: "absolute",
@@ -433,11 +440,15 @@ export default function HomeCard(props: Items) {
             }}
             onClick={() => comparisonItem_APPEND()}
           >
-            <img
-              src={require("../../../img/comparisonIconBlack.png")}
-              style={{ width: 48, height: 23 }}
-              alt="sdf"
-            />
+            {itemCompareId === props._id ? (
+              <CircularProgress size={30} />
+            ) : (
+              <img
+                src={require("../../../img/comparisonIconBlack.png")}
+                style={{ width: 48, height: 23 }}
+                alt="sdf"
+              />
+            )}
           </IconButton>
 
           <CardMedia
@@ -564,20 +575,23 @@ export default function HomeCard(props: Items) {
                       }}
                       onClick={() => favoriteItem_APPEND()}
                     >
-                      {
-itemsFavorites.findIndex((item: any) => item._id === props._id) !== -1
-?<img
-src={require("../../../img/favoritesAddedIcon.png")}
-style={{ width: 24, height: 22 }}
-alt="sdf"
-/>
-:<img
-src={require("../../../img/favoritesIconBlack.png")}
-style={{ width: 24, height: 22 }}
-alt="sdf"
-/>
-                      }
-                      
+                      {itemFavoritesId === props._id ? (
+                        <CircularProgress size={30} />
+                      ) : itemsFavorites.findIndex(
+                          (item: any) => item._id === props._id
+                        ) !== -1 ? (
+                        <img
+                          src={require("../../../img/favoritesAddedIcon.png")}
+                          style={{ width: 24, height: 22 }}
+                          alt="sdf"
+                        />
+                      ) : (
+                        <img
+                          src={require("../../../img/favoritesIconBlack.png")}
+                          style={{ width: 24, height: 22 }}
+                          alt="sdf"
+                        />
+                      )}
                     </IconButton>
 
                     <IconButton
@@ -598,17 +612,15 @@ alt="sdf"
                     >
                       {itemAppendingId === props._id ? (
                         <CircularProgress size={30} />
-                      ) : (
-                        
-                          items.findIndex((item: any) => item._id === props._id) !== -1
-                          ?
-                          <img
+                      ) : items.findIndex(
+                          (item: any) => item._id === props._id
+                        ) !== -1 ? (
+                        <img
                           src={require("../../../img/cartAddedIcon.png")}
                           style={{ width: 23, height: 21 }}
                           alt="sdf"
                         />
-                          :
-                        
+                      ) : (
                         <img
                           src={require("../../../img/cartIconBlack.png")}
                           style={{ width: 24, height: 22 }}

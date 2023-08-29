@@ -254,6 +254,8 @@ export interface HomeState {
   status: Status;
   item_status: Status;
   itemAppendingId: string;
+  itemFavoritesId: string;
+itemCompareId: string;
   id: number;
   editItemMode: boolean;
   differencesMode: boolean;

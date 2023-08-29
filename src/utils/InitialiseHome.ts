@@ -53,6 +53,8 @@ export const InitialiseHome = () => {
     status: "" as Status,
     item_status: "" as Status,
     itemAppendingId: "",
+    itemFavoritesId: "",
+    itemCompareId: "",
     itemsDisplay: {} as ItemsDisplay,
     itemsSortedParams: {} as ItemsDisplay,
     itemsCategory: {} as any,

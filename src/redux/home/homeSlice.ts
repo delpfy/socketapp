@@ -27,6 +27,12 @@ const homeSlice = createSlice({
     setSearchedId(state, action: PayloadAction<string>) {
       state.itemAppendingId = action.payload;
     },
+    setFavoritesId(state, action: PayloadAction<string>) {
+      state.itemFavoritesId = action.payload;
+    },
+    setComparisonId(state, action: PayloadAction<string>) {
+      state.itemCompareId = action.payload;
+    },
 
     setEditItemMode(state, action: PayloadAction<boolean>) {
       state.editItemMode = action.payload;
@@ -386,22 +392,17 @@ const homeSlice = createSlice({
       state.status = "success";
       state.itemsDisplay = action.payload;
       state.itemsPromotionOffer = action.payload;
-      console.log(action.payload)
-      state.itemsNew = action.payload.items.sort(
+
+      state.itemsNew = [...action.payload.items].sort(
         (a: Items, b: Items) =>
-          new Date(b.createdAt).getTime() -
-          new Date(a.createdAt).getTime()
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
-      state.itemsTopSale = action.payload.items.sort(
-        (a: Items, b: Items) =>
-          b.quantity -
-          a.quantity
+      state.itemsTopSale = [...action.payload.items].sort(
+        (a: Items, b: Items) => a.quantity - b.quantity
       );
-      state.itemsTopRating = action.payload.items.sort(
-        (a: Items, b: Items) =>
-          b.rating -
-          a.rating
-      );;
+      state.itemsTopRating = [...action.payload.items].sort(
+        (a: Items, b: Items) => b.rating - a.rating
+      );
     });
     builder.addCase(getAllItems.pending, (state) => {
       state.status = "pending";
@@ -467,6 +468,8 @@ const homeSlice = createSlice({
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;
       state.itemAppendingId = "";
+      state.itemCompareId = "";
+      state.itemFavoritesId = "";
       state.item_status = "success";
     });
     builder.addCase(getItemById.pending, (state, action) => {
@@ -475,10 +478,14 @@ const homeSlice = createSlice({
     builder.addCase(getItemById.rejected, (state) => {
       state.item_status = "error";
       state.itemAppendingId = "";
+      state.itemCompareId = "";
+      state.itemFavoritesId = "";
     });
 
     builder.addCase(checkItemById.fulfilled, (state, action) => {
       state.itemAppendingId = "";
+      state.itemCompareId = "";
+      state.itemFavoritesId = "";
       state.item_status = "success";
     });
     builder.addCase(checkItemById.pending, (state, action) => {
@@ -487,6 +494,8 @@ const homeSlice = createSlice({
     builder.addCase(checkItemById.rejected, (state) => {
       state.item_status = "error";
       state.itemAppendingId = "";
+      state.itemCompareId = "";
+      state.itemFavoritesId = "";
     });
 
     // update.
@@ -546,6 +555,8 @@ const homeSlice = createSlice({
 export const {
   SetCategory,
   setSearchedId,
+  setFavoritesId,
+setComparisonId,
   setEditItemMode,
   setDifferencesMode,
   synchronizeFavorites,
