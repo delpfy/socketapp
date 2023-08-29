@@ -3,9 +3,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import LaptopCategory from "./addItem_Categories/LaptopCategory";
-import TabletCategory from "./addItem_Categories/TabletCategory";
+import CabelsCategory from "./addItem_Categories/CabelsCategory";
 import MonitorCategory from "./addItem_Categories/MonitorCategory";
 import { useAppSelector } from "../../redux/hooks";
+import NetworkCategory from "./addItem_Categories/NetworkCategory";
+import ElectronicsCategory from "./addItem_Categories/ElectronicsCategory";
 
 export default function AddItem() {
   const { category, editItemMode } = useAppSelector((state) => state.home);
@@ -16,13 +18,18 @@ export default function AddItem() {
   }
   useEffect(() => {
     window.scrollTo(0, 0);
-}, []);
+  }, []);
   function DisplayParams() {
     switch (categoryLocal) {
       case "Ноутбуки":
         return <LaptopCategory category={categoryLocal} />;
-      case "Планшети":
-        return <TabletCategory category={categoryLocal} />;
+      case "Кабелі та перехідники":
+        return <CabelsCategory category={categoryLocal} />;
+      case "Мережеве обладнання":
+        return <NetworkCategory category={categoryLocal} />;
+        case "Аксесуари для електроніки":
+        return <ElectronicsCategory category={categoryLocal} />;
+        
       case "Монітори":
         return <MonitorCategory category={categoryLocal} />;
     }
@@ -67,7 +74,10 @@ export default function AddItem() {
             >
               <MenuItem value={"Ноутбуки"}>Ноутбуки</MenuItem>
               <MenuItem value={"Монітори"}>Монітори</MenuItem>
-              <MenuItem value={"Планшети"}>Планшети</MenuItem>
+              <MenuItem value={"Кабелі та перехідники"}>Кабелі та перехідники</MenuItem>
+              <MenuItem value={"Мережеве обладнання"}>Мережеве обладнання</MenuItem>
+              <MenuItem value={"Аксесуари для електроніки"}>Аксесуари для електроніки</MenuItem>
+              
             </Select>
           </FormControl>
         </Box>

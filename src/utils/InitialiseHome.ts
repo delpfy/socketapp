@@ -14,14 +14,6 @@ export const InitialiseHome = () => {
       image:
       require("../img/categories/computers.png"),
     },
-    
-    /* {
-      id: 3,
-      name: "Планшети",
-      image:
-        "https://thumb.tildacdn.com/tild3065-3839-4132-b038-343138333930/-/format/webp/premium_photo-168037.jpg",
-    }, */
-    
     {
       id: 3,
       name: "Комп'ютерні комплектуючі",

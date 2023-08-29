@@ -41,12 +41,8 @@ function App() {
   }
 
   useEffect(() => {
-    console.log("HI")
     dispatch(getAllItems());
-    console.log("BYE")
-
     dispatch(checkAuthorization());
-    
   }, []);
 
   React.useEffect(() => {

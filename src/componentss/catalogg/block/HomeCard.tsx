@@ -436,15 +436,7 @@ export default function HomeCard(props: Items) {
             padding: "11%",
           }}
         >
-          {props.sale ? (
-            <img
-              style={{ position: "absolute", zIndex: 1, height: 50, width: 50 }}
-              src="https://www.svgrepo.com/show/250306/percentage-percent.svg"
-              alt=""
-            />
-          ) : (
-            <></>
-          )}
+          
           <IconButton
             sx={{
               position: "absolute",

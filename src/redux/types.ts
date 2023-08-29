@@ -136,7 +136,9 @@ export type UserRegister = {
 
 export type Status = "success" | "pending" | "error";
 export type Category = {
-  category: "Ноутбуки" | "Планшети" | "Монітори";
+  category: "Ноутбуки" | "Мережеве обладнання" | "Монітори" |
+  "Комп'ютери" | "Геймінг" | "Монітори" | 
+  "Аксесуари для електроніки" | "Кабелі та перехідники"
 };
 
 export type TLocationCity = {

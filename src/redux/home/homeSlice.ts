@@ -394,13 +394,13 @@ const homeSlice = createSlice({
       );
       state.itemsTopSale = action.payload.items.sort(
         (a: Items, b: Items) =>
-          a.quantity -
-          b.quantity
+          b.quantity -
+          a.quantity
       );
       state.itemsTopRating = action.payload.items.sort(
         (a: Items, b: Items) =>
-          a.rating -
-          b.rating
+          b.rating -
+          a.rating
       );;
     });
     builder.addCase(getAllItems.pending, (state) => {
