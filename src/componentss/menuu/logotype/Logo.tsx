@@ -7,12 +7,13 @@ export const Logo = () => {
   const navigate = useNavigate();
   return (
     <Box
-      display={"flex"}
+      
       flexDirection={"row"}
       justifyContent={"space-between"}
       alignItems={"center"}
       color={"black"}
       width={137}
+    
       /* paddingBottom={1} */
       onClick={() => navigate("/")}
       sx={{ cursor: "pointer", color: "white", transition: "transform 0.3s ease",
@@ -21,7 +22,13 @@ export const Logo = () => {
       },
       "&:active": {
         transform: "translateY(0)",
-      }, }}
+      },
+      
+      display: {
+        xs: 'none',
+        md: 'flex'
+      }
+    }}
       
     >
       <Typography

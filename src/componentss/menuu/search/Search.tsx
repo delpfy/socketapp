@@ -78,11 +78,11 @@ export default function Search() {
 
   return (
     <>
-      <Box sx={{ width: "43%", alignSelf: 'flex-start', margin: '0 auto', paddingLeft: "4%"}} >
+      <Box  alignItems={'center'} sx={{ width: { xs: '65%', md:  "43%"}, alignSelf: 'flex-start', margin: '0 auto', }} >
         <Autocomplete
           size="small"
-          
-          sx={{ marginTop: 3, backgroundColor: "white", borderRadius: 2,  fontFamily: "'Roboto light', sans-serif!important",}}
+          forcePopupIcon={false}
+          sx={{  marginTop: 2, backgroundColor: "white", borderRadius: 2,  fontFamily: "'Roboto light', sans-serif!important",}}
           options={searchResults === undefined ? [] : searchResults}
           inputValue={searchQuery}
           onInputChange={handleSearchChange}

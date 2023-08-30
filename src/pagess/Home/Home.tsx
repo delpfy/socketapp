@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -50,6 +50,8 @@ import RatingHit from "../../componentss/RatingHit";
 export const Home = () => {
   const { categories, editItemMode } = useAppSelector((state) => state.home);
   const { afterOrder } = useAppSelector((state) => state.basket);
+  const theme = useTheme();
+  const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const dispatch = useAppDispatch();
   const recentlyReviewed = JSON.parse(
@@ -81,17 +83,23 @@ export const Home = () => {
   return (
     <>
       <Box
-        width={"75%"}
-        height={460}
         display={"flex"}
         flexDirection={"column"}
         alignItems={"center"}
         justifyContent={"center"}
-        margin={"0 auto"}
+        margin={"auto"}
         top={127}
         padding={"2%"}
         alignSelf={"center"}
         sx={{
+          height: {
+            xs: 160,
+            md: 460,
+          },
+          width: {
+            xs: 340,
+            md: "75%",
+          },
           background: " black",
           backgroundAttachment: "fixed",
           backgroundRepeat: "no-repeat",
@@ -102,21 +110,26 @@ export const Home = () => {
           navButtonsAlwaysVisible
           navButtonsProps={{
             style: {
-              backgroundColor: "black",
+              backgroundColor: isXsScreen ? "black" : "transparent",
               borderRadius: 0,
+              display: isXsScreen ? "none" : "block",
             },
           }}
           NextIcon={
-            <img
-              style={{ width: 40, height: 40 }}
-              src={require("../../img/swipeRightIcon.png")}
-            />
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <img
+                style={{ width: 40, height: 40 }}
+                src={require("../../img/swipeRightIcon.png")}
+              />
+            </Box>
           }
           PrevIcon={
-            <img
-              style={{ width: 40, height: 40 }}
-              src={require("../../img/swipeLeftIcon.png")}
-            />
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <img
+                style={{ width: 40, height: 40 }}
+                src={require("../../img/swipeLeftIcon.png")}
+              />
+            </Box>
           }
           sx={{
             color: "#fff",
@@ -129,16 +142,16 @@ export const Home = () => {
             textAlign: "left",
             justifyContent: "space-around",
             flexDirection: "column",
-            margin: "0 auto",
+            margin: "auto",
             boxSizing: "border-box",
           }}
         >
           <Box
-            height={"90%"}
+            height={"80%"}
             sx={{
               color: "#fff",
               width: {
-                xs: "80%",
+                xs: "90%",
                 lg: "80%",
               },
               display: "flex",
@@ -146,57 +159,105 @@ export const Home = () => {
               textAlign: "left",
               justifyContent: "space-around",
               flexDirection: "column",
-              margin: "0 auto",
+              margin: "auto",
               boxSizing: "border-box",
             }}
           >
             <Box
               display={"flex"}
-              height={460}
+              sx={{
+                height: {
+                  xs: 120,
+                  md: 460,
+                },
+                margin: "0 auto",
+              }}
               width={"100%"}
               flexDirection={"row"}
-              justifyContent={"space-around"}
+              justifyContent={"space-between"}
               alignItems={"flex-start"}
             >
               <Box
-                height={"46%"}
+                sx={{
+                  height: {
+                    xs: "60%",
+                    md: "30%",
+                  },
+                  paddingTop: {
+                    xs: "0%",
+                    md: "5%",
+                  },
+                }}
                 display={"flex"}
                 alignItems={"flex-start"}
                 flexDirection={"column"}
-                justifyContent={"space-around"}
+                justifyContent={"space-between"}
               >
                 <Typography
                   variant={"h3"}
-                  fontSize={36}
-                  height={35}
+                  sx={{
+                    fontSize: {
+                      xs: 14,
+                      md: 36,
+                    },
+                    height: {
+                      xs: 35,
+                      md: 36,
+                    },
+                  }}
                   fontFamily={"Comfortaa"}
                 >
                   Отримай кешбек <br /> 1% вартості товару
                 </Typography>
                 <Typography
                   variant={"h3"}
-                  fontSize={16}
-                  height={18}
+                  display={"flex"}
+                  alignItems={"center"}
+                  sx={{
+                    fontSize: {
+                      xs: 10,
+                      md: 16,
+                    },
+                    height: {
+                      xs: 35,
+                      md: 35,
+                    },
+                  }}
                   fontFamily={"Comfortaa"}
                 >
-                  кешбек 1% при оплаті карткою Приват24
+                  кешбек 1% при <br /> оплаті карткою Приват24
                 </Typography>
               </Box>
-              <Box>
+              <Box
+                sx={{
+                  height: {
+                    xs: 130,
+                    md: 460,
+                  },
+                  width: {
+                    xs: 130,
+                    md: 460,
+                  },
+                }}
+              >
                 <img
                   src={require("../../img/socketHandImage.png")}
-                  style={{ width: 460, height: 460 }}
+                  style={{
+                    width: "inherit",
+                    height: "inherit",
+                    objectFit: "cover",
+                  }}
                   alt="sdf"
                 />
               </Box>
             </Box>
           </Box>
           <Box
-            height={"100%"}
+            height={"80%"}
             sx={{
               color: "#fff",
               width: {
-                xs: "80%",
+                xs: "90%",
                 lg: "80%",
               },
               display: "flex",
@@ -204,46 +265,94 @@ export const Home = () => {
               textAlign: "left",
               justifyContent: "space-around",
               flexDirection: "column",
-              margin: "0 auto",
+              margin: "auto",
               boxSizing: "border-box",
             }}
           >
             <Box
               display={"flex"}
-              height={460}
+              sx={{
+                height: {
+                  xs: 120,
+                  md: 460,
+                },
+                margin: "0 auto",
+              }}
               width={"100%"}
               flexDirection={"row"}
-              justifyContent={"space-around"}
+              justifyContent={"space-between"}
               alignItems={"flex-start"}
             >
               <Box
-                height={"46%"}
+                sx={{
+                  height: {
+                    xs: "60%",
+                    md: "30%",
+                  },
+                  paddingTop: {
+                    xs: "0%",
+                    md: "5%",
+                  },
+                }}
                 display={"flex"}
                 alignItems={"flex-start"}
                 flexDirection={"column"}
-                justifyContent={"space-around"}
+                justifyContent={"space-between"}
               >
                 <Typography
                   variant={"h3"}
-                  fontSize={36}
-                  height={35}
+                  sx={{
+                    fontSize: {
+                      xs: 14,
+                      md: 36,
+                    },
+                    height: {
+                      xs: 35,
+                      md: 36,
+                    },
+                  }}
                   fontFamily={"Comfortaa"}
                 >
                   Отримай кешбек <br /> 1% вартості товару
                 </Typography>
                 <Typography
                   variant={"h3"}
-                  fontSize={16}
-                  height={18}
+                  display={"flex"}
+                  alignItems={"center"}
+                  sx={{
+                    fontSize: {
+                      xs: 10,
+                      md: 16,
+                    },
+                    height: {
+                      xs: 35,
+                      md: 35,
+                    },
+                  }}
                   fontFamily={"Comfortaa"}
                 >
-                  кешбек 1% при оплаті карткою Приват24
+                  кешбек 1% при <br /> оплаті карткою Приват24
                 </Typography>
               </Box>
-              <Box>
+              <Box
+                sx={{
+                  height: {
+                    xs: 130,
+                    md: 460,
+                  },
+                  width: {
+                    xs: 130,
+                    md: 460,
+                  },
+                }}
+              >
                 <img
                   src={require("../../img/socketHandImage.png")}
-                  style={{ width: 460, height: 460 }}
+                  style={{
+                    width: "inherit",
+                    height: "inherit",
+                    objectFit: "cover",
+                  }}
                   alt="sdf"
                 />
               </Box>
@@ -265,11 +374,16 @@ export const Home = () => {
         <Box
           width={"100%"}
           height={"100%"}
-          display={"flex"}
           flexDirection={"column"}
           alignItems={"center"}
           textAlign={"center"}
           marginTop={"12%"}
+          sx={{
+            display: {
+              xs: "none",
+              md: "flex",
+            },
+          }}
         >
           <Grid
             container
@@ -310,7 +424,7 @@ export const Home = () => {
           variant={"h3"}
           fontSize={37}
           fontFamily={"Comfortaa"}
-          paddingTop={7}
+          paddingTop={27}
           paddingBottom={2}
           textAlign={"center"}
         >

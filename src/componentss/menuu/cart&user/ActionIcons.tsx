@@ -166,19 +166,34 @@ export const ActionIcons = () => {
         justifyContent={"flex-start"}
         alignItems={"center"}
         maxWidth={"80%"}
-        paddingLeft={3}
+        sx={{
+          paddingRight: {
+            xs: '0',
+            md: 3
+          }
+        }}
       >
         <Box
           display={"flex"}
           justifyContent={"space-between"}
           alignItems={"center"}
-          paddingRight={8}
+          
+          sx={{
+            paddingRight: {
+              xs: '0',
+              md: 8
+            }
+          }}
           maxWidth={"43%"}
           minWidth={"43%"}
         >
           <>
             <IconButton
             sx={{
+              display: {
+                xs: 'none',
+                md: 'flex'
+              },
               transition: "transform 0.3s ease",
               "&:hover": {
                 transform: "translateY(-3px)",
@@ -236,6 +251,10 @@ export const ActionIcons = () => {
           <>
             <IconButton
             sx={{
+              display: {
+                xs: 'none',
+                md: 'flex'
+              },
               transition: "transform 0.3s ease",
               "&:hover": {
                 transform: "translateY(-3px)",
@@ -304,6 +323,7 @@ export const ActionIcons = () => {
             <>
               <IconButton
                 sx={{
+                  
                   transition: "transform 0.3s ease",
                   "&:hover": {
                     transform: "translateY(-3px)",
@@ -369,7 +389,12 @@ export const ActionIcons = () => {
               </IconButton>
             </>
           )}
-          <Box>
+          <Box sx = {{
+            display: {
+              xs: 'none',
+              md: 'flex'
+            },
+          }}>
             <IconButton sx={{
               transition: "transform 0.3s ease",
               "&:hover": {
@@ -384,12 +409,18 @@ export const ActionIcons = () => {
           </Box>
         </Box>
         <Box
-          display={"flex"}
+          
           justifyContent={"space-between"}
           alignItems={"flex-end"}
           paddingRight={5}
           maxWidth={"40%"}
           minWidth={"40%"}
+          sx={{
+            display: {
+              xs: 'none',
+              md: 'flex'
+            },
+          }}
         >
           <Link href="https://www.facebook.com/">
             <IconButton sx={{

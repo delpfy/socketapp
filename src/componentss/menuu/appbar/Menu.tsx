@@ -116,7 +116,7 @@ export default function AppBarMenu() {
           width={"95%"}
           height={"90%"}
           margin={"0 auto"}
-          justifySelf={"center"}
+          
           display={"flex"}
           flexDirection={"row"}
           alignItems={"center"}
@@ -124,8 +124,22 @@ export default function AppBarMenu() {
         >
           <Box
             display={"flex"}
-            width={"25%"}
-            justifyContent={"space-evenly"}
+           
+            sx = {{
+              width: {
+                xs: '15%',
+                md: '23%',
+              },
+              margin: {
+                xs: '0 auto',
+                md: 0
+              },
+              justifyContent: {
+                xs: 'center',
+                md: "space-evenly"
+              }
+            }}
+            
             flexDirection={"row"}
             alignItems={"center"}
           >
@@ -133,9 +147,7 @@ export default function AppBarMenu() {
               size="large"
               edge="start"
               aria-label="menu"
-              sx={{
-                mr: 2,
-              }}
+              
               onClick={toggleDrawer("left", true)}
             >
               <MenuIcon
@@ -155,7 +167,13 @@ export default function AppBarMenu() {
           <Search />
           <Box
             display={"flex"}
-            width={"32%"}
+            
+            sx = {{
+              width: {
+                xs: '15%',
+                md: '32%'
+              },
+            }}
             flexDirection={"row"}
             alignItems={"center"}
             justifyContent={"space-evenly"}
