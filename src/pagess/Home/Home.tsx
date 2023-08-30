@@ -1,4 +1,11 @@
-import { Box, Grid, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React, { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -369,7 +376,32 @@ export const Home = () => {
           </div>
         </Box> */}
       </Box>
-
+      <Box
+        width={"90%"}
+        margin={"0 auto"}
+        paddingTop={20}
+        sx={{ display: { xs: "flex", md: "none" } }}
+      >
+        <Button
+          fullWidth
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+            background: "black",
+            color: "white",
+          }}
+          variant="outlined"
+        >
+          <img
+            src={require("../../img/cleverIcon.png")}
+            style={{ width: 18, height: 18 }}
+            alt="sdf"
+          />
+          <Typography width={"100%"} fontSize={14}>
+            Категорії товарів
+          </Typography>{" "}
+        </Button>
+      </Box>
       <Box width={"85%"} margin={"0 auto"} alignSelf={"center"}>
         <Box
           width={"100%"}
@@ -377,11 +409,14 @@ export const Home = () => {
           flexDirection={"column"}
           alignItems={"center"}
           textAlign={"center"}
-          marginTop={"12%"}
           sx={{
             display: {
               xs: "none",
               md: "flex",
+            },
+            marginTop: {
+              xs: 3,
+              md: "12%",
             },
           }}
         >
@@ -424,7 +459,12 @@ export const Home = () => {
           variant={"h3"}
           fontSize={37}
           fontFamily={"Comfortaa"}
-          paddingTop={27}
+          sx={{
+            marginTop: {
+              xs: 3,
+              md: 20,
+            },
+          }}
           paddingBottom={2}
           textAlign={"center"}
         >

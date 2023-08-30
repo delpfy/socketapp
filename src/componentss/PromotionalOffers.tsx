@@ -23,7 +23,7 @@ export default function PromotionalOffers() {
             padding={"2%"}
             justifyContent="center"
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 2, md: 4, lg: 4, xl: 25 }}
+            columns={{ xs: 4, sm: 2, md: 4, lg: 4, xl: 25 }}
           >
             {itemsPromotionOffer.items !== undefined  && status === 'success'? (
               itemsPromotionOffer.items

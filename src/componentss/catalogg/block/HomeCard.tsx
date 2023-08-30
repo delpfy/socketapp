@@ -420,8 +420,14 @@ export default function HomeCard(props: Items) {
         />
         <Box
           sx={{
-            maxWidth: 200,
-            minWidth: 200,
+            maxWidth: {
+              xs: 150,
+              md: 200,
+            },
+            minWidth: {
+              xs: 150,
+              md: 200,
+            },
             minHeight: 320,
             maxHeight: 320,
             display: "flex",
@@ -454,8 +460,14 @@ export default function HomeCard(props: Items) {
           <CardMedia
             component="img"
             sx={{
-              maxHeight: 200,
-              minHeight: 200,
+              maxHeight: {
+                xs: 150,
+                md: 200,
+              },
+              minHeight: {
+                xs: 150,
+                md: 200,
+              },
               objectFit: "contain",
               overflow: "hidden",
             }}
@@ -472,7 +484,12 @@ export default function HomeCard(props: Items) {
               overflow={"hidden"}
               fontSize={16}
               textAlign={"left"}
-              marginBottom={3}
+              sx={{
+                marginBottom: {
+                  xs: 0,
+                  md: 3,
+                },
+              }}
             >
               {props.name}
             </Typography>
@@ -485,12 +502,22 @@ export default function HomeCard(props: Items) {
               minHeight: "40%",
               maxHeight: "40%",
               paddingTop: 0,
+
+              width: {
+                xs: 150,
+                md: 200,
+              },
             }}
           >
             <Box
               display={"flex"}
               flexDirection={"column"}
-              width={"100%"}
+              sx={{
+                width: {
+                  xs: 150,
+                  md: 200,
+                },
+              }}
               textAlign={"left"}
               justifyContent={"flex-start"}
             >
