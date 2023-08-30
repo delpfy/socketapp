@@ -73,37 +73,42 @@ export default function ReviewForm(props: Items | TShippingItems) {
   }, [item_totalRating]);
 
   async function review_POST() {
-    if (rating === 0) {
-      ErrorDialog_open();
-      setErrorMessage("Оберіть кількість зірок");
-      return;
-    }
-
-    await dispatch(
-      createReview({
-        _id: "",
-        item: props._id,
-        userName: user.name,
-        description: description.replace(/\s+/g, " "),
-        rating: rating,
-        replies: [],
-        advantages: advantages.replace(/\s+/g, " "),
-        disadvantages: disadvantages.replace(/\s+/g, " "),
-      })
-    ).then((result: any) => {
-      console.log("result.status " + result.meta.requestStatus);
-      if (result.meta.requestStatus === "fulfilled") {
-        InfoDialog_open();
-        setInfoMessage("Дякуємо за відгук");
-        dispatch(getItemReviews(props._id));
-        dispatch(
-          setTotalRating({ prevStars: 0, stars: rating, func: "append" })
-        );
-      } else if (result.meta.requestStatus === "rejected") {
+    if (user.authorized) {
+      if (rating === 0) {
         ErrorDialog_open();
-        setErrorMessage("Схоже при обробці запиту виникла помилка");
+        setErrorMessage("Оберіть кількість зірок");
+        return;
       }
-    });
+
+      await dispatch(
+        createReview({
+          _id: "",
+          item: props._id,
+          userName: user.name,
+          description: description.replace(/\s+/g, " "),
+          rating: rating,
+          replies: [],
+          advantages: advantages.replace(/\s+/g, " "),
+          disadvantages: disadvantages.replace(/\s+/g, " "),
+        })
+      ).then((result: any) => {
+        console.log("result.status " + result.meta.requestStatus);
+        if (result.meta.requestStatus === "fulfilled") {
+          InfoDialog_open();
+          setInfoMessage("Дякуємо за відгук");
+          dispatch(getItemReviews(props._id));
+          dispatch(
+            setTotalRating({ prevStars: 0, stars: rating, func: "append" })
+          );
+        } else if (result.meta.requestStatus === "rejected") {
+          ErrorDialog_open();
+          setErrorMessage("Схоже при обробці запиту виникла помилка");
+        }
+      });
+    } else {
+      ErrorDialog_open();
+      setErrorMessage("Авторизуйтесь для того, щоб залишити відгук");
+    }
   }
 
   return (

@@ -26,15 +26,22 @@ export default function ReplyForm(review: IReviewGET) {
   }
 
   function executeReply_POST() {
-    setExecute_POST(true);
-    setReplies((current) => [
-      ...current,
-      {
-        user: user.id,
-        userName: userName,
-        description: description,
-      },
-    ]);
+    if(user.authorized){
+      setExecute_POST(true);
+      setReplies((current) => [
+        ...current,
+        {
+          user: user.id,
+          userName: userName,
+          description: description,
+        },
+      ]);
+    }
+    else{
+      ErrorDialog_open();
+      setErrorMessage("Авторизуйтесь для того, щоб відповісти на відгук");
+    }
+   
   }
 
   useEffect(() => {
