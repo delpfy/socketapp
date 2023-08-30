@@ -627,7 +627,511 @@ export default function ComparisonCard(props: Items) {
     );
   };
 
-  const TabletTable = ({ item }: { item: any }) => {
+  const CabelsTable = ({ item }: { item: any }) => {
+    const uniqueItemsInCategory = itemsComparison.filter(
+      (otherItem: any) =>
+        otherItem !== item && item.category === otherItem.category
+    );
+
+    const fieldsAreUnique = (item: any, fieldItem: string) => {
+      const diffResults = uniqueItemsInCategory.map((uniqueItem: any) => {
+        if (
+          fieldItem === "supportedDevices" ||
+          fieldItem === "packagingContents" ||
+          fieldItem === "additionalFeatures"
+        ) {
+          return Object.keys(item.fields).some((field) => {
+            if (
+              item.fields[fieldItem].findIndex(
+                (port: any, index: number) =>
+                  port === uniqueItem.fields[fieldItem][index]
+              ) === -1
+            ) {
+              return false;
+            } else {
+              return true;
+            }
+          });
+        } else {
+          return Object.keys(item.fields).some(
+            (field) => item.fields[fieldItem] === uniqueItem.fields[fieldItem]
+          );
+        }
+      });
+
+      for (const unique of diffResults) {
+        if (!unique) {
+          return false;
+        }
+      }
+      return true;
+    };
+    return (
+      <TableContainer
+        component={Paper}
+        sx={{ width: "100%", alignSelf: "center", paddingBottom: 4 }}
+      >
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell style={font}>Бренд:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "brand")
+                  ? item.fields.brand
+                  : differencesMode
+                  ? "-"
+                  : item.fields.brand}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Тип роз'єму:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "connectorType")
+                  ? item.fields.connectorType
+                  : differencesMode
+                  ? "-"
+                  : item.fields.connectorType}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Довжина кабелю:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "cableLength")
+                  ? item.fields.cableLength
+                  : differencesMode
+                  ? "-"
+                  : item.fields.cableLength}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Підтримувані пристрої::</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "supportedDevices")
+                  ? item.fields.supportedDevices
+                  : differencesMode
+                  ? "-"
+                  : item.fields.supportedDevices}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Сумісність:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "compatibility")
+                  ? item.fields.compatibility
+                  : differencesMode
+                  ? "-"
+                  : item.fields.compatibility}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Матеріал:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "material")
+                  ? item.fields.material
+                  : differencesMode
+                  ? "-"
+                  : item.fields.material}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Колір:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "color")
+                  ? item.fields.color
+                  : differencesMode
+                  ? "-"
+                  : item.fields.color}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Додаткові функції:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "additionalFeatures")
+                  ? item.fields.additionalFeatures
+                  : differencesMode
+                  ? "-"
+                  : item.fields.additionalFeatures}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Вміст упаковки:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "packagingContents")
+                  ? item.fields.packagingContents
+                  : differencesMode
+                  ? "-"
+                  : item.fields.packagingContents}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
+
+  const ElectronicsTable = ({ item }: { item: any }) => {
+    const uniqueItemsInCategory = itemsComparison.filter(
+      (otherItem: any) =>
+        otherItem !== item && item.category === otherItem.category
+    );
+
+    const fieldsAreUnique = (item: any, fieldItem: string) => {
+      const diffResults = uniqueItemsInCategory.map((uniqueItem: any) => {
+        if (fieldItem === "dimensions") {
+          return Object.keys(item.fields).some(
+            (field) =>
+              item.fields[fieldItem].width === uniqueItem.fields[field].width ||
+              item.fields[fieldItem].height ===
+                uniqueItem.fields[field].height ||
+              item.fields[fieldItem].depth === uniqueItem.fields[field].depth
+          );
+        }
+        if (fieldItem === "features") {
+          return Object.keys(item.fields).some((field) => {
+            if (
+              item.fields[fieldItem].findIndex(
+                (port: any, index: number) =>
+                  port === uniqueItem.fields[fieldItem][index]
+              ) === -1
+            ) {
+              return false;
+            } else {
+              return true;
+            }
+          });
+        } else {
+          return Object.keys(item.fields).some(
+            (field) => item.fields[fieldItem] === uniqueItem.fields[fieldItem]
+          );
+        }
+      });
+
+      for (const unique of diffResults) {
+        if (!unique) {
+          return false;
+        }
+      }
+      return true;
+    };
+    return (
+      <TableContainer
+        component={Paper}
+        sx={{ width: "100%", alignSelf: "center", paddingBottom: 4 }}
+      >
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell style={font}>Бренд:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "brand")
+                  ? item.fields.brand
+                  : differencesMode
+                  ? "-"
+                  : item.fields.brand}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Тип:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "type")
+                  ? item.fields.type
+                  : differencesMode
+                  ? "-"
+                  : item.fields.type}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Сумісність:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "compatibility")
+                  ? item.fields.compatibility
+                  : differencesMode
+                  ? "-"
+                  : item.fields.compatibility}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Бездротовий:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "wireless")
+                  ? item.fields.wireless
+                    ? "Так"
+                    : "Ні"
+                  : differencesMode
+                  ? "-"
+                  : item.fields.wireless
+                  ? "Так"
+                  : "Ні"}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Колір:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "color")
+                  ? item.fields.color
+                  : differencesMode
+                  ? "-"
+                  : item.fields.color}
+              </TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell style={font}>Матеріал:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "material")
+                  ? item.fields.material
+                  : differencesMode
+                  ? "-"
+                  : item.fields.material}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Особливості:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "features")
+                  ? item.fields.features
+                  : differencesMode
+                  ? "-"
+                  : item.fields.features}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Розміри:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "dimensions")
+                  ? item.fields.dimensions.width +
+                    " x " +
+                    item.fields.dimensions.height +
+                    " x " +
+                    item.fields.dimensions.depth
+                  : differencesMode
+                  ? "-"
+                  : item.fields.dimensions.width +
+                    " x " +
+                    item.fields.dimensions.height +
+                    " x " +
+                    item.fields.dimensions.depth}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Вага:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "weight")
+                  ? item.fields.weight
+                  : differencesMode
+                  ? "-"
+                  : item.fields.weight}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
+
+  const NetworkTable = ({ item }: { item: any }) => {
+    const uniqueItemsInCategory = itemsComparison.filter(
+      (otherItem: any) =>
+        otherItem !== item && item.category === otherItem.category
+    );
+
+    const fieldsAreUnique = (item: any, fieldItem: string) => {
+      const diffResults = uniqueItemsInCategory.map((uniqueItem: any) => {
+        if (fieldItem === "dimensions") {
+          return Object.keys(item.fields).some(
+            (field) =>
+              item.fields[fieldItem].width === uniqueItem.fields[field].width ||
+              item.fields[fieldItem].height ===
+                uniqueItem.fields[field].height ||
+              item.fields[fieldItem].depth === uniqueItem.fields[field].depth
+          );
+        }
+        if (fieldItem === "ports") {
+          return Object.keys(item.fields).some((field) => {
+            if (
+              item.fields[fieldItem].findIndex(
+                (port: any, index: number) =>
+                  port === uniqueItem.fields[fieldItem][index]
+              ) === -1
+            ) {
+              return false;
+            } else {
+              return true;
+            }
+          });
+        } else {
+          return Object.keys(item.fields).some(
+            (field) => item.fields[fieldItem] === uniqueItem.fields[fieldItem]
+          );
+        }
+      });
+
+      for (const unique of diffResults) {
+        if (!unique) {
+          return false;
+        }
+      }
+      return true;
+    };
+    return (
+      <TableContainer
+        component={Paper}
+        sx={{ width: "100%", alignSelf: "center", paddingBottom: 4 }}
+      >
+        <Table>
+          <TableBody>
+            <TableRow>
+              <TableCell style={font}>Бренд:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "brand")
+                  ? item.fields.brand
+                  : differencesMode
+                  ? "-"
+                  : item.fields.brand}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Тип:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "type")
+                  ? item.fields.type
+                  : differencesMode
+                  ? "-"
+                  : item.fields.type}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Порты:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "ports")
+                  ? item.fields.ports
+                  : differencesMode
+                  ? "-"
+                  : item.fields.ports}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Постачання живлення:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "powerSupply")
+                  ? item.fields.powerSupply
+                  : differencesMode
+                  ? "-"
+                  : item.fields.powerSupply}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Максимальна швидкість:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "maxSpeed")
+                  ? item.fields.maxSpeed
+                  : differencesMode
+                  ? "-"
+                  : item.fields.maxSpeed}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Монтаж у стійку:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "compatibility")
+                  ? item.fields.compatibility
+                    ? "Так"
+                    : "Ні"
+                  : differencesMode
+                  ? "-"
+                  : item.fields.compatibility
+                  ? "Так"
+                  : "Ні"}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Підтримка PoE:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "poeSupport")
+                  ? item.fields.poeSupport
+                    ? "Так"
+                    : "Ні"
+                  : differencesMode
+                  ? "-"
+                  : item.fields.poeSupport
+                  ? "Так"
+                  : "Ні"}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Підтримка VPN:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "vpnSupport")
+                  ? item.fields.vpnSupport
+                    ? "Так"
+                    : "Ні"
+                  : differencesMode
+                  ? "-"
+                  : item.fields.vpnSupport
+                  ? "Так"
+                  : "Ні"}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Файервол:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "firewall")
+                  ? item.fields.firewall
+                    ? "Так"
+                    : "Ні"
+                  : differencesMode
+                  ? "-"
+                  : item.fields.firewall
+                  ? "Так"
+                  : "Ні"}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Розміри:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "dimensions")
+                  ? item.fields.dimensions.width +
+                    " x " +
+                    item.fields.dimensions.height +
+                    " x " +
+                    item.fields.dimensions.depth
+                  : differencesMode
+                  ? "-"
+                  : item.fields.dimensions.width +
+                    " x " +
+                    item.fields.dimensions.height +
+                    " x " +
+                    item.fields.dimensions.depth}
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={font}>Вага:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "weight")
+                  ? item.fields.weight
+                  : differencesMode
+                  ? "-"
+                  : item.fields.weight}
+              </TableCell>
+            </TableRow>
+
+            <TableRow>
+              <TableCell style={font}>Колір:</TableCell>
+              <TableCell>
+                {differencesMode && !fieldsAreUnique(item, "color")
+                  ? item.fields.color
+                  : differencesMode
+                  ? "-"
+                  : item.fields.color}
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
+      </TableContainer>
+    );
+  };
+
+  const MonitorTable = ({ item }: { item: any }) => {
     const uniqueItemsInCategory = itemsComparison.filter(
       (otherItem: any) =>
         otherItem !== item && item.category === otherItem.category
@@ -689,26 +1193,6 @@ export default function ComparisonCard(props: Items) {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell style={font}>Лінійка:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "line")
-                  ? item.fields.line
-                  : differencesMode
-                  ? "-"
-                  : item.fields.line}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Попередньо встановлена ОС:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "preinstalledOS")
-                  ? item.fields.preinstalledOS
-                  : differencesMode
-                  ? "-"
-                  : item.fields.preinstalledOS}
-              </TableCell>
-            </TableRow>
-            <TableRow>
               <TableCell style={font}>Діагональ екрану:</TableCell>
               <TableCell>
                 {differencesMode && !fieldsAreUnique(item, "screenDiagonal")
@@ -716,16 +1200,6 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.screenDiagonal}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Роздільна здатність:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "resolution")
-                  ? item.fields.resolution
-                  : differencesMode
-                  ? "-"
-                  : item.fields.resolution}
               </TableCell>
             </TableRow>
             <TableRow>
@@ -737,333 +1211,6 @@ export default function ComparisonCard(props: Items) {
                   ? "-"
                   : item.fields.matrixType}
               </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Датчик освітленості:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "lightSensor")
-                  ? item.fields.lightSensor
-                    ? "Так"
-                    : "Ні"
-                  : differencesMode
-                  ? "-"
-                  : item.fields.lightSensor
-                  ? "Так"
-                  : "Ні"}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Оперативна пам'ять:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "memoryRAM")
-                  ? item.fields.memoryRAM
-                  : differencesMode
-                  ? "-"
-                  : item.fields.memoryRAM}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Вбудована пам'ять:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "builtInMemory")
-                  ? item.fields.builtInMemory
-                  : differencesMode
-                  ? "-"
-                  : item.fields.builtInMemory}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Слот розширення пам'яті:</TableCell>
-              <TableCell>
-                {differencesMode &&
-                !fieldsAreUnique(item, "memoryExpansionSlot")
-                  ? item.fields.memoryExpansionSlot
-                  : differencesMode
-                  ? "-"
-                  : item.fields.memoryExpansionSlot}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Процесор:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "processor")
-                  ? item.fields.processor
-                  : differencesMode
-                  ? "-"
-                  : item.fields.processor}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Частота процесора:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "processorFrequency")
-                  ? item.fields.processorFrequency
-                  : differencesMode
-                  ? "-"
-                  : item.fields.processorFrequency}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Кількість ядер процесора:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "processorCores")
-                  ? item.fields.processorCores
-                  : differencesMode
-                  ? "-"
-                  : item.fields.processorCores}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Вбудовані динаміки:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "builtInSpeakers")
-                  ? item.fields.builtInSpeakers
-                    ? "Так"
-                    : "Ні"
-                  : differencesMode
-                  ? "-"
-                  : item.fields.builtInSpeakers
-                  ? "Так"
-                  : "Ні"}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Ємність батареї:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "batteryCapacity")
-                  ? item.fields.batteryCapacity
-                  : differencesMode
-                  ? "-"
-                  : item.fields.batteryCapacity}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Фронтальна камера:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "frontCamera")
-                  ? item.fields.frontCamera
-                  : differencesMode
-                  ? "-"
-                  : item.fields.frontCamera}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Тилова камера:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "rearCamera")
-                  ? item.fields.rearCamera
-                  : differencesMode
-                  ? "-"
-                  : item.fields.rearCamera}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Wi-Fi:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "wifi")
-                  ? item.fields.wifi
-                  : differencesMode
-                  ? "-"
-                  : item.fields.wifi}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Мережа 3G / 4G (LTE) / 5G:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "cellularNetwork")
-                  ? item.fields.cellularNetwork
-                  : differencesMode
-                  ? "-"
-                  : item.fields.cellularNetwork}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>
-                Голосовий зв'язок в мережах GSM/3G:
-              </TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "voiceCommunication")
-                  ? item.fields.voiceCommunication
-                    ? "Так"
-                    : "Ні"
-                  : differencesMode
-                  ? "-"
-                  : item.fields.voiceCommunication
-                  ? "Так"
-                  : "Ні"}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>GPS:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "gps")
-                  ? item.fields.gps
-                  : differencesMode
-                  ? "-"
-                  : item.fields.gps}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>NFC:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "nfc")
-                  ? item.fields.nfc
-                    ? "Так"
-                    : "Ні"
-                  : differencesMode
-                  ? "-"
-                  : item.fields.nfc
-                  ? "Так"
-                  : "Ні"}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Зовнішні порти:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "externalPorts")
-                  ? item.fields.externalPorts
-                  : differencesMode
-                  ? "-"
-                  : item.fields.externalPorts}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Вага:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "weight")
-                  ? item.fields.weight
-                  : differencesMode
-                  ? "-"
-                  : item.fields.weight}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Розміри:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "dimensions")
-                  ? item.fields.dimensions.width +
-                    " x " +
-                    item.fields.dimensions.height +
-                    " x " +
-                    item.fields.dimensions.depth
-                  : differencesMode
-                  ? "-"
-                  : item.fields.dimensions.width +
-                    " x " +
-                    item.fields.dimensions.height +
-                    " x " +
-                    item.fields.dimensions.depth}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Колір кришки:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "frontPanelColor")
-                  ? item.fields.frontPanelColor
-                  : differencesMode
-                  ? "-"
-                  : item.fields.frontPanelColor}
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Колір корпусу:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "bodyColor")
-                  ? item.fields.bodyColor
-                  : differencesMode
-                  ? "-"
-                  : item.fields.bodyColor}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
-    );
-  };
-
-  const MonitorTable = ({ item }: { item: any }) => {
-    const uniqueItemsInCategory = itemsComparison.filter(
-        (otherItem: any) =>
-          otherItem !== item && item.category === otherItem.category
-      );
-  
-      const fieldsAreUnique = (item: any, fieldItem: string) => {
-        const diffResults = uniqueItemsInCategory.map((uniqueItem: any) => {
-          if (fieldItem === "dimensions") {
-            return Object.keys(item.fields).some(
-              (field) =>
-                item.fields[fieldItem].width === uniqueItem.fields[field].width ||
-                item.fields[fieldItem].height ===
-                  uniqueItem.fields[field].height ||
-                item.fields[fieldItem].depth === uniqueItem.fields[field].depth
-            );
-          }
-          if (fieldItem === "externalPorts") {
-            return Object.keys(item.fields).some((field) => {
-              if (
-                item.fields[fieldItem].findIndex(
-                  (port: any, index: number) =>
-                    port === uniqueItem.fields[fieldItem][index]
-                ) === -1
-              ) {
-                return false;
-              } else {
-                return true;
-              }
-            });
-          } else {
-            return Object.keys(item.fields).some(
-              (field) => item.fields[fieldItem] === uniqueItem.fields[fieldItem]
-            );
-          }
-        });
-  
-        for (const unique of diffResults) {
-          if (!unique) {
-            return false;
-          }
-        }
-        return true;
-      };
-    return (
-      <TableContainer
-        component={Paper}
-        sx={{ width: "100%", alignSelf: "center", paddingBottom: 4 }}
-      >
-        <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell style={font}>Бренд:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "brand")
-                  ? item.fields.brand
-                  : differencesMode
-                  ? "-"
-                  : item.fields.brand}
-                
-               </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Діагональ екрану:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "screenDiagonal")
-                  ? item.fields.screenDiagonal
-                  : differencesMode
-                  ? "-"
-                  : item.fields.screenDiagonal}
-                
-                </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell style={font}>Тип матриці:</TableCell>
-              <TableCell>
-                {differencesMode && !fieldsAreUnique(item, "matrixType")
-                  ? item.fields.matrixType
-                  : differencesMode
-                  ? "-"
-                  : item.fields.matrixType}
-                
-                </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Співвідношення сторін:</TableCell>
@@ -1073,8 +1220,7 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.aspectRatio}
-                
-               </TableCell>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Роздільна здатність:</TableCell>
@@ -1084,8 +1230,7 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.resolution}
-                
-                </TableCell>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Час відгуку:</TableCell>
@@ -1095,8 +1240,7 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.responseTime}
-                
-                </TableCell>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Кут огляду:</TableCell>
@@ -1106,8 +1250,7 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.viewingAngles}
-                
-               </TableCell>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Тип підсвічування:</TableCell>
@@ -1117,8 +1260,7 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.backlightType}
-                
-                </TableCell>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Яскравість:</TableCell>
@@ -1128,8 +1270,7 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.brightness}
-                
-               </TableCell>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Контрастність:</TableCell>
@@ -1139,8 +1280,7 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.contrastRatio}
-                
-                </TableCell>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Покриття екрану:</TableCell>
@@ -1150,13 +1290,12 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.screenCoating}
-                
-                </TableCell>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Зігнутий екран:</TableCell>
               <TableCell>
-              {differencesMode && !fieldsAreUnique(item, "curvedScreen")
+                {differencesMode && !fieldsAreUnique(item, "curvedScreen")
                   ? item.fields.curvedScreen
                     ? "Так"
                     : "Ні"
@@ -1165,7 +1304,7 @@ export default function ComparisonCard(props: Items) {
                   : item.fields.curvedScreen
                   ? "Так"
                   : "Ні"}
-                </TableCell>
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell style={font}>Частота оновлення:</TableCell>
@@ -1175,20 +1314,24 @@ export default function ComparisonCard(props: Items) {
                   : differencesMode
                   ? "-"
                   : item.fields.refreshRate}
-                
-                </TableCell>
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
       </TableContainer>
     );
   };
+
   const renderTable = () => {
     switch (props.category) {
       case "Ноутбуки":
         return <LaptopTable item={props} />;
-      case "Планшети":
-        return <TabletTable item={props} />;
+      case "Кабелі та перехідники":
+        return <CabelsTable item={props} />;
+      case "Мережеве обладнання":
+        return <NetworkTable item={props} />;
+      case "Аксесуари для електроніки":
+        return <ElectronicsTable item={props} />;
       case "Монітори":
         return <MonitorTable item={props} />;
       default:

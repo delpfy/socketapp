@@ -32,7 +32,11 @@ import {
 } from "../../redux/review/reviewSlice";
 import LoadingPage from "../LoadingPage";
 import { setEditItemMode, setSearchedId } from "../../redux/home/homeSlice";
-import { deleteItem, getItemById, getItemsByCategory } from "../../redux/home/asyncActions";
+import {
+  deleteItem,
+  getItemById,
+  getItemsByCategory,
+} from "../../redux/home/asyncActions";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 const font = {
@@ -207,7 +211,7 @@ const LaptopTable = ({ item }: { item: any }) => {
   );
 };
 
-const TabletTable = ({ item }: { item: any }) => {
+const CabelsTable = ({ item }: { item: any }) => {
   return (
     <TableContainer
       component={Paper}
@@ -220,100 +224,86 @@ const TabletTable = ({ item }: { item: any }) => {
             <TableCell>{item.fields.brand}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Лінійка:</TableCell>
-            <TableCell>{item.fields.line}</TableCell>
+            <TableCell style={font}>Тип роз'єму:</TableCell>
+            <TableCell>{item.fields.connectorType}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Попередньо встановлена ОС:</TableCell>
-            <TableCell>{item.fields.preinstalledOS}</TableCell>
+            <TableCell style={font}>Довжина кабелю:</TableCell>
+            <TableCell>{item.fields.cableLength}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Діагональ екрану:</TableCell>
-            <TableCell>{item.fields.screenDiagonal}</TableCell>
+            <TableCell style={font}>Підтримувані пристрої:</TableCell>
+            <TableCell>{item.fields.supportedDevices}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Роздільна здатність:</TableCell>
-            <TableCell>{item.fields.resolution}</TableCell>
+            <TableCell style={font}>Сумісність:</TableCell>
+            <TableCell>{item.fields.compatibility}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Тип матриці:</TableCell>
-            <TableCell>{item.fields.matrixType}</TableCell>
+            <TableCell style={font}>Матеріал:</TableCell>
+            <TableCell>{item.fields.material}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Датчик освітленості:</TableCell>
-            <TableCell>{item.fields.lightSensor ? "Так" : "Ні"}</TableCell>
+            <TableCell style={font}>Колір:</TableCell>
+            <TableCell>{item.fields.color}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Оперативна пам'ять:</TableCell>
-            <TableCell>{item.fields.memoryRAM}</TableCell>
+            <TableCell style={font}>Додаткові функції:</TableCell>
+            <TableCell>{item.fields.additionalFeatures}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Вбудована пам'ять:</TableCell>
-            <TableCell>{item.fields.builtInMemory}</TableCell>
+            <TableCell style={font}>Вміст упаковки:</TableCell>
+            <TableCell>{item.fields.packagingContents}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+const NetworkTable = ({ item }: { item: any }) => {
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{ width: "50%", alignSelf: "center", paddingBottom: 4 }}
+    >
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell style={font}>Бренд:</TableCell>
+            <TableCell>{item.fields.brand}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Слот розширення пам'яті:</TableCell>
-            <TableCell>{item.fields.memoryExpansionSlot}</TableCell>
+            <TableCell style={font}>Тип:</TableCell>
+            <TableCell>{item.fields.type}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Процесор:</TableCell>
-            <TableCell>{item.fields.processor}</TableCell>
+            <TableCell style={font}>Порты:</TableCell>
+            <TableCell>{item.fields.ports}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Частота процесора:</TableCell>
-            <TableCell>{item.fields.processorFrequency}</TableCell>
+            <TableCell style={font}>Постачання живлення:</TableCell>
+            <TableCell>{item.fields.powerSupply}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Кількість ядер процесора:</TableCell>
-            <TableCell>{item.fields.processorCores}</TableCell>
+            <TableCell style={font}>Максимальна швидкість:</TableCell>
+            <TableCell>{item.fields.maxSpeed}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Вбудовані динаміки:</TableCell>
-            <TableCell>{item.fields.builtInSpeakers ? "Так" : "Ні"}</TableCell>
+            <TableCell style={font}>Монтаж у стійку:</TableCell>
+            <TableCell>{item.fields.compatibility ? "Так" : "Ні"}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Ємність батареї:</TableCell>
-            <TableCell>{item.fields.batteryCapacity}</TableCell>
+            <TableCell style={font}>Підтримка PoE:</TableCell>
+            <TableCell>{item.fields.poeSupport ? "Так" : "Ні"}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Фронтальна камера:</TableCell>
-            <TableCell>{item.fields.frontCamera}</TableCell>
+            <TableCell style={font}>Підтримка VPN:</TableCell>
+            <TableCell>{item.fields.vpnSupport ? "Так" : "Ні"}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Тилова камера:</TableCell>
-            <TableCell>{item.fields.rearCamera}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell style={font}>Wi-Fi:</TableCell>
-            <TableCell>{item.fields.wifi}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell style={font}>Мережа 3G / 4G (LTE) / 5G:</TableCell>
-            <TableCell>{item.fields.cellularNetwork}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell style={font}>
-              Голосовий зв'язок в мережах GSM/3G:
-            </TableCell>
-            <TableCell>
-              {item.fields.voiceCommunication ? "Так" : "Ні"}
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell style={font}>GPS:</TableCell>
-            <TableCell>{item.fields.gps}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell style={font}>NFC:</TableCell>
-            <TableCell>{item.fields.nfc ? "Так" : "Ні"}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell style={font}>Зовнішні порти:</TableCell>
-            <TableCell>{item.fields.externalPorts}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell style={font}>Вага:</TableCell>
-            <TableCell>{item.fields.weight}</TableCell>
+            <TableCell style={font}>Файервол:</TableCell>
+            <TableCell>{item.fields.firewall ? "Так" : "Ні"}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell style={font}>Розміри:</TableCell>
@@ -323,12 +313,67 @@ const TabletTable = ({ item }: { item: any }) => {
             </TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Колір кришки:</TableCell>
-            <TableCell>{item.fields.frontPanelColor}</TableCell>
+            <TableCell style={font}>Вага:</TableCell>
+            <TableCell>{item.fields.weight}</TableCell>
+          </TableRow>
+       
+          <TableRow>
+            <TableCell style={font}>Колір:</TableCell>
+            <TableCell>{item.fields.color}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+const ElectronicTable = ({ item }: { item: any }) => {
+  return (
+    <TableContainer
+      component={Paper}
+      sx={{ width: "50%", alignSelf: "center", paddingBottom: 4 }}
+    >
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell style={font}>Бренд:</TableCell>
+            <TableCell>{item.fields.brand}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell style={font}>Колір корпусу:</TableCell>
-            <TableCell>{item.fields.bodyColor}</TableCell>
+            <TableCell style={font}>Тип:</TableCell>
+            <TableCell>{item.fields.type}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Сумісність:</TableCell>
+            <TableCell>{item.fields.compatibility}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Бездротовий:</TableCell>
+            <TableCell>{item.fields.wireless ? "Так" : "Ні"}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Колір:</TableCell>
+            <TableCell>{item.fields.color}</TableCell>
+          </TableRow>
+         
+          <TableRow>
+            <TableCell style={font}>Матеріал:</TableCell>
+            <TableCell>{item.fields.material}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Особливості:</TableCell>
+            <TableCell>{item.fields.features}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Розміри:</TableCell>
+            <TableCell>
+              {item.fields.dimensions.width} x {item.fields.dimensions.height} x{" "}
+              {item.fields.dimensions.depth}
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell style={font}>Вага:</TableCell>
+            <TableCell>{item.fields.weight}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -402,14 +447,12 @@ const MonitorTable = ({ item }: { item: any }) => {
   );
 };
 
-
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { category, itemAppendingId, itemCurrent, item_status, editItemMode } = useAppSelector(
-    (state) => state.home
-  );
+  const { category, itemAppendingId, itemCurrent, item_status, editItemMode } =
+    useAppSelector((state) => state.home);
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
   const { afterOrder } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.user);
@@ -426,7 +469,7 @@ export const ItemPage = () => {
       }
     });
   }
-  
+
   function InfoDialog_open() {
     setOpenInfo(true);
   }
@@ -451,8 +494,12 @@ export const ItemPage = () => {
     switch (itemCurrent.items.category) {
       case "Ноутбуки":
         return <LaptopTable item={itemCurrent.items} />;
-      case "Планшети":
-        return <TabletTable item={itemCurrent.items} />;
+      case "Кабелі та перехідники":
+        return <CabelsTable item={itemCurrent.items} />;
+      case "Аксесуари для електроніки":
+        return <ElectronicTable item={itemCurrent.items} />;
+      case "Мережеве обладнання":
+        return <NetworkTable item={itemCurrent.items} />;
       case "Монітори":
         return <MonitorTable item={itemCurrent.items} />;
       default:
@@ -683,58 +730,53 @@ export const ItemPage = () => {
               {itemCurrent.items.description}
             </Typography>
             {renderTable()}
-            </Box>
           </Box>
-          <Box
+        </Box>
+        <Box
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          width={"100%"}
+          flexDirection={"row"}
+        >
+          {itemCurrent.items.user === user.id ? (
+            <Box
               display={"flex"}
-              justifyContent={"center"}
-              
-              alignItems={"center"}
-              width={"100%"}
+              alignSelf={"center"}
+              justifyContent={"space-between"}
+              alignItems={"flex-end"}
               flexDirection={"row"}
             >
-              {itemCurrent.items.user === user.id ? (
-                <Box
-                  display={"flex"}
-                  
-                  alignSelf={"center"}
-                  justifyContent={"space-between"}
-                  alignItems={"flex-end"}
-                  flexDirection={"row"}
-                >
-                  <IconButton
-                    onClick={() => {
-                      dispatch(deleteItem({ itemId: itemCurrent.items._id })).then(
-                        (result: any) => {
-                          if (result.meta.requestStatus === "fulfilled") {
-                            dispatch(getItemsByCategory(category));
-                            navigate('/catalog')
-                          }
-                        }
-                      );
-                    }}
-                  >
-                    <DeleteForeverIcon
-                      color="error"
-                      sx={{ width: 40, height: 40 }}
-                    />
-                  </IconButton>
-                  {itemAppendingId === itemCurrent.items._id ? (
-                    <CircularProgress size={20} />
-                  ) : (
-                    <IconButton onClick={redirectToAddItemPage}>
-                      <EditIcon
-                        color="warning"
-                        sx={{ width: 40, height: 40 }}
-                      />
-                    </IconButton>
-                  )}
-                </Box>
+              <IconButton
+                onClick={() => {
+                  dispatch(deleteItem({ itemId: itemCurrent.items._id })).then(
+                    (result: any) => {
+                      if (result.meta.requestStatus === "fulfilled") {
+                        dispatch(getItemsByCategory(category));
+                        navigate("/catalog");
+                      }
+                    }
+                  );
+                }}
+              >
+                <DeleteForeverIcon
+                  color="error"
+                  sx={{ width: 40, height: 40 }}
+                />
+              </IconButton>
+              {itemAppendingId === itemCurrent.items._id ? (
+                <CircularProgress size={20} />
               ) : (
-                <></>
+                <IconButton onClick={redirectToAddItemPage}>
+                  <EditIcon color="warning" sx={{ width: 40, height: 40 }} />
+                </IconButton>
               )}
-              <Box>
-              <Button
+            </Box>
+          ) : (
+            <></>
+          )}
+          <Box>
+            <Button
               onClick={() => basketItem_APPEND()}
               sx={{
                 width: {
@@ -750,21 +792,21 @@ export const ItemPage = () => {
             >
               Покласти у кошик
             </Button>
-            </Box>
-            </Box>
-          
-          <Box paddingTop={10}>
-            <Typography
-              fontFamily={"Comfortaa"}
-              sx={{ textAlign: "center" }}
-              fontSize={25}
-            >
-              Відгуки
-            </Typography>
-            <ReviewForm {...itemCurrent.items} />
-            <Box>{StatusReviewHandler(status_review)}</Box>
           </Box>
-       
+        </Box>
+
+        <Box paddingTop={10}>
+          <Typography
+            fontFamily={"Comfortaa"}
+            sx={{ textAlign: "center" }}
+            fontSize={25}
+          >
+            Відгуки
+          </Typography>
+          <ReviewForm {...itemCurrent.items} />
+          <Box>{StatusReviewHandler(status_review)}</Box>
+        </Box>
+
         <InfoDialog
           openInfo={openInfo}
           InfoDialog_close={InfoDialog_close}

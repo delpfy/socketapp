@@ -24,7 +24,9 @@ import {
 } from "../../redux/home/homeSlice";
 import LaptopFields from "./LaptopFields";
 import MonitorFields from "./MonitorFields";
-import TabletFields from "./TabletFields";
+import CabelsFields from "./CablesFields";
+import ElectronicsFields from "./ElectronicsFields";
+import NetworkFields from "./NetworkFields";
 
 export default function SortBy() {
   const { category } = useAppSelector((state) => state.home);
@@ -84,8 +86,12 @@ export default function SortBy() {
     switch (category) {
       case "Ноутбуки":
         return <LaptopFields />;
-      case "Планшети":
-        return <TabletFields />;
+        case "Кабелі та перехідники":
+          return <CabelsFields />;
+          case "Аксесуари для електроніки":
+            return <ElectronicsFields  />;
+          case "Мережеве обладнання":
+            return <NetworkFields  />;
       case "Монітори":
         return <MonitorFields />;
     }
