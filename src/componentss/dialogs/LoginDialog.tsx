@@ -44,21 +44,24 @@ export default function LoginDialog({
   openLogin,
   LoginDialog_close,
 }: Props) {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [loginForm, setLoginForm] = useState({
+    email: "",
+    password: "",
+  });
+
   const [openToken, setOpenToken] = useState(false);
   const [passVisible, setPassVisible] = useState(true);
   const { status, user_status } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
   function TokenDialog_open() {
-    if (!validateEmail(email)) {
+    if (!validateEmail(loginForm.email)) {
       ErrorDialog_open(true);
       setErrorMessage("Введіть пошту, на неї буде відправлено код відновлення");
       return;
     }
-    dispatch(setUserEmail(email));
-    dispatch(ResetPassword({ email })).then((result: any) => {
+    dispatch(setUserEmail(loginForm.email));
+    dispatch(ResetPassword({ email: loginForm.email })).then((result: any) => {
       if (result.meta.requestStatus === "rejected") {
         ErrorDialog_open(true);
         setErrorMessage("Схоже, такої пошти не існує...");
@@ -67,6 +70,13 @@ export default function LoginDialog({
         LoginDialog_open(false);
         setOpenToken(true);
       }
+    });
+  }
+
+  function handleLoginFormChange(e: any) {
+    setLoginForm({
+      ...loginForm,
+      [e.target.name]: e.target.value,
     });
   }
 
@@ -79,14 +89,14 @@ export default function LoginDialog({
     return emailRegex.test(email);
   }
 
-  async function RedirectLogin(email: string, password: string) {
-    if (!validateEmail(email)) {
+  async function RedirectLogin() {
+    if (!validateEmail(loginForm.email)) {
       ErrorDialog_open(true);
       setErrorMessage("Некоректний формат пошти");
       return;
     }
 
-    if (password.length < 5) {
+    if (loginForm.password.length < 5) {
       ErrorDialog_open(true);
       setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
 
@@ -95,8 +105,8 @@ export default function LoginDialog({
 
     await dispatch(
       Authorize({
-        email: email,
-        password: password,
+        email: loginForm.email,
+        password: loginForm.password,
       })
     ).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
@@ -149,10 +159,11 @@ export default function LoginDialog({
             margin="dense"
             label="Пошта"
             type="email"
-            value={email}
+            name="email"
+            value={loginForm.email}
             fullWidth
             variant="standard"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={handleLoginFormChange}
           />
 
           <OutlinedInput
@@ -161,7 +172,8 @@ export default function LoginDialog({
             id="password"
             sx={{ marginTop: 2, marginBottom: 2 }}
             placeholder="Пароль"
-            value={password}
+            value={loginForm.password}
+            name="password"
             fullWidth
             type={passVisible ? "password" : "text"}
             endAdornment={
@@ -175,7 +187,7 @@ export default function LoginDialog({
                 </IconButton>
               </InputAdornment>
             }
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={handleLoginFormChange}
           />
           {status === "pending" ? (
             <CircularProgress size={20} />
@@ -200,9 +212,7 @@ export default function LoginDialog({
           ) : (
             <Button
               sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-              onClick={() => {
-                RedirectLogin(email, password);
-              }}
+              onClick={RedirectLogin}
             >
               Продовжити
             </Button>

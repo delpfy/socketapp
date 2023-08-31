@@ -40,63 +40,63 @@ export default function RegisterDialog({
   closeRegisterDialog,
   closeRegAfterSuccess,
 }: Props) {
-  const [email, setEmail] = useState<string>("");
-  const [passFirst, setPassFirst] = useState<string>("");
-  const [passSecond, setPassSecond] = useState<string>("");
-  const [role, setRole] = useState<string>("");
-  const [fullName, setFullName] = useState<string>("");
+  const [registerForm, setRegisterForm] = useState({
+    email: "",
+    passFirst: "",
+    passSecond: "",
+    fullName: "",
+    role: "",
+  });
+
   const [passVisible, setPassVisible] = useState(true);
   const { confirmEmail_status } = useAppSelector((state) => state.user);
   const [passError, setPassError] = useState(false);
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRole(event.target.value);
-  };
 
   const dispatch = useAppDispatch();
+
+  function handleRegisterFormChange(e: any) {
+    setRegisterForm({
+      ...registerForm,
+      [e.target.name]: e.target.value,
+    });
+  }
 
   function validateEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   }
 
-  function RedirectRegister(
-    email: string,
-    fullName: string,
-    role: string,
-    password: string
-  ) {
-    if (!validateEmail(email)) {
+  function RedirectRegister() {
+    if (!validateEmail(registerForm.email)) {
       ErrorDialog_open(true);
       setErrorMessage("Некоректний формат пошти");
       return;
     }
 
-    if (fullName.length < 3 || fullName.length > 20) {
+    if (registerForm.fullName.length < 3 || registerForm.fullName.length > 20) {
       ErrorDialog_open(true);
       setErrorMessage(
         "Ім'я має бути завдовжки мінімум 3 символа та максимум 20"
       );
       return;
     }
-    const valid = passFirst === passSecond;
-    if(valid){
+    const valid = registerForm.passFirst === registerForm.passSecond;
+    if (valid) {
       setPassError(false);
-      if (password.length < 5) {
-        
+      if (registerForm.passFirst.length < 5) {
         ErrorDialog_open(true);
         setErrorMessage("Пароль має бути завдовжки мінімум 5 символів");
         return;
       }
-    }else{
+    } else {
       setPassError(true);
       ErrorDialog_open(true);
       setErrorMessage("Паролі не співпадають");
       return;
     }
-    
 
     const validRoles = ["customer", "manager"];
-    if (!validRoles.includes(role)) {
+    if (!validRoles.includes(registerForm.role)) {
       ErrorDialog_open(true);
       setErrorMessage("Ви не обрали ролі");
       return;
@@ -106,10 +106,10 @@ export default function RegisterDialog({
       dispatch(NullifyToken());
       dispatch(
         Register({
-          email: email,
-          fullName: fullName.replace(/\s+/g, " "),
-          role: role,
-          password: password,
+          email: registerForm.email,
+          fullName: registerForm.fullName.replace(/\s+/g, " "),
+          role: registerForm.role,
+          password: registerForm.passFirst,
           avatarUrl: "",
           expences: 0,
         })
@@ -165,10 +165,11 @@ export default function RegisterDialog({
           id="email"
           label="Пошта"
           type="email"
-          value={email}
+          name="email"
+          value={registerForm.email}
           fullWidth
           variant="standard"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleRegisterFormChange}
         />
         <TextField
           autoFocus
@@ -176,10 +177,11 @@ export default function RegisterDialog({
           id="fullName"
           label="Ваше гарне ім'я"
           type="name"
-          value={fullName}
+          name="fullName"
+          value={registerForm.fullName}
           fullWidth
           variant="standard"
-          onChange={(e) => setFullName(e.target.value)}
+          onChange={handleRegisterFormChange}
         />
 
         <OutlinedInput
@@ -188,7 +190,8 @@ export default function RegisterDialog({
           id="password"
           sx={{ marginTop: 2, marginBottom: 2 }}
           placeholder="Пароль"
-          value={passFirst}
+          value={registerForm.passFirst}
+          name="passFirst"
           fullWidth
           type={passVisible ? "password" : "text"}
           endAdornment={
@@ -202,7 +205,7 @@ export default function RegisterDialog({
               </IconButton>
             </InputAdornment>
           }
-          onChange={(e) => setPassFirst(e.target.value)}
+          onChange={handleRegisterFormChange}
           error={passError}
         />
         <OutlinedInput
@@ -211,7 +214,8 @@ export default function RegisterDialog({
           id="password"
           sx={{ marginTop: 2, marginBottom: 2 }}
           placeholder="Пароль"
-          value={passSecond}
+          value={registerForm.passSecond}
+          name="passSecond"
           fullWidth
           type={passVisible ? "password" : "text"}
           endAdornment={
@@ -225,9 +229,8 @@ export default function RegisterDialog({
               </IconButton>
             </InputAdornment>
           }
-          onChange={(e) => setPassSecond(e.target.value)}
+          onChange={handleRegisterFormChange}
           error={passError}
-          
         />
         <FormControl>
           <FormLabel id="demo-radio-buttons-group-label">
@@ -240,7 +243,8 @@ export default function RegisterDialog({
           >
             <FormControlLabel
               value="customer"
-              control={<Radio onChange={handleChange} />}
+              name="role"
+              control={<Radio onChange={handleRegisterFormChange} />}
               label="Користувач"
             />
             {/* <FormControlLabel
@@ -257,7 +261,7 @@ export default function RegisterDialog({
         ) : (
           <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={() => RedirectRegister(email, fullName, role, passFirst)}
+            onClick={RedirectRegister}
           >
             Продовжити
           </Button>
