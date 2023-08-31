@@ -618,7 +618,7 @@ export const ItemPage = () => {
             >
               <Box>
                 <img
-                  src={itemCurrent.items.image[0]}
+                  src={`http://localhost:4000${itemCurrent.items.image[0]}`}
                   alt="img1"
                   style={{ width: "100%", height: 700, objectFit: "contain" }}
                 />

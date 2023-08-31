@@ -7,7 +7,6 @@ import {
   ResetPassword,
   Update,
   UpdatePassword,
-  UploadAvatar,
 } from "./asyncActions";
 import { Status, UserDisplay } from "../types";
 
@@ -86,13 +85,7 @@ const userSlice = createSlice({
       state.user.authorized = false;
     });
 
-    // Upload avatar.
-    builder.addCase(UploadAvatar.fulfilled, (state, action) => {
-      state.avatarFile = action.payload.url;
-      console.log("action.payload.url " + action.payload.url);
-    });
-    builder.addCase(UploadAvatar.pending, (state) => {});
-    builder.addCase(UploadAvatar.rejected, (state, action) => {});
+    
 
     // Register.
     builder.addCase(Register.fulfilled, (state, action) => {

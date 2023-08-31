@@ -9,6 +9,7 @@ import {
   searchItems,
   updateItem,
   updateItemFields,
+  UploadItemImage,
 } from "./asyncActions";
 import { actualizeData } from "../../utils/actuilizeLocalStorageData";
 import { actualizeFirstRender } from "../../utils/actualizeFirstLoad";
@@ -24,6 +25,12 @@ const homeSlice = createSlice({
       state.category = action.payload;
     },
 
+    clearCurrentImages(state){
+      state.currentImages = []
+    },
+    setCurrentImages(state, action: PayloadAction<[]>){
+      state.currentImages = action.payload
+    },
     setSearchedId(state, action: PayloadAction<string>) {
       state.itemAppendingId = action.payload;
     },
@@ -431,6 +438,17 @@ const homeSlice = createSlice({
   },
 
   extraReducers: (builder) => {
+
+// Upload item_image.
+builder.addCase(UploadItemImage.fulfilled, (state, action) => {
+  /* state.avatarFile = action.payload.url; */
+  state.currentImages = action.payload.map((image: any) => {return image.url})
+  console.log(action.payload[0].url);
+  console.log(state.itemCurrent);
+});
+builder.addCase(UploadItemImage.pending, (state) => {});
+builder.addCase(UploadItemImage.rejected, (state, action) => {});
+
     // All items.
     builder.addCase(getAllItems.fulfilled, (state, action) => {
       state.status = "success";
@@ -598,6 +616,8 @@ const homeSlice = createSlice({
 
 export const {
   SetCategory,
+  clearCurrentImages,
+  setCurrentImages,
   setSearchedId,
   setFavoritesId,
   setComparisonId,

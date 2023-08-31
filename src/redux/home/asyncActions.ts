@@ -2,6 +2,21 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
 import { Items, ItemsDisplay, TShippingItems } from "../types";
 
+
+export const UploadItemImage = createAsyncThunk<[any], FormData>(
+  "home/UploadItemImage",
+  async function (formData) {
+    const { data } = await axios.post<[any]>(`/upload`, formData, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data", 
+      },
+    });
+
+    return data;
+  }
+);
+
 export const getAllItems = createAsyncThunk<ItemsDisplay>(
   "home/getAllItems",
   async function () {

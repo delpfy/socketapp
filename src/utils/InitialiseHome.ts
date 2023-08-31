@@ -68,6 +68,7 @@ export const InitialiseHome = () => {
     itemsNew: {} as any,
     itemsTopSale: {} as any,
     itemsTopRating: {} as any,
+    currentImages: [] as any,
     differencesMode: false,
     categories,
     category: "Монітори",

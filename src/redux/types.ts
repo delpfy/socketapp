@@ -275,7 +275,7 @@ itemCompareId: string;
   sorted: boolean;
 
   itemCurrent: any;
-
+  currentImages: any;
   categories: { id: number; name: string; image: string }[];
   category: string;
 }

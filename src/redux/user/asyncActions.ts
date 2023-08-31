@@ -28,18 +28,7 @@ export const Update = createAsyncThunk<{ success: string }, {}>(
   }
 );
 
-export const UploadAvatar = createAsyncThunk<{ url: string }, any>(
-  "home/UploadAvatar",
-  async function (params) {
-    const { data } = await axios.post<{ url: string }>(`/upload`, params, {
-      headers: {
-        authorization: `Bearer ${window.localStorage.getItem("token")}`,
-      },
-    });
 
-    return data;
-  }
-);
 
 export const Authorize = createAsyncThunk<
   { success: string; token: string },

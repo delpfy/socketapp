@@ -16,7 +16,6 @@ import LogoutDialog from "../../componentss/dialogs/LogoutDialog";
 import ErrorDialog from "../../componentss/dialogs/ErrorDialog";
 import {
   Update,
-  UploadAvatar,
   checkAuthorization,
 } from "../../redux/user/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
@@ -41,7 +40,7 @@ export default function User() {
 
   const [email, setEmail] = useState<string>(user.email);
   const [password, setPassword] = useState<string>("");
-  const [image, setImage] = useState<string>(user.avatar);
+  
   const [fullName, setFullName] = useState<string>(user.name);
   const [passVisible, setPassVisible] = useState(true);
 
@@ -52,7 +51,7 @@ export default function User() {
   const [openError, setOpenError] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
 
-  const avatarFileRef = useRef<HTMLInputElement | null>(null);
+  
 
   function LogoutDialog_open() {
     setOpenLogout(true);
@@ -76,19 +75,7 @@ export default function User() {
     setOpenInfo(true);
   }
 
-  async function handleImageChange(e: any) {
-    setImage(e.target.files[0]);
-    console.log("e.target.files[0] " + e.target.files[0].originalName);
-    try {
-      const formData = new FormData();
-      formData.append("image", e.target.files[0]);
-      console.log("e.target.files[0] " + e.target.files[0]);
-      dispatch(UploadAvatar(formData));
-    } catch (error: any) {
-      ErrorDialog_open();
-      setErrorMessage(error.message);
-    }
-  }
+  
 
   function handleClickShowPassword() {
     setPassVisible((passVisible) => !passVisible);
@@ -127,7 +114,6 @@ export default function User() {
           fullName: fullName,
           role: user.role,
           password: password,
-          avatarUrl: "",
         })
       ).then((result: any) => {
         console.log("result.status " + result.meta.requestStatus);
@@ -149,11 +135,7 @@ export default function User() {
     }
   }
 
-  function handleLoadImageClick() {
-    if (avatarFileRef.current) {
-      avatarFileRef.current.click();
-    }
-  }
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -208,21 +190,7 @@ export default function User() {
                 />
               )}
 
-              <input
-                hidden
-                ref={avatarFileRef}
-                color="warning"
-                type="file"
-                onChange={handleImageChange}
-              />
-              <Button
-                color="warning"
-                variant="contained"
-                sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-                onClick={handleLoadImageClick}
-              >
-                Змінити аватар
-              </Button>
+              
             </Box>
             <Box padding={3}>
               <InputLabel>Iм'я</InputLabel>

@@ -11,13 +11,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { SetStateAction, Dispatch, useState } from "react";
+import React, {
+  SetStateAction,
+  Dispatch,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { createItem, updateItemFields } from "../../../redux/home/asyncActions";
+import {
+  UploadItemImage,
+  createItem,
+  updateItemFields,
+} from "../../../redux/home/asyncActions";
 import { Category } from "../../../redux/types";
 import InfoDialog from "../../../componentss/dialogs/InfoDialog";
 import {
@@ -44,10 +54,44 @@ import {
   availableExternalPorts,
   availableOtherDisplayFeatures,
 } from "../../../utils/accessories/laptopAccessories";
+import {
+  clearCurrentImages,
+  setCurrentImages,
+} from "../../../redux/home/homeSlice";
 
 export default function LaptopCategory(props: Category) {
-  const { editItemMode, itemCurrent } = useAppSelector((state) => state.home);
+  const { editItemMode, itemCurrent, currentImages } = useAppSelector(
+    (state) => state.home
+  );
 
+  const avatarFileRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (editItemMode) {
+      dispatch(setCurrentImages(itemCurrent.items.image));
+    } else {
+      dispatch(clearCurrentImages());
+    }
+  }, []);
+  function handleImageChange(e: any) {
+    console.log(e.target.files[0]);
+    try {
+      const formData = new FormData();
+      for (let i = 0; i < e.target.files.length; i++) {
+        formData.append("item_images", e.target.files[i]);
+      }
+      console.log("e.target.files[0] " + e.target.files[0]);
+      dispatch(UploadItemImage(formData));
+    } catch (error: any) {
+      InfoDialog_open();
+      setInfoMessage(error.message);
+    }
+  }
+  function handleLoadImageClick() {
+    if (avatarFileRef.current) {
+      avatarFileRef.current.click();
+    }
+  }
   const [name, setName] = useState(editItemMode ? itemCurrent.items.name : "");
   const [description, setDescription] = useState(
     editItemMode ? itemCurrent.items.description : ""
@@ -59,15 +103,7 @@ export default function LaptopCategory(props: Category) {
     editItemMode ? itemCurrent.items.quantity : 1
   );
   const [rating] = useState(0);
-  const [images, setImages] = useState(
-    editItemMode
-      ? (itemCurrent.items.image as string[])
-      : [
-          "https://via.placeholder.com/1712x1712",
-          "https://via.placeholder.com/1712x1712",
-          "https://via.placeholder.com/1712x1712",
-        ]
-  );
+
   const [sale, setSale] = useState(editItemMode ? itemCurrent.items.sale : 0);
   const [reviewsAmount] = useState(0);
 
@@ -204,22 +240,6 @@ export default function LaptopCategory(props: Category) {
   const [ruggedLaptop, setRuggedLaptop] = useState(
     editItemMode ? itemCurrent.items.fields.ruggedLaptop : false
   );
-
-  const handleAddImageField = () => {
-    setImages([...images, "https://via.placeholder.com/1712x1712"]);
-  };
-
-  const handleRemoveImageField = () => {
-    if (images.length > 3) {
-      setImages(images.slice(0, images.length - 1));
-    }
-  };
-
-  const handleImageChange = (index: any, event: any) => {
-    const newImages = [...images];
-    newImages[index] = event.target.value;
-    setImages(newImages);
-  };
 
   const handleAddPortField = () => {
     setExternalPorts([...externalPorts, availableExternalPorts[0]]);
@@ -516,9 +536,9 @@ export default function LaptopCategory(props: Category) {
       dimensions.height <= 0 ||
       dimensions.width <= 0 ||
       dimensions.depth <= 0 ||
-      images[0].length === 0 ||
-      images[1].length === 0 ||
-      images[2].length === 0
+      currentImages[0] === undefined ||
+      currentImages[1] === undefined ||
+      currentImages[2] === undefined
     ) {
       InfoDialog_open();
       setInfoMessage("Не всі поля було заповнено коректно");
@@ -535,7 +555,7 @@ export default function LaptopCategory(props: Category) {
               quantity,
               price,
               rating,
-              image: images,
+              image: currentImages,
               sale,
               reviewsAmount,
               processor,
@@ -589,7 +609,7 @@ export default function LaptopCategory(props: Category) {
             quantity,
             price,
             rating,
-            image: images,
+            image: currentImages,
             sale,
             reviewsAmount,
             processor,
@@ -710,23 +730,50 @@ export default function LaptopCategory(props: Category) {
           >
             Зображення:
           </Typography>
-          <Box maxWidth={500}>
-            {images.map((imageUrl, index) => (
-              <TextField
-                key={index}
-                fullWidth
-                value={imageUrl}
-                error={imageUrl.length === 0 ? true : false}
-                helperText={imageUrl.length === 0 ? "Вкажіть зображення" : ""}
-                onChange={(event) => handleImageChange(index, event)}
+          <Box maxWidth={500} padding={4}>
+            {currentImages.length !== 0 ? (
+              currentImages.map((image: any) => (
+                <img
+                  src={`http://localhost:4000${image}`}
+                  style={{ width: 60, height: 60 }}
+                  alt=""
+                />
+              ))
+            ) : (
+              <></>
+            )}
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              justifyContent={"space-evenly"}
+              alignItems={"flex-end"}
+            >
+              <input
+                hidden
+                ref={avatarFileRef}
+                color="warning"
+                type="file"
+                multiple
+                onChange={handleImageChange}
               />
-            ))}
-            <IconButton onClick={handleAddImageField}>
-              <AddIcon />
-            </IconButton>
-            <IconButton onClick={handleRemoveImageField}>
-              <RemoveIcon />
-            </IconButton>
+
+              <Button
+                color="warning"
+                variant="contained"
+                sx={{ fontFamily: "Comfortaa", fontSize: 15, marginTop: 6 }}
+                onClick={handleLoadImageClick}
+              >
+                Додати зображення
+              </Button>
+              <Button
+                color="error"
+                variant="contained"
+                sx={{ fontFamily: "Comfortaa", fontSize: 15, marginTop: 6 }}
+                onClick={() => dispatch(clearCurrentImages())}
+              >
+                Очистити
+              </Button>
+            </Box>
           </Box>
         </Box>
 

@@ -10,29 +10,74 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { SetStateAction, Dispatch, useState } from "react";
+import React, {
+  SetStateAction,
+  Dispatch,
+  useState,
+  useRef,
+  useEffect,
+} from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
-import { createItem, updateItemFields } from "../../../redux/home/asyncActions";
+import {
+  UploadItemImage,
+  createItem,
+  updateItemFields,
+} from "../../../redux/home/asyncActions";
 import { Category } from "../../../redux/types";
 import InfoDialog from "../../../componentss/dialogs/InfoDialog";
 import {
   availableConnectorTypes,
-availableSupportedDevices,
-availableCompatibilities,
-availableMaterials,
-availableColors,
-availablePackagingContents,
-availableAdditionalFeatures,
-availableBrands,
-availableCableLengths,
+  availableSupportedDevices,
+  availableCompatibilities,
+  availableMaterials,
+  availableColors,
+  availablePackagingContents,
+  availableAdditionalFeatures,
+  availableBrands,
+  availableCableLengths,
 } from "../../../utils/accessories/cabelAccessories";
+import {
+  clearCurrentImages,
+  setCurrentImages,
+} from "../../../redux/home/homeSlice";
 
 export default function CabelsCategory(props: Category) {
-  const { editItemMode, itemCurrent } = useAppSelector((state) => state.home);
+  const { editItemMode, itemCurrent, currentImages } = useAppSelector(
+    (state) => state.home
+  );
+
+  const avatarFileRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    if (editItemMode) {
+      dispatch(setCurrentImages(itemCurrent.items.image));
+    } else {
+      dispatch(clearCurrentImages());
+    }
+  }, []);
+  function handleImageChange(e: any) {
+    console.log(e.target.files[0]);
+    try {
+      const formData = new FormData();
+      for (let i = 0; i < e.target.files.length; i++) {
+        formData.append("item_images", e.target.files[i]);
+      }
+      console.log("e.target.files[0] " + e.target.files[0]);
+      dispatch(UploadItemImage(formData));
+    } catch (error: any) {
+      InfoDialog_open();
+      setInfoMessage(error.message);
+    }
+  }
+  function handleLoadImageClick() {
+    if (avatarFileRef.current) {
+      avatarFileRef.current.click();
+    }
+  }
 
   const [name, setName] = useState(editItemMode ? itemCurrent.items.name : "");
   const [description, setDescription] = useState(
@@ -45,15 +90,7 @@ export default function CabelsCategory(props: Category) {
     editItemMode ? itemCurrent.items.quantity : 1
   );
   const [rating] = useState(0);
-  const [images, setImages] = useState(
-    editItemMode
-      ? (itemCurrent.items.image as string[])
-      : [
-          "https://via.placeholder.com/1712x1712",
-          "https://via.placeholder.com/1712x1712",
-          "https://via.placeholder.com/1712x1712",
-        ]
-  );
+
   const [sale, setSale] = useState(editItemMode ? itemCurrent.items.sale : 0);
   const [reviewsAmount] = useState(0);
 
@@ -62,16 +99,24 @@ export default function CabelsCategory(props: Category) {
   );
 
   const [connectorType, setConnectorType] = useState(
-    editItemMode ? itemCurrent.items.fields.connectorType : availableConnectorTypes[0]
+    editItemMode
+      ? itemCurrent.items.fields.connectorType
+      : availableConnectorTypes[0]
   );
   const [cableLength, setCableLength] = useState(
-    editItemMode ? itemCurrent.items.fields.cableLength : availableCableLengths[0]
+    editItemMode
+      ? itemCurrent.items.fields.cableLength
+      : availableCableLengths[0]
   );
   const [supportedDevices, setSupportedDevices] = useState(
-    editItemMode ? itemCurrent.items.fields.supportedDevices : [availableSupportedDevices[0]]
+    editItemMode
+      ? itemCurrent.items.fields.supportedDevices
+      : [availableSupportedDevices[0]]
   );
   const [compatibility, setCompatibility] = useState(
-    editItemMode ? itemCurrent.items.fields.compatibility : availableCompatibilities[0]
+    editItemMode
+      ? itemCurrent.items.fields.compatibility
+      : availableCompatibilities[0]
   );
   const [material, setMaterial] = useState(
     editItemMode ? itemCurrent.items.fields.material : availableMaterials[0]
@@ -80,13 +125,16 @@ export default function CabelsCategory(props: Category) {
     editItemMode ? itemCurrent.items.fields.color : availableColors[0]
   );
   const [packagingContents, setPackagingContents] = useState(
-    editItemMode ? itemCurrent.items.fields.packagingContents : [availablePackagingContents[0]]
+    editItemMode
+      ? itemCurrent.items.fields.packagingContents
+      : [availablePackagingContents[0]]
   );
   const [additionalFeatures, setAdditionalFeatures] = useState(
-    editItemMode ? itemCurrent.items.fields.additionalFeatures : [availableAdditionalFeatures[0]]
+    editItemMode
+      ? itemCurrent.items.fields.additionalFeatures
+      : [availableAdditionalFeatures[0]]
   );
- 
-  
+
   function DisplayBox(
     name: string,
     value: any,
@@ -314,9 +362,9 @@ export default function CabelsCategory(props: Category) {
       price <= 0 ||
       quantity <= 0 ||
       sale < 0 ||
-      images[0].length === 0 ||
-      images[1].length === 0 ||
-      images[2].length === 0
+      currentImages[0] === undefined ||
+      currentImages[1] === undefined ||
+      currentImages[2] === undefined
     ) {
       InfoDialog_open();
       setInfoMessage("Не всі поля було заповнено коректно");
@@ -333,7 +381,7 @@ export default function CabelsCategory(props: Category) {
               quantity,
               price,
               rating,
-              image: images,
+              image: currentImages,
               sale,
               reviewsAmount,
               brand,
@@ -360,7 +408,7 @@ export default function CabelsCategory(props: Category) {
             quantity,
             price,
             rating,
-            image: images,
+            image: currentImages,
             sale,
             reviewsAmount,
             brand,
@@ -375,6 +423,7 @@ export default function CabelsCategory(props: Category) {
           })
         ).then((result) => {
           if (result.meta.requestStatus === "fulfilled") {
+            dispatch(clearCurrentImages());
             navigate("/catalog");
           }
           if (result.meta.requestStatus === "rejected") {
@@ -386,22 +435,6 @@ export default function CabelsCategory(props: Category) {
         });
   }
 
-  const handleAddImageField = () => {
-    setImages([...images, "https://via.placeholder.com/1712x1712"]);
-  };
-
-  const handleRemoveImageField = () => {
-    if (images.length > 3) {
-      setImages(images.slice(0, images.length - 1));
-    }
-  };
-
-  const handleImageChange = (index: any, event: any) => {
-    const newImages = [...images];
-    newImages[index] = event.target.value;
-    setImages(newImages);
-  };
-
   const handleAddSupDeviceField = () => {
     setSupportedDevices([...supportedDevices, availableSupportedDevices[0]]);
   };
@@ -412,10 +445,7 @@ export default function CabelsCategory(props: Category) {
     ]);
   };
   const handleAddContentField = () => {
-    setPackagingContents([
-      ...packagingContents,
-      availablePackagingContents[0],
-    ]);
+    setPackagingContents([...packagingContents, availablePackagingContents[0]]);
   };
 
   const handleRemoveSupDeviceField = () => {
@@ -535,27 +565,54 @@ export default function CabelsCategory(props: Category) {
           >
             Зображення:
           </Typography>
-          <Box maxWidth={500}>
-            {images.map((imageUrl, index) => (
-              <TextField
-                key={index}
-                fullWidth
-                error={imageUrl.length === 0 ? true : false}
-                helperText={imageUrl.length === 0 ? "Вкажіть зображення" : ""}
-                value={imageUrl}
-                onChange={(event) => handleImageChange(index, event)}
+          <Box maxWidth={500} padding={4}>
+            {currentImages.length !== 0 ? (
+              currentImages.map((image: any) => (
+                <img
+                  src={`http://localhost:4000${image}`}
+                  style={{ width: 60, height: 60 }}
+                  alt=""
+                />
+              ))
+            ) : (
+              <></>
+            )}
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              justifyContent={"space-evenly"}
+              alignItems={"flex-end"}
+            >
+              <input
+                hidden
+                ref={avatarFileRef}
+                color="warning"
+                type="file"
+                multiple
+                onChange={handleImageChange}
               />
-            ))}
-            <IconButton onClick={handleAddImageField}>
-              <AddIcon />
-            </IconButton>
-            <IconButton onClick={handleRemoveImageField}>
-              <RemoveIcon />
-            </IconButton>
+
+              <Button
+                color="warning"
+                variant="contained"
+                sx={{ fontFamily: "Comfortaa", fontSize: 15, marginTop: 6 }}
+                onClick={handleLoadImageClick}
+              >
+                Додати зображення
+              </Button>
+              <Button
+                color="error"
+                variant="contained"
+                sx={{ fontFamily: "Comfortaa", fontSize: 15, marginTop: 6 }}
+                onClick={() => dispatch(clearCurrentImages())}
+              >
+                Очистити
+              </Button>
+            </Box>
           </Box>
         </Box>
 
-        {DisplaySelectBox("Бренд:",availableBrands , brand, setBrand)}
+        {DisplaySelectBox("Бренд:", availableBrands, brand, setBrand)}
 
         {DisplaySelectBox(
           "Тип роз'єму:",
