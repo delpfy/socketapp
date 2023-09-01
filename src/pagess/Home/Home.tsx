@@ -104,7 +104,7 @@ export const Home = () => {
             md: 460,
           },
           width: {
-            xs: 340,
+            xs: "85%",
             md: "75%",
           },
           background: " black",
