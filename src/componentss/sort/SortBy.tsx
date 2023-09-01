@@ -45,47 +45,44 @@ export default function SortBy() {
   >([1, 5]);
   const dispatch = useAppDispatch();
 
-
-  
-
-  const handleRelevanceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setReset(false))
+  const handleRelevanceInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch(setReset(false));
     const { name, value } = event.target;
     const updatedRange = [...relevanceRangeValue];
-    
-    if (event.target.value.length !== 0 ){
+
+    if (event.target.value.length !== 0) {
       updatedRange[name === "min" ? 0 : 1] = parseFloat(value);
       if (parseFloat(value) >= 1 && parseFloat(value) <= 5) {
         setRelevanceRangeValue(updatedRange);
       }
-    }
-    
-    else{
+    } else {
       updatedRange[name === "min" ? 0 : 1] = 1;
       setRelevanceRangeValue(updatedRange);
     }
   };
 
-  const handleCostInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setReset(false))
+  const handleCostInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch(setReset(false));
     const { name, value } = event.target;
     const updatedRange = [...costRangeValue];
-    
-    if (event.target.value.length !== 0 ){
+
+    if (event.target.value.length !== 0) {
       updatedRange[name === "min" ? 0 : 1] = parseFloat(value);
       if (parseFloat(value) >= 0 && parseFloat(value) <= 70000) {
         setCostRangeValue(updatedRange);
       }
-    }
-    else{
+    } else {
       updatedRange[name === "min" ? 0 : 1] = 1;
       setCostRangeValue(updatedRange);
     }
-    
   };
-  
+
   const handleRelevanceOkButtonClick = () => {
-    dispatch(setReset(false))
+    dispatch(setReset(false));
     setRelevanceValue("");
     setCostValue("");
     setRelevanceRangeValue(relevanceRangeValue as number[]);
@@ -93,19 +90,17 @@ export default function SortBy() {
   };
 
   const handleCostOkButtonClick = () => {
-    dispatch(setReset(false))
+    dispatch(setReset(false));
     setRelevanceValue("");
     setCostValue("");
     setCostRangeValue(costRangeValue as number[]);
     dispatch(sortByCostRange(costRangeValue as number[]));
   };
 
-  
-
   const handleRelevanceSortChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    dispatch(setReset(false))
+    dispatch(setReset(false));
     setRelevanceValue((event.target as HTMLInputElement).value);
     setCostValue("");
     console.log((event.target as HTMLInputElement).value);
@@ -121,7 +116,7 @@ export default function SortBy() {
   const handleCostSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCostValue((event.target as HTMLInputElement).value);
     setRelevanceValue("");
-    dispatch(setReset(false))
+    dispatch(setReset(false));
     switch ((event.target as HTMLInputElement).value) {
       case "asc":
         dispatch(sortByCost_ASC());
@@ -165,7 +160,7 @@ export default function SortBy() {
           <Box>
             <Box>
               <Box>
-                <Typography fontWeight={'bold'}>Ціна</Typography>
+                <Typography fontWeight={"bold"}>Ціна</Typography>
               </Box>
               <FormControl>
                 <RadioGroup
@@ -182,25 +177,28 @@ export default function SortBy() {
                   />
                   <FormControlLabel
                     value="desc"
-                    checked={reset ? false : costValue === "desc" ? true : false}
+                    checked={
+                      reset ? false : costValue === "desc" ? true : false
+                    }
                     control={<Radio color="success" />}
                     label="Від дорогих до дешевих"
                   />
                 </RadioGroup>
               </FormControl>
-              <Box sx={{
-                    
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    alignItems: "flex-end",
-                  }}>
+              <Box
+                sx={{
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  alignItems: "flex-end",
+                }}
+              >
                 <Box
                   sx={{
                     padding: 1,
                     height: "100%",
-                    width: '95%',
+                    width: "95%",
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
@@ -211,7 +209,6 @@ export default function SortBy() {
                     sx={{ width: 90, padding: 0 }}
                     size="small"
                     name="min"
-                    
                     value={costRangeValue[0]}
                     onChange={handleCostInputChange}
                   />
@@ -221,28 +218,25 @@ export default function SortBy() {
                     sx={{ width: 90 }}
                     size="small"
                     name="max"
-                   
                     value={costRangeValue[1]}
                     onChange={handleCostInputChange}
                   />
-                 
                 </Box>
                 <Button
-                    variant="contained"
-                    size="small"
-                    color="primary"
-                    sx = {{marginRight: 1, background: 'black'   }}
-
-                    onClick={handleCostOkButtonClick}
-                  >
-                    OK
-                  </Button>
+                  variant="contained"
+                  size="small"
+                  color="primary"
+                  sx={{ marginRight: 1, background: "black" }}
+                  onClick={handleCostOkButtonClick}
+                >
+                  OK
+                </Button>
               </Box>
             </Box>
           </Box>
           <Box>
             <Box>
-              <Typography fontWeight={'bold'}>Рейтинг</Typography>
+              <Typography fontWeight={"bold"}>Рейтинг</Typography>
             </Box>
             <Box>
               <FormControl>
@@ -254,21 +248,24 @@ export default function SortBy() {
                 >
                   <FormControlLabel
                     value="desc"
-                    checked={reset ? false : relevanceValue === "desc" ? true : false}
+                    checked={
+                      reset ? false : relevanceValue === "desc" ? true : false
+                    }
                     control={<Radio color="success" />}
                     label="За збільшенням"
                   />
                   <FormControlLabel
                     value="asc"
-                    checked={reset ? false : relevanceValue === "asc" ? true : false}
+                    checked={
+                      reset ? false : relevanceValue === "asc" ? true : false
+                    }
                     control={<Radio color="success" />}
                     label="За зменшенням"
                   />
                 </RadioGroup>
               </FormControl>
-              <Box >
+              <Box>
                 <Box
-               
                   sx={{
                     padding: 1,
                     height: "100%",
@@ -298,7 +295,7 @@ export default function SortBy() {
                   />
                   <Button
                     variant="contained"
-                    sx = {{ background: 'black' }}
+                    sx={{ background: "black" }}
                     size="small"
                     color="primary"
                     onClick={handleRelevanceOkButtonClick}
@@ -306,7 +303,6 @@ export default function SortBy() {
                     OK
                   </Button>
                 </Box>
-                
               </Box>
             </Box>
           </Box>

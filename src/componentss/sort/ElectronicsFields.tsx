@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { sortElectronicsByParameters } from "../../redux/home/homeSlice";
+import { setReset, sortElectronicsByParameters } from "../../redux/home/homeSlice";
 import { SelectedSortParams } from "../../redux/types";
 
 export default function ElectronicsFields() {
@@ -209,6 +209,7 @@ export default function ElectronicsFields() {
               sx={{ justifySelf: "flex-end", margin: 3, background: 'black' }}
               onClick={() => {
                 setSelectedSortParams({});
+                dispatch(setReset(true))
                 dispatch(sortElectronicsByParameters({ selectedParams: {} }));
               }}
             >

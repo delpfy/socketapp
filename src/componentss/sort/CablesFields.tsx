@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { sortCabelsByParameters } from "../../redux/home/homeSlice";
+import { setReset, sortCabelsByParameters } from "../../redux/home/homeSlice";
 import { SelectedSortParams } from "../../redux/types";
 
 export default function CabelsFields() {
@@ -213,6 +213,7 @@ export default function CabelsFields() {
               
               onClick={() => {
                 setSelectedSortParams({});
+                dispatch(setReset(true))
                 dispatch(sortCabelsByParameters({ selectedParams: {} }));
               }}
             >

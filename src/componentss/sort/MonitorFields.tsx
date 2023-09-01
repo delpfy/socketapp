@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { sortMonitorsByParameters } from "../../redux/home/homeSlice";
+import { setReset, sortMonitorsByParameters } from "../../redux/home/homeSlice";
 import { SelectedSortParams } from "../../redux/types";
 
 export default function MonitorFields() {
@@ -284,6 +284,7 @@ export default function MonitorFields() {
               sx={{ justifySelf: "flex-end", margin: 3, background: 'black' }}
               onClick={() => {
                 setSelectedSortParams({});
+                dispatch(setReset(true))
                 dispatch(sortMonitorsByParameters({ selectedParams: {} }));
               }}
             >
