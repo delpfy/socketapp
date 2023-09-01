@@ -148,7 +148,7 @@ export default function SortBy() {
     <Box
       paddingBottom={10}
       sx={{
-        width: "30%",
+        width: 340,
       }}
     >
       <Box
@@ -212,7 +212,7 @@ export default function SortBy() {
                     value={costRangeValue[0]}
                     onChange={handleCostInputChange}
                   />
-                  <Typography> -- </Typography>
+                  <Typography> - </Typography>
                   <TextField
                     inputProps={{ style: { appearance: "textfield" } }}
                     sx={{ width: 90 }}
@@ -283,7 +283,7 @@ export default function SortBy() {
                     value={relevanceRangeValue[0]}
                     onChange={handleRelevanceInputChange}
                   />
-                  <Typography>--</Typography>
+                  <Typography>-</Typography>
                   <TextField
                     inputProps={{ style: { appearance: "textfield" } }}
                     sx={{ width: 60 }}

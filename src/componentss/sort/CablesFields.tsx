@@ -170,7 +170,8 @@ export default function CabelsFields() {
           }}
         >
           {values.map((val: any) => (
-            <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+            
+             <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
               <FormControlLabel
                 key={val}
                 control={
@@ -193,6 +194,10 @@ export default function CabelsFields() {
                 ({displayItemParameterAmount(name, val)})
               </Typography>
             </Box>
+            
+           
+           
+            
           ))}
         </Box>
       </Box>
