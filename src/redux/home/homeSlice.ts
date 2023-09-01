@@ -451,7 +451,7 @@ builder.addCase(UploadItemImage.rejected, (state, action) => {});
 
     // All items.
     builder.addCase(getAllItems.fulfilled, (state, action) => {
-      state.status = "success";
+      
       state.itemsDisplay = action.payload;
       state.itemsPromotionOffer = action.payload;
 
@@ -465,6 +465,7 @@ builder.addCase(UploadItemImage.rejected, (state, action) => {});
       state.itemsTopRating = [...action.payload.items].sort(
         (a: Items, b: Items) => b.rating - a.rating
       );
+      state.status = "success";
     });
     builder.addCase(getAllItems.pending, (state) => {
       state.status = "pending";
