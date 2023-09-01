@@ -443,7 +443,7 @@ export default function HomeCard(props: Items) {
               height: 40,
               width: 40,
               right: 10,
-              top: 0
+              top: 0,
             }}
             onClick={() => comparisonItem_APPEND()}
           >
@@ -477,7 +477,18 @@ export default function HomeCard(props: Items) {
             onClick={getCurrentItem}
           />
 
-          <CardContent sx={{ paddingLeft: 1.2 }}>
+          <CardContent
+            sx={{
+              paddingLeft: 1.2,
+              paddingRight: 1.2,
+              paddingTop: 0,
+              paddingBottom: 0,
+              marginBottom: {
+                xs: 0,
+                md: 3,
+              },
+            }}
+          >
             <Typography
               padding={0}
               minHeight={50}
@@ -485,16 +496,11 @@ export default function HomeCard(props: Items) {
               overflow={"hidden"}
               fontSize={16}
               textAlign={"left"}
-              sx={{
-                marginBottom: {
-                  xs: 0,
-                  md: 3,
-                },
-              }}
             >
               {props.name}
             </Typography>
           </CardContent>
+
           <CardActions
             sx={{
               display: "flex",
@@ -522,6 +528,14 @@ export default function HomeCard(props: Items) {
               textAlign={"left"}
               justifyContent={"flex-start"}
             >
+              <Rating
+                sx={{ paddingBottom: 1 }}
+                name="read-only"
+                value={props.rating}
+                size={"small"}
+                readOnly
+              />
+
               <Typography
                 paddingLeft={0.3}
                 fontFamily={"Comfortaa"}
