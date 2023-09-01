@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { sortLaptopsByParameters } from "../../redux/home/homeSlice";
+import { setReset, sortLaptopsByParameters } from "../../redux/home/homeSlice";
 import { SelectedSortParams } from "../../redux/types";
 
 export default function LaptopFields() {
@@ -416,42 +416,62 @@ export default function LaptopFields() {
 
   function ParameterAccord(name: string, values: any) {
     return (
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
+      <Box paddingBottom={2}>
+        <Box>
+          <Typography
+            sx={{ borderTop: "2px solid black", paddingTop: 1 }}
+            fontWeight={"bold"}
+          >
+            {name}
+          </Typography>
+        </Box>
+        <Box
+          paddingRight={2}
+          maxHeight={400}
+          sx={{
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              width: "10px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#000000",
+              borderRadius: "5px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "#D9D9D9",
+              borderRadius: "5px",
+            },
+          }}
         >
-          <Typography>{name}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
           {values.map((val: any) => (
-            <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
-              <FormControlLabel
-                key={val}
-                control={
-                  <Checkbox
-                    checked={
-                      typeof selectedSortParams[name]?.includes(
-                        val.toString()
-                      ) === "boolean"
-                        ? selectedSortParams[name]?.includes(val.toString())
-                          ? true
+            <>
+              <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
+                <FormControlLabel
+                  key={val}
+                  control={
+                    <Checkbox
+                      checked={
+                        typeof selectedSortParams[name]?.includes(
+                          val.toString()
+                        ) === "boolean"
+                          ? selectedSortParams[name]?.includes(val.toString())
+                            ? true
+                            : false
                           : false
-                        : false
-                    }
-                    onChange={() => performSort(name, val)}
-                  />
-                }
-                label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
-              />
-              <Typography color={"error"}>
-                {displayItemParameterAmount(name, val)}
-              </Typography>
-            </Box>
+                      }
+                      onChange={() => performSort(name, val)}
+                    />
+                  }
+                  label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+                />
+                <Typography color={"default"}>
+                  ({displayItemParameterAmount(name, val)})
+                </Typography>
+              </Box>
+            </>
           ))}
-        </AccordionDetails>
-      </Accordion>
+        </Box>
+      </Box>
     );
   }
 
@@ -465,9 +485,10 @@ export default function LaptopFields() {
             <Button
               variant="contained"
               size="small"
-              sx={{ justifySelf: "flex-end", margin: 3 }}
+              sx={{ justifySelf: "flex-end", margin: 3, background: 'black' }}
               onClick={() => {
                 setSelectedSortParams({});
+                dispatch(setReset(true))
                 dispatch(sortLaptopsByParameters({ selectedParams: {} }));
               }}
             >

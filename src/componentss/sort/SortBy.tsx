@@ -6,15 +6,18 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Box,
+  Button,
   Divider,
   FormControl,
   FormControlLabel,
   Radio,
   RadioGroup,
   Slider,
+  TextField,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
+  setReset,
   sortByCost_ASC,
   sortByCost_DESC,
   sortByCostRange,
@@ -27,9 +30,10 @@ import MonitorFields from "./MonitorFields";
 import CabelsFields from "./CablesFields";
 import ElectronicsFields from "./ElectronicsFields";
 import NetworkFields from "./NetworkFields";
+import { useEffect } from "react";
 
 export default function SortBy() {
-  const { category } = useAppSelector((state) => state.home);
+  const { category, reset } = useAppSelector((state) => state.home);
   const [relevanceValue, setRelevanceValue] = React.useState("");
   const [costValue, setCostValue] = React.useState("");
   const [costRangeValue, setCostRangeValue] = React.useState<number[]>([
@@ -41,22 +45,69 @@ export default function SortBy() {
   >([1, 5]);
   const dispatch = useAppDispatch();
 
-  const handleCostRangeChange = (event: Event, newValue: number | number[]) => {
-    setCostRangeValue(newValue as number[]);
-    dispatch(sortByCostRange(newValue as number[]));
+
+  
+
+  const handleRelevanceInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setReset(false))
+    const { name, value } = event.target;
+    const updatedRange = [...relevanceRangeValue];
+    
+    if (event.target.value.length !== 0 ){
+      updatedRange[name === "min" ? 0 : 1] = parseFloat(value);
+      if (parseFloat(value) >= 1 && parseFloat(value) <= 5) {
+        setRelevanceRangeValue(updatedRange);
+      }
+    }
+    
+    else{
+      updatedRange[name === "min" ? 0 : 1] = 1;
+      setRelevanceRangeValue(updatedRange);
+    }
   };
-  const handleRelevanceRangeChange = (
-    event: Event,
-    newValue: number | number[]
-  ) => {
-    setRelevanceRangeValue(newValue as number[]);
-    dispatch(sortByRelevanceRange(newValue as number[]));
+
+  const handleCostInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setReset(false))
+    const { name, value } = event.target;
+    const updatedRange = [...costRangeValue];
+    
+    if (event.target.value.length !== 0 ){
+      updatedRange[name === "min" ? 0 : 1] = parseFloat(value);
+      if (parseFloat(value) >= 0 && parseFloat(value) <= 70000) {
+        setCostRangeValue(updatedRange);
+      }
+    }
+    else{
+      updatedRange[name === "min" ? 0 : 1] = 1;
+      setCostRangeValue(updatedRange);
+    }
+    
   };
+  
+  const handleRelevanceOkButtonClick = () => {
+    dispatch(setReset(false))
+    setRelevanceValue("");
+    setCostValue("");
+    setRelevanceRangeValue(relevanceRangeValue as number[]);
+    dispatch(sortByRelevanceRange(relevanceRangeValue as number[]));
+  };
+
+  const handleCostOkButtonClick = () => {
+    dispatch(setReset(false))
+    setRelevanceValue("");
+    setCostValue("");
+    setCostRangeValue(costRangeValue as number[]);
+    dispatch(sortByCostRange(costRangeValue as number[]));
+  };
+
+  
 
   const handleRelevanceSortChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    dispatch(setReset(false))
     setRelevanceValue((event.target as HTMLInputElement).value);
+    setCostValue("");
     console.log((event.target as HTMLInputElement).value);
     switch ((event.target as HTMLInputElement).value) {
       case "asc":
@@ -69,7 +120,8 @@ export default function SortBy() {
   };
   const handleCostSortChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCostValue((event.target as HTMLInputElement).value);
-
+    setRelevanceValue("");
+    dispatch(setReset(false))
     switch ((event.target as HTMLInputElement).value) {
       case "asc":
         dispatch(sortByCost_ASC());
@@ -86,12 +138,12 @@ export default function SortBy() {
     switch (category) {
       case "Ноутбуки":
         return <LaptopFields />;
-        case "Кабелі та перехідники":
-          return <CabelsFields />;
-          case "Аксесуари для електроніки":
-            return <ElectronicsFields  />;
-          case "Мережеве обладнання":
-            return <NetworkFields  />;
+      case "Кабелі та перехідники":
+        return <CabelsFields />;
+      case "Аксесуари для електроніки":
+        return <ElectronicsFields />;
+      case "Мережеве обладнання":
+        return <NetworkFields />;
       case "Монітори":
         return <MonitorFields />;
     }
@@ -99,28 +151,22 @@ export default function SortBy() {
 
   return (
     <Box
+      paddingBottom={10}
       sx={{
-        width: "100%",
+        width: "30%",
       }}
     >
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography>Сортувати за:</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2a-content"
-              id="panel2a-header"
-            >
-              <Typography>Ціною</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
+      <Box
+        sx={{
+          width: "90%",
+        }}
+      >
+        <Box>
+          <Box>
+            <Box>
+              <Box>
+                <Typography fontWeight={'bold'}>Ціна</Typography>
+              </Box>
               <FormControl>
                 <RadioGroup
                   aria-labelledby="demo-controlled-radio-buttons-group"
@@ -130,49 +176,75 @@ export default function SortBy() {
                 >
                   <FormControlLabel
                     value="asc"
+                    checked={reset ? false : costValue === "asc" ? true : false}
                     control={<Radio color="success" />}
                     label="Від дешевих до дорогих"
                   />
                   <FormControlLabel
                     value="desc"
+                    checked={reset ? false : costValue === "desc" ? true : false}
                     control={<Radio color="success" />}
                     label="Від дорогих до дешевих"
                   />
                 </RadioGroup>
               </FormControl>
-              <Box sx={{ width: "100%" }}>
-                <Slider
-                  sx={{ color: "#2e7d32" }}
-                  value={costRangeValue}
-                  step={1}
-                  min={1}
-                  max={70000}
-                  onChange={handleCostRangeChange}
-                  valueLabelDisplay="auto"
-                />
+              <Box sx={{
+                    
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "flex-end",
+                  }}>
+                <Box
+                  sx={{
+                    padding: 1,
+                    height: "100%",
+                    width: '95%',
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextField
+                    sx={{ width: 90, padding: 0 }}
+                    size="small"
+                    name="min"
+                    
+                    value={costRangeValue[0]}
+                    onChange={handleCostInputChange}
+                  />
+                  <Typography> -- </Typography>
+                  <TextField
+                    inputProps={{ style: { appearance: "textfield" } }}
+                    sx={{ width: 90 }}
+                    size="small"
+                    name="max"
+                   
+                    value={costRangeValue[1]}
+                    onChange={handleCostInputChange}
+                  />
+                 
+                </Box>
+                <Button
+                    variant="contained"
+                    size="small"
+                    color="primary"
+                    sx = {{marginRight: 1, background: 'black'   }}
+
+                    onClick={handleCostOkButtonClick}
+                  >
+                    OK
+                  </Button>
               </Box>
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography>{costRangeValue[0]}</Typography>
-                <Typography>{costRangeValue[1]}</Typography>
-              </Box>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel2a-content"
-              id="panel2a-header"
-            >
-              <Typography>Релевантністю</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
+            </Box>
+          </Box>
+          <Box>
+            <Box>
+              <Typography fontWeight={'bold'}>Рейтинг</Typography>
+            </Box>
+            <Box>
               <FormControl>
                 <RadioGroup
                   aria-labelledby="demo-controlled-radio-buttons-group"
@@ -182,48 +254,66 @@ export default function SortBy() {
                 >
                   <FormControlLabel
                     value="desc"
+                    checked={reset ? false : relevanceValue === "desc" ? true : false}
                     control={<Radio color="success" />}
                     label="За збільшенням"
                   />
                   <FormControlLabel
                     value="asc"
+                    checked={reset ? false : relevanceValue === "asc" ? true : false}
                     control={<Radio color="success" />}
                     label="За зменшенням"
                   />
                 </RadioGroup>
               </FormControl>
-              <Box sx={{ width: "100%" }}>
-                <Slider
-                  sx={{ color: "#2e7d32" }}
-                  value={relevanceRangeValue}
-                  step={1}
-                  min={1}
-                  max={5}
-                  onChange={handleRelevanceRangeChange}
-                  valueLabelDisplay="auto"
-                />
+              <Box >
+                <Box
+               
+                  sx={{
+                    padding: 1,
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextField
+                    sx={{ width: 60 }}
+                    size="small"
+                    name="min"
+                    type="number"
+                    value={relevanceRangeValue[0]}
+                    onChange={handleRelevanceInputChange}
+                  />
+                  <Typography>--</Typography>
+                  <TextField
+                    inputProps={{ style: { appearance: "textfield" } }}
+                    sx={{ width: 60 }}
+                    size="small"
+                    name="max"
+                    type="number"
+                    value={relevanceRangeValue[1]}
+                    onChange={handleRelevanceInputChange}
+                  />
+                  <Button
+                    variant="contained"
+                    sx = {{ background: 'black' }}
+                    size="small"
+                    color="primary"
+                    onClick={handleRelevanceOkButtonClick}
+                  >
+                    OK
+                  </Button>
+                </Box>
+                
               </Box>
-              <Box
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Typography>{relevanceRangeValue[0]}</Typography>
-                <Typography>{relevanceRangeValue[1]}</Typography>
-              </Box>
-            </AccordionDetails>
-          </Accordion>
-          <Box paddingTop={4}>
-            <Typography>Характеристики</Typography>
+            </Box>
           </Box>
-          <Divider />
 
           {showFieldsSort()}
-        </AccordionDetails>
-      </Accordion>
+        </Box>
+      </Box>
     </Box>
   );
 }

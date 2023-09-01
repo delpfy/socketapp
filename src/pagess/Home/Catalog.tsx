@@ -8,7 +8,7 @@ export const HomePage = () => {
   return (
     <>
       <AppBarMenu />
-      <Box>
+      <Box width={'85%'} margin={'0 auto'}>
         <CatalogField />
       </Box>
     </>

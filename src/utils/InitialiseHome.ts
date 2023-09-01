@@ -72,5 +72,6 @@ export const InitialiseHome = () => {
     differencesMode: false,
     categories,
     category: "Монітори",
+    reset: false,
   };
 };

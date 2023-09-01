@@ -13,6 +13,9 @@ import {
   synchronizeBasket,
 } from "../../../redux/basket/basketSlice";
 import { setEditItemMode } from "../../../redux/home/homeSlice";
+import HomeCard from "../block/HomeCard";
+import SortBy from "../../sort/SortBy";
+import HomeSkeleton from "../block/HomeSkeleton";
 
 export const CatalogField = () => {
   const { category, status, editItemMode } = useAppSelector(
@@ -52,46 +55,68 @@ export const CatalogField = () => {
 
   const CatalogSkeletons = () => {
     return (
-      <Box
-        width={"100%"}
-        sx={{
-          paddingTop: {
-            xs: "25%",
-            md: "15%",
-            lg: "10%",
-          },
-        }}
-      >
-        <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
-          <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
-            {category}
-          </Typography>
+      <Box width={"100%"}>
+        <Box
+          display={"flex"}
+          justifyContent={"flex-end"}
+          alignItems={"center"}
+          sx={{ paddingTop: { xs: "20%", md: "13%", lg: "10%" } }}
+        >
+          <Box
+            width={"100%"}
+            alignSelf={"flex-end"}
+            marginBottom={3}
+            paddingBottom={2}
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              borderBottom: "2px solid black",
+            }}
+          >
+            <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
+              {category}
+            </Typography>
+            {user.role === "manager" ? (
+              <Button variant="contained" onClick={redirectToAddItemPage}>
+                Додати товар
+              </Button>
+            ) : (
+              <></>
+            )}
+          </Box>
         </Box>
-        <Box>
+        <Box
+          display={"flex"}
+          flexDirection={"row"}
+          justifyContent={"space-between"}
+          alignItems={"flex-start"}
+        >
+          <SortBy />
           <Grid
             container
             padding={"2%"}
+            paddingTop={0}
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
+            columns={{ xs: 4, sm: 2, md: 16, lg: 16, xl: 20 }}
           >
-            {Array.from({ length: 6 }, (param, index) => {
-              return (
-                <Grid
-                  item
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  xs={2}
-                  sm={4}
-                  md={4}
-                  lg={4}
-                  xl={5}
-                  key={index}
-                >
-                  <Skeleton />
-                </Grid>
-              );
-            })}
+            {Array.from({ length: 6 }, (param, index) => (
+              <Grid
+                item
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                paddingBottom={2}
+                xs={2}
+                sm={2}
+                md={4}
+                lg={4}
+                xl={5}
+                key={index}
+              >
+                <HomeSkeleton key={index} />
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Box>
@@ -115,14 +140,15 @@ export const CatalogField = () => {
                   sx={{ paddingTop: { xs: "20%", md: "13%", lg: "10%" } }}
                 >
                   <Box
-                    width={"55%"}
+                    width={"100%"}
                     alignSelf={"flex-end"}
-                    marginRight={3}
-                    marginBottom={5}
+                    marginBottom={3}
+                    paddingBottom={2}
                     sx={{
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
+                      borderBottom: "2px solid black",
                     }}
                   >
                     <Typography
@@ -147,15 +173,16 @@ export const CatalogField = () => {
                 <Box
                   display={"flex"}
                   flexDirection={"row"}
-                  justifyContent={"center"}
+                  justifyContent={"space-between"}
                   alignItems={"flex-start"}
                 >
+                  <SortBy />
                   <Grid
                     container
                     padding={"2%"}
                     paddingTop={0}
                     spacing={{ xs: 1, sm: 3, md: 4 }}
-                    columns={{ xs: 1, sm: 8, md: 12, lg: 16, xl: 20 }}
+                    columns={{ xs: 4, sm: 2, md: 16, lg: 16, xl: 20 }}
                   >
                     {sorted
                       ? itemsSorted.items.map((item: Items) => (
@@ -166,13 +193,13 @@ export const CatalogField = () => {
                             alignItems={"center"}
                             paddingBottom={2}
                             xs={2}
-                            sm={4}
+                            sm={2}
                             md={4}
                             lg={4}
                             xl={5}
                             key={item._id}
                           >
-                            <Card key={item._id} {...item} />
+                            <HomeCard key={item._id} {...item} />
                           </Grid>
                         ))
                       : itemsCategory.items.map((item: Items) => (
@@ -189,7 +216,7 @@ export const CatalogField = () => {
                             xl={5}
                             key={item._id}
                           >
-                            <Card key={item._id} {...item} />
+                            <HomeCard key={item._id} {...item} />
                           </Grid>
                         ))}
                   </Grid>

@@ -172,15 +172,33 @@ export default function NetworkFields() {
 
   function ParameterAccord(name: string, values: any) {
     return (
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
+      <Box>
+        <Box>
+          <Typography
+            sx={{ borderTop: "2px solid black", paddingTop: 1 }}
+            fontWeight={"bold"}
+          >
+            {name}
+          </Typography>
+        </Box>
+        <Box
+          paddingRight={2}
+          maxHeight={400}
+          sx={{
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              width: "10px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#000000",
+              borderRadius: "5px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "#D9D9D9",
+              borderRadius: "5px",
+            },
+          }}
         >
-          <Typography>{name}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
           {values.map((val: any) => (
             <Box display={"flex"} flexDirection={"row"} alignItems={"center"}>
               <FormControlLabel
@@ -201,13 +219,13 @@ export default function NetworkFields() {
                 }
                 label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
               />
-              <Typography color={"error"}>
-                {displayItemParameterAmount(name, val)}
+              <Typography color={"default"}>
+                ({displayItemParameterAmount(name, val)})
               </Typography>
             </Box>
           ))}
-        </AccordionDetails>
-      </Accordion>
+        </Box>
+      </Box>
     );
   }
 
@@ -221,7 +239,7 @@ export default function NetworkFields() {
             <Button
               variant="contained"
               size="small"
-              sx={{ justifySelf: "flex-end", margin: 3 }}
+              sx={{ justifySelf: "flex-end", margin: 3, background: 'black' }}
               onClick={() => {
                 setSelectedSortParams({});
                 dispatch(sortNetworkByParameters({ selectedParams: {} }));

@@ -273,7 +273,7 @@ itemCompareId: string;
   itemsTopRating: any;
 
   sorted: boolean;
-
+  reset: boolean;
   itemCurrent: any;
   currentImages: any;
   categories: { id: number; name: string; image: string }[];

@@ -79,7 +79,7 @@ export default function AppBarMenu() {
           </ListItem>
         ))}
       </List>
-      <Divider />
+      {/* <Divider />
       <Box sx={{ width: "100%" }}>
         {window.location.pathname.includes("/catalog") &&
         !window.location.pathname.includes("/catalog/item") ? (
@@ -87,7 +87,7 @@ export default function AppBarMenu() {
         ) : (
           <></>
         )}
-      </Box>
+      </Box> */}
       <List></List>
     </Box>
   );
