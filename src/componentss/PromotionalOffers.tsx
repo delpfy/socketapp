@@ -27,7 +27,7 @@ export default function PromotionalOffers() {
           >
             {itemsPromotionOffer.items !== undefined  && status === 'success'? (
               itemsPromotionOffer.items
-              .filter((item: Items) => item.sale !== 0)
+              ?.filter((item: Items) => item.sale !== 0)
               .sort((itemA: Items, itemB: Items) => itemB.sale - itemA.sale)
               .slice(0, 20)
               .map((item: Items) => (

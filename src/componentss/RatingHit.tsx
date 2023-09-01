@@ -27,7 +27,7 @@ export default function SalesHit() {
           >
             {itemsTopRating !== undefined && status === "success"? (
               itemsTopRating
-              .slice(0, 20)
+              ?.slice(0, 20)
               .map((item: Items) => (
                 <Grid
                   item

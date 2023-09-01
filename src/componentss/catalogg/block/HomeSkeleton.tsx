@@ -6,17 +6,24 @@ export default function HomeSkeleton() {
     return(
         <Card
           sx={{
-            maxWidth: 200,
-            minWidth: 200,
+            maxWidth: {
+              xs: 160,
+              md: 200,
+            },
+            minWidth: {
+              xs: 160,
+              md: 200,
+            },
             minHeight: 320,
             maxHeight: 320,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
+            alignItems: 'center',
+            justifyContent: "center",
             padding: "11%",
           }}
         >
-            <CircularProgress size={50} />
+            <CircularProgress size={50} sx = {{margin: '0 auto'}} />
         </Card>
     )
 }

@@ -27,7 +27,7 @@ export default function NewItems() {
           >
             {itemsNew !== undefined && status === "success" ? (
               itemsNew
-              .slice(0, 20)
+              ?.slice(0, 20)
               .map((item: Items) => (
                 <Grid
                   item
