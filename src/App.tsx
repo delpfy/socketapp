@@ -24,6 +24,7 @@ import Layout from "./componentss/Layout";
 import Guarantees from "./pagess/footerPages/Guarantees";
 import { synchronizeComparison, synchronizeFavorites } from "./redux/home/homeSlice";
 import { getAllItems } from "./redux/home/asyncActions";
+import ComputerPartsSubcategory from "./pagess/subcategories/ComputerPartsSubcategory";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -58,6 +59,8 @@ function App() {
 
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/catalog/item" element={<ItemPage />} />
+          <Route path="/computer-compl" element={<ComputerPartsSubcategory />} />
+          
           <Route path="/add-item" element={<AddItem />} />
 
           <Route path="/user" element={<User />} />

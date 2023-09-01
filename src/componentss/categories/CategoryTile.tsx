@@ -13,7 +13,13 @@ export default function CategoryCard(props: {
 
   function RedirectToCatalog() {
     dispatch(SetCategory(props.category));
-    navigate("/catalog");
+    if(props.category === "Комп'ютерні комплектуючі"){
+      navigate("/computer-compl");
+    }
+    else{
+
+      navigate("/catalog");
+    }
     console.log("NAVIGATE");
   }
 

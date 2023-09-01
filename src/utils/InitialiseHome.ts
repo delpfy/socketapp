@@ -48,6 +48,61 @@ export const InitialiseHome = () => {
       require("../img/categories/cabels.png"),},
   ];
 
+  const  computerPartsSubcategory = [{
+    id: 31,
+    name: "Материнські плати",
+    image:
+    require("../img/categories/compl-subcategory/mat.png"),
+  },
+  {
+    id: 32,
+    name: "Процесори",
+    image:
+    require("../img/categories/compl-subcategory/proc.png"),
+  },
+  {
+    id: 33,
+    name: "Оперативна пам'ять",
+    image:
+    require("../img/categories/compl-subcategory/ram.png"),
+  },
+  {
+    id: 34,
+    name: "Відеокарти",
+    image:
+    require("../img/categories/compl-subcategory/video.png"),
+  },
+  {
+    id: 35,
+    name: "Жорсткі диски",
+    image:
+    require("../img/categories/compl-subcategory/hdd.png"),
+  },
+  {
+    id: 36,
+    name: "Блоки живлення",
+    image:
+    require("../img/categories/compl-subcategory/power.png"),
+  },
+  {
+    id: 37,
+    name: "Системи охолодження",
+    image:
+    require("../img/categories/compl-subcategory/freeze.png"),
+  },
+  {
+    id: 38,
+    name: "SSD диски",
+    image:
+    require("../img/categories/compl-subcategory/ssd.png"),
+  },
+  {
+    id: 39,
+    name: "Корпуси",
+    image:
+    require("../img/categories/compl-subcategory/corpus.png"),
+  },]
+
   return {
     id: 0,
     status: "" as Status,
@@ -71,6 +126,7 @@ export const InitialiseHome = () => {
     currentImages: [] as any,
     differencesMode: false,
     categories,
+    computerPartsSubcategory,
     category: "Монітори",
     reset: false,
   };
