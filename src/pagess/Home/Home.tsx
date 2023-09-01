@@ -144,6 +144,10 @@ export const Home = () => {
               xs: "100%",
               lg: "100%",
             },
+            height: {
+              xs: 160,
+              md: 460,
+            },
             display: "flex",
             alignItems: "center",
             textAlign: "left",
@@ -154,12 +158,16 @@ export const Home = () => {
           }}
         >
           <Box
-            height={"80%"}
+           
             sx={{
               color: "#fff",
               width: {
                 xs: "90%",
                 lg: "80%",
+              },
+              height: {
+                xs: 160,
+                md: 460,
               },
               display: "flex",
               alignItems: "center",
@@ -173,10 +181,7 @@ export const Home = () => {
             <Box
               display={"flex"}
               sx={{
-                height: {
-                  xs: 120,
-                  md: 460,
-                },
+                
                 margin: "0 auto",
               }}
               width={"100%"}
@@ -187,7 +192,7 @@ export const Home = () => {
               <Box
                 sx={{
                   height: {
-                    xs: "60%",
+                    xs: "50%",
                     md: "30%",
                   },
                   paddingTop: {
@@ -238,11 +243,11 @@ export const Home = () => {
               <Box
                 sx={{
                   height: {
-                    xs: 130,
+                    xs: 135,
                     md: 460,
                   },
                   width: {
-                    xs: 130,
+                    xs: 135,
                     md: 460,
                   },
                 }}
@@ -260,12 +265,16 @@ export const Home = () => {
             </Box>
           </Box>
           <Box
-            height={"80%"}
+           
             sx={{
               color: "#fff",
               width: {
                 xs: "90%",
                 lg: "80%",
+              },
+              height: {
+                xs: 160,
+                md: 460,
               },
               display: "flex",
               alignItems: "center",
@@ -279,10 +288,7 @@ export const Home = () => {
             <Box
               display={"flex"}
               sx={{
-                height: {
-                  xs: 120,
-                  md: 460,
-                },
+                
                 margin: "0 auto",
               }}
               width={"100%"}
@@ -293,7 +299,7 @@ export const Home = () => {
               <Box
                 sx={{
                   height: {
-                    xs: "60%",
+                    xs: "50%",
                     md: "30%",
                   },
                   paddingTop: {
@@ -344,11 +350,11 @@ export const Home = () => {
               <Box
                 sx={{
                   height: {
-                    xs: 130,
+                    xs: 135,
                     md: 460,
                   },
                   width: {
-                    xs: 130,
+                    xs: 135,
                     md: 460,
                   },
                 }}
@@ -425,7 +431,7 @@ export const Home = () => {
             padding={"2%"}
             justifyContent="center"
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 2, md: 4, lg: 4, xl: 20 }}
+            columns={{ xs: 2, sm: 2, md: 16, lg: 20, xl: 20 }}
           >
             {categories.map(
               (item: { id: number; name: string; image: string }) => (

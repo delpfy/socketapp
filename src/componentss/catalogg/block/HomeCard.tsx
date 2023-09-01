@@ -421,11 +421,11 @@ export default function HomeCard(props: Items) {
         <Box
           sx={{
             maxWidth: {
-              xs: 150,
+              xs: 160,
               md: 200,
             },
             minWidth: {
-              xs: 150,
+              xs: 160,
               md: 200,
             },
             minHeight: 320,
@@ -442,7 +442,8 @@ export default function HomeCard(props: Items) {
               zIndex: 1,
               height: 40,
               width: 40,
-              right: 0,
+              right: 10,
+              top: 0
             }}
             onClick={() => comparisonItem_APPEND()}
           >
@@ -504,7 +505,7 @@ export default function HomeCard(props: Items) {
               paddingTop: 0,
 
               width: {
-                xs: 150,
+                xs: 160,
                 md: 200,
               },
             }}
@@ -514,7 +515,7 @@ export default function HomeCard(props: Items) {
               flexDirection={"column"}
               sx={{
                 width: {
-                  xs: 150,
+                  xs: 160,
                   md: 200,
                 },
               }}
