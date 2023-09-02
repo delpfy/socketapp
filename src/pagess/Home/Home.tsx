@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Card from "../../componentss/categories/CategoryTile";
@@ -22,6 +22,7 @@ import PromotionalOffers from "../../componentss/PromotionalOffers";
 import NewItems from "../../componentss/NewItems";
 import SalesHit from "../../componentss/SalesHit";
 import RatingHit from "../../componentss/RatingHit";
+import CategoryDialog from "../../componentss/dialogs/CategoryDialog";
 
 /* const MenuContent = () => {
   return (
@@ -61,6 +62,17 @@ export const Home = () => {
   const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
   const dispatch = useAppDispatch();
+
+  const [openCategory, setOpenCategory] = useState(false);
+  
+  function CategoryDialog_open() {
+    setOpenCategory(true);
+  }
+
+  function CategoryDialog_close() {
+    setOpenCategory(false);
+  }
+
   const recentlyReviewed = JSON.parse(
     localStorage.getItem("recentlyReviewed") || "{}"
   );
@@ -89,6 +101,10 @@ export const Home = () => {
 
   return (
     <>
+    <CategoryDialog
+          openCategory={openCategory}
+          CategoryDialog_close={CategoryDialog_close}
+        />
       <Box
         display={"flex"}
         flexDirection={"column"}
@@ -403,6 +419,7 @@ export const Home = () => {
             color: "white",
           }}
           variant="outlined"
+          onClick={CategoryDialog_open}
         >
           <img
             src={require("../../img/cleverIcon.png")}

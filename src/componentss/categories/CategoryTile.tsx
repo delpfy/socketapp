@@ -44,9 +44,17 @@ export default function CategoryCard(props: {
           /* maxWidth: 'calc(100% - 30px)',
           minWidth: 'calc(100% - 30px)', */
 
-          minHeight: 210,
-          maxHeight: 210,
-
+          
+          
+            minHeight: {
+              xs: 180,
+              md: 210
+            },
+            maxHeight: {
+              xs: 180,
+              md: 210
+            },
+          
           /* maxHeight: {
             xs : 430,
             md : 469
@@ -70,10 +78,22 @@ export default function CategoryCard(props: {
         component="img"
           sx={{
             display: "flex",
-            maxHeight: 120,
-            minHeight: 120,
-            maxWidth: 160,
-            minWidth: 160,
+            maxHeight: {
+              xs: 110,
+              md: 120,
+            },
+            minHeight: {
+              xs: 110,
+              md: 120,
+            },  
+            maxWidth: {
+              xs: 140,
+              md: 160,
+            },  
+            minWidth: {
+              xs: 140,
+              md: 160,
+            },  
             paddingBottom: 4,
             objectFit: "contain",
             overflow: "hidden",
@@ -91,8 +111,17 @@ export default function CategoryCard(props: {
             component="div"
             minHeight={60}
             maxHeight={73}
-            minWidth={250}
-            maxWidth={250}
+            
+            sx = {{
+              minWidth: {
+                xs: 200,
+                md: 250
+              },
+              maxWidth: {
+                xs: 200,
+                md: 250
+              },
+            }}
             overflow={"hidden"}
             fontFamily={"Comfortaa"}
             fontSize={20}
