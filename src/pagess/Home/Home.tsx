@@ -385,8 +385,14 @@ export const Home = () => {
       <Box
         width={"90%"}
         margin={"0 auto"}
-        paddingTop={20}
-        sx={{ display: { xs: "flex", md: "none" } }}
+        
+        sx={{ display: { xs: "flex", md: "none" }, marginTop: {
+          
+          xs: "43%",
+        }, marginBottom: {
+          
+          xs: 5,
+        } }}
       >
         <Button
           fullWidth
@@ -422,7 +428,7 @@ export const Home = () => {
             },
             marginTop: {
               xs: 3,
-              md: "12%",
+              md: "16%",
             },
           }}
         >
@@ -468,7 +474,7 @@ export const Home = () => {
           sx={{
             marginTop: {
               xs: 3,
-              md: 20,
+              md: 3,
             },
           }}
           paddingBottom={2}

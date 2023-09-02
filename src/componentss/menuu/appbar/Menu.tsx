@@ -147,7 +147,7 @@ export default function AppBarMenu() {
               size="large"
               edge="start"
               aria-label="menu"
-              
+              sx = {{display: {xs: 'flex', md: 'none'}}}
               onClick={toggleDrawer("left", true)}
             >
               <MenuIcon

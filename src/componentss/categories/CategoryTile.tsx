@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import { useAppDispatch } from "../../redux/hooks";
-import { SetCategory } from "../../redux/home/homeSlice";
+import { SetCategory, SetSubcategory } from "../../redux/home/homeSlice";
 import { useNavigate } from "react-router-dom";
 
 export default function CategoryCard(props: {
@@ -14,13 +14,18 @@ export default function CategoryCard(props: {
   function RedirectToCatalog() {
     dispatch(SetCategory(props.category));
     if(props.category === "Комп'ютерні комплектуючі"){
+      dispatch(SetSubcategory(props.category));
       navigate("/computer-compl");
+    }
+    else if(props.category === "Геймінг"){
+      dispatch(SetSubcategory(props.category));
+      navigate("/gaming-compl");
     }
     else{
 
       navigate("/catalog");
     }
-    console.log("NAVIGATE");
+    console.log(props.category);
   }
 
   return (
@@ -39,8 +44,8 @@ export default function CategoryCard(props: {
           /* maxWidth: 'calc(100% - 30px)',
           minWidth: 'calc(100% - 30px)', */
 
-          minHeight: 370,
-          maxHeight: 370,
+          minHeight: 210,
+          maxHeight: 210,
 
           /* maxHeight: {
             xs : 430,
@@ -55,6 +60,7 @@ export default function CategoryCard(props: {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-around",
+          alignItems: "center",
           /* padding: "2%", */
           objectFit: "fill",
         }}
@@ -64,10 +70,11 @@ export default function CategoryCard(props: {
         component="img"
           sx={{
             display: "flex",
-            maxHeight: 170,
-            minHeight: 170,
-            
-
+            maxHeight: 120,
+            minHeight: 120,
+            maxWidth: 160,
+            minWidth: 160,
+            paddingBottom: 4,
             objectFit: "contain",
             overflow: "hidden",
           }}
@@ -84,9 +91,11 @@ export default function CategoryCard(props: {
             component="div"
             minHeight={60}
             maxHeight={73}
+            minWidth={250}
+            maxWidth={250}
             overflow={"hidden"}
             fontFamily={"Comfortaa"}
-            fontSize={24}
+            fontSize={20}
           >
             {props.category}
           </Typography>

@@ -24,6 +24,10 @@ const homeSlice = createSlice({
     SetCategory(state, action: PayloadAction<string>) {
       state.category = action.payload;
     },
+    SetSubcategory(state, action: PayloadAction<string>) {
+      state.subcategory = action.payload;
+    },
+    
     setReset(state, action: PayloadAction<boolean>){
       state.reset = action.payload;
     },
@@ -619,6 +623,7 @@ builder.addCase(UploadItemImage.rejected, (state, action) => {});
 
 export const {
   SetCategory,
+  SetSubcategory,
   setReset,
   clearCurrentImages,
   setCurrentImages,

@@ -278,5 +278,7 @@ itemCompareId: string;
   currentImages: any;
   categories: { id: number; name: string; image: string }[];
   computerPartsSubcategory: { id: number; name: string; image: string }[];
+  gamingSubcategory: { id: number; name: string; image: string }[];
+  subcategory: string;
   category: string;
 }

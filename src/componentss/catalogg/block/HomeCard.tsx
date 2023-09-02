@@ -447,15 +447,26 @@ export default function HomeCard(props: Items) {
             }}
             onClick={() => comparisonItem_APPEND()}
           >
-            {itemCompareId === props._id ? (
+           
+
+           {
+            itemCompareId === props._id ? (
               <CircularProgress size={30} />
-            ) : (
-              <img
-                src={require("../../../img/comparisonIconBlack.png")}
-                style={{ width: 48, height: 23 }}
-                alt="sdf"
-              />
-            )}
+            ) : itemsComparison.findIndex(
+              (item: any) => item._id === props._id
+            ) !== -1 ? (
+            <img
+              src={require("../../../img/cartAddedIcon.png")}
+              style={{ width: 24, height: 22 }}
+              alt="sdf"
+            />
+          ) : (
+            <img
+              src={require("../../../img/comparisonIconBlack.png")}
+              style={{ width: 48, height: 23 }}
+              alt="sdf"
+            />
+          )}
           </IconButton>
 
           <CardMedia
