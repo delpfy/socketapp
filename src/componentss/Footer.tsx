@@ -10,6 +10,9 @@ export default function Footer() {
     width="100%"
       sx={{
         backgroundColor: "black",
+        marginTop: {
+          xs: 3, md: 0
+        } 
       }}
     >
       <Box

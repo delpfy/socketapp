@@ -95,7 +95,7 @@ export const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo(15000, 15000);
+    window.scrollTo(0, 0);
     if (afterOrder) {
       dispatch(synchronizeBasket());
       dispatch(setAfterOrder(false));
@@ -595,6 +595,7 @@ export const Home = () => {
               />
             }
             aria-controls="panel1a-content"
+            
             id="panel1a-header"
           >
             <Typography>Компанія</Typography>

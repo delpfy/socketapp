@@ -31,7 +31,7 @@ export const NoItemsPage = () => {
          
 
         <Typography variant="h3"  fontSize={25} marginBottom={10} fontFamily={"Comfortaa"}>
-          Кошик пустує
+          Ви ще не додали товарів
         </Typography>
       </Box>
     </Box>

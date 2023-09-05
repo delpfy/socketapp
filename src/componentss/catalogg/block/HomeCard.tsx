@@ -433,7 +433,7 @@ export default function HomeCard(props: Items) {
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            padding: 3,
+            padding: 5,
             
             
           }}
@@ -458,7 +458,7 @@ export default function HomeCard(props: Items) {
               (item: any) => item._id === props._id
             ) !== -1 ? (
             <img
-              src={require("../../../img/cartAddedIcon.png")}
+              src={require("../../../img/comparisonAddedIcon.png")}
               style={{ width: 24, height: 22 }}
               alt="sdf"
             />
@@ -471,6 +471,35 @@ export default function HomeCard(props: Items) {
           )}
           </IconButton>
 
+          <IconButton
+                      sx={{
+                        position: "absolute",
+                        zIndex: 1,
+                        height: 40,
+                        width: 40,
+                        right: 10,
+                        top: 40,
+                      }}
+                      onClick={() => favoriteItem_APPEND()}
+                    >
+                      {itemFavoritesId === props._id ? (
+                        <CircularProgress size={30} />
+                      ) : itemsFavorites.findIndex(
+                          (item: any) => item._id === props._id
+                        ) !== -1 ? (
+                        <img
+                          src={require("../../../img/favoritesAddedIcon.png")}
+                          style={{ width: 24, height: 22 }}
+                          alt="sdf"
+                        />
+                      ) : (
+                        <img
+                          src={require("../../../img/favoritesIconBlack.png")}
+                          style={{ width: 24, height: 22 }}
+                          alt="sdf"
+                        />
+                      )}
+                    </IconButton>
           <CardMedia
             component="img"
             sx={{
@@ -610,44 +639,11 @@ export default function HomeCard(props: Items) {
                     display={"flex"}
                     flexDirection={"row"}
                     alignItems={"center"}
-                    justifyContent={"space-evenly"}
+                    justifyContent={"flex-end"}
                     height={30}
                     width={"100%"}
                   >
-                    <IconButton
-                      sx={{
-                        paddingTop: 0,
-                        paddingBottom: 0,
-                        height: 30,
-                        width: 30,
-                        transition: "transform 0.3s ease",
-                        "&:hover": {
-                          transform: "translateY(-3px)",
-                        },
-                        "&:active": {
-                          transform: "translateY(0)",
-                        },
-                      }}
-                      onClick={() => favoriteItem_APPEND()}
-                    >
-                      {itemFavoritesId === props._id ? (
-                        <CircularProgress size={30} />
-                      ) : itemsFavorites.findIndex(
-                          (item: any) => item._id === props._id
-                        ) !== -1 ? (
-                        <img
-                          src={require("../../../img/favoritesAddedIcon.png")}
-                          style={{ width: 24, height: 22 }}
-                          alt="sdf"
-                        />
-                      ) : (
-                        <img
-                          src={require("../../../img/favoritesIconBlack.png")}
-                          style={{ width: 24, height: 22 }}
-                          alt="sdf"
-                        />
-                      )}
-                    </IconButton>
+                    
 
                     <IconButton
                       sx={{
@@ -671,7 +667,7 @@ export default function HomeCard(props: Items) {
                           (item: any) => item._id === props._id
                         ) !== -1 ? (
                         <img
-                          src={require("../../../img/cartAddedIcon.png")}
+                          src={require("../../../img/basketAddedIcon.png")}
                           style={{ width: 23, height: 21 }}
                           alt="sdf"
                         />
