@@ -422,20 +422,18 @@ export default function HomeCard(props: Items) {
           sx={{
             maxWidth: {
               xs: 160,
-              md: 188,
+              md: 186,
             },
             minWidth: {
               xs: 160,
-              md: 188,
+              md: 186,
             },
             minHeight: 320,
             maxHeight: 320,
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            padding: 5,
-            
-            
+            padding: 3.5,
           }}
         >
           <IconButton
@@ -449,57 +447,54 @@ export default function HomeCard(props: Items) {
             }}
             onClick={() => comparisonItem_APPEND()}
           >
-           
-
-           {
-            itemCompareId === props._id ? (
+            {itemCompareId === props._id ? (
               <CircularProgress size={30} />
             ) : itemsComparison.findIndex(
-              (item: any) => item._id === props._id
-            ) !== -1 ? (
-            <img
-              src={require("../../../img/comparisonAddedIcon.png")}
-              style={{ width: 24, height: 22 }}
-              alt="sdf"
-            />
-          ) : (
-            <img
-              src={require("../../../img/comparisonIconBlack.png")}
-              style={{ width: 48, height: 23 }}
-              alt="sdf"
-            />
-          )}
+                (item: any) => item._id === props._id
+              ) !== -1 ? (
+              <img
+                src={require("../../../img/comparisonAddedIcon.png")}
+                style={{ width: 24, height: 22 }}
+                alt="sdf"
+              />
+            ) : (
+              <img
+                src={require("../../../img/comparisonIconBlack.png")}
+                style={{ width: 48, height: 23 }}
+                alt="sdf"
+              />
+            )}
           </IconButton>
 
           <IconButton
-                      sx={{
-                        position: "absolute",
-                        zIndex: 1,
-                        height: 40,
-                        width: 40,
-                        right: 10,
-                        top: 40,
-                      }}
-                      onClick={() => favoriteItem_APPEND()}
-                    >
-                      {itemFavoritesId === props._id ? (
-                        <CircularProgress size={30} />
-                      ) : itemsFavorites.findIndex(
-                          (item: any) => item._id === props._id
-                        ) !== -1 ? (
-                        <img
-                          src={require("../../../img/favoritesAddedIcon.png")}
-                          style={{ width: 24, height: 22 }}
-                          alt="sdf"
-                        />
-                      ) : (
-                        <img
-                          src={require("../../../img/favoritesIconBlack.png")}
-                          style={{ width: 24, height: 22 }}
-                          alt="sdf"
-                        />
-                      )}
-                    </IconButton>
+            sx={{
+              position: "absolute",
+              zIndex: 1,
+              height: 40,
+              width: 40,
+              right: 10,
+              top: 40,
+            }}
+            onClick={() => favoriteItem_APPEND()}
+          >
+            {itemFavoritesId === props._id ? (
+              <CircularProgress size={30} />
+            ) : itemsFavorites.findIndex(
+                (item: any) => item._id === props._id
+              ) !== -1 ? (
+              <img
+                src={require("../../../img/favoritesAddedIcon.png")}
+                style={{ width: 24, height: 22 }}
+                alt="sdf"
+              />
+            ) : (
+              <img
+                src={require("../../../img/favoritesIconBlack.png")}
+                style={{ width: 24, height: 22 }}
+                alt="sdf"
+              />
+            )}
+          </IconButton>
           <CardMedia
             component="img"
             sx={{
@@ -643,8 +638,6 @@ export default function HomeCard(props: Items) {
                     height={30}
                     width={"100%"}
                   >
-                    
-
                     <IconButton
                       sx={{
                         paddingTop: 0,
