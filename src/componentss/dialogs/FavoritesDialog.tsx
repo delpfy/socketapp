@@ -9,6 +9,7 @@ import {
   useMediaQuery,
   useTheme,
   Typography,
+  IconButton,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import BasketPage from "../../pagess/cart/Cart";
@@ -54,10 +55,7 @@ export default function FavoritesDialog({
     setOpenError(false);
   }
 
-  function handleContinueShopping() {
-    FavoritesDialog_close();
-    navigate("/");
-  }
+  
 
   return (
     <>
@@ -72,31 +70,48 @@ export default function FavoritesDialog({
         aria-describedby="scroll-dialog-description"
       >
         <DialogTitle
-          id="scroll-dialog-title"
-          width={"90%"}
-          display={"flex"}
-          flexDirection={"row"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
+          sx={{
+            fontFamily: "Comfortaa",
+            fontSize: 20,
+            borderBottom: "2px solid black",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
         >
-          <Typography fontFamily={"Comfortaa"} fontSize={22}>
-            Обране
-          </Typography>
+          Обране
+          <IconButton onClick={FavoritesDialog_close}>
+            <img
+              src={require("../../img/crossIcon.png")}
+              style={{ width: 15, height: 15 }}
+              alt="sdf"
+            />
+          </IconButton>
         </DialogTitle>
 
-        <DialogContent dividers={scroll === "paper"}>
+        <DialogContent
+          sx={{
+            overflowY: "auto",
+            overflowX: "none",
+            marginRight: 2,
+            "&::-webkit-scrollbar": {
+              width: "10px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#000000",
+              borderRadius: "5px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "#D9D9D9",
+              borderRadius: "5px",
+            },
+          }}
+          dividers={scroll === "paper"}
+        >
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <FavoritesPage />
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={handleContinueShopping}
-          >
-            Продовжити покупки
-          </Button>
-        </DialogActions>
       </Dialog>
 
       <ErrorDialog

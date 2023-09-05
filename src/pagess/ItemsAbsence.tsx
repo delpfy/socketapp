@@ -6,23 +6,32 @@ export const NoItemsPage = () => {
   return (
     <Box
       width={"100%"}
-      height={"100vh"}
+      height={200}
       display={"flex"}
       justifyContent={"center"}
       alignItems={"center"}
+      
+      paddingTop={10}
     >
       <Box
         display={"flex"}
-        justifyContent={"space-around"}
+        justifyContent={"flex-end"}
         flexDirection={"column"}
         alignItems={"center"}
-        textAlign={"center"}
-        maxHeight={150}
+        margin={'0 auto'}
+        width={"100%"}
+       
       >
-        <ProductionQuantityLimitsIcon sx={{ height: 60, width: 60 }} />
+        
+            <img
+              src={require("../img/cartIconBlack.png")}
+              style={{ width: 215, marginBottom: 25 , paddingRight: 36}}
+              alt="sdf"
+            />
+         
 
-        <Typography variant="h3" fontFamily={"Comfortaa"}>
-          Ви поки що не додали продуктів
+        <Typography variant="h3"  fontSize={25} marginBottom={10} fontFamily={"Comfortaa"}>
+          Кошик пустує
         </Typography>
       </Box>
     </Box>

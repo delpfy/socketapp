@@ -569,7 +569,7 @@ export default function CabelsCategory(props: Category) {
             {currentImages.length !== 0 ? (
               currentImages.map((image: any) => (
                 <img
-                  src={`http://localhost:4000${image}`}
+                  src={`https://www.sidebyside-tech.com${image}`}
                   style={{ width: 60, height: 60 }}
                   alt=""
                 />

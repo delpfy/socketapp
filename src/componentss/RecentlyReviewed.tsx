@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { Items } from "../redux/types";
 import Card from "../componentss/catalogg/block/CatalogCard";
+import HomeCard from "./catalogg/block/HomeCard";
 
 export default function RecentlyReviewed() {
   const recentlyReviewed = JSON.parse(
@@ -16,7 +17,7 @@ export default function RecentlyReviewed() {
         sx={{ overflowX: "scroll" }}
       >
         {recentlyReviewed.reverse().map((item: Items) => {
-          return <Card key={item._id} {...item} />;
+          return <HomeCard key={item._id} {...item} />;
         })}
       </Box>
     </>

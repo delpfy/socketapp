@@ -12,15 +12,16 @@ export default function BasketPage() {
   return (
     <Box width={"100%"} paddingTop={"2%"}>
       <Box>
-        <Grid
-          container
-          padding={"2%"}
-          spacing={{ xs: 1, sm: 3, md: 4 }}
-          columns={{ xs: 1, sm: 4, md: 8, lg: 8, xl: 10 }}
-        >
-          {items.length === 0 ? (
+      {items.length === 0 ? (
             <ItemsAbsence />
           ) : (
+        <Grid
+          container
+          padding={'2%'}
+          spacing={{ xs: 1, sm: 3, md: 4 }}
+          columns={{ xs: 1, sm: 1, md: 1, lg: 1, xl: 1 }}
+        >
+           {
             items.map((item: TShippingItems) => (
               <Grid
                 item
@@ -38,8 +39,11 @@ export default function BasketPage() {
                 <CartItemCard key={item._id} {...item} />
               </Grid>
             ))
-          )}
+            }
+          
+          
         </Grid>
+  )}
       </Box>
     </Box>
   );

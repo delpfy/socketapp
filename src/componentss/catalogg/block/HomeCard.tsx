@@ -422,18 +422,20 @@ export default function HomeCard(props: Items) {
           sx={{
             maxWidth: {
               xs: 160,
-              md: 200,
+              md: 188,
             },
             minWidth: {
               xs: 160,
-              md: 200,
+              md: 188,
             },
             minHeight: 320,
             maxHeight: 320,
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
-            padding: "11%",
+            padding: 3,
+            
+            
           }}
         >
           <IconButton

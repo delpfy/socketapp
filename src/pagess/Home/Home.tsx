@@ -1,4 +1,7 @@
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Grid,
@@ -23,6 +26,7 @@ import NewItems from "../../componentss/NewItems";
 import SalesHit from "../../componentss/SalesHit";
 import RatingHit from "../../componentss/RatingHit";
 import CategoryDialog from "../../componentss/dialogs/CategoryDialog";
+import { useNavigate } from "react-router-dom";
 
 /* const MenuContent = () => {
   return (
@@ -64,7 +68,7 @@ export const Home = () => {
   const dispatch = useAppDispatch();
 
   const [openCategory, setOpenCategory] = useState(false);
-  
+
   function CategoryDialog_open() {
     setOpenCategory(true);
   }
@@ -88,8 +92,10 @@ export const Home = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo(15000, 15000);
     if (afterOrder) {
       dispatch(synchronizeBasket());
       dispatch(setAfterOrder(false));
@@ -101,10 +107,10 @@ export const Home = () => {
 
   return (
     <>
-    <CategoryDialog
-          openCategory={openCategory}
-          CategoryDialog_close={CategoryDialog_close}
-        />
+      <CategoryDialog
+        openCategory={openCategory}
+        CategoryDialog_close={CategoryDialog_close}
+      />
       <Box
         display={"flex"}
         flexDirection={"column"}
@@ -174,7 +180,6 @@ export const Home = () => {
           }}
         >
           <Box
-           
             sx={{
               color: "#fff",
               width: {
@@ -197,7 +202,6 @@ export const Home = () => {
             <Box
               display={"flex"}
               sx={{
-                
                 margin: "0 auto",
               }}
               width={"100%"}
@@ -281,7 +285,6 @@ export const Home = () => {
             </Box>
           </Box>
           <Box
-           
             sx={{
               color: "#fff",
               width: {
@@ -304,7 +307,6 @@ export const Home = () => {
             <Box
               display={"flex"}
               sx={{
-                
                 margin: "0 auto",
               }}
               width={"100%"}
@@ -401,14 +403,15 @@ export const Home = () => {
       <Box
         width={"90%"}
         margin={"0 auto"}
-        
-        sx={{ display: { xs: "flex", md: "none" }, marginTop: {
-          
-          xs: "43%",
-        }, marginBottom: {
-          
-          xs: 5,
-        } }}
+        sx={{
+          display: { xs: "flex", md: "none" },
+          marginTop: {
+            xs: "43%",
+          },
+          marginBottom: {
+            xs: 5,
+          },
+        }}
       >
         <Button
           fullWidth
@@ -558,6 +561,175 @@ export const Home = () => {
             <RecentlyReviewed />
           </>
         )}
+      </Box>
+      <Box
+        sx={{
+          marginTop: 10,
+
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Accordion
+          sx={{
+            color: "white",
+            background: "black",
+            marginBottom: 2,
+
+            width: "85%",
+            display: {
+              xs: "!none",
+              md: "none",
+            },
+          }}
+        >
+          <AccordionSummary
+            expandIcon={
+              <img
+                src={require("../../img/footerPagesOpenIcon.png")}
+                style={{ width: 20, height: 20 }}
+                alt="sdf"
+              />
+            }
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Компанія</Typography>
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "rgba(255,255,255,.5)",
+                cursor: "pointer",
+                "&:hover": { color: "#fff" },
+                transition: "color .2s ease",
+                paddingBottom: 1,
+              }}
+              fontFamily={"Comfortaa"}
+              color="white"
+              onClick={() => navigate("/about")}
+            >
+              О компанії
+            </Typography>
+            <Typography
+              sx={{
+                color: "rgba(255,255,255,.5)",
+                cursor: "pointer",
+                "&:hover": { color: "#fff" },
+                transition: "color .2s ease",
+                paddingBottom: 1,
+              }}
+              fontFamily={"Comfortaa"}
+              color="white"
+              onClick={() => navigate("/posts")}
+            >
+              Статті
+            </Typography>
+            <Typography
+              sx={{
+                color: "rgba(255,255,255,.5)",
+                cursor: "pointer",
+                "&:hover": { color: "#fff" },
+                transition: "color .2s ease",
+                paddingBottom: 1,
+              }}
+              fontFamily={"Comfortaa"}
+              color="white"
+              onClick={() => navigate("/contact")}
+            >
+              Контакти
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          sx={{
+            color: "white",
+            background: "black",
+            marginBottom: 2,
+
+            width: "85%",
+            display: {
+              xs: "!none",
+              md: "none",
+            },
+          }}
+        >
+          <AccordionSummary
+            expandIcon={
+              <img
+                src={require("../../img/footerPagesOpenIcon.png")}
+                style={{ width: 20, height: 20 }}
+                alt="sdf"
+              />
+            }
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Покупцям</Typography>
+          </AccordionSummary>
+          <AccordionDetails
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              justifyContent: "space-between",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "rgba(255,255,255,.5)",
+                cursor: "pointer",
+                "&:hover": { color: "#fff" },
+                transition: "color .2s ease",
+                paddingBottom: 1,
+              }}
+              fontFamily={"Comfortaa"}
+              color="white"
+              onClick={() => navigate("/return")}
+            >
+              Повернення товару
+            </Typography>
+            <Typography
+              sx={{
+                color: "rgba(255,255,255,.5)",
+                cursor: "pointer",
+                "&:hover": { color: "#fff" },
+                transition: "color .2s ease",
+                paddingBottom: 1,
+              }}
+              fontFamily={"Comfortaa"}
+              color="white"
+              onClick={() => navigate("/delivery")}
+            >
+              Доставка
+            </Typography>
+
+            <Typography
+              sx={{
+                color: "rgba(255,255,255,.5)",
+                cursor: "pointer",
+                "&:hover": { color: "#fff" },
+                transition: "color .2s ease",
+                paddingBottom: 1,
+              }}
+              fontFamily={"Comfortaa"}
+              color="white"
+              onClick={() => navigate("/quarantees")}
+            >
+              Гарантії
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
       </Box>
     </>
   );

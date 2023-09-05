@@ -5,6 +5,7 @@ import { Box, Grid } from "@mui/material";
 import { Items } from "../../redux/types";
 import ItemsAbsence from "../ItemsAbsence";
 import CatalogCard from "../../componentss/catalogg/block/CatalogCard";
+import HomeCard from "../../componentss/catalogg/block/HomeCard";
 
 export default function FavoritesPage() {
   const { itemsFavorites } = useAppSelector((state) => state.home);
@@ -14,9 +15,9 @@ export default function FavoritesPage() {
       <Box>
         <Grid
           container
-          padding={"2%"}
+          padding={"1%"}
           spacing={{ xs: 1, sm: 3, md: 4 }}
-          columns={{ xs: 1, sm: 4, md: 8, lg: 8, xl: 10 }}
+          columns={{ xs: 1, sm: 4, md: 8, lg: 16, xl: 10 }}
         >
           {itemsFavorites.length === 0 ? (
             <ItemsAbsence />
@@ -35,7 +36,7 @@ export default function FavoritesPage() {
                 xl={5}
                 key={item._id}
               >
-                <CatalogCard key={item._id} {...item} />
+                <HomeCard key={item._id} {...item} />
               </Grid>
             ))
           )}

@@ -19,8 +19,14 @@ export const LogoFooter = () => {
     >
       <Typography
         variant={"h3"}
-        fontSize={42}
+        
         height={42}
+        sx = {{
+          fontSize: {
+            xs: 26,
+            md: 42,
+          }
+        }}
       
         /* paddingTop={1} */
         fontFamily={"'Roboto light', sans-serif"}
@@ -29,7 +35,13 @@ export const LogoFooter = () => {
       </Typography>
       <Typography
         variant={"h3"}
-        fontSize={32}
+        
+        sx = {{
+          fontSize: {
+            xs: 22,
+            md: 32,
+          }
+        }}
         height={32}
         paddingBottom={3}
         fontFamily={"'Roboto light', sans-serif"}

@@ -11,6 +11,7 @@ import {
   Card,
   Rating,
   IconButton,
+  TextField,
 } from "@mui/material";
 
 import { Items, TShippingItems } from "../../../redux/types";
@@ -27,6 +28,7 @@ export default function BasketItemBlock(props: TShippingItems) {
   const navigate = useNavigate();
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
+
   function InfoDialog_open() {
     setOpenInfo(true);
   }
@@ -199,57 +201,47 @@ export default function BasketItemBlock(props: TShippingItems) {
   }
   return (
     <>
-      <Card
+      <Box
         sx={{
-          maxWidth: 345,
-          minWidth: 345,
-          minHeight: 490,
-          maxHeight: 490,
+          maxWidth: "100%",
+          minWidth: "100%",
+          minHeight: 120,
+          maxHeight: 120,
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-around",
+          flexDirection: "row", 
+          justifyContent: "space-between",
+          alignItems: 'center',
           padding: "2%",
+          borderBottom: '2px solid black'
         }}
       >
-        {props.sale ? (
-          <img
-            style={{
-              position: "absolute",
-              marginBottom: 425,
-              zIndex: 2,
-              height: 70,
-              width: 70,
-            }}
-            src="https://www.svgrepo.com/show/250306/percentage-percent.svg"
-            alt=""
-          />
-        ) : (
-          <></>
-        )}
         <CardMedia
           sx={{
             display: "flex",
-            maxHeight: 200,
-            minHeight: 200,
+            maxHeight: 80,
+            minHeight: 80,
+            maxWidth: 80,
+            minWidth: 80,
             objectFit: "contain",
             overflow: "hidden",
+            cursor: 'pointer',
           }}
           image={props.image[0]}
           title={props.name}
           onClick={getCurrentItem}
         />
 
-        <CardContent sx={{ paddingBottom: 1 }}>
+        <CardContent   onClick={getCurrentItem} sx={{ paddingBottom: 1, width: '100%', cursor: 'pointer'}}>
           <Typography
             gutterBottom
             variant="h5"
             component="div"
-            minHeight={60}
-            maxHeight={60}
+            
+            fontSize={16}
             overflow={"hidden"}
             fontFamily={"Comfortaa"}
-            textAlign={"justify"}
-            paddingBottom={1}
+            textAlign={"left"}
+            paddingLeft={4}
           >
             {props.name}
           </Typography>
@@ -266,75 +258,84 @@ export default function BasketItemBlock(props: TShippingItems) {
             paddingRight: "16px",
           }}
         >
-          <Box display={"flex"} flexDirection={"column"}>
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              flexDirection={"row"}
+          <Box display={"flex"} height={120} justifyContent={'space-between'} alignItems={'flex-end'} flexDirection={"column"}>
+            <IconButton
+              sx={{ width: 37, height: 37 }}
+              onClick={() => basketItem_DELETE(props._id)}
             >
-              <Typography
-                paddingLeft={0.3}
-                fontSize={22}
-                fontFamily={"Comfortaa"}
-                color={"error"}
-              >
-                {props.price} ₴
-              </Typography>
-            </Box>
-
-            <Rating name="read-only" value={props.rating} readOnly />
+              <img
+                src={require("../../../img/basket/trashIcon.png")}
+                style={{ width: 19, height: 25 }}
+                alt="sdf"
+              />
+            </IconButton>
             <Box
               display={"flex"}
               flexDirection={"row"}
               justifyContent={"space-between"}
               alignItems={"center"}
+              width={200}
             >
+              <Box
+                display={"flex"}
+                flexDirection={"row"}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+              >
+                <IconButton
+                  sx={{ width: 37, height: 37 }}
+                  onClick={basketItem_REDUCE}
+                >
+                  <img
+                    src={require("../../../img/basket/minusIcon.png")}
+                    style={{ width: 15, height: 1.3 }}
+                    alt="sdf"
+                  />
+                </IconButton>
+
+                <Box
+                  width={47}
+                  height={36}
+                  textAlign={"center"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  sx={{ border: "1px solid black", borderRadius: 1.4 }}
+                >
+                  {props.amount}
+                </Box>
+
+                <IconButton
+                  sx={{ width: 37, height: 37 }}
+                  onClick={basketItem_APPEND}
+                >
+                  <img
+                    src={require("../../../img/basket/plusIcon.png")}
+                    style={{ width: 16, height: 16 }}
+                    alt="sdf"
+                  />
+                </IconButton>
+              </Box>
+
               <Typography
                 paddingLeft={0.3}
-                fontSize={22}
+                fontSize={16}
                 fontFamily={"Comfortaa"}
               >
-                У кошику:
-              </Typography>
-              <Typography
-                paddingLeft={0.3}
-                fontSize={22}
-                fontFamily={"Comfortaa"}
-                color={"error"}
-              >
-                {props.amount}
+                {props.price} ₴
               </Typography>
             </Box>
           </Box>
-        </CardActions>
-        <Box
-          display={"flex"}
-          width={"80%"}
-          alignSelf={"center"}
-          justifyContent={"space-between"}
-          alignItems={"flex-end"}
-          flexDirection={"row"}
-        >
           <Box
             display={"flex"}
-            width={"55%"}
+            width={"80%"}
+            alignSelf={"center"}
             justifyContent={"space-between"}
             alignItems={"flex-end"}
             flexDirection={"row"}
-          >
-            <IconButton onClick={basketItem_APPEND}>
-              <AddCircleIcon color="info" sx={{ width: 40, height: 40 }} />
-            </IconButton>
-            <IconButton onClick={basketItem_REDUCE}>
-              <RemoveCircleIcon color="info" sx={{ width: 40, height: 40 }} />
-            </IconButton>
-          </Box>
-
-          <IconButton onClick={() => basketItem_DELETE(props._id)}>
-            <DeleteForeverIcon color="error" sx={{ width: 40, height: 40 }} />
-          </IconButton>
-        </Box>
-      </Card>
+          ></Box>
+        </CardActions>
+      </Box>
       <InfoDialog
         openInfo={openInfo}
         InfoDialog_close={InfoDialog_close}
