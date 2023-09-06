@@ -24,7 +24,8 @@ export default function CategoryDialog({
   openCategory,
   CategoryDialog_close,
 }: Props) {
-  const { categories } = useAppSelector((state) => state.home);
+  const { categories, computerPartsSubcategory,
+    gamingSubcategory, subcategory} = useAppSelector((state) => state.home);
 
   const [scroll] = useState<DialogProps["scroll"]>("paper");
   const [maxWidth] = useState<DialogProps["maxWidth"]>("md");
@@ -81,7 +82,8 @@ export default function CategoryDialog({
                 spacing={{ xs: 1, sm: 3, md: 4 }}
                 columns={{ xs: 6, sm: 2, md: 16, lg: 20, xl: 20 }}
               >
-                {categories.map(
+                {subcategory === "" 
+                ? categories.map(
                   (item: { id: number; name: string; image: string }) => (
                     <Grid
                       item
@@ -104,7 +106,61 @@ export default function CategoryDialog({
                       <Card category={item.name} image={item.image} />
                     </Grid>
                   )
-                )}
+                )
+              :
+              subcategory === "Комп'ютерні комплектуючі" 
+              ?
+              computerPartsSubcategory.map(
+                (item: { id: number; name: string; image: string }) => (
+                  <Grid
+                    item
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    sx={{
+                      paddingBottom: {
+                        xs: 5,
+                        md: 0,
+                      },
+                    }}
+                    xs={3}
+                    sm={2}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                    key={item.id}
+                  >
+                    <Card category={item.name} image={item.image} />
+                  </Grid>
+                )
+              )
+              :
+
+              gamingSubcategory.map(
+                (item: { id: number; name: string; image: string }) => (
+                  <Grid
+                    item
+                    display={"flex"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                    sx={{
+                      paddingBottom: {
+                        xs: 5,
+                        md: 0,
+                      },
+                    }}
+                    xs={3}
+                    sm={2}
+                    md={4}
+                    lg={4}
+                    xl={4}
+                    key={item.id}
+                  >
+                    <Card category={item.name} image={item.image} />
+                  </Grid>
+                )
+              )
+              }
               </Grid>
             </Box>
           </Box>

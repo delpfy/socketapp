@@ -19,7 +19,7 @@ import {
   setAfterOrder,
   synchronizeBasket,
 } from "../../redux/basket/basketSlice";
-import { setEditItemMode } from "../../redux/home/homeSlice";
+import { SetSubcategory, setEditItemMode } from "../../redux/home/homeSlice";
 import Carousel from "react-material-ui-carousel";
 import PromotionalOffers from "../../componentss/PromotionalOffers";
 import NewItems from "../../componentss/NewItems";
@@ -422,7 +422,7 @@ export const Home = () => {
             color: "white",
           }}
           variant="outlined"
-          onClick={CategoryDialog_open}
+          onClick={() => {dispatch(SetSubcategory("")); CategoryDialog_open()}}
         >
           <img
             src={require("../../img/cleverIcon.png")}

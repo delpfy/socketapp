@@ -34,7 +34,7 @@ interface TNovaLocation {
 }
 
 export default function Delivery() {
-  const [selectedOption, setSelectedOption] = useState("payOnDelivery");
+  const [selectedOption, setSelectedOption] = useState("");
   const { items } = useAppSelector((state) => state.basket);
   const { city, street, _order, novaPoshtaLocations } = useAppSelector((state) => state.orders);
   const [novaPoshtaOptions, setNovaPoshtaOptions] = useState<
@@ -171,6 +171,10 @@ export default function Delivery() {
     isLiftRequired,
     streetLocation,
   ]);
+
+  useEffect(() => {
+    setSelectedOption("")
+  } , [items])
 
   const handleCourierOptionChange = (event: any) => {
     setSelectedOption(event.target.value);
@@ -423,7 +427,7 @@ export default function Delivery() {
               </FormGroup>
             </Box>
           )}
-          <Box
+          {/* <Box
             display={"flex"}
             justifyContent={"space-between"}
             width={800}
@@ -453,7 +457,7 @@ export default function Delivery() {
                 )}
               />
             </Box>
-          )}
+          )} */}
 
           <Box
             display={"flex"}

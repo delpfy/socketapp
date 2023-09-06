@@ -1,5 +1,13 @@
 import React from "react";
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { useAppDispatch } from "../../redux/hooks";
 import { SetCategory, SetSubcategory } from "../../redux/home/homeSlice";
 import { useNavigate } from "react-router-dom";
@@ -13,16 +21,20 @@ export default function CategoryCard(props: {
 
   function RedirectToCatalog() {
     dispatch(SetCategory(props.category));
-    if(props.category === "Комп'ютерні комплектуючі"){
+    if (props.category === "Комп'ютерні комплектуючі") {
       dispatch(SetSubcategory(props.category));
-      navigate("/computer-compl");
-    }
-    else if(props.category === "Геймінг"){
-      dispatch(SetSubcategory(props.category));
-      navigate("/gaming-compl");
-    }
-    else{
 
+      if (window.innerWidth > 600) {
+        navigate("/computer-compl");
+      }
+    } else if (props.category === "Геймінг") {
+      dispatch(SetSubcategory(props.category));
+
+      if (window.innerWidth > 600) {
+        navigate("/gaming-compl");
+      }
+    } else {
+      dispatch(SetSubcategory(""));
       navigate("/catalog");
     }
     console.log(props.category);
@@ -32,7 +44,7 @@ export default function CategoryCard(props: {
     <>
       <Box
         sx={{
-          cursor: 'pointer',
+          cursor: "pointer",
           maxWidth: {
             xs: 330,
             md: 330,
@@ -44,17 +56,15 @@ export default function CategoryCard(props: {
           /* maxWidth: 'calc(100% - 30px)',
           minWidth: 'calc(100% - 30px)', */
 
-          
-          
-            minHeight: {
-              xs: 180,
-              md: 210
-            },
-            maxHeight: {
-              xs: 180,
-              md: 210
-            },
-          
+          minHeight: {
+            xs: 180,
+            md: 210,
+          },
+          maxHeight: {
+            xs: 180,
+            md: 210,
+          },
+
           /* maxHeight: {
             xs : 430,
             md : 469
@@ -75,7 +85,7 @@ export default function CategoryCard(props: {
         onClick={RedirectToCatalog}
       >
         <CardMedia
-        component="img"
+          component="img"
           sx={{
             display: "flex",
             maxHeight: {
@@ -85,15 +95,15 @@ export default function CategoryCard(props: {
             minHeight: {
               xs: 110,
               md: 120,
-            },  
+            },
             maxWidth: {
               xs: 140,
               md: 160,
-            },  
+            },
             minWidth: {
               xs: 140,
               md: 160,
-            },  
+            },
             paddingBottom: 4,
             objectFit: "contain",
             overflow: "hidden",
@@ -101,7 +111,7 @@ export default function CategoryCard(props: {
           image={props.image}
           title={props.category}
         />
-        
+
         <CardContent
           sx={{ paddingBottom: 2, paddingTop: 0, textAlign: "center" }}
         >
@@ -111,15 +121,14 @@ export default function CategoryCard(props: {
             component="div"
             minHeight={60}
             maxHeight={73}
-            
-            sx = {{
+            sx={{
               minWidth: {
                 xs: 200,
-                md: 250
+                md: 250,
               },
               maxWidth: {
                 xs: 200,
-                md: 250
+                md: 250,
               },
             }}
             overflow={"hidden"}

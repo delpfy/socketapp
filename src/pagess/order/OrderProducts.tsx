@@ -90,7 +90,7 @@ export default function OrderProducts() {
             alignItems: "center",
           }}
         >
-          <Typography fontSize={20}>Замовлення № {user_orders.orders !== undefined ? user_orders.orders.length + 1 : ""}</Typography>
+          <Typography fontSize={20}>Замовлення № {user_orders.orders !== undefined ? user_orders.orders.length + 1 : 1}</Typography>
 
           <Typography fontSize={20}>на суму: {items &&
                 items.reduce((sum: number, item: TShippingItems) => {
@@ -139,7 +139,7 @@ export default function OrderProducts() {
                         }}
                       >
                         <img
-                          src={item.image[0]}
+                          src={`https://www.sidebyside-tech.com${item.image[0]}`}
                           alt={item.name}
                           style={{ height: 50, width: 50 }}
                         />

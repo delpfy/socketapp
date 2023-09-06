@@ -148,7 +148,7 @@ export const InitialiseHome = () => {
     computerPartsSubcategory,
     gamingSubcategory,
     category: "Монітори",
-    subcategory: "Геймінг",
+    subcategory: "",
     reset: false,
   };
 };

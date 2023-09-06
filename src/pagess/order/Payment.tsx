@@ -11,7 +11,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   ORDER_setPayment,
@@ -21,6 +21,7 @@ import {
 
 export default function Payment() {
   const { _order } = useAppSelector((state) => state.orders);
+  const { items } = useAppSelector((state) => state.basket);
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
@@ -34,6 +35,10 @@ export default function Payment() {
 
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    setSelectedOption("")
+  } , [items])
+  
   const marks = [
     { value: 2, label: "2" },
     { value: 3, label: "3" },

@@ -10,6 +10,7 @@ import {
   useTheme,
   Typography,
   IconButton,
+  Box,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import BasketPage from "../../pagess/cart/Cart";
@@ -18,6 +19,8 @@ import { useNavigate } from "react-router-dom";
 import ErrorDialog from "./ErrorDialog";
 import InfoDialog from "./InfoDialog";
 import FavoritesPage from "../../pagess/favorites/Favorites";
+import { Items } from "../../redux/types";
+import HomeCard from "../catalogg/block/HomeCard";
 
 type Props = {
   openFavorites: boolean;
@@ -28,7 +31,9 @@ export default function FavoritesDialog({
   openFavorites,
   FavoritesDialog_close,
 }: Props) {
-  const { itemCurrent } = useAppSelector((state) => state.home);
+  const { itemCurrent, itemsPromotionOffer, status } = useAppSelector(
+    (state) => state.home
+  );
   const navigate = useNavigate();
 
   const [openError, setOpenError] = useState(false);
@@ -112,6 +117,48 @@ export default function FavoritesDialog({
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <FavoritesPage />
           </DialogContentText>
+          <Box width={"100%"}>
+            <Typography
+              variant={"h3"}
+              fontSize={26}
+              fontFamily={"Comfortaa"}
+              paddingBottom={4}
+              textAlign={"left"}
+            >
+              Акційні пропозиції
+            </Typography>
+            <Box
+              display={"flex"}
+              justifyContent={"start"}
+              alignItems={"center"}
+              sx={{
+                overflowX: "scroll",
+
+                "&::-webkit-scrollbar": {
+                  height: "10px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "#000000",
+                  borderRadius: "5px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  backgroundColor: "#D9D9D9",
+                  borderRadius: "5px",
+                },
+              }}
+            >
+              {itemsPromotionOffer.items !== undefined &&
+              status === "success" ? (
+                itemsPromotionOffer.items
+                  ?.filter((item: Items) => item.sale !== 0)
+                  .sort((itemA: Items, itemB: Items) => itemB.sale - itemA.sale)
+                  .slice(0, 20)
+                  .map((item: any) => <HomeCard key={item._id} {...item} />)
+              ) : (
+                <></>
+              )}
+            </Box>
+          </Box>
         </DialogContent>
       </Dialog>
 

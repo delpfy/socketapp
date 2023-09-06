@@ -189,12 +189,17 @@ export default function OrderPage() {
       ORDER_setTotal(
         items.reduce((sum: number, item: TShippingItems) => {
           return (sum += item.price * item.amount);
-        }, 0)
+        }, 0) + _order.delivery.delivery_cost
       )
     );
     dispatch(ORDER_setUniqueNumber(Math.random().toString(36).slice(2, 8)));
+  }, [items]);
+
+  useEffect(() => {
+    dispatch(getOrdersByUser(user.id));
   }, []);
 
+  
   return (
     <>
       {items === undefined  ? (

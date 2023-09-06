@@ -509,7 +509,7 @@ export default function HomeCard(props: Items) {
               objectFit: "contain",
               overflow: "hidden",
             }}
-            image={props.image[0]}
+            image={`https://www.sidebyside-tech.com${props.image[0]}`}
             title={props.name}
             onClick={getCurrentItem}
           />
@@ -636,6 +636,7 @@ export default function HomeCard(props: Items) {
                     alignItems={"center"}
                     justifyContent={"flex-end"}
                     height={30}
+                    paddingRight={0.7}
                     width={"100%"}
                   >
                     <IconButton

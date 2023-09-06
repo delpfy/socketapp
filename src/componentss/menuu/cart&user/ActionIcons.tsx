@@ -231,7 +231,7 @@ export const ActionIcons = () => {
               }}
             >
               {comparisonLoading ? (
-                <CircularProgress size={40} />
+                <CircularProgress size={30} />
               ) : (
                 <Badge
                   badgeContent={itemsComparison.length}
@@ -240,7 +240,7 @@ export const ActionIcons = () => {
                 >
                   <img
                     src={require("../../../img/comparisonIcon.png")}
-                    style={{ width: 48, height: 23 }}
+                    style={{ width: 26, height: 24 }}
                     alt="sdf"
                   />
                 </Badge>

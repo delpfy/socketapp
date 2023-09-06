@@ -31,8 +31,16 @@ import {
   setRatingAmount,
 } from "../../redux/review/reviewSlice";
 import LoadingPage from "../LoadingPage";
-import { setEditItemMode, setSearchedId } from "../../redux/home/homeSlice";
 import {
+  setComparisonId,
+  setEditItemMode,
+  setFavoritesId,
+  setSearchedId,
+  synchronizeComparison,
+  synchronizeFavorites,
+} from "../../redux/home/homeSlice";
+import {
+  checkItemById,
   deleteItem,
   getItemById,
   getItemsByCategory,
@@ -316,7 +324,7 @@ const NetworkTable = ({ item }: { item: any }) => {
             <TableCell style={font}>Вага:</TableCell>
             <TableCell>{item.fields.weight}</TableCell>
           </TableRow>
-       
+
           <TableRow>
             <TableCell style={font}>Колір:</TableCell>
             <TableCell>{item.fields.color}</TableCell>
@@ -355,7 +363,7 @@ const ElectronicTable = ({ item }: { item: any }) => {
             <TableCell style={font}>Колір:</TableCell>
             <TableCell>{item.fields.color}</TableCell>
           </TableRow>
-         
+
           <TableRow>
             <TableCell style={font}>Матеріал:</TableCell>
             <TableCell>{item.fields.material}</TableCell>
@@ -451,10 +459,21 @@ export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { category, itemAppendingId, itemCurrent, item_status, editItemMode } =
-    useAppSelector((state) => state.home);
+  const {
+    category,
+    subcategory,
+    itemAppendingId,
+    itemCurrent,
+    item_status,
+    editItemMode,
+    itemCompareId,
+    itemFavoritesId,
+    itemsComparison,
+    itemsFavorites,
+  } = useAppSelector((state) => state.home);
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
-  const { afterOrder } = useAppSelector((state) => state.basket);
+  const { afterOrder, items } = useAppSelector((state) => state.basket);
+
   const { user } = useAppSelector((state) => state.user);
 
   const [openInfo, setOpenInfo] = useState(false);
@@ -519,39 +538,29 @@ export const ItemPage = () => {
   }
 
   async function basketItem_APPEND() {
+    dispatch(setSearchedId(itemCurrent.items._id));
+
+    if (itemCurrent.items.quantity === 0) {
+      setInfoMessage("Цей товар закінчився");
+      InfoDialog_open();
+      return;
+    }
     const basketItems = JSON.parse(localStorage.getItem("basketItems") || "{}");
     if (basketItems !== undefined) {
-      if (itemCurrent.items.quantity === 0) {
-        setInfoMessage("Цей товар закінчився");
-        InfoDialog_open();
-        return;
-      }
-
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item.name === itemCurrent.items.name
       );
 
       if (itemIndex !== -1) {
-        if (basketItems[itemIndex].amount + 1 > itemCurrent.items.quantity) {
-          setInfoMessage(
-            "Кількість товару у кошику перевищує його загальну кількість"
-          );
-          InfoDialog_open();
-          return;
-        }
-        basketItems[itemIndex] = {
-          _id: itemCurrent.items._id,
-          name: itemCurrent.items.name,
-          description: itemCurrent.items.description,
-          category: itemCurrent.items.category,
-          price: adjustPrice(),
-          sale: itemCurrent.items.sale,
-          rating: itemCurrent.items.rating,
-          image: itemCurrent.items.image,
-          amount: basketItems[itemIndex].amount + 1,
-          quantity: itemCurrent.items.quantity,
-          fields: itemCurrent.items.fields,
-        };
+        localStorage.setItem(
+          "basketItems",
+          JSON.stringify(
+            basketItems.filter(
+              (item: any) => item._id !== itemCurrent.items._id
+            )
+          )
+        );
+        dispatch(synchronizeBasket());
       } else {
         basketItems.push({
           _id: itemCurrent.items._id,
@@ -562,47 +571,190 @@ export const ItemPage = () => {
           sale: itemCurrent.items.sale,
           rating: itemCurrent.items.rating,
           image: itemCurrent.items.image,
+          quantity: itemCurrent.items.quantity,
           amount: 1,
+          fields: itemCurrent.items.fields,
+        });
+
+        localStorage.setItem("basketItems", JSON.stringify(basketItems));
+        dispatch(synchronizeBasket());
+      }
+    }
+  }
+
+  async function favoriteItem_APPEND() {
+    dispatch(setFavoritesId(itemCurrent.items._id));
+
+    if (itemCurrent.items.quantity === 0) {
+      setInfoMessage("Цей товар закінчився");
+      InfoDialog_open();
+      return;
+    }
+    const favoriteItems = JSON.parse(
+      localStorage.getItem("favoriteItems") || "{}"
+    );
+    if (favoriteItems !== undefined) {
+      const itemIndex = favoriteItems.findIndex(
+        (item: TShippingItems) => item.name === itemCurrent.items.name
+      );
+
+      if (itemIndex !== -1) {
+        localStorage.setItem(
+          "favoriteItems",
+          JSON.stringify(
+            favoriteItems.filter(
+              (item: any) => item._id !== itemCurrent.items._id
+            )
+          )
+        );
+        dispatch(synchronizeFavorites());
+        return;
+      } else {
+        favoriteItems.push({
+          _id: itemCurrent.items._id,
+          name: itemCurrent.items.name,
+          description: itemCurrent.items.description,
+          category: itemCurrent.items.category,
+          price: itemCurrent.items.price,
+          sale: itemCurrent.items.sale,
+          rating: itemCurrent.items.rating,
+          image: itemCurrent.items.image,
           quantity: itemCurrent.items.quantity,
           fields: itemCurrent.items.fields,
         });
       }
     }
-    localStorage.setItem("basketItems", JSON.stringify(basketItems));
-
-    dispatch(synchronizeBasket());
+    localStorage.setItem("favoriteItems", JSON.stringify(favoriteItems));
+    dispatch(synchronizeFavorites());
   }
 
-  function handleBackToCatalog() {
-    navigate("/catalog");
+  async function comparisonItem_APPEND() {
+    dispatch(setComparisonId(itemCurrent.items._id));
+
+    if (itemCurrent.items.quantity === 0) {
+      setInfoMessage("Цей товар закінчився");
+      InfoDialog_open();
+      return;
+    }
+    const comparisonItems = JSON.parse(
+      localStorage.getItem("comparisonItems") || "{}"
+    );
+    if (comparisonItems !== undefined) {
+      const itemIndex = comparisonItems.findIndex(
+        (item: TShippingItems) => item.name === itemCurrent.items.name
+      );
+
+      if (itemIndex !== -1) {
+        localStorage.setItem(
+          "comparisonItems",
+          JSON.stringify(
+            comparisonItems.filter(
+              (item: any) => item._id !== itemCurrent.items._id
+            )
+          )
+        );
+        dispatch(synchronizeComparison());
+        return;
+      } else {
+        comparisonItems.push({
+          _id: itemCurrent.items._id,
+          name: itemCurrent.items.name,
+          description: itemCurrent.items.description,
+          category: itemCurrent.items.category,
+          price: itemCurrent.items.price,
+          sale: itemCurrent.items.sale,
+          rating: itemCurrent.items.rating,
+          image: itemCurrent.items.image,
+          quantity: itemCurrent.items.quantity,
+          fields: itemCurrent.items.fields,
+        });
+      }
+    }
+    localStorage.setItem("comparisonItems", JSON.stringify(comparisonItems));
+    dispatch(synchronizeComparison());
   }
 
   const Item = () => {
     return (
       <>
-        <Button
+        {/* <Button
           sx={{ fontFamily: "Comfortaa", marginTop: 15, fontSize: 15 }}
           onClick={handleBackToCatalog}
           variant="contained"
         >
           Каталог
-        </Button>
+        </Button> */}
 
         <Box
-          width={"100%"}
+          width={"85%"}
+          alignSelf={"flex-end"}
+          marginBottom={3}
+          paddingTop={17}
+          marginLeft={"auto"}
+          marginRight={"auto"}
+          paddingBottom={2}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            borderBottom: "2px solid black",
+          }}
+        >
+          <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
+            {subcategory === "" ? category : category + "/" + subcategory}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: 350,
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: 3,
+            }}
+          >
+            <Typography
+              sx={{ cursor: "pointer" }}
+              variant={"h3"}
+              fontSize={16}
+              fontFamily={"Comfortaa"}
+            >
+              Все про товар
+            </Typography>
+            <Typography
+              sx={{ cursor: "pointer" }}
+              variant={"h3"}
+              fontSize={16}
+              fontFamily={"Comfortaa"}
+            >
+              Характеристики
+            </Typography>
+            <Typography
+              sx={{ cursor: "pointer" }}
+              variant={"h3"}
+              fontSize={16}
+              fontFamily={"Comfortaa"}
+            >
+              Відгуки
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          width={"85%"}
           height={"100%"}
           display={"flex"}
           justifyContent={"center"}
-          alignItems={"center"}
-          flexDirection={"column"}
+          alignItems={"flex-start"}
+          flexDirection={"row"}
+          margin={"0 auto"}
         >
           <Box>
             <Carousel
               sx={{
                 width: {
                   xs: 350,
-                  md: 825,
-                  lx: 1200,
+                  md: 555,
                 },
 
                 height: {
@@ -619,37 +771,38 @@ export const ItemPage = () => {
               <Box>
                 <img
                   src={`https://www.sidebyside-tech.com${itemCurrent.items.image[0]}`}
+                  /* src={itemCurrent.items.image[0]} */
                   alt="img1"
-                  style={{ width: "100%", height: 700, objectFit: "contain" }}
+                  style={{ width: "100%", height: 600, objectFit: "contain" }}
                 />
               </Box>
               <Box>
                 <img
-                  src={itemCurrent.items.image[1]}
+                  src={`https://www.sidebyside-tech.com${itemCurrent.items.image[1]}`}
                   alt="img2"
                   style={{
                     width: "100%",
-                    height: 700,
+                    height: 600,
                     objectFit: "contain",
                   }}
                 />
               </Box>
               <Box>
                 <img
-                  src={itemCurrent.items.image[2]}
+                  src={`https://www.sidebyside-tech.com${itemCurrent.items.image[2]}`}
                   alt="img3"
                   style={{
                     width: "100%",
-                    height: 700,
+                    height: 600,
                     objectFit: "contain",
                   }}
                 />
               </Box>
               {/* <Box display = {'flex'} justifyContent={'center'} alignItems={'center'} width={400}>
-          <img src={props.image[1]} style={{display : 'flex', objectFit: 'contain'}}/>
+          <img src={itemCurrent.items.image[1]} style={{display : 'flex', objectFit: 'contain'}}/>
         </Box>
         <Box display = {'flex'} justifyContent={'center'} alignItems={'center'} width={400}>
-          <img src={props.image[2]} style={{display : 'flex', objectFit: 'contain'}}/>
+          <img src={itemCurrent.items.image[2]} style={{display : 'flex', objectFit: 'contain'}}/>
         </Box> */}
             </Carousel>
           </Box>
@@ -678,8 +831,253 @@ export const ItemPage = () => {
             >
               {itemCurrent.items.name}
             </Typography>
+            <Rating
+              name="read-only"
+              value={itemCurrent.items.rating}
+              sx={{ color: "black" }}
+              readOnly
+            />
 
             <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                border: "2px solid black",
+                borderRadius: 1.5,
+                height: 200,
+              }}
+            >
+              <Box width={"100%"}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    borderBottom: "2px solid black",
+
+                    padding: 2,
+                  }}
+                >
+                  <Typography
+                    width={205}
+                    fontSize={17}
+                    alignItems={"flex-end"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                  >
+                    Продавець:{" "}
+                    <Box
+                      flexDirection={"row"}
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      color={"black"}
+                      /* paddingBottom={1} */
+
+                      sx={{
+                        cursor: "pointer",
+                        color: "black",
+                        transition: "transform 0.3s ease",
+
+                        display: {
+                          xs: "none",
+                          md: "flex",
+                        },
+                      }}
+                    >
+                      <Typography
+                        variant={"h3"}
+                        fontSize={20}
+                        height={20}
+                        fontWeight={"bold"}
+                        /* paddingTop={1} */
+                        fontFamily={"'Roboto light', sans-serif"}
+                      >
+                        Socket
+                      </Typography>
+                      <Typography
+                        variant={"h3"}
+                        fontSize={14}
+                        height={14}
+                        fontWeight={"bold"}
+                        paddingBottom={2.2}
+                        fontFamily={"'Roboto light', sans-serif"}
+                      >
+                        .store
+                      </Typography>
+                    </Box>
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: 310,
+                    padding: 2,
+                    paddingBottom: 0,
+                    
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                      alignItems: "flex-start",
+                      paddingBottom: 2,
+                    }}
+                  >
+                    <Typography
+                      paddingLeft={0.3}
+                      fontFamily={"Comfortaa"}
+                      color={itemCurrent.items.sale ? "info" : "error"}
+                      sx={
+                        itemCurrent.items.sale
+                          ? {
+                              fontSize: 16,
+                              textDecoration: "line-through !important",
+                            }
+                          : { fontSize: 24, color: "white", userSelect: "none" }
+                      }
+                    >
+                      {itemCurrent.items.price + "₴"}
+                    </Typography>
+                    <Box
+                      display={"flex"}
+                      alignItems={"center"}
+                      flexDirection={"row"}
+                      width={"100%"}
+                      justifyContent={"space-between"}
+                    >
+                      <Box
+                        display={"flex"}
+                        width={"100%"}
+                        justifyContent={"center"}
+                        flexDirection={"column"}
+                      >
+                        <Box
+                          display={"flex"}
+                          justifyContent={"flex-end"}
+                          flexDirection={"column"}
+                          alignItems={"flex-start"}
+                        >
+                          <Typography
+                            paddingLeft={0.3}
+                            paddingTop={0}
+                            fontSize={24}
+                            fontFamily={"Comfortaa"}
+                            color={"error"}
+                          >
+                            {itemCurrent.items.sale
+                              ? itemCurrent.items.price -
+                                Math.round(
+                                  (itemCurrent.items.price *
+                                    itemCurrent.items.sale) /
+                                    100
+                                )
+                              : itemCurrent.items.price}{" "}
+                            ₴
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
+
+                  <Button
+                    onClick={() => basketItem_APPEND()}
+                    sx={{
+                      width: 76,
+                      height: 40,
+                      marginLeft: 3,
+                      marginRight: 3,
+                      background: "black",
+                      "&:hover": {
+                        background: "black",
+                      },
+                    }}
+                    variant="contained"
+                  >
+                    {items.findIndex(
+                      (item: any) => item._id === itemCurrent.items._id
+                    ) !== -1 ? (
+                      <img
+                        src={require("../../img/basketAddedIcon.png")}
+                        style={{ width: 23, height: 20 }}
+                        alt="sdf"
+                      />
+                    ) : (
+                      <img
+                        src={require("../../img/cartIcon.png")}
+                        style={{ width: 22, height: 20 }}
+                        alt="sdf"
+                      />
+                    )}
+                  </Button>
+                  <IconButton onClick={() => comparisonItem_APPEND()}>
+                    {itemsComparison.findIndex(
+                      (item: any) => item._id === itemCurrent.items._id
+                    ) !== -1 ? (
+                      <img
+                        src={require("../../img/comparisonAddedIcon.png")}
+                        style={{ width: 26, height: 22 }}
+                        alt="sdf"
+                      />
+                    ) : (
+                      <img
+                        src={require("../../img/comparisonIconBlack.png")}
+                        style={{ width: 26, height: 24 }}
+                        alt="sdf"
+                      />
+                    )}
+                  </IconButton>
+
+                  <IconButton onClick={() => favoriteItem_APPEND()}>
+                    {itemsFavorites.findIndex(
+                      (item: any) => item._id === itemCurrent.items._id
+                    ) !== -1 ? (
+                      <img
+                        src={require("../../img/favoritesAddedIcon.png")}
+                        style={{ width: 24, height: 22 }}
+                        alt="sdf"
+                      />
+                    ) : (
+                      <img
+                        src={require("../../img/favoritesIconBlack.png")}
+                        style={{ width: 24, height: 22 }}
+                        alt="sdf"
+                      />
+                    )}
+                  </IconButton>
+                </Box>
+                {itemCurrent.items.quantity <= 10 ? (
+              <Typography
+             
+                paddingLeft={2}
+                fontSize={15}
+                
+                sx={{  background: "#fdfacf" }}
+                
+              >
+                Товар закінчується! Залишилось: {itemCurrent.items.quantity}
+              </Typography>
+            ) : (
+              <Typography
+                fontFamily={"Comfortaa"}
+                paddingLeft={2}
+                
+                fontSize={15}
+              >
+                Є в наявності
+              </Typography>
+            )}
+              </Box>
+            </Box>
+
+            {/* <Box
               display={"flex"}
               width={100}
               justifyContent={"space-between"}
@@ -717,11 +1115,7 @@ export const ItemPage = () => {
                 <></>
               )}
             </Box>
-            <Rating
-              name="read-only"
-              value={itemCurrent.items.rating}
-              readOnly
-            />
+             */}
 
             <Typography
               fontFamily={"Comfortaa"}
@@ -729,9 +1123,9 @@ export const ItemPage = () => {
             >
               {itemCurrent.items.description}
             </Typography>
-            {renderTable()}
           </Box>
         </Box>
+        {renderTable()}
         <Box
           display={"flex"}
           justifyContent={"center"}
@@ -775,24 +1169,6 @@ export const ItemPage = () => {
           ) : (
             <></>
           )}
-          <Box>
-            <Button
-              onClick={() => basketItem_APPEND()}
-              sx={{
-                width: {
-                  xs: 210,
-                  md: 225,
-                },
-                fontSize: {
-                  xs: 12,
-                  md: 14,
-                },
-              }}
-              variant="contained"
-            >
-              Покласти у кошик
-            </Button>
-          </Box>
         </Box>
 
         <Box paddingTop={10}>
