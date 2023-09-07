@@ -1,4 +1,13 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Grid,
+  SwipeableDrawer,
+  Typography,
+} from "@mui/material";
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { Items, Status } from "../../../redux/types";
@@ -17,13 +26,15 @@ import HomeCard from "../block/HomeCard";
 import SortBy from "../../sort/SortBy";
 import HomeSkeleton from "../block/HomeSkeleton";
 
+type Anchor = "top" | "left" | "bottom" | "right";
+
 export const CatalogField = () => {
   const { category, status, editItemMode } = useAppSelector(
     (state) => state.home
   );
   const { user } = useAppSelector((state) => state.user);
   const { afterOrder } = useAppSelector((state) => state.basket);
-
+  const [active, setActive] = React.useState(false);
   // ItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
   const { itemsCategory, itemsSorted, sorted } = useAppSelector(
@@ -32,6 +43,33 @@ export const CatalogField = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const toggleDrawer =
+    (anchor: Anchor, open: boolean) =>
+    (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event &&
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+
+      setActive(open);
+    };
+
+  const list = (anchor: Anchor) => (
+    
+      
+<Box paddingLeft={2} paddingTop={6} width={310}>
+
+  <SortBy />
+</Box>
+      
+
+   
+  );
 
   // Trying to make request to get items from same category.
   useEffect(() => {
@@ -92,7 +130,10 @@ export const CatalogField = () => {
           justifyContent={"space-between"}
           alignItems={"flex-start"}
         >
-          <SortBy />
+          <Box sx={{ display: { xs: "none", md: "inherit" } }}>
+            <SortBy />
+          </Box>
+
           <Grid
             container
             padding={"2%"}
@@ -132,11 +173,23 @@ export const CatalogField = () => {
         ) {
           return (
             <>
+            <React.Fragment>
+        <SwipeableDrawer
+          anchor={"left"}
+          open={active}
+          onClose={toggleDrawer("left", false)}
+          onOpen={toggleDrawer("left", true)}
+        >
+          {list("left")}
+        </SwipeableDrawer>
+      </React.Fragment>
               <Box width={"100%"}>
+              
                 <Box
                   display={"flex"}
                   justifyContent={"flex-end"}
                   alignItems={"center"}
+                  flexDirection={"column"}
                   paddingTop={12}
                 >
                   <Box
@@ -146,9 +199,13 @@ export const CatalogField = () => {
                     paddingBottom={2}
                     sx={{
                       display: "flex",
-                      justifyContent: "space-between",
+                      justifyContent: {
+                        xs: "space-around",
+                        md: "space-between",
+                      },
                       alignItems: "center",
-                      borderBottom: "2px solid black",
+                      borderBottom:
+                        window.innerWidth > 600 ? "2px solid black" : "none",
                     }}
                   >
                     <Typography
@@ -169,6 +226,49 @@ export const CatalogField = () => {
                       <></>
                     )}
                   </Box>
+                  <Box
+                    width={"100%"}
+                    alignSelf={"flex-end"}
+                    marginBottom={3}
+                    paddingBottom={2}
+                    sx={{
+                      display: {
+                        xs: "flex",
+                        md: "none",
+                      },
+                      justifyContent: "center",
+
+                      alignItems: "center",
+                      borderBottom:
+                        window.innerWidth > 600 ? "2px solid black" : "none",
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      sx={{
+                        background: "black",
+                        width: 300,
+                        textAlign: "center",
+                        display: "flex",
+                        justifyContent: "flex-start",
+                      }}
+                      size="small"
+                      onClick={toggleDrawer("left", true)}
+                    >
+                      <img
+                        src={require("../../../img/fitersIcon.png")}
+                        style={{ width: 7, height: 9, marginLeft: 14 }}
+                        alt="sdf"
+                      />
+                      <Typography
+                        width={"100%"}
+                        fontSize={10}
+                        sx={{ marginRight: 3 }}
+                      >
+                        Фільри
+                      </Typography>
+                    </Button>
+                  </Box>
                 </Box>
                 <Box
                   display={"flex"}
@@ -176,10 +276,11 @@ export const CatalogField = () => {
                   justifyContent={"space-between"}
                   alignItems={"flex-start"}
                 >
-                  <SortBy />
+                  <Box sx={{ display: { xs: "none", md: "inherit" } }}>
+                    <SortBy />
+                  </Box>
                   <Grid
                     container
-                    padding={"2%"}
                     paddingTop={0}
                     spacing={{ xs: 1, sm: 3, md: 4 }}
                     columns={{ xs: 4, sm: 2, md: 16, lg: 16, xl: 20 }}
@@ -220,6 +321,175 @@ export const CatalogField = () => {
                           </Grid>
                         ))}
                   </Grid>
+                </Box>
+                <Box
+                  sx={{
+                    marginTop: 5,
+
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Accordion
+                    sx={{
+                      color: "white",
+                      background: "black",
+                      marginBottom: 2,
+
+                      width: "85%",
+                      display: {
+                        xs: "!none",
+                        md: "none",
+                      },
+                    }}
+                  >
+                    <AccordionSummary
+                      expandIcon={
+                        <img
+                          src={require("../../../img/footerPagesOpenIcon.png")}
+                          style={{ width: 20, height: 20 }}
+                          alt="sdf"
+                        />
+                      }
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography>Компанія</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          color: "rgba(255,255,255,.5)",
+                          cursor: "pointer",
+                          "&:hover": { color: "#fff" },
+                          transition: "color .2s ease",
+                          paddingBottom: 1,
+                        }}
+                        fontFamily={"Comfortaa"}
+                        color="white"
+                        onClick={() => navigate("/about")}
+                      >
+                        О компанії
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "rgba(255,255,255,.5)",
+                          cursor: "pointer",
+                          "&:hover": { color: "#fff" },
+                          transition: "color .2s ease",
+                          paddingBottom: 1,
+                        }}
+                        fontFamily={"Comfortaa"}
+                        color="white"
+                        onClick={() => navigate("/posts")}
+                      >
+                        Статті
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "rgba(255,255,255,.5)",
+                          cursor: "pointer",
+                          "&:hover": { color: "#fff" },
+                          transition: "color .2s ease",
+                          paddingBottom: 1,
+                        }}
+                        fontFamily={"Comfortaa"}
+                        color="white"
+                        onClick={() => navigate("/contact")}
+                      >
+                        Контакти
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
+                  <Accordion
+                    sx={{
+                      color: "white",
+                      background: "black",
+                      marginBottom: 2,
+
+                      width: "85%",
+                      display: {
+                        xs: "!none",
+                        md: "none",
+                      },
+                    }}
+                  >
+                    <AccordionSummary
+                      expandIcon={
+                        <img
+                          src={require("../../../img/footerPagesOpenIcon.png")}
+                          style={{ width: 20, height: 20 }}
+                          alt="sdf"
+                        />
+                      }
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography>Покупцям</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-start",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          color: "rgba(255,255,255,.5)",
+                          cursor: "pointer",
+                          "&:hover": { color: "#fff" },
+                          transition: "color .2s ease",
+                          paddingBottom: 1,
+                        }}
+                        fontFamily={"Comfortaa"}
+                        color="white"
+                        onClick={() => navigate("/return")}
+                      >
+                        Повернення товару
+                      </Typography>
+                      <Typography
+                        sx={{
+                          color: "rgba(255,255,255,.5)",
+                          cursor: "pointer",
+                          "&:hover": { color: "#fff" },
+                          transition: "color .2s ease",
+                          paddingBottom: 1,
+                        }}
+                        fontFamily={"Comfortaa"}
+                        color="white"
+                        onClick={() => navigate("/delivery")}
+                      >
+                        Доставка
+                      </Typography>
+
+                      <Typography
+                        sx={{
+                          color: "rgba(255,255,255,.5)",
+                          cursor: "pointer",
+                          "&:hover": { color: "#fff" },
+                          transition: "color .2s ease",
+                          paddingBottom: 1,
+                        }}
+                        fontFamily={"Comfortaa"}
+                        color="white"
+                        onClick={() => navigate("/quarantees")}
+                      >
+                        Гарантії
+                      </Typography>
+                    </AccordionDetails>
+                  </Accordion>
                 </Box>
               </Box>
             </>

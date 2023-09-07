@@ -758,9 +758,12 @@ export const ItemPage = () => {
           <Box>
             <Carousel
               sx={{
-                marginRight: 7,
+                marginRight: {
+                  xs: 0,
+                  md: 7
+                },
                 width: {
-                  xs: 420,
+                  xs: 360,
                   md: 555,
                 },
 
@@ -768,6 +771,8 @@ export const ItemPage = () => {
                   xs: 500,
                   md: 550,
                 },
+
+
 
                 display: "flex",
                 alignContent: "center",
@@ -819,7 +824,7 @@ export const ItemPage = () => {
            
             sx = {{
               width: {
-                xs: '100%',
+                xs: "100vw",
                 md: '50%'
               }
               
@@ -850,7 +855,15 @@ export const ItemPage = () => {
                 border: "2px solid black",
                 borderRadius: 1.5,
                 marginBottom: 3,
-               
+                marginLeft: {
+                  xs: 'auto',
+                  md: 0,
+                },
+                marginRight: {
+                  xs: 'auto',
+                  md: 0,
+                },
+               width: '100%',
                 height: 200,
               }}
             >
@@ -1290,7 +1303,7 @@ export const ItemPage = () => {
                 >
                   
                   <Typography
-                    width={window.innerWidth > 600 ? 485 : 367}
+                    width={window.innerWidth > 600 ? 485 : 320}
                     fontSize={14}
                     height={20}
                     paddingLeft={0.3}
@@ -1311,8 +1324,8 @@ export const ItemPage = () => {
                     </Typography>
                     
                     <Typography marginRight={1} textAlign={window.innerWidth > 600 ? 'inherit' : 'center'} paddingTop={window.innerWidth > 600 ? 0 : 2.9} fontSize={14}>
-                    24 місяці Обмін/повернення товару
-                    {window.innerWidth < 600 ? <br/> : <></>} протягом 14 днів
+                    24 місяці Обмін/повернення 
+                    {window.innerWidth < 600 ? <br/> : <></>} товару протягом 14 днів
                     </Typography>
                   
                     

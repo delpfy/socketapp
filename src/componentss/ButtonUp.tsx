@@ -34,12 +34,12 @@ export default function ButtonUp  () {
     left: '10px',
     width: '60px',
     height: '60px',
-    backgroundColor: '#281E5D',
+    backgroundColor: 'black',
     "&:hover" : {
-      backgroundColor: '#3944BC',
+      backgroundColor: 'black',
     },
     "&:unhover" : {
-      backgroundColor: '#281E5D'
+      backgroundColor: 'black'
     },
     borderRadius: '50%',
     display: 'flex',

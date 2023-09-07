@@ -425,7 +425,7 @@ export default function HomeCard(props: Items) {
               md: 186,
             },
             minWidth: {
-              xs: 160,
+              xs: 125,
               md: 186,
             },
             minHeight: 320,
@@ -548,7 +548,7 @@ export default function HomeCard(props: Items) {
               paddingTop: 0,
 
               width: {
-                xs: 160,
+                xs: 140,
                 md: 200,
               },
             }}
@@ -558,7 +558,7 @@ export default function HomeCard(props: Items) {
               flexDirection={"column"}
               sx={{
                 width: {
-                  xs: 160,
+                  xs: 140,
                   md: 200,
                 },
               }}
