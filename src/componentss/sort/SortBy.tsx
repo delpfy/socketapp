@@ -57,6 +57,12 @@ export default function SortBy() {
       if (parseFloat(value) >= 1 && parseFloat(value) <= 5) {
         setRelevanceRangeValue(updatedRange);
       }
+      if(parseFloat(value) > 5){
+        if(parseFloat(event.target.value[event.target.value.length - 1 ]) <= 5){
+          updatedRange[name === "min" ? 0 : 1] = parseFloat(event.target.value[event.target.value.length - 1 ]);
+          setRelevanceRangeValue(updatedRange)
+        }
+      }
     } else {
       updatedRange[name === "min" ? 0 : 1] = 1;
       setRelevanceRangeValue(updatedRange);
