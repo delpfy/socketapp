@@ -689,7 +689,7 @@ export const ItemPage = () => {
           width={"85%"}
           alignSelf={"flex-end"}
           marginBottom={3}
-          paddingTop={17}
+          paddingTop={12}
           marginLeft={"auto"}
           marginRight={"auto"}
           paddingBottom={2}
@@ -744,7 +744,7 @@ export const ItemPage = () => {
           width={"85%"}
           height={"100%"}
           display={"flex"}
-          justifyContent={"center"}
+          justifyContent={"space-between"}
           alignItems={"flex-start"}
           flexDirection={"row"}
           margin={"0 auto"}
@@ -752,6 +752,7 @@ export const ItemPage = () => {
           <Box>
             <Carousel
               sx={{
+                marginRight: 7,
                 width: {
                   xs: 350,
                   md: 555,
@@ -759,7 +760,7 @@ export const ItemPage = () => {
 
                 height: {
                   xs: 500,
-                  md: 700,
+                  md: 550,
                 },
 
                 display: "flex",
@@ -773,7 +774,7 @@ export const ItemPage = () => {
                   src={`https://www.sidebyside-tech.com${itemCurrent.items.image[0]}`}
                   /* src={itemCurrent.items.image[0]} */
                   alt="img1"
-                  style={{ width: "100%", height: 600, objectFit: "contain" }}
+                  style={{ width: "100%", height: 550, objectFit: "contain" }}
                 />
               </Box>
               <Box>
@@ -782,7 +783,7 @@ export const ItemPage = () => {
                   alt="img2"
                   style={{
                     width: "100%",
-                    height: 600,
+                    height: 550,
                     objectFit: "contain",
                   }}
                 />
@@ -793,7 +794,7 @@ export const ItemPage = () => {
                   alt="img3"
                   style={{
                     width: "100%",
-                    height: 600,
+                    height: 550,
                     objectFit: "contain",
                   }}
                 />
@@ -809,24 +810,13 @@ export const ItemPage = () => {
 
           <Box
             display={"flex"}
-            width={"90%"}
+            width={"50%"}
             flexDirection={"column"}
             alignItems={"left"}
           >
-            {itemCurrent.items.quantity <= 10 ? (
-              <Typography
-                fontFamily={"Comfortaa"}
-                sx={{ paddingLeft: 0.3, background: "#fdfacf" }}
-                fontSize={25}
-              >
-                Товар закінчується! Залишилось: {itemCurrent.items.quantity}
-              </Typography>
-            ) : (
-              <></>
-            )}
             <Typography
               fontFamily={"Comfortaa"}
-              sx={{ paddingLeft: 0.3 }}
+              sx={{ paddingLeft: 0.3, paddingBottom: 2 }}
               fontSize={25}
             >
               {itemCurrent.items.name}
@@ -834,7 +824,7 @@ export const ItemPage = () => {
             <Rating
               name="read-only"
               value={itemCurrent.items.rating}
-              sx={{ color: "black" }}
+              sx={{ color: "black", paddingBottom: 2 }}
               readOnly
             />
 
@@ -846,6 +836,8 @@ export const ItemPage = () => {
                 alignItems: "flex-start",
                 border: "2px solid black",
                 borderRadius: 1.5,
+                marginBottom: 3,
+               
                 height: 200,
               }}
             >
@@ -919,7 +911,6 @@ export const ItemPage = () => {
                     width: 310,
                     padding: 2,
                     paddingBottom: 0,
-                    
                   }}
                 >
                   <Box
@@ -928,6 +919,7 @@ export const ItemPage = () => {
                       flexDirection: "column",
                       justifyContent: "space-between",
                       alignItems: "flex-start",
+                      width: 100,
                       paddingBottom: 2,
                     }}
                   >
@@ -941,7 +933,7 @@ export const ItemPage = () => {
                               fontSize: 16,
                               textDecoration: "line-through !important",
                             }
-                          : { fontSize: 24, color: "white", userSelect: "none" }
+                          : { fontSize: 16, color: "white", userSelect: "none" }
                       }
                     >
                       {itemCurrent.items.price + "₴"}
@@ -1005,8 +997,8 @@ export const ItemPage = () => {
                       (item: any) => item._id === itemCurrent.items._id
                     ) !== -1 ? (
                       <img
-                        src={require("../../img/basketAddedIcon.png")}
-                        style={{ width: 23, height: 20 }}
+                        src={require("../../img/basketAddedIconWhite.png")}
+                        style={{ width: 20, height: 20 }}
                         alt="sdf"
                       />
                     ) : (
@@ -1054,29 +1046,270 @@ export const ItemPage = () => {
                   </IconButton>
                 </Box>
                 {itemCurrent.items.quantity <= 10 ? (
-              <Typography
-             
-                paddingLeft={2}
-                fontSize={15}
-                
-                sx={{  background: "#fdfacf" }}
-                
-              >
-                Товар закінчується! Залишилось: {itemCurrent.items.quantity}
-              </Typography>
-            ) : (
-              <Typography
-                fontFamily={"Comfortaa"}
-                paddingLeft={2}
-                
-                fontSize={15}
-              >
-                Є в наявності
-              </Typography>
-            )}
+                  <Typography
+                    paddingLeft={2}
+                    fontSize={15}
+                    sx={{ background: "#fdfacf" }}
+                  >
+                    Товар закінчується! Залишилось: {itemCurrent.items.quantity}
+                  </Typography>
+                ) : (
+                  <Typography
+                    fontFamily={"Comfortaa"}
+                    paddingLeft={2}
+                    fontSize={15}
+                  >
+                    Є в наявності
+                  </Typography>
+                )}
               </Box>
             </Box>
 
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                border: "2px solid black",
+                borderRadius: 1.5,
+                marginBottom: 3,
+                height: 155,
+              }}
+            >
+              <Box width={"100%"}>
+
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    borderBottom: "2px solid black",
+
+                    padding: 2,
+                  }}
+                >
+                  <Typography
+                    width={165}
+                    fontSize={17}
+                    height={20}
+                    alignItems={"flex-center"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                  >
+                    <Box>
+                      <img
+                        src={require("../../img/locationIcon.png")}
+                        style={{ width: 16, height: 22 }}
+                        alt="sdf"
+                      />
+                    </Box>
+                    Доставка в:{" "}
+                    <Box
+                      flexDirection={"row"}
+                      justifyContent={"space-between"}
+                      alignItems={"flex-end"}
+                      color={"black"}
+                      /* paddingBottom={1} */
+
+                      sx={{
+                        cursor: "pointer",
+                        color: "black",
+                        transition: "transform 0.3s ease",
+
+                        display: "flex",
+                      }}
+                    >
+                      <Typography
+                        variant={"h3"}
+                        fontSize={17}
+                        height={17}
+                        fontWeight={"bold"}
+                        /* paddingTop={1} */
+                        fontFamily={"'Roboto light', sans-serif"}
+                      >
+                        Київ
+                      </Typography>
+                    </Box>
+                  </Typography>
+                </Box>
+
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    padding: 2,
+                    paddingBottom: 1,
+                    paddingTop: 3,
+                  }}
+                >
+                  <Typography
+                    width={260}
+                    fontSize={14}
+                    height={20}
+                    alignItems={"center"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                  >
+                    <Box>
+                      <img
+                        src={require("../../img/novaCourierIcon.png")}
+                        style={{ width: 29, height: 22 }}
+                        alt="sdf"
+                      />
+                    </Box>
+                    Доставка кур'єром Нової Пошти
+                    
+                  </Typography>
+                </Box>
+
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    padding: 2,
+                  }}
+                >
+                  <Typography
+                    width={341}
+                    fontSize={14}
+                    height={20}
+                    alignItems={"center"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                  >
+                    <Box>
+                      <img
+                        src={require("../../img/takeawayIcon.png")}
+                        style={{ width: 29, height: 29 }}
+                        alt="sdf"
+                      />
+                    </Box>
+                    Самовивіз із відділень поштових операторів
+                    
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+                border: "2px solid black",
+                borderRadius: 1.5,
+                marginBottom: 3,
+                height: 125,
+              }}
+            >
+              <Box width={"100%"}>
+
+
+                
+
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    borderBottom: "2px solid black",
+                    padding: 2,
+                    paddingBottom: 2,
+                    paddingTop: 3,
+                  }}
+                >
+                  <Typography
+                    width={340}
+                    fontSize={14}
+                    height={20}
+                    alignItems={"center"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                  >
+                    <Box>
+                      <img
+                        src={require("../../img/walletIcon.png")}
+                        style={{ width: 25, height: 21 }}
+                        alt="sdf"
+                      />
+                    </Box>
+                  
+                  <Typography marginLeft={3} fontWeight={'bold'}>
+                      Оплата.
+                    </Typography>
+                    
+                    <Typography marginRight={1} fontSize={14}>
+                    Оплата карткою Visa/MasterCard
+                    </Typography>
+                  
+                    
+                    
+                  
+                    
+                    
+                  </Typography>
+                </Box>
+
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    
+                    padding: 2,
+                    paddingTop: 3,
+                  }}
+                >
+                  
+                  <Typography
+                    width={485}
+                    fontSize={14}
+                    height={20}
+                    paddingLeft={0.3}
+                    alignItems={"center"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                  >
+                    <Box>
+                      <img
+                        src={require("../../img/guaranteeIcon.png")}
+                        style={{ width: 21, height: 25 }}
+                        alt="sdf"
+                      />
+                    </Box>
+                  
+                  <Typography marginLeft={3} fontWeight={'bold'}>
+                  Гарантія.
+                    </Typography>
+                    
+                    <Typography marginRight={1} fontSize={14}>
+                    24 місяці Обмін/повернення товару протягом 14 днів
+                    </Typography>
+                  
+                    
+                    
+                  
+                    
+                    
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
             {/* <Box
               display={"flex"}
               width={100}

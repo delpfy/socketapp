@@ -60,7 +60,7 @@ export const CatalogField = () => {
           display={"flex"}
           justifyContent={"flex-end"}
           alignItems={"center"}
-          sx={{ paddingTop: { xs: "20%", md: "13%", lg: "10%" } }}
+          paddingTop={12}
         >
           <Box
             width={"100%"}
@@ -137,7 +137,7 @@ export const CatalogField = () => {
                   display={"flex"}
                   justifyContent={"flex-end"}
                   alignItems={"center"}
-                  sx={{ paddingTop: { xs: "20%", md: "13%", lg: "10%" } }}
+                  paddingTop={12}
                 >
                   <Box
                     width={"100%"}

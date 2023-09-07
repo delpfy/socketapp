@@ -566,7 +566,7 @@ export default function HomeCard(props: Items) {
               justifyContent={"flex-start"}
             >
               <Rating
-                sx={{ paddingBottom: 1 }}
+                sx={{ paddingBottom: 1, color: 'black' }}
                 name="read-only"
                 value={props.rating}
                 size={"small"}
