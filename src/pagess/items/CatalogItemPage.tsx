@@ -695,7 +695,7 @@ export const ItemPage = () => {
           paddingBottom={2}
           sx={{
             display: "flex",
-            flexDirection: "column",
+            flexDirection:  "column",
             justifyContent: "space-between",
             alignItems: "flex-start",
             borderBottom: "2px solid black",
@@ -746,7 +746,13 @@ export const ItemPage = () => {
           display={"flex"}
           justifyContent={"space-between"}
           alignItems={"flex-start"}
-          flexDirection={"row"}
+          
+          sx= {{
+            flexDirection: {
+              xs: 'column',
+              md: 'row'
+            }
+          }}
           margin={"0 auto"}
         >
           <Box>
@@ -754,7 +760,7 @@ export const ItemPage = () => {
               sx={{
                 marginRight: 7,
                 width: {
-                  xs: 350,
+                  xs: 420,
                   md: 555,
                 },
 
@@ -810,7 +816,14 @@ export const ItemPage = () => {
 
           <Box
             display={"flex"}
-            width={"50%"}
+           
+            sx = {{
+              width: {
+                xs: '100%',
+                md: '50%'
+              }
+              
+            }}
             flexDirection={"column"}
             alignItems={"left"}
           >
@@ -1210,7 +1223,7 @@ export const ItemPage = () => {
                 border: "2px solid black",
                 borderRadius: 1.5,
                 marginBottom: 3,
-                height: 125,
+                height: window.innerWidth > 600 ? 125 : 135,
               }}
             >
               <Box width={"100%"}>
@@ -1277,7 +1290,7 @@ export const ItemPage = () => {
                 >
                   
                   <Typography
-                    width={485}
+                    width={window.innerWidth > 600 ? 485 : 367}
                     fontSize={14}
                     height={20}
                     paddingLeft={0.3}
@@ -1297,8 +1310,9 @@ export const ItemPage = () => {
                   Гарантія.
                     </Typography>
                     
-                    <Typography marginRight={1} fontSize={14}>
-                    24 місяці Обмін/повернення товару протягом 14 днів
+                    <Typography marginRight={1} textAlign={window.innerWidth > 600 ? 'inherit' : 'center'} paddingTop={window.innerWidth > 600 ? 0 : 2.9} fontSize={14}>
+                    24 місяці Обмін/повернення товару
+                    {window.innerWidth < 600 ? <br/> : <></>} протягом 14 днів
                     </Typography>
                   
                     
