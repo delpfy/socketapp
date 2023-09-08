@@ -25,11 +25,11 @@ import {
   sortByRelevance_DESC,
   sortByRelevanceRange,
 } from "../../redux/home/homeSlice";
-import LaptopFields from "./LaptopFields";
-import MonitorFields from "./MonitorFields";
-import CabelsFields from "./CablesFields";
-import ElectronicsFields from "./ElectronicsFields";
-import NetworkFields from "./NetworkFields";
+import LaptopFields from "./fields/LaptopFields";
+import MonitorFields from "./fields/MonitorFields";
+import CabelsFields from "./fields/CablesFields";
+import ElectronicsFields from "./fields/ElectronicsFields";
+import NetworkFields from "./fields/NetworkFields";
 import { useEffect } from "react";
 
 export default function SortBy() {
@@ -54,13 +54,17 @@ export default function SortBy() {
 
     if (event.target.value.length !== 0) {
       updatedRange[name === "min" ? 0 : 1] = parseFloat(value);
-      if (parseFloat(value) >= 1 && parseFloat(value) <= 5) {
+      if (parseFloat(value) > 0 && parseFloat(value) <= 5) {
         setRelevanceRangeValue(updatedRange);
       }
-      if(parseFloat(value) > 5){
-        if(parseFloat(event.target.value[event.target.value.length - 1 ]) <= 5){
-          updatedRange[name === "min" ? 0 : 1] = parseFloat(event.target.value[event.target.value.length - 1 ]);
-          setRelevanceRangeValue(updatedRange)
+      if (parseFloat(value) > 5) {
+        if (
+          parseFloat(event.target.value[event.target.value.length - 1]) <= 5
+        ) {
+          updatedRange[name === "min" ? 0 : 1] = parseFloat(
+            event.target.value[event.target.value.length - 1]
+          );
+          setRelevanceRangeValue(updatedRange);
         }
       }
     } else {
@@ -163,6 +167,21 @@ export default function SortBy() {
         }}
       >
         <Box>
+          <Box
+            display={window.innerWidth > 600 ? "none" : "flex"}
+            paddingBottom={2}
+            flexDirection={"row"}
+            alignItems={"center"}
+          >
+            <img
+              src={require("../../img/filtersIconLeft.png")}
+              style={{ width: 9, height: 11 }}
+              alt="sdf"
+            />
+            <Typography fontSize={26} paddingLeft={1}>
+              Фільтри
+            </Typography>
+          </Box>
           <Box>
             <Box>
               <Box>

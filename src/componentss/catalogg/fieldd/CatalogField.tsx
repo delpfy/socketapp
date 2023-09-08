@@ -62,7 +62,7 @@ export const CatalogField = () => {
   const list = (anchor: Anchor) => (
     
       
-<Box paddingLeft={2} paddingTop={6} width={310}>
+<Box paddingLeft={2} paddingTop={4} width={310}>
 
   <SortBy />
 </Box>
