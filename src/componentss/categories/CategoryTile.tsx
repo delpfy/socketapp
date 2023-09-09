@@ -50,8 +50,8 @@ export default function CategoryCard(props: {
             md: 330,
           },
           minWidth: {
-            xs: 330,
-            md: 330,
+            xs: 150,
+            md: 230,
           },
           /* maxWidth: 'calc(100% - 30px)',
           minWidth: 'calc(100% - 30px)', */
@@ -90,7 +90,7 @@ export default function CategoryCard(props: {
             display: "flex",
             maxHeight: {
               xs: 110,
-              md: 120,
+              md: 215,
             },
             minHeight: {
               xs: 110,
@@ -123,12 +123,12 @@ export default function CategoryCard(props: {
             maxHeight={73}
             sx={{
               minWidth: {
-                xs: 200,
-                md: 250,
+                xs: 150,
+                md: 200,
               },
               maxWidth: {
                 xs: 200,
-                md: 250,
+                md: 200,
               },
             }}
             overflow={"hidden"}

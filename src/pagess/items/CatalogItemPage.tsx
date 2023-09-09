@@ -47,6 +47,7 @@ import {
 } from "../../redux/home/asyncActions";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
+import { getItemReviews } from "../../redux/review/asyncActions";
 const font = {
   fontFamily: "Ubuntu",
 };
@@ -466,12 +467,10 @@ export const ItemPage = () => {
     itemCurrent,
     item_status,
     editItemMode,
-    itemCompareId,
-    itemFavoritesId,
     itemsComparison,
     itemsFavorites,
   } = useAppSelector((state) => state.home);
-  const { reviews, status_review } = useAppSelector((state) => state.reviews);
+
   const { afterOrder, items } = useAppSelector((state) => state.basket);
 
   const { user } = useAppSelector((state) => state.user);
@@ -674,6 +673,13 @@ export const ItemPage = () => {
     dispatch(synchronizeComparison());
   }
 
+  function RedirectToReviews() {
+    dispatch(getItemReviews(itemCurrent.items._id)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        navigate("/catalog/item/reviews");
+      }
+    });
+  }
   const Item = () => {
     return (
       <>
@@ -695,7 +701,7 @@ export const ItemPage = () => {
           paddingBottom={2}
           sx={{
             display: "flex",
-            flexDirection:  "column",
+            flexDirection: "column",
             justifyContent: "space-between",
             alignItems: "flex-start",
             borderBottom: "2px solid black",
@@ -735,32 +741,33 @@ export const ItemPage = () => {
               variant={"h3"}
               fontSize={16}
               fontFamily={"Comfortaa"}
+              onClick={RedirectToReviews}
             >
               Відгуки
             </Typography>
           </Box>
         </Box>
         <Box
-          width={"85%"}
+          width={"87%"}
           height={"100%"}
           display={"flex"}
           justifyContent={"space-between"}
           alignItems={"flex-start"}
-          
-          sx= {{
+          sx={{
             flexDirection: {
-              xs: 'column',
-              md: 'row'
-            }
+              xs: "column",
+              md: "row",
+            },
           }}
-          margin={"0 auto"}
+          marginLeft={"auto"}
+          marginRight={"auto"}
         >
           <Box>
             <Carousel
               sx={{
                 marginRight: {
                   xs: 0,
-                  md: 7
+                  md: 7,
                 },
                 width: {
                   xs: 360,
@@ -771,8 +778,6 @@ export const ItemPage = () => {
                   xs: 500,
                   md: 550,
                 },
-
-
 
                 display: "flex",
                 alignContent: "center",
@@ -821,13 +826,11 @@ export const ItemPage = () => {
 
           <Box
             display={"flex"}
-           
-            sx = {{
+            sx={{
               width: {
-                xs: "100vw",
-                md: '50%'
-              }
-              
+                xs: "100%",
+                md: "50%",
+              },
             }}
             flexDirection={"column"}
             alignItems={"left"}
@@ -856,14 +859,14 @@ export const ItemPage = () => {
                 borderRadius: 1.5,
                 marginBottom: 3,
                 marginLeft: {
-                  xs: 'auto',
+                  xs: "auto",
                   md: 0,
                 },
                 marginRight: {
-                  xs: 'auto',
+                  xs: "auto",
                   md: 0,
                 },
-               width: '100%',
+                width: "100%",
                 height: 200,
               }}
             >
@@ -1104,8 +1107,6 @@ export const ItemPage = () => {
               }}
             >
               <Box width={"100%"}>
-
-
                 <Box
                   sx={{
                     display: "flex",
@@ -1162,7 +1163,6 @@ export const ItemPage = () => {
                   </Typography>
                 </Box>
 
-
                 <Box
                   sx={{
                     display: "flex",
@@ -1175,7 +1175,7 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={260}
+                    width={250}
                     fontSize={14}
                     height={20}
                     alignItems={"center"}
@@ -1190,10 +1190,8 @@ export const ItemPage = () => {
                       />
                     </Box>
                     Доставка кур'єром Нової Пошти
-                    
                   </Typography>
                 </Box>
-
 
                 <Box
                   sx={{
@@ -1205,7 +1203,7 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={341}
+                    width={331}
                     fontSize={14}
                     height={20}
                     alignItems={"center"}
@@ -1220,12 +1218,10 @@ export const ItemPage = () => {
                       />
                     </Box>
                     Самовивіз із відділень поштових операторів
-                    
                   </Typography>
                 </Box>
               </Box>
             </Box>
-
 
             <Box
               sx={{
@@ -1240,11 +1236,6 @@ export const ItemPage = () => {
               }}
             >
               <Box width={"100%"}>
-
-
-                
-
-
                 <Box
                   sx={{
                     display: "flex",
@@ -1258,7 +1249,7 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={340}
+                    width={330}
                     fontSize={14}
                     height={20}
                     alignItems={"center"}
@@ -1272,23 +1263,16 @@ export const ItemPage = () => {
                         alt="sdf"
                       />
                     </Box>
-                  
-                  <Typography marginLeft={3} fontWeight={'bold'}>
+
+                    <Typography marginLeft={1} fontWeight={"bold"}>
                       Оплата.
                     </Typography>
-                    
+
                     <Typography marginRight={1} fontSize={14}>
-                    Оплата карткою Visa/MasterCard
+                      Оплата карткою Visa/MasterCard
                     </Typography>
-                  
-                    
-                    
-                  
-                    
-                    
                   </Typography>
                 </Box>
-
 
                 <Box
                   sx={{
@@ -1296,14 +1280,13 @@ export const ItemPage = () => {
                     flexDirection: "column",
                     justifyContent: "space-between",
                     alignItems: "flex-start",
-                    
+
                     padding: 2,
                     paddingTop: 3,
                   }}
                 >
-                  
                   <Typography
-                    width={window.innerWidth > 600 ? 485 : 320}
+                    width={window.innerWidth > 600 ? 485 : 310}
                     fontSize={14}
                     height={20}
                     paddingLeft={0.3}
@@ -1318,21 +1301,21 @@ export const ItemPage = () => {
                         alt="sdf"
                       />
                     </Box>
-                  
-                  <Typography marginLeft={3} fontWeight={'bold'}>
-                  Гарантія.
+
+                    <Typography marginLeft={1} fontWeight={"bold"}>
+                      Гарантія.
                     </Typography>
-                    
-                    <Typography marginRight={1} textAlign={window.innerWidth > 600 ? 'inherit' : 'center'} paddingTop={window.innerWidth > 600 ? 0 : 2.9} fontSize={14}>
-                    24 місяці Обмін/повернення 
-                    {window.innerWidth < 600 ? <br/> : <></>} товару протягом 14 днів
+
+                    <Typography
+                      marginRight={1}
+                      textAlign={window.innerWidth > 600 ? "inherit" : "center"}
+                      paddingTop={window.innerWidth > 600 ? 0 : 2.9}
+                      fontSize={14}
+                    >
+                      24 місяці Обмін/повернення
+                      {window.innerWidth < 600 ? <br /> : <></>} товару протягом
+                      14 днів
                     </Typography>
-                  
-                    
-                    
-                  
-                    
-                    
                   </Typography>
                 </Box>
               </Box>
@@ -1431,18 +1414,6 @@ export const ItemPage = () => {
           )}
         </Box>
 
-        <Box paddingTop={10}>
-          <Typography
-            fontFamily={"Comfortaa"}
-            sx={{ textAlign: "center" }}
-            fontSize={25}
-          >
-            Відгуки
-          </Typography>
-          <ReviewForm {...itemCurrent.items} />
-          <Box>{StatusReviewHandler(status_review)}</Box>
-        </Box>
-
         <InfoDialog
           openInfo={openInfo}
           InfoDialog_close={InfoDialog_close}
@@ -1452,58 +1423,9 @@ export const ItemPage = () => {
     );
   };
 
-  function StatusReviewHandler(status_review: Status) {
-    switch (status_review) {
-      case "success":
-        if (reviews !== undefined) {
-          let countRatingAmount = 0;
-          dispatch(
-            setReviewsAmount(parseInt(reviews.reviews.length.toString()))
-          );
-          if (reviews.reviews.length === 0) {
-            dispatch(setRatingAmount(0));
-          }
-          return reviews.reviews
-            .slice()
-            .reverse()
-            .map((review, index) => {
-              countRatingAmount =
-                parseInt(countRatingAmount.toString()) +
-                parseInt(review.rating.toString());
-              if (index === reviews.reviews.length - 1) {
-                dispatch(setRatingAmount(countRatingAmount));
-              }
-              return <Review {...review} />;
-            });
-        } else {
-          return (
-            <Typography fontFamily={"Comfortaa"} fontSize={20}>
-              Пусто...
-            </Typography>
-          );
-        }
-      case "pending":
-        <CircularProgress />;
-        return "";
-      case "error":
-        return (
-          <Typography fontFamily={"Comfortaa"} fontSize={20}>
-            Пусто...
-          </Typography>
-        );
-      default:
-        return (
-          <Typography fontFamily={"Comfortaa"} fontSize={20}>
-            Пусто...
-          </Typography>
-        );
-    }
-  }
-
   function StatusItemHandler(status: Status) {
     switch (status) {
       case "success":
-        console.log(itemCurrent.items);
         if (itemCurrent.items !== undefined) {
           return <Item />;
         } else {

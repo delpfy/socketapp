@@ -26,6 +26,7 @@ import { synchronizeComparison, synchronizeFavorites } from "./redux/home/homeSl
 import { getAllItems } from "./redux/home/asyncActions";
 import ComputerPartsSubcategory from "./pagess/subcategories/ComputerPartsSubcategory";
 import GamingSubcategory from "./pagess/subcategories/GamingSubcategory";
+import ReviewsPage from "./pagess/items/ReviewsPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -60,6 +61,7 @@ function App() {
 
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/catalog/item" element={<ItemPage />} />
+          <Route path="/catalog/item/reviews" element={<ReviewsPage />} />
           <Route path="/computer-compl" element={<ComputerPartsSubcategory />} />
           <Route path="/gaming-compl" element={<GamingSubcategory />} />
           

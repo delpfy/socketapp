@@ -158,7 +158,10 @@ export default function SortBy() {
     <Box
       paddingBottom={10}
       sx={{
-        width: 340,
+        width: {
+          xs: 310,
+          md: 340,
+        },
       }}
     >
       <Box

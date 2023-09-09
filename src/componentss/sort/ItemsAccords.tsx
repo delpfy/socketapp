@@ -69,157 +69,151 @@ export default function ItemsAccords(props: ItemsAccordsProps) {
   }
 
   function ParameterAccord({ name, index }: { name: string; index: number }) {
-    return (
-        
-            window.innerWidth > 600 ?
-            (<Box>
-                <Box>
-                  <Typography
-                    sx={{ borderTop: "2px solid black", paddingTop: 1 }}
-                    fontWeight={"bold"}
-                  >
-                    {name}
-                  </Typography>
-                </Box>
-                <Box
-                  paddingRight={2}
-                  maxHeight={400}
-                  sx={{
-                    overflowY: "auto",
-                    "&::-webkit-scrollbar": {
-                      width: "10px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      backgroundColor: "#000000",
-                      borderRadius: "5px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      backgroundColor: "#D9D9D9",
-                      borderRadius: "5px",
-                    },
-                  }}
-                >
-                  {uniqueCabelsFields[index].map((val: any) => (
-                    <Box
-                      display={"flex"}
-                      flexDirection={"row"}
-                      alignItems={"center"}
-                      key={val}
-                    >
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            checked={
-                              typeof selectedSortParams[
-                                props.uniqueFieldNames[index]
-                              ]?.includes(val.toString()) === "boolean"
-                                ? selectedSortParams[
-                                    props.uniqueFieldNames[index]
-                                  ]?.includes(val.toString())
-                                  ? true
-                                  : false
-                                : false
-                            }
-                            onChange={() =>
-                              performSort(props.uniqueFieldNames[index], val)
-                            }
-                          />
-                        }
-                        label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
-                      />
-        
-                      <Typography color={"default"}>
-                        (
-                        {displayItemParameterAmount(props.uniqueFieldNames[index], val)}
-                        )
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>)
-            :
-            (<Accordion sx={{ borderTop: "2px solid black"}}>
-                <AccordionSummary sx = {{display: 'flex', justifyContent: 'space-between',alignItems: 'center',   }}>
-                  <Typography
-                    width={240}
-                    
-                    fontSize={14}
-                  >
-                    {name}
-                  </Typography>
+    return window.innerWidth > 600 ? (
+      <Box>
+        <Box>
+          <Typography
+            sx={{ borderTop: "2px solid black", paddingTop: 1 }}
+            fontWeight={"bold"}
+          >
+            {name}
+          </Typography>
+        </Box>
+        <Box
+          paddingRight={2}
+          maxHeight={400}
+          sx={{
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              width: "10px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#000000",
+              borderRadius: "5px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "#D9D9D9",
+              borderRadius: "5px",
+            },
+          }}
+        >
+          {uniqueCabelsFields[index].map((val: any) => (
+            <Box
+              display={"flex"}
+              flexDirection={"row"}
+              alignItems={"center"}
+              key={val}
+            >
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={
+                      typeof selectedSortParams[
+                        props.uniqueFieldNames[index]
+                      ]?.includes(val.toString()) === "boolean"
+                        ? selectedSortParams[
+                            props.uniqueFieldNames[index]
+                          ]?.includes(val.toString())
+                          ? true
+                          : false
+                        : false
+                    }
+                    onChange={() =>
+                      performSort(props.uniqueFieldNames[index], val)
+                    }
+                  />
+                }
+                label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+              />
 
-                  <Typography
-                   fontSize={14}
-                   sx = {{paddingRight: 0.6}}
-                    
-                  >
-                    Усі
-                  </Typography>
-                  <img
-                  src={require("../../img/filtersIconBlack.png")}
-                  style={{ width: 10, height: 10 , marginTop: 5}}
-                  alt="sdf"
-                />
-                </AccordionSummary>
-                <Box
-                  paddingRight={2}
-                  maxHeight={400}
-                  sx={{
-                    overflowY: "auto",
-                    "&::-webkit-scrollbar": {
-                      width: "10px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      backgroundColor: "#000000",
-                      borderRadius: "5px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      backgroundColor: "#D9D9D9",
-                      borderRadius: "5px",
-                    },
-                  }}
-                >
-                  {uniqueCabelsFields[index].map((val: any) => (
-                    <Box
-                      display={"flex"}
-                      flexDirection={"row"}
-                      alignItems={"center"}
-                      key={val}
-                    >
-                      <FormControlLabel
-                      sx={{paddingLeft: 2, fontSize: 16}}
-                        control={
-                          <Checkbox
-                            checked={
-                              typeof selectedSortParams[
-                                props.uniqueFieldNames[index]
-                              ]?.includes(val.toString()) === "boolean"
-                                ? selectedSortParams[
-                                    props.uniqueFieldNames[index]
-                                  ]?.includes(val.toString())
-                                  ? true
-                                  : false
-                                : false
-                            }
-                            onChange={() =>
-                              performSort(props.uniqueFieldNames[index], val)
-                            }
-                          />
-                        }
-                        label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
-                      />
-        
-                      <Typography color={"default"} fontSize={16}>
-                        (
-                        {displayItemParameterAmount(props.uniqueFieldNames[index], val)}
-                        )
-                      </Typography>
-                    </Box>
-                  ))}
-                </Box>
-              </Accordion>)
-        
-      
+              <Typography color={"default"}>
+                (
+                {displayItemParameterAmount(props.uniqueFieldNames[index], val)}
+                )
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+    ) : (
+      <Accordion sx={{ borderTop: "2px solid black" }}>
+        <AccordionSummary
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography width={220} fontSize={14}>
+            {name}
+          </Typography>
+
+          <Typography fontSize={14} sx={{ paddingRight: 0.6 }}>
+            Усі
+          </Typography>
+          <img
+            src={require("../../img/filtersIconBlack.png")}
+            style={{ width: 10, height: 10, marginTop: 5 }}
+            alt="sdf"
+          />
+        </AccordionSummary>
+        <Box
+          paddingRight={2}
+          maxHeight={400}
+          sx={{
+            overflowY: "auto",
+            "&::-webkit-scrollbar": {
+              width: "10px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#000000",
+              borderRadius: "5px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "#D9D9D9",
+              borderRadius: "5px",
+            },
+          }}
+        >
+          {uniqueCabelsFields[index].map((val: any) => (
+            <Box
+              display={"flex"}
+              flexDirection={"row"}
+              alignItems={"center"}
+              key={val}
+            >
+              <FormControlLabel
+                sx={{ paddingLeft: 2, fontSize: 16 }}
+                control={
+                  <Checkbox
+                    checked={
+                      typeof selectedSortParams[
+                        props.uniqueFieldNames[index]
+                      ]?.includes(val.toString()) === "boolean"
+                        ? selectedSortParams[
+                            props.uniqueFieldNames[index]
+                          ]?.includes(val.toString())
+                          ? true
+                          : false
+                        : false
+                    }
+                    onChange={() =>
+                      performSort(props.uniqueFieldNames[index], val)
+                    }
+                  />
+                }
+                label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
+              />
+
+              <Typography color={"default"} fontSize={16}>
+                (
+                {displayItemParameterAmount(props.uniqueFieldNames[index], val)}
+                )
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      </Accordion>
     );
   }
 
