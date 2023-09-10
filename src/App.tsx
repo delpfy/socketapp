@@ -27,6 +27,8 @@ import { getAllItems } from "./redux/home/asyncActions";
 import ComputerPartsSubcategory from "./pagess/subcategories/ComputerPartsSubcategory";
 import GamingSubcategory from "./pagess/subcategories/GamingSubcategory";
 import ReviewsPage from "./pagess/items/ReviewsPage";
+import AdminPage from "./pagess/admin/AdminPage";
+import AdminAuthorize from "./pagess/admin/AdminAuthorize";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -58,6 +60,10 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
+
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin-auth" element={<AdminAuthorize />} />
+
 
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/catalog/item" element={<ItemPage />} />

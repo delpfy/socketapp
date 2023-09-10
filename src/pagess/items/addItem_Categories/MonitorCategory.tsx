@@ -27,7 +27,7 @@ import {
   createItem,
   updateItemFields,
 } from "../../../redux/home/asyncActions";
-import { Category } from "../../../redux/types";
+
 import InfoDialog from "../../../componentss/dialogs/InfoDialog";
 import {
   availableMonitorBrands,
@@ -48,7 +48,7 @@ import {
   setCurrentImages,
 } from "../../../redux/home/homeSlice";
 
-export default function MonitorCategory(props: Category) {
+export default function MonitorCategory(props: any) {
   const { editItemMode, itemCurrent, currentImages } = useAppSelector(
     (state) => state.home
   );

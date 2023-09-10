@@ -23,6 +23,7 @@ const userSlice = createSlice({
       name: "",
       email: "",
       authorized: false,
+      authorized_admin: false,
       expences: 0,
       emailConfirmed: false,
     },
@@ -44,6 +45,10 @@ const userSlice = createSlice({
     },
     setUserEmail(state, action: PayloadAction<string>) {
       state.user.email = action.payload;
+    },
+
+    authorizeAdmin(state, action: PayloadAction<boolean>){
+      state.user.authorized_admin = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -139,6 +144,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { NullifyToken, setUserExpences, setUserEmail } =
+export const { NullifyToken, setUserExpences, setUserEmail, authorizeAdmin } =
   userSlice.actions;
 export default userSlice.reducer;

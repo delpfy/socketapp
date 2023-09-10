@@ -27,7 +27,7 @@ import {
   createItem,
   updateItemFields,
 } from "../../../redux/home/asyncActions";
-import { Category } from "../../../redux/types";
+
 import InfoDialog from "../../../componentss/dialogs/InfoDialog";
 import {
   availableConnectorTypes,
@@ -45,7 +45,7 @@ import {
   setCurrentImages,
 } from "../../../redux/home/homeSlice";
 
-export default function CabelsCategory(props: Category) {
+export default function CabelsCategory(props: any) {
   const { editItemMode, itemCurrent, currentImages } = useAppSelector(
     (state) => state.home
   );

@@ -135,11 +135,6 @@ export type UserRegister = {
 };
 
 export type Status = "success" | "pending" | "error";
-export type Category = {
-  category: "Ноутбуки" | "Мережеве обладнання" | "Монітори" |
-  "Комп'ютери" | "Геймінг" | "Монітори" | 
-  "Аксесуари для електроніки" | "Кабелі та перехідники"
-};
 
 export type TLocationCity = {
   display_name: string;
@@ -238,6 +233,27 @@ export type TOrders = {
   orders: TOrder[];
 };
 
+export type Category = {
+  _id: string;
+  name: string;
+  image: string;
+  subcategories: Subcategory[];
+};
+
+export type Subcategory = {
+  _id: string;
+  name: string;
+  image: string;
+};
+
+export type AdminProcesses =
+  | "none"
+  | "add-category"
+  | "add-subcategory"
+  | "edit-category"
+  | "show-one-category"
+  | "show-many-categories";
+
 export interface SelectedSortParams {
   [paramName: string]: string[];
 }
@@ -255,7 +271,7 @@ export interface HomeState {
   item_status: Status;
   itemAppendingId: string;
   itemFavoritesId: string;
-itemCompareId: string;
+  itemCompareId: string;
   id: number;
   editItemMode: boolean;
   differencesMode: boolean;

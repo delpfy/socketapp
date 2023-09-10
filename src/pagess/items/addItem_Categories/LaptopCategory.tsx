@@ -28,7 +28,7 @@ import {
   createItem,
   updateItemFields,
 } from "../../../redux/home/asyncActions";
-import { Category } from "../../../redux/types";
+
 import InfoDialog from "../../../componentss/dialogs/InfoDialog";
 import {
   availableBrands,
@@ -59,7 +59,7 @@ import {
   setCurrentImages,
 } from "../../../redux/home/homeSlice";
 
-export default function LaptopCategory(props: Category) {
+export default function LaptopCategory(props: any) {
   const { editItemMode, itemCurrent, currentImages } = useAppSelector(
     (state) => state.home
   );
