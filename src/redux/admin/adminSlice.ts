@@ -18,7 +18,7 @@ const adminSlice = createSlice({
     process: 'show-many-categories' as AdminProcesses,
     second_process: 'none' as AdminProcesses,
     third_process: 'none' as AdminProcesses,
-    categories: [] as any[],
+    _categories: [] as any[],
     categoryImage: '',
     subcategoryImage: '',
     selectedCategory: {} as Category,
@@ -61,7 +61,7 @@ const adminSlice = createSlice({
       .addCase(createCategory.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.process = 'show-many-categories';
-        state.categories.push(action.payload);
+        state._categories.push(action.payload);
       })
       .addCase(createCategory.pending, (state) => {
         state.status = "pending";
@@ -75,7 +75,7 @@ const adminSlice = createSlice({
       .addCase(getAllCategories.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.process = 'show-many-categories';
-        state.categories = action.payload;
+        state._categories = action.payload;
       })
       .addCase(getAllCategories.pending, (state) => {
         state.status = "pending";

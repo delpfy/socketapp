@@ -55,7 +55,7 @@ export default function ComputerPartsSubcategory() {
                   xl={4}
                   key={item.id}
                 >
-                  <Card category={item.name} image={item.image} />
+                  <Card category={item.name} image={`http://localhost:4000${item.image}`} />
                 </Grid>
               )
             )}

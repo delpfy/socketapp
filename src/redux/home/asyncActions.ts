@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { Items, ItemsDisplay, TShippingItems } from "../types";
+import { Category, Items, ItemsDisplay, TShippingItems } from "../types";
 
 
 export const UploadItemImage = createAsyncThunk<[any], FormData>(
@@ -21,6 +21,14 @@ export const getAllItems = createAsyncThunk<ItemsDisplay>(
   "home/getAllItems",
   async function () {
     const { data } = await axios.get<ItemsDisplay>(`/items`);
+    return data;
+  }
+);
+
+export const getAllCategories = createAsyncThunk<any[]>(
+  "category/getAllCategories",
+  async (params) => {
+    const { data } = await axios.get<any[]>("/categories");
     return data;
   }
 );

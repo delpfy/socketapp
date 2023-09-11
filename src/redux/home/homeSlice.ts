@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { InitialiseHome } from "../../utils/InitialiseHome";
-import { ItemsDisplay, HomeState, Items, SelectedSortParams } from "../types";
+import {
+  ItemsDisplay,
+  HomeState,
+  Items,
+  SelectedSortParams,
+  Category,
+} from "../types";
 import {
   checkItemById,
   getAllItems,
@@ -10,6 +16,7 @@ import {
   updateItem,
   updateItemFields,
   UploadItemImage,
+  getAllCategories,
 } from "./asyncActions";
 import { actualizeData } from "../../utils/actuilizeLocalStorageData";
 import { actualizeFirstRender } from "../../utils/actualizeFirstLoad";
@@ -165,8 +172,6 @@ const homeSlice = createSlice({
       }
     },
 
-    
-
     sortItemsByParameters(
       state,
       action: PayloadAction<{ selectedParams: SelectedSortParams }>
@@ -190,8 +195,6 @@ const homeSlice = createSlice({
       state.sorted = true;
       state.itemsSortedParams = state.itemsSorted;
     },
-
-   
   },
 
   extraReducers: (builder) => {
@@ -270,6 +273,19 @@ const homeSlice = createSlice({
       state.status = "error";
       state.itemsCategory = {} as ItemsDisplay;
     });
+
+    builder.addCase(getAllCategories.fulfilled, (state, action) => {
+      state.categories = action.payload;
+      /* state.computerPartsSubcategory =  */
+      state.computerPartsSubcategory = action.payload.find(
+        (category: Category) => category.name === "Комп'ютерні комплектуючі"
+      ).subcategories;
+      state.gamingSubcategory = action.payload.find(
+        (category: Category) => category.name === "Геймінг"
+      ).subcategories;
+    });
+    builder.addCase(getAllCategories.pending, (state) => {});
+    builder.addCase(getAllCategories.rejected, (state) => {});
 
     builder.addCase(searchItems.fulfilled, (state, action) => {
       state.status = "success";
@@ -391,6 +407,6 @@ export const {
   sortByRelevance_DESC,
   sortByCostRange,
   sortByRelevanceRange,
-  sortItemsByParameters
+  sortItemsByParameters,
 } = homeSlice.actions;
 export default homeSlice.reducer;

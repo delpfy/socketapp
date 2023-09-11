@@ -37,7 +37,7 @@ export default function CategoryCard(props: {
       dispatch(SetSubcategory(""));
       navigate("/catalog");
     }
-    console.log(props.category);
+    
   }
 
   return (

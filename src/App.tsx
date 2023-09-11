@@ -29,6 +29,7 @@ import GamingSubcategory from "./pagess/subcategories/GamingSubcategory";
 import ReviewsPage from "./pagess/items/ReviewsPage";
 import AdminPage from "./pagess/admin/AdminPage";
 import AdminAuthorize from "./pagess/admin/AdminAuthorize";
+import { getAllCategories } from "./redux/admin/asyncActions";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -48,8 +49,14 @@ function App() {
   useEffect(() => {
     dispatch(getAllItems());
     dispatch(checkAuthorization());
+    dispatch(getAllCategories()).then((result: any) => {
+      if(result.meta.requestStatus === 'fulfilled'){
+        
+      }
+    })
   }, []);
-
+ 
+  
   React.useEffect(() => {
     dispatch(synchronizeBasket());
     dispatch(synchronizeFavorites());
