@@ -25,6 +25,7 @@ import {
   deleteCategory,
   getAllCategories,
   getCategoryById,
+  updateCategory,
   uploadCategoryImage,
   uploadSubcategoryImage,
 } from "../../redux/admin/asyncActions";
@@ -39,17 +40,30 @@ export default function ShowCategories() {
     third_process,
   } = useAppSelector((state) => state.admin);
   const [newCategory, setNewCategory] = useState({
-    name: second_process === "edit-category" ? selectedCategory.name : "",
-    subcategories: second_process === "edit-category" ? selectedCategory.name : [] as Category[],
+    name: "",
+    subcategories: [] as Category[],
   });
 
-  const [newSubcategory, setNewSubcategory] = useState<Category>(
-    {} as Category
+  const [newSubcategory, setNewSubcategory] = useState<any>(
+    {} as any
   );
 
-  function handleEditCategory(categoryId: string){
-    dispatch(setSecondProcess("edit-category"));
-    dispatch(getCategoryById({categoryId}))
+  function handleEditCategory(categoryId: string) {
+    dispatch(getCategoryById({ categoryId })).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        dispatch(setSecondProcess("edit-category"));
+        setNewCategory({
+          ...newCategory,
+          name: result.payload.name,
+          subcategories: result.payload.subcategories,
+        });
+      }
+    });
+  }
+
+  function handleEditSubcategory(subcategory: Category){
+    dispatch(setThirdProcess("edit-subcategory"))
+    setNewSubcategory(subcategory)
   }
 
   function handleChangeNewCategory(e: any) {
@@ -110,31 +124,74 @@ export default function ShowCategories() {
   }
 
   function handleAddCategory() {
-    dispatch(
-      createCategory({
-        categoryData: {
-          name: newCategory.name,
-          image: categoryImage,
-          subcategories: newCategory.subcategories,
-        },
-      })
-    ).then((result: any) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        dispatch(setSecondProcess("none"));
-      }
-    });
+    switch (second_process) {
+      case "add-category":
+        dispatch(
+          createCategory({
+            categoryData: {
+              name: newCategory.name,
+              image: categoryImage,
+              subcategories: newCategory.subcategories,
+            },
+          })
+        ).then((result: any) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            dispatch(setSecondProcess("none"));
+            dispatch(getAllCategories());
+          }
+        });
+        return;
+      case "edit-category":
+        dispatch(
+          updateCategory({
+            categoryId: selectedCategory._id,
+            categoryData: {
+              name: newCategory.name,
+              image: categoryImage,
+              subcategories: newCategory.subcategories,
+            },
+          })
+        ).then((result: any) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            dispatch(setSecondProcess("none"));
+            dispatch(getAllCategories());
+          }
+        });
+        return;
+    }
   }
 
   function handleAddSubcategory() {
-    setNewCategory({
-      ...newCategory,
-      subcategories: [...newCategory.subcategories, newSubcategory],
-    });
+    console.log(third_process)
+    switch (third_process) {
+      case "add-subcategory":
+        setNewCategory({
+          ...newCategory,
+          subcategories: [...newCategory.subcategories, newSubcategory],
+        });
+        return;
+      case "edit-subcategory":
+        const itemIndex = newCategory.subcategories.findIndex(
+          (item: any) => item._id === newSubcategory._id
+        );
+        console.log(itemIndex)
+        setNewCategory({
+          ...newCategory,
+          subcategories: [
+            ...newCategory.subcategories.slice(0, itemIndex),
+
+            newSubcategory,
+
+            ...newCategory.subcategories.slice(itemIndex + 1),
+          ],
+        });
+        return;
+    }
   }
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllCategories());
-  }, [_categories, dispatch]);
+  }, [dispatch]);
 
   return (
     <>
@@ -190,7 +247,7 @@ export default function ShowCategories() {
                 {categoryImage !== undefined ? (
                   <img
                     src={`http://localhost:4000${categoryImage}`}
-                    style={{ width: 60, height: 60 }}
+                    style={{  height: 60 }}
                     alt=""
                   />
                 ) : (
@@ -237,7 +294,7 @@ export default function ShowCategories() {
                   Додати підкатегорію
                 </Button>
               </Box>
-              {third_process === "add-subcategory" ? (
+              {third_process === "add-subcategory" || third_process === "edit-subcategory"? (
                 <>
                   <Typography>Нова Підкатегорія</Typography>
                   <Box>
@@ -264,7 +321,7 @@ export default function ShowCategories() {
                     <Box maxWidth={500} padding={4}>
                       {subcategoryImage !== undefined ? (
                         <img
-                          src={`http://localhost:4000${subcategoryImage}`}
+                          src={`http://localhost:4000${newSubcategory.image}`}
                           style={{ height: 60 }}
                           alt=""
                         />
@@ -354,15 +411,7 @@ export default function ShowCategories() {
                             Видалити
                           </Button>
                           <Button
-                            onClick={() =>
-                              dispatch(
-                                setSecondProcess(
-                                  second_process === "add-category"
-                                    ? "none"
-                                    : "add-category"
-                                )
-                              )
-                            }
+                            onClick={() => handleEditSubcategory(category)}
                           >
                             Редагувати
                           </Button>
@@ -398,20 +447,22 @@ export default function ShowCategories() {
                   <img
                     src={`http://localhost:4000${category.image}`}
                     alt={category.name}
-                    style={{ width: 50, height: 50 }}
+                    style={{  height: 50 }}
                   />
                 </TableCell>
                 <TableCell>
                   <Button
                     onClick={() =>
-                      dispatch(deleteCategory({ categoryId: category._id }))
+                      dispatch(deleteCategory({ categoryId: category._id })).then((result:any) => {
+                        if(result.meta.requestStatus === 'fulfilled'){
+                          dispatch(getAllCategories())
+                        }
+                      })
                     }
                   >
                     Видалити
                   </Button>
-                  <Button
-                    onClick={() => handleEditCategory(category._id)}
-                  >
+                  <Button onClick={() => handleEditCategory(category._id)}>
                     Редагувати
                   </Button>
                 </TableCell>

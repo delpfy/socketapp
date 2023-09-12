@@ -25,14 +25,11 @@ import Search from "../search/Search";
 import SortBy from "../../sort/SortBy";
 import ContactUs from "../ContactUs";
 import { checkAuthorization } from "../../../redux/user/asyncActions";
+import { Category } from "../../../redux/types";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
-type Catgory = {
-  id: number;
-  name: string;
-  image: string;
-};
+
 
 export default function AppBarMenu() {
   const CATEGORIES = useAppSelector((state) => state.home.categories);
@@ -40,7 +37,7 @@ export default function AppBarMenu() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  function handleCategoryChange(category: Catgory) {
+  function handleCategoryChange(category: Category) {
     dispatch(SetCategory(category.name));
     navigate("/catalog");
   }
@@ -70,8 +67,8 @@ export default function AppBarMenu() {
         onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}
       >
-        {CATEGORIES.map((category) => (
-          <ListItem key={category.id} disablePadding>
+        {CATEGORIES.map((category: Category) => (
+          <ListItem key={category._id} disablePadding>
             <ListItemButton onClick={() => handleCategoryChange(category)}>
               <ListItemIcon></ListItemIcon>
               <ListItemText primary={category.name} />

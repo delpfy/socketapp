@@ -30,6 +30,7 @@ import ReviewsPage from "./pagess/items/ReviewsPage";
 import AdminPage from "./pagess/admin/AdminPage";
 import AdminAuthorize from "./pagess/admin/AdminAuthorize";
 import { getAllCategories } from "./redux/admin/asyncActions";
+import ShowSubcategories from "./pagess/subcategories/ShowSubcategories";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -77,6 +78,7 @@ function App() {
           <Route path="/catalog/item/reviews" element={<ReviewsPage />} />
           <Route path="/computer-compl" element={<ComputerPartsSubcategory />} />
           <Route path="/gaming-compl" element={<GamingSubcategory />} />
+          <Route path="/subcategories" element={<ShowSubcategories />} />
           
           <Route path="/add-item" element={<AddItem />} />
 

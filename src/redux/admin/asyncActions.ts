@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { Category } from "../types"; 
+import { Attribute, Category } from "../types"; 
 
 
 export const uploadCategoryImage = createAsyncThunk<any, FormData>(
@@ -70,7 +70,7 @@ export const updateCategory = createAsyncThunk<
   Category,
   { categoryId: string; categoryData: Partial<Category> }
 >("category/updateCategory", async (params) => {
-  const { data } = await axios.put<Category>(
+  const { data } = await axios.patch<Category>(
     `/categories/${params.categoryId}`,
     params.categoryData,
     {
@@ -87,6 +87,66 @@ export const deleteCategory = createAsyncThunk<string, { categoryId: string }>(
   async (params) => {
     const { data } = await axios.delete(
       `/categories/${params.categoryId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return data;
+  }
+);
+
+
+export const createAttributes = createAsyncThunk<
+  Attribute,
+  { attributesData: {category: string, attributes: any[]} }
+>("attributes/createAttributes", async (params) => {
+  const { data } = await axios.post<Attribute>(
+    "/attributes",
+    params.attributesData,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return data;
+});
+
+
+
+export const getAttributesByCategory = createAsyncThunk<
+  any,
+  { category: string }
+>("attributes/getAttributesByCategory", async (params) => {
+  const { data } = await axios.get<any>(
+    `/attributes/${params.category}`
+  );
+  return data;
+});
+
+export const updateAttributes = createAsyncThunk<
+Attribute,
+  { attributesId: string; attributesData: Partial<Attribute> }
+>("attributes/updateAttributes", async (params) => {
+  const { data } = await axios.patch<Attribute>(
+    `/attributes/${params.attributesId}`,
+    params.attributesData,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return data;
+});
+
+export const deleteAttributes = createAsyncThunk<string, { attributesId: string }>(
+  "attributes/deleteAttributes",
+  async (params) => {
+    const { data } = await axios.delete(
+      `/attributes/${params.attributesId}`,
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,

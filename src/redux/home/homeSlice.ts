@@ -30,6 +30,7 @@ const homeSlice = createSlice({
   reducers: {
     SetCategory(state, action: PayloadAction<string>) {
       state.category = action.payload;
+      
     },
     SetSubcategory(state, action: PayloadAction<string>) {
       state.subcategory = action.payload;

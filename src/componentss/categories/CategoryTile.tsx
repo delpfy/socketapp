@@ -11,32 +11,31 @@ import {
 import { useAppDispatch } from "../../redux/hooks";
 import { SetCategory, SetSubcategory } from "../../redux/home/homeSlice";
 import { useNavigate } from "react-router-dom";
+import { Category } from "../../redux/types";
 
-export default function CategoryCard(props: {
-  category: string;
-  image: string;
-}) {
+export default function CategoryCard(category: any) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  
   function RedirectToCatalog() {
-    dispatch(SetCategory(props.category));
-    if (props.category === "Комп'ютерні комплектуючі") {
-      dispatch(SetSubcategory(props.category));
+    
+    dispatch(SetCategory(category.category.name));
+    if (category.category.subcategories !== undefined) {
+      if(category.category.subcategories.length !== 0){
+        dispatch(SetSubcategory(category.category.name));
 
-      if (window.innerWidth > 600) {
-        navigate("/computer-compl");
+        if (window.innerWidth > 600) {
+          navigate("/subcategories");
+        }
       }
-    } else if (props.category === "Геймінг") {
-      dispatch(SetSubcategory(props.category));
-
-      if (window.innerWidth > 600) {
-        navigate("/gaming-compl");
+      else {
+        navigate("/catalog");
       }
-    } else {
-      dispatch(SetSubcategory(""));
+    } 
+    else {
       navigate("/catalog");
     }
+    
     
   }
 
@@ -108,8 +107,8 @@ export default function CategoryCard(props: {
             objectFit: "contain",
             overflow: "hidden",
           }}
-          image={props.image}
-          title={props.category}
+          image={`http://localhost:4000${category.category.image}`}
+          title={category.category.name}
         />
 
         <CardContent
@@ -135,7 +134,7 @@ export default function CategoryCard(props: {
             fontFamily={"Comfortaa"}
             fontSize={20}
           >
-            {props.category}
+            {category.category.name}
           </Typography>
         </CardContent>
       </Box>

@@ -460,7 +460,7 @@ export const Home = () => {
             columns={{ xs: 2, sm: 2, md: 16, lg: 20, xl: 20 }}
           >
             {categories.map(
-              (item: { id: number; name: string; image: string }) => (
+              (item: any) => (
                 <Grid
                   item
                   display={"flex"}
@@ -479,7 +479,7 @@ export const Home = () => {
                   xl={4}
                   key={item.id}
                 >
-                  <Card category={item.name} image={`http://localhost:4000${item.image}`} />
+                  <Card category = {item} />
                 </Grid>
               )
             )}

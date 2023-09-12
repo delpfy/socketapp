@@ -237,21 +237,23 @@ export type Category = {
   _id: string;
   name: string;
   image: string;
-  subcategories: Subcategory[];
+  subcategories: Category[];
 };
 
-export type Subcategory = {
-  _id: string;
-  name: string;
-  image: string;
+export type Attribute = {
+  category: string;
+  attributes: [];
 };
 
 export type AdminProcesses =
   | "none"
   | "add-category"
   | "add-subcategory"
+  | "edit-subcategory"
   | "edit-category"
   | "show-one-category"
+  | "show-many-items"
+  | "show-many-attributes"
   | "show-many-categories";
 
 export interface SelectedSortParams {
@@ -292,7 +294,7 @@ export interface HomeState {
   reset: boolean;
   itemCurrent: any;
   currentImages: any;
-  categories: { id: number; name: string; image: string }[];
+  categories: Category[];
   computerPartsSubcategory: { id: number; name: string; image: string }[];
   gamingSubcategory: { id: number; name: string; image: string }[];
   subcategory: string;

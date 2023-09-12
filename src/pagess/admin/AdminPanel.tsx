@@ -60,9 +60,12 @@ export default function AdminPanel() {
         >
           <Typography>Категорії</Typography>
         </AccordionSummary>
+        <AccordionDetails>
         <Button onClick={() => dispatch(setProcess('show-many-categories'))}>
           Редагувати категорії
         </Button>
+        </AccordionDetails>
+        
         
       </Accordion>
       <Accordion>
@@ -74,10 +77,9 @@ export default function AdminPanel() {
           <Typography>Товари</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+        <Button onClick={() => dispatch(setProcess('show-many-items'))}>
+          Редагувати товари
+        </Button>
         </AccordionDetails>
       </Accordion>
       <Accordion>
@@ -89,10 +91,9 @@ export default function AdminPanel() {
           <Typography>Атрибути</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+        <Button onClick={() => dispatch(setProcess('show-many-attributes'))}>
+          Редагувати атрибути
+        </Button>
         </AccordionDetails>
       </Accordion>
         </Box>

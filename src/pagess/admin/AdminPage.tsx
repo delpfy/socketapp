@@ -7,6 +7,8 @@ import AdminPanel from "./AdminPanel";
 import ShowCategories from "./ShowCategories";
 
 import EditCategory from "./EditCategory";
+import ShowItems from "./ShowItems";
+import ShowAttributes from "./ShowAttributes";
 
 export default function AdminPage() {
   const { user } = useAppSelector((state) => state.user);
@@ -24,8 +26,11 @@ export default function AdminPage() {
       case "show-many-categories":
         return  <ShowCategories />;
         
-      case "edit-category":
-        return <EditCategory />;
+      case "show-many-items":
+        return <ShowItems />;
+
+        case "show-many-attributes":
+        return <ShowAttributes />;
         
     }
   }
@@ -50,9 +55,13 @@ export default function AdminPage() {
             
             
           </Box>
-        ) : (
-          /* navigate("/admin-auth") */
-          <Box
+        ) : 
+          
+           (
+            navigate("/admin-auth") 
+           
+          
+          /* <Box
             paddingTop={25}
             paddingBottom={15}
             margin={"0 auto"}
@@ -67,8 +76,9 @@ export default function AdminPage() {
             </Box>
             
             
-          </Box>
-        )
+          </Box> */
+          ) 
+        
       ) : (
         navigate("/")
       )}
