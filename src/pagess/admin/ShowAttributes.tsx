@@ -2,63 +2,56 @@ import {
   Box,
   Button,
   MenuItem,
-  Paper,
   Select,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   TextField,
   Typography,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Attribute, Category } from "../../redux/types";
 import {
-  clearCurrentImages,
-  setProcess,
-  setSecondProcess,
-  setThirdProcess,
+  clearAttributes,
 } from "../../redux/admin/adminSlice";
-import { useEffect, useRef, useState } from "react";
+import { useEffect,  useState } from "react";
 import {
   createAttributes,
-  createCategory,
-  deleteCategory,
-  getAllCategories,
   getAttributesByCategory,
-  getCategoryById,
-  updateCategory,
-  uploadCategoryImage,
-  uploadSubcategoryImage,
+  updateAttributes,
 } from "../../redux/admin/asyncActions";
 
 export default function ShowAttributes() {
-  const { _attributes, _categories, second_process, third_process } =
-    useAppSelector((state) => state.admin);
+  const { _attributes, _categories } = useAppSelector((state) => state.admin);
 
   const dispatch = useAppDispatch();
 
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedSubcategory, setSelectedSubcategory] = useState('');
-  const [selectedAttributes, setSelectedAttributes] = useState<Attribute>(
-    {} as Attribute
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [attributesChanged, setAttributesChanged] = useState(false);
+
+  const [newAttributeData, setNewAttributeData] = useState(
+    _attributes
+      ? _attributes
+      : {
+          _id: "",
+          category: "",
+          attributes: [{ name: "", value: "" }],
+        }
   );
 
-  const [newAttributeData, setNewAttributeData] = useState({
-    category: "",
-    attributes: [{name: '' , value: ''}],
-  });
-
   useEffect(() => {
-    
     if (selectedCategory) {
-      dispatch(getAttributesByCategory({ category: selectedSubcategory === '' ? selectedCategory : selectedSubcategory }))
+      dispatch(
+        getAttributesByCategory({
+          category:
+            selectedSubcategory === "" ? selectedCategory : selectedSubcategory,
+        })
+      )
         .unwrap()
-        .then((data: Attribute) => {
-          setSelectedAttributes(data);
-          console.log(data)
+        .then((data: any) => {
+          setNewAttributeData({
+            _id: data.items[0]?._id,
+            category: data.items[0]?.category,
+            attributes: data.items[0]?.attributes,
+          });
+          console.log(data.items[0]);
         });
     }
   }, [selectedCategory, selectedSubcategory]);
@@ -66,7 +59,7 @@ export default function ShowAttributes() {
   const handleCategoryChange = (event: any) => {
     const category = event.target.value;
     setSelectedCategory(category);
-    setSelectedSubcategory('');
+    setSelectedSubcategory("");
   };
 
   const handleSubcategoryChange = (event: any) => {
@@ -83,33 +76,90 @@ export default function ShowAttributes() {
     });
   };
 
+  useEffect(() => {
+    const attributesAreDifferent =
+      JSON.stringify(newAttributeData) !== JSON.stringify(_attributes);
+
+    if (attributesAreDifferent) {
+      setAttributesChanged(true);
+    } else {
+      setAttributesChanged(false);
+    }
+  }, [newAttributeData]);
+
+  useEffect(() => {
+    return () => {
+      setNewAttributeData({ _id: "", category: "", attributes: [] });
+      dispatch(clearAttributes());
+    };
+  }, []);
+
   const handleAddAttribute = () => {
-    
+    console.log(_attributes);
     setNewAttributeData((prevData: any) => ({
       ...prevData,
-      attributes: [
-        ...prevData.attributes,
-        { name: '', value: '' },
-      ],
+      attributes:
+        prevData?.attributes === undefined
+          ? [{ name: "", value: "-" }]
+          : [...prevData?.attributes, { name: "", value: "-" }],
     }));
   };
 
   const handleCreateAttributes = () => {
-   
-    dispatch(createAttributes({ attributesData: {category: selectedSubcategory === '' ? selectedCategory : selectedSubcategory, attributes: newAttributeData.attributes} }))
-      .unwrap()
-      .then((result: any) => {
-        if(result.meta.requestStatus === 'fulfilled'){
-          dispatch(getAttributesByCategory({ category: selectedCategory }))
-          .unwrap()
-          .then((data: Attribute) => {
-            setSelectedAttributes(data);
-          });
-
-          dispatch(getAttributesByCategory({ category: selectedCategory }))
-        }
-        
-      });
+    if (_attributes.attributes.length === 0) {
+      dispatch(
+        createAttributes({
+          attributesData: {
+            category:
+              selectedSubcategory === ""
+                ? selectedCategory
+                : selectedSubcategory,
+            attributes: newAttributeData.attributes,
+          },
+        })
+      )
+        .unwrap()
+        .then((result: any) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            dispatch(getAttributesByCategory({ category: selectedCategory }))
+              .unwrap()
+              .then((data: any) => {
+                setNewAttributeData({
+                  _id: data.items[0]?._id,
+                  category: data.items[0]?.category,
+                  attributes: data.items[0]?.attributes,
+                });
+              });
+          }
+        });
+    } else {
+      dispatch(
+        updateAttributes({
+          attributesId: _attributes._id,
+          attributesData: {
+            category:
+              selectedSubcategory === ""
+                ? selectedCategory
+                : selectedSubcategory,
+            attributes: newAttributeData.attributes,
+          },
+        })
+      )
+        .unwrap()
+        .then((result: any) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            dispatch(getAttributesByCategory({ category: selectedCategory }))
+              .unwrap()
+              .then((data: any) => {
+                setNewAttributeData({
+                  _id: data.items[0]?._id,
+                  category: data.items[0]?.category,
+                  attributes: data.items[0]?.attributes,
+                });
+              });
+          }
+        });
+    }
   };
 
   return (
@@ -117,7 +167,7 @@ export default function ShowAttributes() {
       <Select
         value={selectedCategory}
         onChange={handleCategoryChange}
-        label="Категория"
+        label="Категорія"
       >
         {_categories.map((category) => (
           <MenuItem key={category._id} value={category.name}>
@@ -126,12 +176,13 @@ export default function ShowAttributes() {
         ))}
       </Select>
 
-      {selectedCategory && _categories.find((cat) => cat.name === selectedCategory)?.subcategories
+      {selectedCategory &&
+      _categories.find((cat) => cat.name === selectedCategory)?.subcategories
         .length !== 0 ? (
         <Select
           value={selectedSubcategory}
           onChange={handleSubcategoryChange}
-          label="Подкатегория"
+          label="Підкатегория"
         >
           {_categories
             .find((cat) => cat.name === selectedCategory)
@@ -145,47 +196,58 @@ export default function ShowAttributes() {
         <></>
       )}
 
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Атрибут</TableCell>
-              <TableCell>Значение</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {_attributes?.attributes?.map((attribute: any) => (
-              <TableRow key={attribute._id}>
-                <TableCell>{attribute.name}</TableCell>
-                <TableCell>{attribute.value}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-
       <Box>
-        <Typography margin={3}>Добавить новый атрибут</Typography>
-        <Box display={'flex'} flexDirection={'column'}>
-        {newAttributeData.attributes.map((attr: {name: string, value: any}, index) => (
-          <Box display={'flex'} flexDirection={'row'}>
-            <TextField
-              name="name"
-              label="Имя атрибута"
-              value={attr.name}
-              onChange={(e: any) => handleAttributeChange(e, index)}
-            />
-            <TextField
-              name="value"
-              label="Значение атрибута"
-              value={attr.value}
-              onChange={(e: any) => handleAttributeChange(e, index)}
-            />
-          </Box>
-        ))}
-        </Box>
-        <Button onClick={handleAddAttribute}>Добавить атрибут</Button>
-        <Button onClick={handleCreateAttributes}>Создать атрибуты</Button>
+        {_attributes.attributes !== undefined &&
+        (_categories.find((cat) => cat.name === selectedCategory)?.subcategories
+          .length === 0 ||
+          (selectedCategory !== "" && selectedSubcategory !== "")) ? (
+          <>
+            <Typography margin={3}>
+              Атрибути категорії{" "}
+              {selectedSubcategory === ""
+                ? selectedCategory
+                : selectedSubcategory}{" "}
+            </Typography>
+            <Box display={"flex"} flexDirection={"column"}>
+              {newAttributeData?.attributes?.map(
+                (attr: { name: string; value: any }, index) => (
+                  <Box display={"flex"} flexDirection={"row"}>
+                    <TextField
+                      name="name"
+                      label="Назва"
+                      value={attr.name}
+                      onChange={(e: any) => handleAttributeChange(e, index)}
+                    />
+                    <Button
+                      onClick={() => {
+                        setNewAttributeData((prevData: any) => ({
+                          ...prevData,
+                          attributes: prevData?.attributes.filter(
+                            (attrib: any) => attrib.name !== attr.name
+                          ),
+                        }));
+                      }}
+                    >
+                      Прибрати
+                    </Button>
+                  </Box>
+                )
+              )}
+            </Box>
+
+            <Button onClick={handleAddAttribute}>Додати</Button>
+          </>
+        ) : (
+          <></>
+        )}
+
+        {newAttributeData.attributes !== undefined &&
+        newAttributeData.attributes.length !== 0 &&
+        attributesChanged ? (
+          <Button onClick={handleCreateAttributes}>Готово</Button>
+        ) : (
+          <></>
+        )}
       </Box>
     </>
   );

@@ -18,7 +18,6 @@ import {
   InputAdornment,
   OutlinedInput,
   TextField,
-  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -28,7 +27,6 @@ export default function AdminAuthorize() {
     password: "",
   });
 
-  const [openToken, setOpenToken] = useState(false);
   const [passVisible, setPassVisible] = useState(true);
   const { status, user_status } = useAppSelector((state) => state.user);
 
@@ -89,7 +87,7 @@ export default function AdminAuthorize() {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(checkAuthorization()).then((result_: any) => {
           if (result_.meta.requestStatus === "fulfilled") {
-            dispatch(authorizeAdmin(true))
+            dispatch(authorizeAdmin(true));
             navigate("/admin");
           } else if (result_.meta.requestStatus === "rejected") {
             ErrorDialog_open();
@@ -109,7 +107,7 @@ export default function AdminAuthorize() {
 
   return (
     <>
-      <Box  paddingTop={25} paddingBottom={15} margin={'0 auto'} width={'30%'}>
+      <Box paddingTop={25} paddingBottom={15} margin={"0 auto"} width={"30%"}>
         <Box sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>Авторизація</Box>
         <Box>
           <TextField

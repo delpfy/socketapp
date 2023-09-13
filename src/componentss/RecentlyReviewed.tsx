@@ -17,7 +17,7 @@ export default function RecentlyReviewed() {
         sx={{ overflowX: "scroll" }}
       >
         {recentlyReviewed.reverse().map((item: Items) => {
-          return <HomeCard key={item._id} {...item} />;
+          return <HomeCard {...item} />;
         })}
       </Box>
     </>

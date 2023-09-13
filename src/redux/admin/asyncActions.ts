@@ -128,7 +128,7 @@ export const getAttributesByCategory = createAsyncThunk<
 
 export const updateAttributes = createAsyncThunk<
 Attribute,
-  { attributesId: string; attributesData: Partial<Attribute> }
+  { attributesId: string; attributesData: {category: string, attributes: any[]} }
 >("attributes/updateAttributes", async (params) => {
   const { data } = await axios.patch<Attribute>(
     `/attributes/${params.attributesId}`,

@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { AdminProcesses, Attribute, Category, Status, UserDisplay } from "../types";
+import {
+  AdminProcesses,
+  Attribute,
+  Category,
+  Status,
+  UserDisplay,
+} from "../types";
 import {
   createAttributes,
   createCategory,
@@ -19,53 +25,56 @@ const adminSlice = createSlice({
   name: "admin",
   initialState: {
     status: "pending",
-    process: 'none' as AdminProcesses,
-    second_process: 'none' as AdminProcesses,
-    third_process: 'none' as AdminProcesses,
+    process: "none" as AdminProcesses,
+    second_process: "none" as AdminProcesses,
+    third_process: "none" as AdminProcesses,
     _categories: [] as any[],
     _attributes: {} as Attribute,
-    categoryImage: '',
-    subcategoryImage: '',
+    categoryImage: "",
+    subcategoryImage: "",
     selectedCategory: {} as Category,
   },
   reducers: {
-    setProcess (state, action: PayloadAction<AdminProcesses>) {
-        state.process = action.payload;
-      },
-      setSecondProcess (state, action: PayloadAction<AdminProcesses>) {
-        state.second_process = action.payload;
-      },
-      setThirdProcess (state, action: PayloadAction<AdminProcesses>) {
-        state.third_process = action.payload;
-      },
-      
-      clearCurrentImages(state) {
-        state.categoryImage = '';
-      },
-      setCurrentImages(state, action: PayloadAction<string>) {
-        state.categoryImage = action.payload;
-      },
+    setProcess(state, action: PayloadAction<AdminProcesses>) {
+      state.process = action.payload;
+    },
+    setSecondProcess(state, action: PayloadAction<AdminProcesses>) {
+      state.second_process = action.payload;
+    },
+    setThirdProcess(state, action: PayloadAction<AdminProcesses>) {
+      state.third_process = action.payload;
+    },
+
+    clearCurrentImages(state) {
+      state.categoryImage = "";
+    },
+    setCurrentImages(state, action: PayloadAction<string>) {
+      state.categoryImage = action.payload;
+    },
+
+    clearAttributes(state){
+      state._attributes = {} as Attribute
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(uploadCategoryImage.fulfilled, (state, action) => {
-        /* state.avatarFile = action.payload.url; */
-        state.categoryImage = action.payload.url
-      });
-      builder.addCase(uploadCategoryImage.pending, (state) => {});
-      builder.addCase(uploadCategoryImage.rejected, (state, action) => {});
+      /* state.avatarFile = action.payload.url; */
+      state.categoryImage = action.payload.url;
+    });
+    builder.addCase(uploadCategoryImage.pending, (state) => {});
+    builder.addCase(uploadCategoryImage.rejected, (state, action) => {});
 
-      builder.addCase(uploadSubcategoryImage.fulfilled, (state, action) => {
-        /* state.avatarFile = action.payload.url; */
-        state.subcategoryImage = action.payload.url
-      });
-      builder.addCase(uploadSubcategoryImage.pending, (state) => {});
-      builder.addCase(uploadSubcategoryImage.rejected, (state, action) => {});
-
+    builder.addCase(uploadSubcategoryImage.fulfilled, (state, action) => {
+      /* state.avatarFile = action.payload.url; */
+      state.subcategoryImage = action.payload.url;
+    });
+    builder.addCase(uploadSubcategoryImage.pending, (state) => {});
+    builder.addCase(uploadSubcategoryImage.rejected, (state, action) => {});
 
     builder
       .addCase(createCategory.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        state.process = 'show-many-categories';
+        state.process = "show-many-categories";
         state._categories.push(action.payload);
       })
       .addCase(createCategory.pending, (state) => {
@@ -79,7 +88,7 @@ const adminSlice = createSlice({
     builder
       .addCase(getAllCategories.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        state.process = 'show-many-categories';
+        state.process = "show-many-categories";
         state._categories = action.payload;
       })
       .addCase(getAllCategories.pending, (state) => {
@@ -128,13 +137,10 @@ const adminSlice = createSlice({
         state.status = "rejected";
       });
 
-
-
-      builder
+    builder
       .addCase(createAttributes.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        state.process = 'show-many-attributes';
-        
+        state.process = "show-many-attributes";
       })
       .addCase(createAttributes.pending, (state) => {
         state.status = "pending";
@@ -144,15 +150,21 @@ const adminSlice = createSlice({
         state.status = "rejected";
       });
 
-    
-
     builder
       .addCase(getAttributesByCategory.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        state._attributes.attributes = action.payload.items[0].attributes;
-        state._attributes.category = action.payload.items[0].category;
-        console.log(action.payload.items[0])
-       
+        console.log(action.payload.items[0]);
+        state._attributes._id = action.payload.items[0]
+        ? action.payload.items[0]._id
+        : '';
+        state._attributes.category = action.payload.items[0]
+          ? action.payload.items[0].category
+          : "";
+        state._attributes.attributes = action.payload.items[0]
+          ? action.payload.items[0].attributes
+          : [];
+         
+        
       })
       .addCase(getAttributesByCategory.pending, (state) => {
         state.status = "pending";
@@ -189,10 +201,11 @@ const adminSlice = createSlice({
 });
 
 export const {
-    setProcess,
-    setSecondProcess,
-    setThirdProcess,
-    clearCurrentImages,
-setCurrentImages,
-  } = adminSlice.actions;
+  setProcess,
+  clearAttributes,
+  setSecondProcess,
+  setThirdProcess,
+  clearCurrentImages,
+  setCurrentImages,
+} = adminSlice.actions;
 export default adminSlice.reducer;

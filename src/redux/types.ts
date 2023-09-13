@@ -241,6 +241,7 @@ export type Category = {
 };
 
 export type Attribute = {
+  _id: any,
   category: string;
   attributes: [];
 };

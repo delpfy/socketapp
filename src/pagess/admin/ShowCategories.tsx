@@ -15,7 +15,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Category } from "../../redux/types";
 import {
   clearCurrentImages,
-  setProcess,
   setSecondProcess,
   setThirdProcess,
 } from "../../redux/admin/adminSlice";
@@ -386,7 +385,7 @@ export default function ShowCategories() {
                   </TableHead>
                   <TableBody>
                     {newCategory.subcategories.map((category: Category) => (
-                      <TableRow>
+                      <TableRow key={category._id}>
                         <TableCell>
                           <Typography>{category.name}</Typography>
                         </TableCell>
