@@ -24,8 +24,7 @@ import Layout from "./componentss/Layout";
 import Guarantees from "./pagess/footerPages/Guarantees";
 import { synchronizeComparison, synchronizeFavorites } from "./redux/home/homeSlice";
 import { getAllItems } from "./redux/home/asyncActions";
-import ComputerPartsSubcategory from "./pagess/subcategories/ComputerPartsSubcategory";
-import GamingSubcategory from "./pagess/subcategories/GamingSubcategory";
+
 import ReviewsPage from "./pagess/items/ReviewsPage";
 import AdminPage from "./pagess/admin/AdminPage";
 import AdminAuthorize from "./pagess/admin/AdminAuthorize";
@@ -76,8 +75,7 @@ function App() {
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/catalog/item" element={<ItemPage />} />
           <Route path="/catalog/item/reviews" element={<ReviewsPage />} />
-          <Route path="/computer-compl" element={<ComputerPartsSubcategory />} />
-          <Route path="/gaming-compl" element={<GamingSubcategory />} />
+         
           <Route path="/subcategories" element={<ShowSubcategories />} />
           
           <Route path="/add-item" element={<AddItem />} />

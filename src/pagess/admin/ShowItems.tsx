@@ -29,6 +29,7 @@ import {
   uploadCategoryImage,
   uploadSubcategoryImage,
 } from "../../redux/admin/asyncActions";
+import { getItemById } from "../../redux/home/asyncActions";
 
 export default function ShowItems() {
   const {
@@ -193,6 +194,13 @@ export default function ShowItems() {
   }
   const dispatch = useAppDispatch();
   
+  function selectItemToEdit(itemId: any){
+    dispatch(getItemById(itemId)).then((result: any) => {
+      if(result.meta.requestStatus === 'fulfilled'){
+        dispatch(setProcess('edit-one-item'))
+      }
+    })
+  }
 
   return (
     <TableContainer component={Paper}>
@@ -239,7 +247,7 @@ export default function ShowItems() {
                >
                 Видалити
               </Button>
-              <Button >
+              <Button onClick={() => selectItemToEdit(item._id)} >
                 Редагувати
               </Button>
             </TableCell>

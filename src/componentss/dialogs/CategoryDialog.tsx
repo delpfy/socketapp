@@ -1,10 +1,8 @@
 import {
-  DialogActions,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText,
-  Button,
   Grid,
   Box,
   DialogProps,
@@ -27,8 +25,7 @@ export default function CategoryDialog({
 }: Props) {
   const {
     categories,
-    computerPartsSubcategory,
-    gamingSubcategory,
+
     subcategory,
   } = useAppSelector((state) => state.home);
 

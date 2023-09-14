@@ -9,6 +9,7 @@ import ShowCategories from "./ShowCategories";
 import ShowItems from "./ShowItems";
 import ShowAttributes from "./ShowAttributes";
 import { checkAuthorization } from "../../redux/user/asyncActions";
+import ShowItem from "./ShowItem";
 
 export default function AdminPage() {
   const { user } = useAppSelector((state) => state.user);
@@ -28,7 +29,9 @@ export default function AdminPage() {
 
       case "show-many-items":
         return <ShowItems />;
-
+        case "edit-one-item":
+          return <ShowItem />;
+  
       case "show-many-attributes":
         return <ShowAttributes />;
     }

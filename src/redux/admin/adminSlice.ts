@@ -32,6 +32,7 @@ const adminSlice = createSlice({
     _attributes: {} as Attribute,
     categoryImage: "",
     subcategoryImage: "",
+    selectedItem: {},
     selectedCategory: {} as Category,
   },
   reducers: {

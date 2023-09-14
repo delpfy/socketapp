@@ -241,7 +241,7 @@ export type Category = {
 };
 
 export type Attribute = {
-  _id: any,
+  _id: any;
   category: string;
   attributes: [];
 };
@@ -254,6 +254,7 @@ export type AdminProcesses =
   | "edit-category"
   | "show-one-category"
   | "show-many-items"
+  | "edit-one-item"
   | "show-many-attributes"
   | "show-many-categories";
 
@@ -296,8 +297,7 @@ export interface HomeState {
   itemCurrent: any;
   currentImages: any;
   categories: Category[];
-  computerPartsSubcategory: { id: number; name: string; image: string }[];
-  gamingSubcategory: { id: number; name: string; image: string }[];
+
   subcategory: string;
   category: string;
 }

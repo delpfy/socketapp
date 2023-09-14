@@ -278,12 +278,7 @@ const homeSlice = createSlice({
     builder.addCase(getAllCategories.fulfilled, (state, action) => {
       state.categories = action.payload;
       /* state.computerPartsSubcategory =  */
-      state.computerPartsSubcategory = action.payload.find(
-        (category: Category) => category.name === "Комп'ютерні комплектуючі"
-      ).subcategories;
-      state.gamingSubcategory = action.payload.find(
-        (category: Category) => category.name === "Геймінг"
-      ).subcategories;
+      
     });
     builder.addCase(getAllCategories.pending, (state) => {});
     builder.addCase(getAllCategories.rejected, (state) => {});
