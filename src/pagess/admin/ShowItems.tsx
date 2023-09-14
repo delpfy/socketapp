@@ -217,7 +217,7 @@ export default function ShowItems() {
               {
                 item.image.map((image: string) => {
                   return <img
-                  src={`http://localhost:4000${image}`}
+                  src={`https://www.sidebyside-tech.com${image}`}
                   alt={item.name}
                   style={{ height: 50 }}
                 />
