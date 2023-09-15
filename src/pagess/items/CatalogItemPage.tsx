@@ -785,36 +785,25 @@ export const ItemPage = () => {
                 flexDirection: "column",
               }}
             >
-              <Box>
-                <img
-                  src={`https://www.sidebyside-tech.com${itemCurrent.items.image[0]}`}
-                  /* src={itemCurrent.items.image[0]} */
-                  alt="img1"
-                  style={{ width: "100%", height: 550, objectFit: "contain" }}
-                />
-              </Box>
-              <Box>
-                <img
-                  src={`https://www.sidebyside-tech.com${itemCurrent.items.image[1]}`}
-                  alt="img2"
-                  style={{
-                    width: "100%",
-                    height: 550,
-                    objectFit: "contain",
-                  }}
-                />
-              </Box>
-              <Box>
-                <img
-                  src={`https://www.sidebyside-tech.com${itemCurrent.items.image[2]}`}
-                  alt="img3"
-                  style={{
-                    width: "100%",
-                    height: 550,
-                    objectFit: "contain",
-                  }}
-                />
-              </Box>
+              {
+              itemCurrent.items.image.map((url: string) => {
+                return (
+                  <Box>
+                    <img
+                      src={`http://localhost:4000${url}`}
+                      /* src={itemCurrent.items.image[0]} */
+                      alt="img1"
+                      style={{
+                        width: "100%",
+                        height: 550,
+                        objectFit: "contain",
+                      }}
+                    />
+                  </Box>
+                );
+              })
+              }
+
               {/* <Box display = {'flex'} justifyContent={'center'} alignItems={'center'} width={400}>
           <img src={itemCurrent.items.image[1]} style={{display : 'flex', objectFit: 'contain'}}/>
         </Box>

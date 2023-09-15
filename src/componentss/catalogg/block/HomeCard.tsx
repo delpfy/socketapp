@@ -509,7 +509,7 @@ export default function HomeCard(props: Items) {
               objectFit: "contain",
               overflow: "hidden",
             }}
-            image={`https://www.sidebyside-tech.com${props.image[0]}`}
+            image={`http://localhost:4000${props.image[0]}`}
             title={props.name}
             onClick={getCurrentItem}
           />

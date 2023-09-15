@@ -574,7 +574,7 @@ export default function NetworkCategory(props: any) {
             {currentImages.length !== 0 ? (
               currentImages.map((image: any) => (
                 <img
-                  src={`https://www.sidebyside-tech.com${image}`}
+                  src={`http://localhost:4000${image}`}
                   style={{ width: 60, height: 60 }}
                   alt=""
                 />

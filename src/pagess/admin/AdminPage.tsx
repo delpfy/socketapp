@@ -29,9 +29,11 @@ export default function AdminPage() {
 
       case "show-many-items":
         return <ShowItems />;
-        case "edit-one-item":
-          return <ShowItem />;
-  
+      case "edit-one-item":
+        return <ShowItem />;
+      case "add-one-item":
+        return <ShowItem />;
+
       case "show-many-attributes":
         return <ShowAttributes />;
     }

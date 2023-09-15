@@ -243,7 +243,7 @@ export type Category = {
 export type Attribute = {
   _id: any;
   category: string;
-  attributes: [];
+  attributes: {name: string, value: string}[];
 };
 
 export type AdminProcesses =
@@ -255,6 +255,7 @@ export type AdminProcesses =
   | "show-one-category"
   | "show-many-items"
   | "edit-one-item"
+  | "add-one-item"
   | "show-many-attributes"
   | "show-many-categories";
 

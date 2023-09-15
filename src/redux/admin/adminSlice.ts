@@ -154,7 +154,7 @@ const adminSlice = createSlice({
     builder
       .addCase(getAttributesByCategory.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        console.log(action.payload.items[0]);
+        
         state._attributes._id = action.payload.items[0]
         ? action.payload.items[0]._id
         : '';

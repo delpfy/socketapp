@@ -40,17 +40,13 @@ export default function ShowItems() {
     second_process,
     third_process,
   } = useAppSelector((state) => state.admin);
-  const {
-    itemsDisplay
-  } = useAppSelector((state) => state.home);
+  const { itemsDisplay } = useAppSelector((state) => state.home);
   const [newCategory, setNewCategory] = useState({
     name: "",
     subcategories: [] as Category[],
   });
 
-  const [newSubcategory, setNewSubcategory] = useState<any>(
-    {} as any
-  );
+  const [newSubcategory, setNewSubcategory] = useState<any>({} as any);
 
   function handleEditCategory(categoryId: string) {
     dispatch(getCategoryById({ categoryId })).then((result: any) => {
@@ -65,9 +61,9 @@ export default function ShowItems() {
     });
   }
 
-  function handleEditSubcategory(subcategory: Category){
-    dispatch(setThirdProcess("edit-subcategory"))
-    setNewSubcategory(subcategory)
+  function handleEditSubcategory(subcategory: Category) {
+    dispatch(setThirdProcess("edit-subcategory"));
+    setNewSubcategory(subcategory);
   }
 
   function handleChangeNewCategory(e: any) {
@@ -166,7 +162,7 @@ export default function ShowItems() {
   }
 
   function handleAddSubcategory() {
-    console.log(third_process)
+    console.log(third_process);
     switch (third_process) {
       case "add-subcategory":
         setNewCategory({
@@ -178,7 +174,7 @@ export default function ShowItems() {
         const itemIndex = newCategory.subcategories.findIndex(
           (item: any) => item._id === newSubcategory._id
         );
-        console.log(itemIndex)
+        console.log(itemIndex);
         setNewCategory({
           ...newCategory,
           subcategories: [
@@ -193,68 +189,67 @@ export default function ShowItems() {
     }
   }
   const dispatch = useAppDispatch();
-  
-  function selectItemToEdit(itemId: any){
+
+  function selectItemToEdit(itemId: any) {
     dispatch(getItemById(itemId)).then((result: any) => {
-      if(result.meta.requestStatus === 'fulfilled'){
-        dispatch(setProcess('edit-one-item'))
+      if (result.meta.requestStatus === "fulfilled") {
+        dispatch(setProcess("edit-one-item"));
       }
-    })
+    });
+  }
+
+  function handleAddItem() {
+    dispatch(setProcess("add-one-item"));
   }
 
   return (
-    <TableContainer component={Paper}>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Назва товару</TableCell>
-          <TableCell>Зображення</TableCell>
-          <TableCell>Категорія</TableCell>
-          <TableCell>Ціна</TableCell>
-          <TableCell>Знижка</TableCell>
-          <TableCell>Функції</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {itemsDisplay.items.map((item) => (
-          <TableRow >
-            <TableCell>
-              <Typography width={200} overflow={"hidden"} >{item.name}</Typography>
-            </TableCell>
-            <TableCell>
-              {
-                item.image.map((image: string) => {
-                  return <img
-                  src={`https://www.sidebyside-tech.com${image}`}
-                  alt={item.name}
-                  style={{ height: 50 }}
-                />
-                })
-              }
-                  
+    <>
+      <Button onClick={handleAddItem}>Додати товар</Button>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Назва товару</TableCell>
+              <TableCell>Зображення</TableCell>
+              <TableCell>Категорія</TableCell>
+              <TableCell>Ціна</TableCell>
+              <TableCell>Знижка</TableCell>
+              <TableCell>Функції</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {itemsDisplay.items.map((item) => (
+              <TableRow>
+                <TableCell>
+                  <Typography width={200} overflow={"hidden"}>
+                    {item.name}
+                  </Typography>
                 </TableCell>
                 <TableCell>
-                  {item.category}
+                  {item.image.map((image: string) => {
+                    return (
+                      <img
+                        src={`http://localhost:4000${image}`}
+                        alt={item.name}
+                        style={{ height: 50 }}
+                      />
+                    );
+                  })}
                 </TableCell>
+                <TableCell>{item.category}</TableCell>
+                <TableCell>{item.price}</TableCell>
+                <TableCell>{item.sale}</TableCell>
                 <TableCell>
-                  {item.price}
+                  <Button>Видалити</Button>
+                  <Button onClick={() => selectItemToEdit(item._id)}>
+                    Редагувати
+                  </Button>
                 </TableCell>
-                <TableCell>
-                  {item.sale}
-                </TableCell>
-            <TableCell>
-              <Button
-               >
-                Видалити
-              </Button>
-              <Button onClick={() => selectItemToEdit(item._id)} >
-                Редагувати
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </>
   );
 }

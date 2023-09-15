@@ -107,7 +107,7 @@ export default function CategoryCard(category: any) {
             objectFit: "contain",
             overflow: "hidden",
           }}
-          image={`https://www.sidebyside-tech.com${category.category.image}`}
+          image={`http://localhost:4000${category.category.image}`}
           title={category.category.name}
         />
 
