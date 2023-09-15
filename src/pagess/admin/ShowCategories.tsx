@@ -245,7 +245,7 @@ export default function ShowCategories() {
               <Box maxWidth={500} padding={4}>
                 {categoryImage !== undefined ? (
                   <img
-                    src={`http://localhost:4000${categoryImage}`}
+                    src={`https://www.sidebyside-tech.com${categoryImage}`}
                     style={{  height: 60 }}
                     alt=""
                   />
@@ -320,7 +320,7 @@ export default function ShowCategories() {
                     <Box maxWidth={500} padding={4}>
                       {subcategoryImage !== undefined ? (
                         <img
-                          src={`http://localhost:4000${newSubcategory.image}`}
+                          src={`https://www.sidebyside-tech.com${newSubcategory.image}`}
                           style={{ height: 60 }}
                           alt=""
                         />
@@ -391,7 +391,7 @@ export default function ShowCategories() {
                         </TableCell>
                         <TableCell>
                           <img
-                            src={`http://localhost:4000${category.image}`}
+                            src={`https://www.sidebyside-tech.com${category.image}`}
                             alt={category.name}
                             style={{ width: 50, height: 50 }}
                           />
@@ -444,7 +444,7 @@ export default function ShowCategories() {
                 </TableCell>
                 <TableCell>
                   <img
-                    src={`http://localhost:4000${category.image}`}
+                    src={`https://www.sidebyside-tech.com${category.image}`}
                     alt={category.name}
                     style={{  height: 50 }}
                   />

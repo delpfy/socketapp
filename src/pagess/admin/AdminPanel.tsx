@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useAppDispatch} from "../../redux/hooks";
 import { setProcess } from "../../redux/admin/adminSlice";
+import { getAllItems } from "../../redux/home/asyncActions";
 
 export default function AdminPanel() {
   const dispatch = useAppDispatch();
@@ -55,7 +56,14 @@ export default function AdminPanel() {
               <Typography>Товари</Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Button onClick={() => dispatch(setProcess("show-many-items"))}>
+              <Button onClick={() => {
+                
+                dispatch(getAllItems()).then((result: any) => {
+                  if(result.meta.requestStatus === 'fulfilled'){
+                    dispatch(setProcess("show-many-items"))
+                  }
+                })
+              }}>
                 Редагувати товари
               </Button>
             </AccordionDetails>

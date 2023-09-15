@@ -790,7 +790,7 @@ export const ItemPage = () => {
                 return (
                   <Box>
                     <img
-                      src={`http://localhost:4000${url}`}
+                      src={`https://www.sidebyside-tech.com${url}`}
                       /* src={itemCurrent.items.image[0]} */
                       alt="img1"
                       style={{

@@ -39,7 +39,7 @@ export default function UserOrders() {
                           {order.items.map((item: Items) => {
                             return (
                               <img
-                                src={`http://localhost:4000${item.image[0]}`}
+                                src={`https://www.sidebyside-tech.com${item.image[0]}`}
                                 alt=""
                                 style={{ width: 50, height: 50 }}
                               />

@@ -226,7 +226,7 @@ export default function BasketItemBlock(props: TShippingItems) {
             overflow: "hidden",
             cursor: 'pointer',
           }}
-          image={`http://localhost:4000${props.image[0]}`}
+          image={`https://www.sidebyside-tech.com${props.image[0]}`}
           title={props.name}
           onClick={getCurrentItem}
         />

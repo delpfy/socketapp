@@ -9,9 +9,16 @@ import {
   Typography,
 } from "@mui/material";
 import { getAttributesByCategory } from "../../redux/admin/asyncActions";
-import { UploadItemImage, createItem } from "../../redux/home/asyncActions";
+import {
+  UploadItemImage,
+  createItem,
+  updateItem,
+} from "../../redux/home/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
-import { clearCurrentImages, setCurrentImages } from "../../redux/home/homeSlice";
+import {
+  clearCurrentImages,
+  setCurrentImages,
+} from "../../redux/home/homeSlice";
 
 export default function ShowItem() {
   const { itemCurrent, currentImages } = useAppSelector((state) => state.home);
@@ -25,7 +32,11 @@ export default function ShowItem() {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
   const [attributeValues, setAttributeValues] = useState<any[]>(
-    _attributes?.attributes ? _attributes?.attributes : []
+    process === "edit-one-item"
+      ? itemCurrent.items.fields
+      : _attributes?.attributes
+      ? _attributes?.attributes
+      : []
   );
   const [newItem, setNewItem] = useState({
     Назва: process === "add-one-item" ? "" : itemCurrent.items.name,
@@ -38,9 +49,6 @@ export default function ShowItem() {
 
   const avatarFileRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
-
-
-
 
   function handleImageChange(e: any) {
     try {
@@ -69,17 +77,23 @@ export default function ShowItem() {
   }
 
   useEffect(() => {
-    if(process === 'edit-one-item'){
-        dispatch(setCurrentImages(itemCurrent.items.image))
+    if (process === "edit-one-item") {
+      dispatch(setCurrentImages(itemCurrent.items.image));
+      
     }
-  }, [])
-  
+  }, []);
+
   useEffect(() => {
-    if (selectedCategory || process === 'edit-one-item') {
+    
+    if (selectedCategory || process === "edit-one-item") {
       dispatch(
         getAttributesByCategory({
           category:
-            selectedSubcategory === "" ? selectedCategory === "" ? itemCurrent.items.category : selectedCategory : selectedSubcategory,
+            selectedSubcategory === ""
+              ? selectedCategory === ""
+                ? itemCurrent.items.category
+                : selectedCategory
+              : selectedSubcategory,
         })
       );
     }
@@ -97,6 +111,7 @@ export default function ShowItem() {
   };
   const handleAttributeChange = (event: any, index: number) => {
     const { name, value } = event.target;
+    console.log(value)
     const attributeName = _attributes.attributes[index].name;
 
     const updatedAttributeValues = [...attributeValues];
@@ -109,6 +124,8 @@ export default function ShowItem() {
   };
 
   function handleDefaultAttribChange(event: any) {
+    
+    
     setNewItem({
       ...newItem,
       [event.target.name]: event.target.value,
@@ -142,6 +159,33 @@ export default function ShowItem() {
       if (result.meta.requestStatus === "fulfilled") {
         InfoDialog_open();
         setInfoMessage("Успішно додано");
+      }
+      if (result.meta.requestStatus === "rejected") {
+        InfoDialog_open();
+        setInfoMessage("Помилка >:[");
+      }
+    });
+  }
+
+  function UpdateItemFromDatabase(): void {
+    dispatch(
+      updateItem({
+        itemId: itemCurrent.items._id,
+        params: {
+          name: newItem.Назва,
+          description: newItem.Опис,
+          category: itemCurrent.items.category,
+          sale: newItem.Знижка,
+          price: newItem.Ціна,
+          quantity: newItem.Кількість,
+          image: itemImages,
+          fields: attributeValues,
+        },
+      })
+    ).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        InfoDialog_open();
+        setInfoMessage("Успішно оновлено");
       }
       if (result.meta.requestStatus === "rejected") {
         InfoDialog_open();
@@ -230,7 +274,7 @@ export default function ShowItem() {
                       {currentImages.length !== 0 ? (
                         currentImages.map((image: any) => (
                           <img
-                            src={`http://localhost:4000${image}`}
+                            src={`https://www.sidebyside-tech.com${image}`}
                             style={{ width: 60, height: 60 }}
                             alt=""
                           />
@@ -309,8 +353,8 @@ export default function ShowItem() {
                                   {attr.name} :{" "}
                                 </Typography>
                                 <TextField
-                                  name="name"
-                                  value={attributeValues[index]?.value}
+                                  name={attr.name}
+                                  value={attributeValues[index] === undefined ? "" : attributeValues[index][attr?.name]}
                                   size="small"
                                   onChange={(e: any) =>
                                     handleAttributeChange(e, index)
@@ -323,7 +367,7 @@ export default function ShowItem() {
                       </>
                     ) : (
                       <TextField
-                        onChange={handleDefaultAttribChange}
+                      onChange={handleDefaultAttribChange}
                         name={key}
                         label={key}
                         sx={{ width: 300 }}
@@ -369,7 +413,7 @@ export default function ShowItem() {
                     {currentImages.length !== 0 ? (
                       currentImages.map((image: any) => (
                         <img
-                          src={`http://localhost:4000${image}`}
+                          src={`https://www.sidebyside-tech.com${image}`}
                           style={{ width: 60, height: 60 }}
                           alt=""
                         />
@@ -419,50 +463,60 @@ export default function ShowItem() {
                     </Box>
                   </Box>
                 </Box>
-                {Object.values(newItem).map((key: any, index: number) => (
-                    key === "Атрибути" ? (
-                        <>
-                          <Typography margin={3}>
-                            Атрибути категорії{" "}
-                            {selectedSubcategory === ""
-                              ? selectedCategory
-                              : selectedSubcategory}{" "}
-                          </Typography>
-                          <Box display={"flex"} flexDirection={"column"}>
-                            {_attributes?.attributes.map(
-                              (attr: { name: string; value: any }, index) => (
-                                <Box
-                                  display={"flex"}
-                                  width={500}
-                                  justifyContent={"space-between"}
-                                  alignItems={"flex-end"}
-                                  flexDirection={"row"}
-                                >
-                                  <Typography fontSize={20}>
-                                    {" "}
-                                    {attr.name} :{" "}
-                                  </Typography>
-                                  <TextField
-                                    name="name"
-                                    value={attributeValues[index]?.value}
-                                    size="small"
-                                    onChange={(e: any) =>
-                                      handleAttributeChange(e, index)
-                                    }
-                                  />
-                                </Box>
-                              )
-                            )}
-                          </Box>
-                        </>
-                      ) :
-                  <TextField
-                    label={Object.keys(newItem)[index]}
-                    sx={{ width: 300 }}
-                    key={Object.keys(newItem)[index]}
-                    value={key}
-                  />
-                ))}
+                {Object.values(newItem).map((key: any, index: number) =>
+                  Object.keys(newItem)[index] === "Атрибути" ? (
+                    <>
+                      <Typography margin={3}>
+                        Атрибути категорії{" "}
+                        {selectedSubcategory === ""
+                          ? selectedCategory
+                          : selectedSubcategory}{" "}
+                      </Typography>
+                      <Box display={"flex"} flexDirection={"column"}>
+                        {_attributes?.attributes.map(
+                          (attr: { name: string; value: any }, index) => (
+                            <Box
+                              display={"flex"}
+                              width={500}
+                              justifyContent={"space-between"}
+                              alignItems={"flex-end"}
+                              flexDirection={"row"}
+                            >
+                              <Typography fontSize={20}>
+                                {" "}
+                                {attr.name} :{" "}
+                              </Typography>
+                              <TextField
+                                name="name"
+                                value={attributeValues[index][attr.name]}
+                                size="small"
+                                onChange={(e: any) =>
+                                  handleAttributeChange(e, index)
+                                }
+                              />
+                            </Box>
+                          )
+                        )}
+                      </Box>
+                    </>
+                  ) : (
+                    <TextField
+                    onChange={handleDefaultAttribChange}
+                      label={Object.keys(newItem)[index]}
+                      name={Object.keys(newItem)[index]}
+                      sx={{ width: 300 }}
+                      key={Object.keys(newItem)[index]}
+                      value={key}
+                    />
+                  )
+                )}
+                <Button
+                  variant="outlined"
+                  onClick={UpdateItemFromDatabase}
+                  sx={{ width: 300, marginTop: 5 }}
+                >
+                  ОНОВИТИ ТОВАР
+                </Button>
               </>
             ) : (
               <></>

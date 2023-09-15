@@ -29,171 +29,48 @@ import {
   uploadCategoryImage,
   uploadSubcategoryImage,
 } from "../../redux/admin/asyncActions";
-import { getItemById } from "../../redux/home/asyncActions";
+import {
+  deleteItem,
+  getAllItems,
+  getItemById,
+} from "../../redux/home/asyncActions";
+import InfoDialog from "../../componentss/dialogs/InfoDialog";
 
 export default function ShowItems() {
-  const {
-    _categories,
-    categoryImage,
-    selectedCategory,
-    subcategoryImage,
-    second_process,
-    third_process,
-  } = useAppSelector((state) => state.admin);
   const { itemsDisplay } = useAppSelector((state) => state.home);
-  const [newCategory, setNewCategory] = useState({
-    name: "",
-    subcategories: [] as Category[],
-  });
-
-  const [newSubcategory, setNewSubcategory] = useState<any>({} as any);
-
-  function handleEditCategory(categoryId: string) {
-    dispatch(getCategoryById({ categoryId })).then((result: any) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        dispatch(setSecondProcess("edit-category"));
-        setNewCategory({
-          ...newCategory,
-          name: result.payload.name,
-          subcategories: result.payload.subcategories,
-        });
-      }
-    });
+  const [itemsOnScreen, setItemsOnScreen] = useState(itemsDisplay);
+  const [openInfo, setOpenInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
+  function InfoDialog_open() {
+    setOpenInfo(true);
   }
 
-  function handleEditSubcategory(subcategory: Category) {
-    dispatch(setThirdProcess("edit-subcategory"));
-    setNewSubcategory(subcategory);
+  function InfoDialog_close() {
+    setOpenInfo(false);
   }
 
-  function handleChangeNewCategory(e: any) {
-    setNewCategory({
-      ...newCategory,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  function handleChangeNewSubategory(e: any) {
-    setNewSubcategory({
-      ...newSubcategory,
-      [e.target.name]: e.target.value,
-    });
-  }
-
-  const categoryImageRef = useRef<HTMLInputElement | null>(null);
-  const subcategoryImageRef = useRef<HTMLInputElement | null>(null);
-  function handleImageChange(e: any) {
-    console.log(e.target.files[0]);
-
-    const formData = new FormData();
-    for (let i = 0; i < e.target.files.length; i++) {
-      formData.append("category_images", e.target.files[i]);
-    }
-
-    dispatch(uploadCategoryImage(formData));
-  }
-
-  function handleSubcategoryImageChange(e: any) {
-    console.log(e.target.files[0]);
-
-    const formData = new FormData();
-    for (let i = 0; i < e.target.files.length; i++) {
-      formData.append("category_images", e.target.files[i]);
-    }
-
-    dispatch(uploadSubcategoryImage(formData)).then((result: any) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        setNewSubcategory({
-          ...newSubcategory,
-          image: result.payload.url,
-        });
-      }
-    });
-  }
-
-  function handleLoadImageClick() {
-    if (categoryImageRef.current) {
-      categoryImageRef.current.click();
-    }
-  }
-
-  function handleLoadSubcategoryImageClick() {
-    if (subcategoryImageRef.current) {
-      subcategoryImageRef.current.click();
-    }
-  }
-
-  function handleAddCategory() {
-    switch (second_process) {
-      case "add-category":
-        dispatch(
-          createCategory({
-            categoryData: {
-              name: newCategory.name,
-              image: categoryImage,
-              subcategories: newCategory.subcategories,
-            },
-          })
-        ).then((result: any) => {
-          if (result.meta.requestStatus === "fulfilled") {
-            dispatch(setSecondProcess("none"));
-            dispatch(getAllCategories());
-          }
-        });
-        return;
-      case "edit-category":
-        dispatch(
-          updateCategory({
-            categoryId: selectedCategory._id,
-            categoryData: {
-              name: newCategory.name,
-              image: categoryImage,
-              subcategories: newCategory.subcategories,
-            },
-          })
-        ).then((result: any) => {
-          if (result.meta.requestStatus === "fulfilled") {
-            dispatch(setSecondProcess("none"));
-            dispatch(getAllCategories());
-          }
-        });
-        return;
-    }
-  }
-
-  function handleAddSubcategory() {
-    console.log(third_process);
-    switch (third_process) {
-      case "add-subcategory":
-        setNewCategory({
-          ...newCategory,
-          subcategories: [...newCategory.subcategories, newSubcategory],
-        });
-        return;
-      case "edit-subcategory":
-        const itemIndex = newCategory.subcategories.findIndex(
-          (item: any) => item._id === newSubcategory._id
-        );
-        console.log(itemIndex);
-        setNewCategory({
-          ...newCategory,
-          subcategories: [
-            ...newCategory.subcategories.slice(0, itemIndex),
-
-            newSubcategory,
-
-            ...newCategory.subcategories.slice(itemIndex + 1),
-          ],
-        });
-        return;
-    }
-  }
   const dispatch = useAppDispatch();
 
   function selectItemToEdit(itemId: any) {
     dispatch(getItemById(itemId)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(setProcess("edit-one-item"));
+      }
+    });
+  }
+  function selectItemToDelete(itemId: any, item: any) {
+    console.log(item);
+    console.log(itemId);
+    dispatch(deleteItem({ itemId: itemId })).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        InfoDialog_open();
+        setInfoMessage("Успішно видалено");
+        dispatch(getAllItems());
+      }
+      if (result.meta.requestStatus === "rejected") {
+        InfoDialog_open();
+        setInfoMessage("Не успішно видалено");
+        dispatch(getAllItems());
       }
     });
   }
@@ -204,6 +81,11 @@ export default function ShowItems() {
 
   return (
     <>
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
       <Button onClick={handleAddItem}>Додати товар</Button>
       <TableContainer component={Paper}>
         <Table>
@@ -218,7 +100,7 @@ export default function ShowItems() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {itemsDisplay.items.map((item) => (
+            {itemsDisplay?.items?.map((item: any) => (
               <TableRow>
                 <TableCell>
                   <Typography width={200} overflow={"hidden"}>
@@ -229,7 +111,7 @@ export default function ShowItems() {
                   {item.image.map((image: string) => {
                     return (
                       <img
-                        src={`http://localhost:4000${image}`}
+                        src={`https://www.sidebyside-tech.com${image}`}
                         alt={item.name}
                         style={{ height: 50 }}
                       />
@@ -240,7 +122,9 @@ export default function ShowItems() {
                 <TableCell>{item.price}</TableCell>
                 <TableCell>{item.sale}</TableCell>
                 <TableCell>
-                  <Button>Видалити</Button>
+                  <Button onClick={() => selectItemToDelete(item._id, item)}>
+                    Видалити
+                  </Button>
                   <Button onClick={() => selectItemToEdit(item._id)}>
                     Редагувати
                   </Button>
