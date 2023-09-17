@@ -17,7 +17,7 @@ import Posts from "./pagess/footerPages/Posts";
 import PostPage from "./pagess/footerPages/PostPage";
 import AddPostPage from "./pagess/footerPages/AddPostPage";
 import Contact from "./pagess/footerPages/Contact";
-import AddItem from "./pagess/items/AddItem";
+
 import UserOrder from "./pagess/order/UserOrder";
 import ConfirmEmail from "./pagess/ConfirmEmail";
 import Layout from "./componentss/Layout";
@@ -78,7 +78,7 @@ function App() {
          
           <Route path="/subcategories" element={<ShowSubcategories />} />
           
-          <Route path="/add-item" element={<AddItem />} />
+         
 
           <Route path="/user" element={<User />} />
           <Route path="/user-order" element={<UserOrder />} />
