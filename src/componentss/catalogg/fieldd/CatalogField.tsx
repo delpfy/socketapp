@@ -115,13 +115,7 @@ export const CatalogField = () => {
             <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
               {category}
             </Typography>
-            {user.role === "manager" ? (
-              <Button variant="contained" onClick={redirectToAddItemPage}>
-                Додати товар
-              </Button>
-            ) : (
-              <></>
-            )}
+            
           </Box>
         </Box>
         <Box
