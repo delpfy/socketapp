@@ -30,7 +30,6 @@ const homeSlice = createSlice({
   reducers: {
     SetCategory(state, action: PayloadAction<string>) {
       state.category = action.payload;
-      
     },
     SetSubcategory(state, action: PayloadAction<string>) {
       state.subcategory = action.payload;
@@ -179,16 +178,24 @@ const homeSlice = createSlice({
     ) {
       state.sorted = true;
       const selectedParams = action.payload.selectedParams;
+      
       state.itemsSorted.items = state.itemsCategory.items.filter(
         (item: any) => {
-          return Object.keys(selectedParams).every((paramName) => {
-            const paramValues = selectedParams[paramName];
+          return Object.keys(selectedParams).every((paramName, index) => {
+            const paramValues = Object.values(selectedParams)[index];
             if (paramValues.length === 0) {
               return true;
             }
 
             return paramValues.some((paramValue) => {
-              return item.fields[paramName].toString() === paramValue;
+              const fieldIndex = item.fields.findIndex(
+                (field: any) => Object.values(field)[0] === paramValue
+              );
+
+              if (fieldIndex !== -1) {
+                return Object.values(item.fields[fieldIndex])[0] === paramValue;
+              }
+              return false;
             });
           });
         }
@@ -247,23 +254,29 @@ const homeSlice = createSlice({
 
     // Items by category.
     builder.addCase(getItemsByCategory.fulfilled, (state, action) => {
-      const recentlyReviewed = JSON.parse(
-        localStorage.getItem("recentlyReviewed") || "{}"
-      );
-      const basketItems = JSON.parse(
-        localStorage.getItem("basketItems") || "{}"
-      );
       state.status = "success";
       state.itemsCategory = action.payload;
-      state.itemsCategory.items.map((item: any) => {
-        actualizeFirstRender(recentlyReviewed, item);
-        actualizeFirstRenderBasket(basketItems, item);
-      });
-      localStorage.setItem(
-        "recentlyReviewed",
-        JSON.stringify(recentlyReviewed)
+      state.uniqueItemFieldsNames = action.payload.items[0].fields.map(
+        (fieldName: any, index: number) =>
+          Array.from(
+            new Set(
+              action.payload?.items?.map((item: any) => {
+                return Object.keys(item?.fields[index])[0];
+              }) ?? []
+            )
+          )
       );
-      localStorage.setItem("basketItems", JSON.stringify(basketItems));
+      state.uniqueItemFieldsValues = action.payload.items[0].fields.map(
+        (fieldName: any, index: number) =>
+          Array.from(
+            new Set(
+              action.payload?.items?.map((item: any) => {
+                
+                return Object.values(item?.fields[index])[0];
+              }) ?? []
+            )
+          )
+      );
       state.itemsSorted = action.payload;
     });
     builder.addCase(getItemsByCategory.pending, (state) => {
@@ -278,7 +291,6 @@ const homeSlice = createSlice({
     builder.addCase(getAllCategories.fulfilled, (state, action) => {
       state.categories = action.payload;
       /* state.computerPartsSubcategory =  */
-      
     });
     builder.addCase(getAllCategories.pending, (state) => {});
     builder.addCase(getAllCategories.rejected, (state) => {});

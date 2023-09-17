@@ -25,12 +25,7 @@ import {
   sortByRelevance_DESC,
   sortByRelevanceRange,
 } from "../../redux/home/homeSlice";
-import LaptopFields from "./fields/LaptopFields";
-import MonitorFields from "./fields/MonitorFields";
-import CabelsFields from "./fields/CablesFields";
-import ElectronicsFields from "./fields/ElectronicsFields";
-import NetworkFields from "./fields/NetworkFields";
-import { useEffect } from "react";
+import ItemsAccords from "./ItemsAccords";
 
 export default function SortBy() {
   const { category, reset } = useAppSelector((state) => state.home);
@@ -140,18 +135,7 @@ export default function SortBy() {
   };
 
   function showFieldsSort() {
-    switch (category) {
-      case "Ноутбуки":
-        return <LaptopFields />;
-      case "Кабелі та перехідники":
-        return <CabelsFields />;
-      case "Аксесуари для електроніки":
-        return <ElectronicsFields />;
-      case "Мережеве обладнання":
-        return <NetworkFields />;
-      case "Монітори":
-        return <MonitorFields />;
-    }
+    return ;
   }
 
   return (
@@ -335,7 +319,7 @@ export default function SortBy() {
             </Box>
           </Box>
 
-          {showFieldsSort()}
+          <ItemsAccords />
         </Box>
       </Box>
     </Box>

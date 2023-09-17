@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   FormControlLabel,
   Accordion,
@@ -14,32 +14,29 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { setReset, sortItemsByParameters } from "../../redux/home/homeSlice";
 import { SelectedSortParams } from "../../redux/types";
 
-type ItemsAccordsProps = {
-  uniqueFieldNames: string[];
-  uniqueFieldUkrNames: string[];
-};
+export default function ItemsAccords() {
+  const {
+    itemsCategory,
+    uniqueItemFieldsNames,
+    uniqueItemFieldsValues,
+  } = useAppSelector((state) => state.home);
 
-export default function ItemsAccords(props: ItemsAccordsProps) {
-  const { itemsCategory } = useAppSelector((state) => state.home);
-  const uniqueCabelsFields = itemsCategory
-    ? props.uniqueFieldNames.map((fieldName: any) =>
-        Array.from(
-          new Set(
-            itemsCategory.items?.map((item: any) => item.fields[fieldName]) ??
-              []
-          )
-        )
-      )
-    : [];
+  const [accordionStates, setAccordionStates] = useState([]);
+
+  const toggleAccordion = (index: any) => {
+    setAccordionStates((prevStates: any) => ({
+      ...prevStates,
+      [index]: !prevStates[index],
+    }));
+  };
 
   const [selectedSortParams, setSelectedSortParams] =
     React.useState<SelectedSortParams>({});
 
   const dispatch = useAppDispatch();
 
-  function performSort(paramName: string, paramValue: any) {
+  const performSort = useCallback((paramName: any, paramValue: any) => {
     setSelectedSortParams((prevSelectedParams) => {
-      console.log(prevSelectedParams);
       const updatedParams = { ...prevSelectedParams };
       if (updatedParams[paramName]) {
         if (updatedParams[paramName].includes(paramValue.toString())) {
@@ -57,14 +54,19 @@ export default function ItemsAccords(props: ItemsAccordsProps) {
         updatedParams[paramName] = [paramValue.toString()];
       }
       dispatch(sortItemsByParameters({ selectedParams: updatedParams }));
+      console.log(updatedParams);
       return updatedParams;
     });
-  }
+  }, []);
 
-  function displayItemParameterAmount(parameterName: any, parameterValue: any) {
-    const itemAmount = itemsCategory.items.filter(
-      (item: any) => item.fields[parameterName] === parameterValue
-    );
+  function displayItemParameterAmount(parameterValue: any, index: number) {
+    const itemAmount =
+      itemsCategory.items !== undefined
+        ? itemsCategory.items.filter(
+            (item: any) =>
+              Object.values(item.fields[index])[0] === parameterValue
+          )
+        : [];
     return itemAmount.length.toString();
   }
 
@@ -97,7 +99,7 @@ export default function ItemsAccords(props: ItemsAccordsProps) {
             },
           }}
         >
-          {uniqueCabelsFields[index].map((val: any) => (
+          {uniqueItemFieldsValues[index].map((val: any) => (
             <Box
               display={"flex"}
               flexDirection={"row"}
@@ -108,18 +110,14 @@ export default function ItemsAccords(props: ItemsAccordsProps) {
                 control={
                   <Checkbox
                     checked={
-                      typeof selectedSortParams[
-                        props.uniqueFieldNames[index]
-                      ]?.includes(val.toString()) === "boolean"
-                        ? selectedSortParams[
-                            props.uniqueFieldNames[index]
-                          ]?.includes(val.toString())
-                          ? true
-                          : false
+                      selectedSortParams[
+                        uniqueItemFieldsNames[index]
+                      ]?.includes(val.toString())
+                        ? true
                         : false
                     }
                     onChange={() =>
-                      performSort(props.uniqueFieldNames[index], val)
+                      performSort(uniqueItemFieldsNames[index], val)
                     }
                   />
                 }
@@ -127,16 +125,21 @@ export default function ItemsAccords(props: ItemsAccordsProps) {
               />
 
               <Typography color={"default"}>
-                (
-                {displayItemParameterAmount(props.uniqueFieldNames[index], val)}
-                )
+                ({displayItemParameterAmount(val, index)})
               </Typography>
             </Box>
           ))}
         </Box>
       </Box>
     ) : (
-      <Accordion sx={{ borderTop: "2px solid black" }}>
+      <Accordion
+        key={index}
+        sx={{
+          borderTop: "2px solid black",
+        }}
+        expanded={accordionStates[index] as boolean}
+        onChange={() => toggleAccordion(index)}
+      >
         <AccordionSummary
           sx={{
             display: "flex",
@@ -157,10 +160,10 @@ export default function ItemsAccords(props: ItemsAccordsProps) {
             alt="sdf"
           />
         </AccordionSummary>
-        <Box
-          paddingRight={2}
-          maxHeight={400}
+        <AccordionDetails
           sx={{
+            maxHeight: 400,
+            paddingRight: 2,
             overflowY: "auto",
             "&::-webkit-scrollbar": {
               width: "10px",
@@ -175,7 +178,7 @@ export default function ItemsAccords(props: ItemsAccordsProps) {
             },
           }}
         >
-          {uniqueCabelsFields[index].map((val: any) => (
+          {uniqueItemFieldsValues[index].map((val: any) => (
             <Box
               display={"flex"}
               flexDirection={"row"}
@@ -183,36 +186,29 @@ export default function ItemsAccords(props: ItemsAccordsProps) {
               key={val}
             >
               <FormControlLabel
-                sx={{ paddingLeft: 2, fontSize: 16 }}
                 control={
                   <Checkbox
                     checked={
-                      typeof selectedSortParams[
-                        props.uniqueFieldNames[index]
-                      ]?.includes(val.toString()) === "boolean"
-                        ? selectedSortParams[
-                            props.uniqueFieldNames[index]
-                          ]?.includes(val.toString())
-                          ? true
-                          : false
+                      selectedSortParams[
+                        uniqueItemFieldsNames[index]
+                      ]?.includes(val.toString())
+                        ? true
                         : false
                     }
                     onChange={() =>
-                      performSort(props.uniqueFieldNames[index], val)
+                      performSort(uniqueItemFieldsNames[index], val)
                     }
                   />
                 }
                 label={typeof val === "boolean" ? (val ? "Так" : "Ні") : val}
               />
 
-              <Typography color={"default"} fontSize={16}>
-                (
-                {displayItemParameterAmount(props.uniqueFieldNames[index], val)}
-                )
+              <Typography color={"default"}>
+                ({displayItemParameterAmount(val, index)})
               </Typography>
             </Box>
           ))}
-        </Box>
+        </AccordionDetails>
       </Accordion>
     );
   }
@@ -220,9 +216,9 @@ export default function ItemsAccords(props: ItemsAccordsProps) {
   const ParameterAccords = () => {
     return (
       <Box display={"flex"} flexDirection={"column"}>
-        {props.uniqueFieldUkrNames.map((name, index) => {
-          return <ParameterAccord name={name} index={index} />;
-        })}
+        {uniqueItemFieldsNames.map((name: string, index: number) => (
+          <ParameterAccord name={name} index={index} />
+        ))}
       </Box>
     );
   };

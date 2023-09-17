@@ -22,12 +22,12 @@ import ComparisonCard from "./ComparisonCard";
 import { setDifferencesMode } from "../../redux/home/homeSlice";
 
 export default function ComparisonPage() {
-  const { itemsComparison, differencesMode, categories } = useAppSelector(
+  const { itemsComparison, differencesMode, categories , category} = useAppSelector(
     (state) => state.home
   );
 
   const [comparisonCategory, setComparisonCategory] = useState(
-    categories[0].name
+    category === "" ? categories[0].name : category
   );
 
   useEffect(() => {

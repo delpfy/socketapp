@@ -8,32 +8,44 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { SetCategory, SetSubcategory } from "../../redux/home/homeSlice";
 import { useNavigate } from "react-router-dom";
 import { Category } from "../../redux/types";
+import { getItemsByCategory } from "../../redux/home/asyncActions";
 
-export default function CategoryCard(category: any) {
+export default function CategoryCard(_category: any) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
   function RedirectToCatalog() {
     
-    dispatch(SetCategory(category.category.name));
-    if (category.category.subcategories !== undefined) {
-      if(category.category.subcategories.length !== 0){
-        dispatch(SetSubcategory(category.category.name));
+    dispatch(SetCategory(_category.category.name));
+    if (_category.category.subcategories !== undefined) {
+      if(_category.category.subcategories.length !== 0){
+        
+        
 
         if (window.innerWidth > 600) {
           navigate("/subcategories");
         }
       }
       else {
-        navigate("/catalog");
+        dispatch(getItemsByCategory(_category.category.name)).then((result:any) => {
+          if(result.meta.requestStatus === 'fulfilled'){
+            navigate("/catalog");
+          }
+        })
       }
     } 
     else {
-      navigate("/catalog");
+      dispatch(SetSubcategory(""));
+      dispatch(getItemsByCategory(_category.category.name)).then((result:any) => {
+        if(result.meta.requestStatus === 'fulfilled'){
+          navigate("/catalog");
+        }
+      })
+     
     }
     
     
@@ -107,8 +119,8 @@ export default function CategoryCard(category: any) {
             objectFit: "contain",
             overflow: "hidden",
           }}
-          image={`https://www.sidebyside-tech.com${category.category.image}`}
-          title={category.category.name}
+          image={`https://www.sidebyside-tech.com${_category.category.image}`}
+          title={_category.category.name}
         />
 
         <CardContent
@@ -134,7 +146,7 @@ export default function CategoryCard(category: any) {
             fontFamily={"Comfortaa"}
             fontSize={20}
           >
-            {category.category.name}
+            {_category.category.name}
           </Typography>
         </CardContent>
       </Box>

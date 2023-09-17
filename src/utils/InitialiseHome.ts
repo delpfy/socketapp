@@ -18,6 +18,8 @@ export const InitialiseHome = () => {
     itemsDisplay: {} as ItemsDisplay,
     itemsSortedParams: {} as ItemsDisplay,
     itemsCategory: {} as any,
+    uniqueItemFieldsNames: [] as any,
+    uniqueItemFieldsValues: [] as any,
     itemsSorted: {} as ItemsDisplay,
     sorted: false,
     editItemMode: false,

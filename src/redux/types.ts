@@ -283,6 +283,8 @@ export interface HomeState {
   itemsDisplay: ItemsDisplay;
   itemsSortedParams: ItemsDisplay;
   itemsCategory: any;
+  uniqueItemFieldsNames: any;
+uniqueItemFieldsValues: any;
   itemsSorted: ItemsDisplay;
 
   itemsComparison: any;
