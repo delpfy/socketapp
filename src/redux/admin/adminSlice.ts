@@ -10,11 +10,16 @@ import {
 import {
   createAttributes,
   createCategory,
+  createUser,
   deleteAttributes,
   deleteCategory,
   getAllCategories,
+  getAllOrders,
+  getAllUsers,
   getAttributesByCategory,
   getCategoryById,
+  getOrderById,
+  getUserById,
   updateAttributes,
   updateCategory,
   uploadCategoryImage,
@@ -29,6 +34,11 @@ const adminSlice = createSlice({
     second_process: "none" as AdminProcesses,
     third_process: "none" as AdminProcesses,
     _categories: [] as any[],
+    _users: [] as any[],
+    _currentUser: {} as any,
+    _orders: [] as any[],
+    _currentOrder: [] as any,
+    _reviews: [] as any[],
     _attributes: {} as Attribute,
     categoryImage: "",
     subcategoryImage: "",
@@ -196,6 +206,75 @@ const adminSlice = createSlice({
       })
 
       .addCase(deleteAttributes.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+      builder
+      .addCase(getAllUsers.fulfilled, (state, action) => {
+        state._users = action.payload.users;
+        console.log(action.payload.users)
+        state.status = "fulfilled";
+      })
+      .addCase(getAllUsers.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getAllUsers.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+      builder
+      .addCase(getAllOrders.fulfilled, (state, action) => {
+        state._orders = action.payload.orders;
+        console.log(action.payload.orders)
+        state.status = "fulfilled";
+      })
+      .addCase(getAllOrders.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getAllOrders.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+      
+      builder
+      .addCase(getOrderById.fulfilled, (state, action) => {
+        state._currentOrder = action.payload.order;
+        console.log(action.payload)
+        state.status = "fulfilled";
+      })
+      .addCase(getOrderById.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getOrderById.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+      
+      builder
+      .addCase(getUserById.fulfilled, (state, action) => {
+        state._currentUser = action.payload;
+        console.log(action.payload)
+        state.status = "fulfilled";
+      })
+      .addCase(getUserById.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getUserById.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+      
+      builder
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+      })
+      .addCase(createUser.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(createUser.rejected, (state, action) => {
         state.status = "rejected";
       });
   },

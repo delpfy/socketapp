@@ -23,6 +23,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { NullifyToken } from "../../redux/user/userSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
+
 type Props = {
   ErrorDialog_open: Dispatch<SetStateAction<any>>;
   setErrorMessage: (message: string) => void;
@@ -95,20 +96,16 @@ export default function RegisterDialog({
       return;
     }
 
-    const validRoles = ["customer", "manager"];
-    if (!validRoles.includes(registerForm.role)) {
-      ErrorDialog_open(true);
-      setErrorMessage("Ви не обрали ролі");
-      return;
-    }
+    
 
     try {
       dispatch(NullifyToken());
+      
       dispatch(
         Register({
           email: registerForm.email,
           fullName: registerForm.fullName.replace(/\s+/g, " "),
-          role: registerForm.role,
+          role: "customer",
           password: registerForm.passFirst,
           avatarUrl: "",
           expences: 0,
@@ -232,28 +229,7 @@ export default function RegisterDialog({
           onChange={handleRegisterFormChange}
           error={passError}
         />
-        <FormControl>
-          <FormLabel id="demo-radio-buttons-group-label">
-            Роль користувача
-          </FormLabel>
-          <RadioGroup
-            aria-labelledby="demo-radio-buttons-group-label"
-            defaultValue="female"
-            name="radio-buttons-group"
-          >
-            <FormControlLabel
-              value="customer"
-              name="role"
-              control={<Radio onChange={handleRegisterFormChange} />}
-              label="Користувач"
-            />
-            {/* <FormControlLabel
-                value="manager"
-                control={<Radio onChange={handleChange} />}
-                label="Менеджер"
-              /> */}
-          </RadioGroup>
-        </FormControl>
+        
       </DialogContent>
       <DialogActions>
         {confirmEmail_status === "pending" ? (

@@ -10,6 +10,12 @@ import ShowItems from "./ShowItems";
 import ShowAttributes from "./ShowAttributes";
 import { checkAuthorization } from "../../redux/user/asyncActions";
 import ShowItem from "./ShowItem";
+import ShowUsers from "./ShowUsers";
+import ShowOrders from "./ShowOrders";
+import ShowReviews from "./ShowReviews";
+import AddOneUser from "./AddOneUser";
+import EditOneUser from "./EditOneUser";
+import ShowOneOrder from "./ShowOneOrder";
 
 export default function AdminPage() {
   const { user } = useAppSelector((state) => state.user);
@@ -33,9 +39,20 @@ export default function AdminPage() {
         return <ShowItem />;
       case "add-one-item":
         return <ShowItem />;
-
       case "show-many-attributes":
         return <ShowAttributes />;
+      case "show-many-users":
+        return <ShowUsers />;
+      case "add-one-user":
+        return <AddOneUser />;
+      case "edit-one-user":
+        return <EditOneUser />;
+      case "show-many-orders":
+        return <ShowOrders />;
+      case "show-one-order":
+        return <ShowOneOrder />;
+      case "show-many-reviews":
+        return <ShowReviews />;
     }
   }
 

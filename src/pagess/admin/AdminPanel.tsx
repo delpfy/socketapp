@@ -11,6 +11,7 @@ import {
 import { useAppDispatch} from "../../redux/hooks";
 import { setProcess } from "../../redux/admin/adminSlice";
 import { getAllItems } from "../../redux/home/asyncActions";
+import { getAllOrders, getAllUsers } from "../../redux/admin/asyncActions";
 
 export default function AdminPanel() {
   const dispatch = useAppDispatch();
@@ -81,6 +82,72 @@ export default function AdminPanel() {
                 onClick={() => dispatch(setProcess("show-many-attributes"))}
               >
                 Редагувати атрибути
+              </Button>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel2a-content"
+              id="panel2a-header"
+            >
+              <Typography>Користувачі</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Button
+                onClick=
+                {() => {
+                
+                  dispatch(getAllUsers()).then((result: any) => {
+                    if(result.meta.requestStatus === 'fulfilled'){
+                      dispatch(setProcess("show-many-users"))
+                    }
+                  })
+                }}
+              >
+                Редагувати користувачів
+              </Button>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel2a-content"
+              id="panel2a-header"
+            >
+              <Typography>Відгуки</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Button
+              
+                onClick={() => dispatch(setProcess("show-many-reviews"))}
+              >
+                Редагувати відгуки
+              </Button>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel2a-content"
+              id="panel2a-header"
+            >
+              <Typography>Замовлення</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Button
+              onClick=
+              {() => {
+              
+                dispatch(getAllOrders()).then((result: any) => {
+                  if(result.meta.requestStatus === 'fulfilled'){
+                    dispatch(setProcess("show-many-orders"))
+                  }
+                })
+              }}
+                
+              >
+                Усі замовлення
               </Button>
             </AccordionDetails>
           </Accordion>

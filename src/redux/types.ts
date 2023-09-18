@@ -257,7 +257,14 @@ export type AdminProcesses =
   | "edit-one-item"
   | "add-one-item"
   | "show-many-attributes"
-  | "show-many-categories";
+  | "show-many-categories"
+  | "show-many-reviews"
+  | "show-many-users"
+  | "add-one-user"
+  | "edit-one-user"
+  | "show-many-orders"
+  | "show-one-order"
+;
 
 export interface SelectedSortParams {
   [paramName: string]: string[];
