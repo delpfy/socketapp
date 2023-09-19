@@ -344,10 +344,9 @@ export const ItemPage = () => {
               md: "row",
             },
           }}
-          marginLeft={"auto"}
-          marginRight={"auto"}
+          margin={'0 auto'}
         >
-          <Box>
+          <Box margin={'0 auto'}>
             <Carousel
               sx={{
                 marginRight: {
@@ -356,12 +355,12 @@ export const ItemPage = () => {
                 },
                 marginLeft: 'auto',
                 width: {
-                  xs: 310,
+                  xs: window.innerWidth  - 70,
                   md: 555,
                 },
 
                 height: {
-                  xs: 500,
+                  xs: 450,
                   md: 550,
                 },
 
@@ -373,14 +372,14 @@ export const ItemPage = () => {
             >
               {itemCurrent.items.image.map((url: string) => {
                 return (
-                  <Box>
+                  <Box margin={'0 auto'}>
                     <img
                       src={`https://www.sidebyside-tech.com${url}`}
                       /* src={itemCurrent.items.image[0]} */
                       alt="img1"
                       style={{
                         width: "100%",
-                        height: 550,
+                        height: 500,
                         objectFit: "contain",
                       }}
                     />
@@ -456,7 +455,7 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 206 : "55%"}
+                    width={window.innerWidth > 600 ? 206 : 155}
                     fontSize={window.innerWidth > 600 ? 17 : 13}
                     alignItems={"flex-end"}
                     display={"flex"}
@@ -697,7 +696,7 @@ export const ItemPage = () => {
                     padding: 2,
                   }}
                 >
-                  <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width={window.innerWidth > 600 ? 165 : "46%"}>
+                  <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width={window.innerWidth > 600 ? 165 : 130}>
                   <Box>
                       <img
                         src={require("../../img/locationIcon.png")}
@@ -706,7 +705,7 @@ export const ItemPage = () => {
                       />
                     </Box>
                     <Typography
-                    width={window.innerWidth > 600 ? 135 : "82%"}
+                    width={window.innerWidth > 600 ? 135 : 105}
                     fontSize={window.innerWidth > 600 ? 17 : 13}
                     height={20}
                     alignItems={"flex-center"}
@@ -758,7 +757,7 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 250 : "79%"}
+                    width={window.innerWidth > 600 ? 250 : 220}
                     fontSize={window.innerWidth > 600 ? 14 : 12}
                     height={20}
                     alignItems={"center"}
@@ -786,7 +785,7 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 331 : "104%"}
+                    width={window.innerWidth > 600 ? 331 : 290}
                     fontSize={window.innerWidth > 600 ? 14 : 12}
                     height={20}
                     alignItems={"center"}
@@ -832,7 +831,7 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 320 : "100%"}
+                    width={window.innerWidth > 600 ? 320 : 285}
                     fontSize={window.innerWidth > 600 ? 14 : 12}
                     height={20}
                     alignItems={"center"}
@@ -869,7 +868,7 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 463 : "93%"}
+                    width={window.innerWidth > 600 ? 463 : 265}
                     fontSize={window.innerWidth > 600 ? 14 : 12}
                     height={20}
                     paddingLeft={0.3}
