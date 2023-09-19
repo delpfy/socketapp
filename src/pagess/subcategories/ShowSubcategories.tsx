@@ -1,9 +1,10 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
-import Card from "../../componentss/categories/CategoryTile";
+
 import { useAppSelector } from "../../redux/hooks";
 import AllItems from "../../componentss/AllItems";
 import { Category } from "../../redux/types";
+import SubcategoryCard from "../../componentss/categories/SubcategoryTile";
 
 export default function ShowSubcategories() {
   const { categories, subcategory, category } = useAppSelector(
@@ -34,7 +35,7 @@ export default function ShowSubcategories() {
             fontSize={30}
             fontFamily={"Comfortaa"}
           >
-            {subcategory}
+            {category}
           </Typography>
           <Grid
             container
@@ -44,7 +45,7 @@ export default function ShowSubcategories() {
             columns={{ xs: 2, sm: 2, md: 16, lg: 20, xl: 20 }}
           >
             {categories
-              .find((item: Category) => item.name === subcategory)
+              .find((item: Category) => item.name === category)
               ?.subcategories.map((item: any) => (
                 <Grid
                   item
@@ -58,7 +59,7 @@ export default function ShowSubcategories() {
                   xl={4}
                   key={item.id}
                 >
-                  <Card category={item} />
+                  <SubcategoryCard category={item} />
                 </Grid>
               ))}
           </Grid>

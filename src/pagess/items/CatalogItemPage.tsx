@@ -296,7 +296,10 @@ export const ItemPage = () => {
             sx={{
               display: "flex",
               flexDirection: "row",
-              width: 350,
+              width: {
+                xs: "100%",
+                md: 350
+              },
               justifyContent: "space-between",
               alignItems: "center",
               marginTop: 3,
@@ -348,11 +351,12 @@ export const ItemPage = () => {
             <Carousel
               sx={{
                 marginRight: {
-                  xs: 0,
+                  xs: 'auto',
                   md: 7,
                 },
+                marginLeft: 'auto',
                 width: {
-                  xs: 360,
+                  xs: 310,
                   md: 555,
                 },
 
@@ -452,8 +456,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={205}
-                    fontSize={17}
+                    width={window.innerWidth > 600 ? 206 : "55%"}
+                    fontSize={window.innerWidth > 600 ? 17 : 13}
                     alignItems={"flex-end"}
                     display={"flex"}
                     justifyContent={"space-between"}
@@ -471,16 +475,13 @@ export const ItemPage = () => {
                         color: "black",
                         transition: "transform 0.3s ease",
 
-                        display: {
-                          xs: "none",
-                          md: "flex",
-                        },
+                        display: 'flex'
                       }}
                     >
                       <Typography
                         variant={"h3"}
-                        fontSize={20}
-                        height={20}
+                        fontSize={window.innerWidth > 600 ? 20 : 15}
+                        height={window.innerWidth > 600 ? 20 : 15}
                         fontWeight={"bold"}
                         /* paddingTop={1} */
                         fontFamily={"'Roboto light', sans-serif"}
@@ -489,10 +490,10 @@ export const ItemPage = () => {
                       </Typography>
                       <Typography
                         variant={"h3"}
-                        fontSize={14}
-                        height={14}
+                        fontSize={window.innerWidth > 600 ? 14 : 12}
+                        height={window.innerWidth > 600 ? 14 : 12}
                         fontWeight={"bold"}
-                        paddingBottom={2.2}
+                        paddingBottom={window.innerWidth > 600 ? 2.2 : 1.6}
                         fontFamily={"'Roboto light', sans-serif"}
                       >
                         .store
@@ -506,7 +507,10 @@ export const ItemPage = () => {
                     flexDirection: "row",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    width: 310,
+                    width: {
+                      xs: 280,
+                      md: 310
+                    } ,
                     padding: 2,
                     paddingBottom: 0,
                   }}
@@ -528,10 +532,16 @@ export const ItemPage = () => {
                       sx={
                         itemCurrent.items.sale
                           ? {
-                              fontSize: 16,
+                              fontSize: {
+                                xs: 14,
+                                md: 16,
+                              } ,
                               textDecoration: "line-through !important",
                             }
-                          : { fontSize: 16, color: "white", userSelect: "none" }
+                          : { fontSize: {
+                            xs: 14,
+                            md: 16,
+                          }, color: "white", userSelect: "none" }
                       }
                     >
                       {itemCurrent.items.price + "₴"}
@@ -558,7 +568,7 @@ export const ItemPage = () => {
                           <Typography
                             paddingLeft={0.3}
                             paddingTop={0}
-                            fontSize={24}
+                            fontSize={window.innerWidth > 600 ? 24 : 20}
                             fontFamily={"Comfortaa"}
                             color={"error"}
                           >
@@ -646,7 +656,7 @@ export const ItemPage = () => {
                 {itemCurrent.items.quantity <= 10 ? (
                   <Typography
                     paddingLeft={2}
-                    fontSize={15}
+                    fontSize={window.innerWidth > 600 ? 15 : 14}
                     sx={{ background: "#fdfacf" }}
                   >
                     Товар закінчується! Залишилось: {itemCurrent.items.quantity}
@@ -655,7 +665,7 @@ export const ItemPage = () => {
                   <Typography
                     fontFamily={"Comfortaa"}
                     paddingLeft={2}
-                    fontSize={15}
+                    fontSize={window.innerWidth > 600 ? 15 : 14}
                   >
                     Є в наявності
                   </Typography>
@@ -672,7 +682,7 @@ export const ItemPage = () => {
                 border: "2px solid black",
                 borderRadius: 1.5,
                 marginBottom: 3,
-                height: 155,
+                height: 160,
               }}
             >
               <Box width={"100%"}>
@@ -687,21 +697,23 @@ export const ItemPage = () => {
                     padding: 2,
                   }}
                 >
-                  <Typography
-                    width={165}
-                    fontSize={17}
-                    height={20}
-                    alignItems={"flex-center"}
-                    display={"flex"}
-                    justifyContent={"space-between"}
-                  >
-                    <Box>
+                  <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width={window.innerWidth > 600 ? 165 : "46%"}>
+                  <Box>
                       <img
                         src={require("../../img/locationIcon.png")}
                         style={{ width: 16, height: 22 }}
                         alt="sdf"
                       />
                     </Box>
+                    <Typography
+                    width={window.innerWidth > 600 ? 135 : "82%"}
+                    fontSize={window.innerWidth > 600 ? 17 : 13}
+                    height={20}
+                    alignItems={"flex-center"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                  >
+                    
                     Доставка в:{" "}
                     <Box
                       flexDirection={"row"}
@@ -720,7 +732,7 @@ export const ItemPage = () => {
                     >
                       <Typography
                         variant={"h3"}
-                        fontSize={17}
+                        fontSize={window.innerWidth > 600 ? 17 : 13}
                         height={17}
                         fontWeight={"bold"}
                         /* paddingTop={1} */
@@ -730,6 +742,8 @@ export const ItemPage = () => {
                       </Typography>
                     </Box>
                   </Typography>
+                  </Box>
+                  
                 </Box>
 
                 <Box
@@ -744,8 +758,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={250}
-                    fontSize={14}
+                    width={window.innerWidth > 600 ? 250 : "79%"}
+                    fontSize={window.innerWidth > 600 ? 14 : 12}
                     height={20}
                     alignItems={"center"}
                     display={"flex"}
@@ -772,8 +786,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={331}
-                    fontSize={14}
+                    width={window.innerWidth > 600 ? 331 : "104%"}
+                    fontSize={window.innerWidth > 600 ? 14 : 12}
                     height={20}
                     alignItems={"center"}
                     display={"flex"}
@@ -818,8 +832,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={330}
-                    fontSize={14}
+                    width={window.innerWidth > 600 ? 320 : "100%"}
+                    fontSize={window.innerWidth > 600 ? 14 : 12}
                     height={20}
                     alignItems={"center"}
                     display={"flex"}
@@ -833,11 +847,11 @@ export const ItemPage = () => {
                       />
                     </Box>
 
-                    <Typography marginLeft={1} fontWeight={"bold"}>
+                    <Typography marginLeft={1} fontSize={window.innerWidth > 600 ? 14 : 12} fontWeight={"bold"}>
                       Оплата.
                     </Typography>
 
-                    <Typography marginRight={1} fontSize={14}>
+                    <Typography marginRight={1} fontSize={window.innerWidth > 600 ? 14 : 12}>
                       Оплата карткою Visa/MasterCard
                     </Typography>
                   </Typography>
@@ -855,8 +869,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 485 : 310}
-                    fontSize={14}
+                    width={window.innerWidth > 600 ? 463 : "93%"}
+                    fontSize={window.innerWidth > 600 ? 14 : 12}
                     height={20}
                     paddingLeft={0.3}
                     alignItems={"center"}
@@ -871,15 +885,15 @@ export const ItemPage = () => {
                       />
                     </Box>
 
-                    <Typography marginLeft={1} fontWeight={"bold"}>
+                    <Typography marginLeft={1} fontSize={window.innerWidth > 600 ? 14 : 12} fontWeight={"bold"}>
                       Гарантія.
                     </Typography>
 
                     <Typography
                       marginRight={1}
                       textAlign={window.innerWidth > 600 ? "inherit" : "center"}
-                      paddingTop={window.innerWidth > 600 ? 0 : 2.9}
-                      fontSize={14}
+                      paddingTop={window.innerWidth > 600 ? 0 : 2.1}
+                      fontSize={window.innerWidth > 600 ? 14 : 12}
                     >
                       24 місяці Обмін/повернення
                       {window.innerWidth < 600 ? <br /> : <></>} товару протягом

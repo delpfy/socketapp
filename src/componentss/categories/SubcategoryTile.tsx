@@ -14,13 +14,13 @@ import { useNavigate } from "react-router-dom";
 import { Category } from "../../redux/types";
 import { getItemsByCategory } from "../../redux/home/asyncActions";
 
-export default function CategoryCard(_category: any) {
+export default function SubcategoryCard(_category: any) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
   function RedirectToCatalog() {
     
-    dispatch(SetCategory(_category.category.name));
+    dispatch(SetSubcategory(_category.category.name));
     if (_category.category.subcategories !== undefined) {
       if(_category.category.subcategories.length !== 0){
         if (window.innerWidth > 600) {
