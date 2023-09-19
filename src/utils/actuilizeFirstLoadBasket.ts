@@ -8,7 +8,6 @@ export function actualizeFirstRenderBasket(data: any, origin: any) {
 
     if (itemIndex !== -1) {
       for (const key in origin) {
-        
         if (key === "price") {
           if (origin.hasOwnProperty(key)) {
             if (origin[key as keyof CombinedItems] !== data[itemIndex][key]) {

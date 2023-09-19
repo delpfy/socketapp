@@ -15,7 +15,6 @@ export default function ShowSubcategories() {
     window.scrollTo(0, 0);
   }, []);
 
-  
   return (
     <>
       <Box width={"85%"} margin={"0 auto"} alignSelf={"center"}>

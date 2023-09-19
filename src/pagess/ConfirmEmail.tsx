@@ -6,15 +6,13 @@ import { confirmEmail } from "../redux/user/asyncActions";
 import { useParams } from "react-router-dom";
 
 export default function ConfirmEmail() {
-  const {token} = useParams();
-  
-  const {emailConfirmed} = useAppSelector(state => state.user)
-  
+  const { token } = useParams();
+
+  const { emailConfirmed } = useAppSelector((state) => state.user);
+
   const dispatch = useAppDispatch();
   useEffect(() => {
-    console.log(token)
     if (token) {
-        console.log("DISPATCH")
       dispatch(confirmEmail({ token: token }));
     }
   }, []);

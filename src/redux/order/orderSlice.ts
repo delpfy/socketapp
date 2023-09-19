@@ -241,8 +241,6 @@ const orderSlice = createSlice({
     setNovaPoshtaLocation(state, action: PayloadAction<string>) {
       state.novaPoshtaLocation = action.payload;
     },
-
-
   },
   extraReducers: (builder) => {
     builder.addCase(getLocations.fulfilled, (state, action) => {

@@ -28,8 +28,6 @@ export const Update = createAsyncThunk<{ success: string }, {}>(
   }
 );
 
-
-
 export const Authorize = createAsyncThunk<
   { success: string; token: string },
   UserLogin

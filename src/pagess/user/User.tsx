@@ -14,10 +14,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import LogoutDialog from "../../componentss/dialogs/LogoutDialog";
 import ErrorDialog from "../../componentss/dialogs/ErrorDialog";
-import {
-  Update,
-  checkAuthorization,
-} from "../../redux/user/asyncActions";
+import { Update, checkAuthorization } from "../../redux/user/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { updateAllUserReviews } from "../../redux/review/asyncActions";
@@ -40,7 +37,7 @@ export default function User() {
 
   const [email, setEmail] = useState<string>(user.email);
   const [password, setPassword] = useState<string>("");
-  
+
   const [fullName, setFullName] = useState<string>(user.name);
   const [passVisible, setPassVisible] = useState(true);
 
@@ -50,8 +47,6 @@ export default function User() {
   const [openLogout, setOpenLogout] = useState(false);
   const [openError, setOpenError] = useState(false);
   const [openInfo, setOpenInfo] = useState(false);
-
-  
 
   function LogoutDialog_open() {
     setOpenLogout(true);
@@ -74,8 +69,6 @@ export default function User() {
   function InfoDialog_open() {
     setOpenInfo(true);
   }
-
-  
 
   function handleClickShowPassword() {
     setPassVisible((passVisible) => !passVisible);
@@ -135,7 +128,6 @@ export default function User() {
     }
   }
 
-  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -189,8 +181,6 @@ export default function User() {
                   sx={{ width: 100, height: 100 }}
                 />
               )}
-
-              
             </Box>
             <Box padding={3}>
               <InputLabel>Iм'я</InputLabel>

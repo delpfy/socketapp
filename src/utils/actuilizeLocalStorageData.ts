@@ -8,7 +8,6 @@ export function actualizeData(data: any, origin: any) {
 
     if (itemIndex !== -1) {
       for (const key in origin.items) {
-        
         if (origin.items.hasOwnProperty(key)) {
           if (
             origin.items[key as keyof CombinedItems] !== data[itemIndex][key]

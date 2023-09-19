@@ -52,7 +52,6 @@ const font = {
   fontFamily: "Ubuntu",
 };
 
-
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -104,8 +103,6 @@ export const ItemPage = () => {
       dispatch(setEditItemMode(false));
     }
   }, [dispatch]);
-
-  
 
   function adjustPrice() {
     if (itemCurrent.items.sale === 0) {
@@ -298,7 +295,7 @@ export const ItemPage = () => {
               flexDirection: "row",
               width: {
                 xs: "100%",
-                md: 350
+                md: 350,
               },
               justifyContent: "space-between",
               alignItems: "center",
@@ -344,18 +341,18 @@ export const ItemPage = () => {
               md: "row",
             },
           }}
-          margin={'0 auto'}
+          margin={"0 auto"}
         >
-          <Box margin={'0 auto'}>
+          <Box margin={"0 auto"}>
             <Carousel
               sx={{
                 marginRight: {
-                  xs: 'auto',
+                  xs: "auto",
                   md: 7,
                 },
-                marginLeft: 'auto',
+                marginLeft: "auto",
                 width: {
-                  xs: window.innerWidth  - 70,
+                  xs: window.innerWidth - 70,
                   md: 555,
                 },
 
@@ -372,7 +369,7 @@ export const ItemPage = () => {
             >
               {itemCurrent.items.image.map((url: string) => {
                 return (
-                  <Box margin={'0 auto'}>
+                  <Box margin={"0 auto"}>
                     <img
                       src={`https://www.sidebyside-tech.com${url}`}
                       /* src={itemCurrent.items.image[0]} */
@@ -474,7 +471,7 @@ export const ItemPage = () => {
                         color: "black",
                         transition: "transform 0.3s ease",
 
-                        display: 'flex'
+                        display: "flex",
                       }}
                     >
                       <Typography
@@ -508,8 +505,8 @@ export const ItemPage = () => {
                     alignItems: "center",
                     width: {
                       xs: 280,
-                      md: 310
-                    } ,
+                      md: 310,
+                    },
                     padding: 2,
                     paddingBottom: 0,
                   }}
@@ -534,13 +531,17 @@ export const ItemPage = () => {
                               fontSize: {
                                 xs: 14,
                                 md: 16,
-                              } ,
+                              },
                               textDecoration: "line-through !important",
                             }
-                          : { fontSize: {
-                            xs: 14,
-                            md: 16,
-                          }, color: "white", userSelect: "none" }
+                          : {
+                              fontSize: {
+                                xs: 14,
+                                md: 16,
+                              },
+                              color: "white",
+                              userSelect: "none",
+                            }
                       }
                     >
                       {itemCurrent.items.price + "₴"}
@@ -696,8 +697,13 @@ export const ItemPage = () => {
                     padding: 2,
                   }}
                 >
-                  <Box display={'flex'} flexDirection={'row'} justifyContent={'space-between'} width={window.innerWidth > 600 ? 165 : 130}>
-                  <Box>
+                  <Box
+                    display={"flex"}
+                    flexDirection={"row"}
+                    justifyContent={"space-between"}
+                    width={window.innerWidth > 600 ? 165 : 130}
+                  >
+                    <Box>
                       <img
                         src={require("../../img/locationIcon.png")}
                         style={{ width: 16, height: 22 }}
@@ -705,44 +711,42 @@ export const ItemPage = () => {
                       />
                     </Box>
                     <Typography
-                    width={window.innerWidth > 600 ? 135 : 105}
-                    fontSize={window.innerWidth > 600 ? 17 : 13}
-                    height={20}
-                    alignItems={"flex-center"}
-                    display={"flex"}
-                    justifyContent={"space-between"}
-                  >
-                    
-                    Доставка в:{" "}
-                    <Box
-                      flexDirection={"row"}
+                      width={window.innerWidth > 600 ? 135 : 105}
+                      fontSize={window.innerWidth > 600 ? 17 : 13}
+                      height={20}
+                      alignItems={"flex-center"}
+                      display={"flex"}
                       justifyContent={"space-between"}
-                      alignItems={"flex-end"}
-                      color={"black"}
-                      /* paddingBottom={1} */
-
-                      sx={{
-                        cursor: "pointer",
-                        color: "black",
-                        transition: "transform 0.3s ease",
-
-                        display: "flex",
-                      }}
                     >
-                      <Typography
-                        variant={"h3"}
-                        fontSize={window.innerWidth > 600 ? 17 : 13}
-                        height={17}
-                        fontWeight={"bold"}
-                        /* paddingTop={1} */
-                        fontFamily={"'Roboto light', sans-serif"}
+                      Доставка в:{" "}
+                      <Box
+                        flexDirection={"row"}
+                        justifyContent={"space-between"}
+                        alignItems={"flex-end"}
+                        color={"black"}
+                        /* paddingBottom={1} */
+
+                        sx={{
+                          cursor: "pointer",
+                          color: "black",
+                          transition: "transform 0.3s ease",
+
+                          display: "flex",
+                        }}
                       >
-                        Київ
-                      </Typography>
-                    </Box>
-                  </Typography>
+                        <Typography
+                          variant={"h3"}
+                          fontSize={window.innerWidth > 600 ? 17 : 13}
+                          height={17}
+                          fontWeight={"bold"}
+                          /* paddingTop={1} */
+                          fontFamily={"'Roboto light', sans-serif"}
+                        >
+                          Київ
+                        </Typography>
+                      </Box>
+                    </Typography>
                   </Box>
-                  
                 </Box>
 
                 <Box
@@ -846,11 +850,18 @@ export const ItemPage = () => {
                       />
                     </Box>
 
-                    <Typography marginLeft={1} fontSize={window.innerWidth > 600 ? 14 : 12} fontWeight={"bold"}>
+                    <Typography
+                      marginLeft={1}
+                      fontSize={window.innerWidth > 600 ? 14 : 12}
+                      fontWeight={"bold"}
+                    >
                       Оплата.
                     </Typography>
 
-                    <Typography marginRight={1} fontSize={window.innerWidth > 600 ? 14 : 12}>
+                    <Typography
+                      marginRight={1}
+                      fontSize={window.innerWidth > 600 ? 14 : 12}
+                    >
                       Оплата карткою Visa/MasterCard
                     </Typography>
                   </Typography>
@@ -884,7 +895,11 @@ export const ItemPage = () => {
                       />
                     </Box>
 
-                    <Typography marginLeft={1} fontSize={window.innerWidth > 600 ? 14 : 12} fontWeight={"bold"}>
+                    <Typography
+                      marginLeft={1}
+                      fontSize={window.innerWidth > 600 ? 14 : 12}
+                      fontWeight={"bold"}
+                    >
                       Гарантія.
                     </Typography>
 
@@ -951,22 +966,22 @@ export const ItemPage = () => {
           </Box>
         </Box>
         <TableContainer
-      component={Paper}
-      sx={{ width: "50%", alignSelf: "center", paddingBottom: 4 }}
-    >
-      <Table>
-        <TableBody>
-          {Object.values(itemCurrent.items.fields).map((field: any) => {
-            return (
-              <TableRow>
-                <TableCell style={font}>{Object.keys(field)[0]}</TableCell>
-                <TableCell>{Object.values(field)[0] as string}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          component={Paper}
+          sx={{ width: "50%", alignSelf: "center", paddingBottom: 4 }}
+        >
+          <Table>
+            <TableBody>
+              {Object.values(itemCurrent.items.fields).map((field: any) => {
+                return (
+                  <TableRow>
+                    <TableCell style={font}>{Object.keys(field)[0]}</TableCell>
+                    <TableCell>{Object.values(field)[0] as string}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
         <Box
           display={"flex"}
           justifyContent={"center"}

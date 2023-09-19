@@ -159,7 +159,7 @@ export default function AdminAuthorize() {
 
           <Button
             sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={() => navigate("/catalog")}
+            onClick={() => navigate("/")}
           >
             На головну
           </Button>

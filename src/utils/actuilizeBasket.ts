@@ -16,23 +16,23 @@ export function actualizeBasket(data: any, origin: any) {
               data[itemIndex][key] =
                 origin.items.price -
                 Math.round((origin.items.price * origin.items.sale) / 100);
-              
             }
           }
         } else if (key === "quantity") {
-         
           if (origin.items.hasOwnProperty(key)) {
-            
-            
-            if (origin.items[key as keyof CombinedItems] !== data[itemIndex][key]) {
+            if (
+              origin.items[key as keyof CombinedItems] !== data[itemIndex][key]
+            ) {
               data[itemIndex][key] = origin.items[key as keyof CombinedItems];
-              
-              if (origin.items[key as keyof CombinedItems] < data[itemIndex].amount) {
-                
+
+              if (
+                origin.items[key as keyof CombinedItems] <
+                data[itemIndex].amount
+              ) {
                 data[itemIndex].amount =
                   data[itemIndex].amount -
-                  (data[itemIndex].amount - origin.items[key as keyof CombinedItems]);
-                 
+                  (data[itemIndex].amount -
+                    origin.items[key as keyof CombinedItems]);
               }
               if (data[itemIndex].amount === 0) {
                 data.splice(itemIndex, 1);
@@ -50,9 +50,6 @@ export function actualizeBasket(data: any, origin: any) {
           }
         }
       }
-
     }
-
-
   }
 }

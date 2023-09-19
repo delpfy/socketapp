@@ -130,17 +130,16 @@ export default function Reply({ reply, review }: ReplyProps) {
           />
         ) : (
           <Typography>{reply.userName}</Typography>
-
         )}
         <Typography width={400}>
-            {reply.createdAt !== reply.updatedAt
-              ? formatDate(reply.createdAt.toString()) +
-                "\n" +
-                "Оновлено " +
-                formatDate(reply.updatedAt.toString()) +
-                " "
-              : formatDate(reply.createdAt.toString())}
-          </Typography>
+          {reply.createdAt !== reply.updatedAt
+            ? formatDate(reply.createdAt.toString()) +
+              "\n" +
+              "Оновлено " +
+              formatDate(reply.updatedAt.toString()) +
+              " "
+            : formatDate(reply.createdAt.toString())}
+        </Typography>
       </Box>
 
       {editMode ? (
@@ -160,7 +159,7 @@ export default function Reply({ reply, review }: ReplyProps) {
         </Typography>
       )}
 
-      {user.id === reply.user ? (
+      {user.id === reply.user || user.role === "admin" ? (
         <Box
           display={"flex"}
           flexDirection={"row"}

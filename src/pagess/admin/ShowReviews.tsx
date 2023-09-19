@@ -1,112 +1,103 @@
 import {
-    TableContainer,
-    Paper,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-    Button,
-  } from "@mui/material";
-  import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-  import { setProcess } from "../../redux/admin/adminSlice";
-  import { deleteUser, getAllUsers,  getUserById } from "../../redux/admin/asyncActions";
-  import { useState } from "react";
-  import InfoDialog from "../../componentss/dialogs/InfoDialog";
-  
-  export default function ShowReviews() {
-    const { _users, _orders } = useAppSelector((state) => state.admin);
-    const dispatch = useAppDispatch();
-    const [openInfo, setOpenInfo] = useState(false);
-    const [infoMessage, setInfoMessage] = useState<string>("Some info");
-    function InfoDialog_open() {
-      setOpenInfo(true);
-    }
-    function InfoDialog_close() {
-      setOpenInfo(false);
-    }
-    return (
-      <>
-      <InfoDialog
-          openInfo={openInfo}
-          InfoDialog_close={InfoDialog_close}
-          infoMessage={infoMessage}
-        />
-        <Button onClick={() => dispatch(setProcess("add-one-user"))}>
-          Додати користувача
-        </Button>
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Вказане ім'я</TableCell>
-                <TableCell>Пошта</TableCell>
-                <TableCell>Роль</TableCell>
-                <TableCell>Функції</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {_users.map((_user: any) => {
-                return (
-                  <TableRow>
-                    <TableCell>{_user.fullName}</TableCell>
-                    <TableCell>{_user.email}</TableCell>
-                    <TableCell>{_user.role}</TableCell>
-                    <TableCell>
-                      {_user.role === "admin" ? (
-                        <></>
-                      ) : (
-                        <Button
-                          onClick={() =>
-                            
-                              dispatch(deleteUser({ userId: _user._id })).then((result: any) => {
-                              if (result.meta.requestStatus === "fulfilled") {
-                                InfoDialog_open();
-                                setInfoMessage("Успішно видалено");
-                                dispatch(getAllUsers());
-                              }
-                              if (result.meta.requestStatus === "rejected") {
-                                InfoDialog_open();
-                                setInfoMessage("Не успішно видалено");
-                                dispatch(getAllUsers());
-                              }
-                            })
-                          }
-                        >
-                          Видалити
-                        </Button>
-                      )}
-                    
-                    {_user.role === "admin" ? (
-                        <></>
-                      ) : (
-                        <Button
-                          onClick={() =>
-                            
-                              dispatch(getUserById({ userId: _user._id })).then((result: any) => {
-                              if (result.meta.requestStatus === "fulfilled") {
-                                
-                                dispatch(setProcess('edit-one-user'));
-                              }
-                              if (result.meta.requestStatus === "rejected") {
-                                InfoDialog_open();
-                                setInfoMessage("Не знайдено");
-                                dispatch(getAllUsers());
-                              }
-                            })
-                          }
-                        >
-                          Редагувати
-                        </Button>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </>
-    );
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  Button,
+  Box,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { setProcess } from "../../redux/admin/adminSlice";
+import {
+  deleteUser,
+  getAllUsers,
+  getUserById,
+} from "../../redux/admin/asyncActions";
+import { useEffect, useState } from "react";
+import InfoDialog from "../../componentss/dialogs/InfoDialog";
+import SearchReviewsByItems from "../../componentss/menuu/search/SearchReviewsByItems";
+import Review from "../../componentss/reviews/Review";
+import {
+  setReviewsAmount,
+  setRatingAmount,
+} from "../../redux/review/reviewSlice";
+import { Status } from "../../redux/types";
+
+export default function ShowReviews() {
+  const { _users, _orders } = useAppSelector((state) => state.admin);
+  const dispatch = useAppDispatch();
+  const [openInfo, setOpenInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
+  function InfoDialog_open() {
+    setOpenInfo(true);
   }
-  
+  function InfoDialog_close() {
+    setOpenInfo(false);
+  }
+  const { reviews, status_review } = useAppSelector((state) => state.reviews);
+
+  function StatusReviewHandler(status_review: Status) {
+    switch (status_review) {
+      case "success":
+        if (reviews !== undefined) {
+          let countRatingAmount = 0;
+          dispatch(
+            setReviewsAmount(parseInt(reviews.reviews.length.toString()))
+          );
+          if (reviews.reviews.length === 0) {
+            dispatch(setRatingAmount(0));
+          }
+          return reviews.reviews
+            .slice()
+            .reverse()
+            .map((review, index) => {
+              countRatingAmount =
+                parseInt(countRatingAmount.toString()) +
+                parseInt(review.rating.toString());
+              if (index === reviews.reviews.length - 1) {
+                dispatch(setRatingAmount(countRatingAmount));
+              }
+              return <Review {...review} />;
+            });
+        } else {
+          return (
+            <Typography fontFamily={"Comfortaa"} fontSize={20}>
+              Пусто...
+            </Typography>
+          );
+        }
+      case "pending":
+        <CircularProgress />;
+        return "";
+      case "error":
+        return (
+          <Typography fontFamily={"Comfortaa"} fontSize={20}>
+            Пусто...
+          </Typography>
+        );
+      default:
+        return (
+          <Typography fontFamily={"Comfortaa"} fontSize={20}>
+            Оберіть товар
+          </Typography>
+        );
+    }
+  }
+  useEffect(() => {}, []);
+  return (
+    <>
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
+      <SearchReviewsByItems />
+      <Box>{StatusReviewHandler(status_review)}</Box>
+    </>
+  );
+}

@@ -17,50 +17,40 @@ import { getItemsByCategory } from "../../redux/home/asyncActions";
 export default function CategoryCard(_category: any) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
+
   function RedirectToCatalog() {
-    
     dispatch(SetCategory(_category.category.name));
     if (_category.category.subcategories !== undefined) {
-      
-      if(_category.category.subcategories.length !== 0){
+      if (_category.category.subcategories.length !== 0) {
         if (window.innerWidth > 600) {
           navigate("/subcategories");
+        } else {
+          dispatch(SetSubcategory(_category.category.name));
         }
-        else{
-          dispatch(SetSubcategory(_category.category.name))
-        }
+      } else {
+        dispatch(getItemsByCategory(_category.category.name)).then(
+          (result: any) => {
+            if (result.meta.requestStatus === "fulfilled") {
+              if (result.payload.items.length !== 0) {
+                navigate("/catalog");
+              }
+            }
+          }
+        );
       }
-      else {
-        
-        dispatch(getItemsByCategory(_category.category.name)).then((result:any) => {
-         
-          if(result.meta.requestStatus === 'fulfilled'){
-            
-            if(result.payload.items.length !== 0){
+    } else {
+      console.log("fff");
+      dispatch(SetSubcategory(""));
+      dispatch(getItemsByCategory(_category.category.name)).then(
+        (result: any) => {
+          if (result.meta.requestStatus === "fulfilled") {
+            if (result.payload.items.length !== 0) {
               navigate("/catalog");
             }
-            
-          }
-        })
-      }
-    } 
-    else {
-      console.log('fff')
-      dispatch(SetSubcategory(""));
-      dispatch(getItemsByCategory(_category.category.name)).then((result:any) => {
-        
-        if(result.meta.requestStatus === 'fulfilled'){
-          
-          if(result.payload.items.length !== 0){
-            navigate("/catalog");
           }
         }
-      })
-     
+      );
     }
-    
-    
   }
 
   return (

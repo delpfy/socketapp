@@ -178,7 +178,7 @@ const homeSlice = createSlice({
     ) {
       state.sorted = true;
       const selectedParams = action.payload.selectedParams;
-      
+
       state.itemsSorted.items = state.itemsCategory.items.filter(
         (item: any) => {
           return Object.keys(selectedParams).every((paramName, index) => {
@@ -271,7 +271,6 @@ const homeSlice = createSlice({
           Array.from(
             new Set(
               action.payload?.items?.map((item: any) => {
-                
                 return Object.values(item?.fields[index])[0];
               }) ?? []
             )

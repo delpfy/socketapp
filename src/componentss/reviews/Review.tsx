@@ -35,8 +35,6 @@ export default function Review(props: IReviewGET) {
 
   const dispatch = useAppDispatch();
 
-  
-
   function discardChanges() {
     setDescription(props.description);
     setAdvantages(props.advantages);
@@ -201,7 +199,7 @@ export default function Review(props: IReviewGET) {
           {replyMode ? "Відмінити" : "Відповісти"}
         </Button>
       </Box>
-      {user.id === props.user ? (
+      {user.id === props.user || user.role === "admin" ? (
         <Box
           display={"flex"}
           flexDirection={"row"}
@@ -278,9 +276,12 @@ export default function Review(props: IReviewGET) {
           </Typography>
 
           <Box width={600} marginLeft={10} paddingTop={4}>
-            {props.replies.slice().reverse().map((reply) => {
-              return <Reply review={props} reply={reply} />;
-            })}
+            {props.replies
+              .slice()
+              .reverse()
+              .map((reply) => {
+                return <Reply review={props} reply={reply} />;
+              })}
           </Box>
         </Box>
       )}

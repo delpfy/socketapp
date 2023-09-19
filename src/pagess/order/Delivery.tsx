@@ -13,7 +13,7 @@ import {
   Typography,
   debounce,
 } from "@mui/material";
-import {  useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   getNovaPoshtaLocations,
@@ -36,7 +36,9 @@ interface TNovaLocation {
 export default function Delivery() {
   const [selectedOption, setSelectedOption] = useState("");
   const { items } = useAppSelector((state) => state.basket);
-  const { city, street, _order, novaPoshtaLocations } = useAppSelector((state) => state.orders);
+  const { city, street, _order, novaPoshtaLocations } = useAppSelector(
+    (state) => state.orders
+  );
   const [novaPoshtaOptions, setNovaPoshtaOptions] = useState<
     readonly TNovaLocation[]
   >([]);
@@ -173,8 +175,8 @@ export default function Delivery() {
   ]);
 
   useEffect(() => {
-    setSelectedOption("")
-  } , [items])
+    setSelectedOption("");
+  }, [items]);
 
   const handleCourierOptionChange = (event: any) => {
     setSelectedOption(event.target.value);
@@ -231,16 +233,12 @@ export default function Delivery() {
   const top100Films = [{}];
 
   function handleSearchNovaChange(event: any, newInputValue: string) {
-    
-
     if (newInputValue !== "") {
       searchNovaDelayed(newInputValue, city);
     }
   }
 
   function handleSearchStreetChange(event: any, newInputValue: string) {
-   
-
     if (newInputValue !== "") {
       searchStreetDelayed(newInputValue, city);
     }

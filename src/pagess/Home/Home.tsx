@@ -19,7 +19,11 @@ import {
   setAfterOrder,
   synchronizeBasket,
 } from "../../redux/basket/basketSlice";
-import { SetCategory, SetSubcategory, setEditItemMode } from "../../redux/home/homeSlice";
+import {
+  SetCategory,
+  SetSubcategory,
+  setEditItemMode,
+} from "../../redux/home/homeSlice";
 import Carousel from "react-material-ui-carousel";
 import PromotionalOffers from "../../componentss/PromotionalOffers";
 import NewItems from "../../componentss/NewItems";
@@ -425,7 +429,10 @@ export const Home = () => {
             color: "white",
           }}
           variant="outlined"
-          onClick={() => {dispatch(SetSubcategory("")); CategoryDialog_open()}}
+          onClick={() => {
+            dispatch(SetSubcategory(""));
+            CategoryDialog_open();
+          }}
         >
           <img
             src={require("../../img/cleverIcon.png")}
@@ -462,30 +469,28 @@ export const Home = () => {
             spacing={{ xs: 1, sm: 3, md: 4 }}
             columns={{ xs: 2, sm: 2, md: 16, lg: 20, xl: 20 }}
           >
-            {categories.map(
-              (item: any) => (
-                <Grid
-                  item
-                  display={"flex"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  sx={{
-                    paddingBottom: {
-                      xs: 5,
-                      md: 0,
-                    },
-                  }}
-                  xs={2}
-                  sm={2}
-                  md={4}
-                  lg={4}
-                  xl={4}
-                  key={item.id}
-                >
-                  <Card category = {item} />
-                </Grid>
-              )
-            )}
+            {categories.map((item: any) => (
+              <Grid
+                item
+                display={"flex"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                sx={{
+                  paddingBottom: {
+                    xs: 5,
+                    md: 0,
+                  },
+                }}
+                xs={2}
+                sm={2}
+                md={4}
+                lg={4}
+                xl={4}
+                key={item.id}
+              >
+                <Card category={item} />
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Box>
@@ -598,7 +603,6 @@ export const Home = () => {
               />
             }
             aria-controls="panel1a-content"
-            
             id="panel1a-header"
           >
             <Typography>Компанія</Typography>

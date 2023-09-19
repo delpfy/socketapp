@@ -12,7 +12,7 @@ import { getItemById, searchItems } from "../../../redux/home/asyncActions";
 import { useNavigate } from "react-router-dom";
 import { getItemReviews } from "../../../redux/review/asyncActions";
 
-export default function Search() {
+export default function SearchReviewsByItems() {
   const { itemsDisplay } = useAppSelector((state) => state.home);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,7 +82,7 @@ export default function Search() {
       <Box
         alignItems={"center"}
         sx={{
-          width: { xs: "65%", md: "43%" },
+          width: { xs: "65%", md: "80%" },
           alignSelf: "flex-start",
           margin: "0 auto",
         }}
@@ -103,12 +103,7 @@ export default function Search() {
             if (value) {
               dispatch(getItemById(value._id)).then((result: any) => {
                 if (result.meta.requestStatus === "fulfilled") {
-                  dispatch(getItemReviews(value._id)).then((result: any) => {
-                    if (result.meta.requestStatus === "fulfilled") {
-                      setAsRecentlyReviewed(value);
-                      navigate("/catalog/item");
-                    }
-                  });
+                  dispatch(getItemReviews(value._id));
                 }
               });
             }

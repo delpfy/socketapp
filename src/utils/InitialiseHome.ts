@@ -1,4 +1,3 @@
-
 import { ItemsDisplay, Status } from "../redux/types";
 
 export const InitialiseHome = () => {

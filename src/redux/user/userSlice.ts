@@ -47,7 +47,7 @@ const userSlice = createSlice({
       state.user.email = action.payload;
     },
 
-    authorizeAdmin(state, action: PayloadAction<boolean>){
+    authorizeAdmin(state, action: PayloadAction<boolean>) {
       state.user.authorized_admin = action.payload;
     },
   },
@@ -89,8 +89,6 @@ const userSlice = createSlice({
     builder.addCase(Authorize.rejected, (state, action) => {
       state.user.authorized = false;
     });
-
-    
 
     // Register.
     builder.addCase(Register.fulfilled, (state, action) => {

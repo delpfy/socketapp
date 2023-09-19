@@ -10,21 +10,17 @@ export const getAllOrders = createAsyncThunk<any>(
   }
 );
 
-
-
 export const getOrdersByUser = createAsyncThunk<TOrders, string>(
-  "home/getOrdersByUser", async (params) => {
-  const { data } = await axios.get<any>(
-    `/orders/user/${params}`,
-    {
+  "home/getOrdersByUser",
+  async (params) => {
+    const { data } = await axios.get<any>(`/orders/user/${params}`, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
       },
-    }
-  );
-  return data;
-});
-
+    });
+    return data;
+  }
+);
 
 export const addOrder = createAsyncThunk<TOrders, TOrder>(
   "home/addOrder",
@@ -51,9 +47,6 @@ export const removeOrder = createAsyncThunk<"", any>(
   }
 );
 
-
-
-
 export const getLocations = createAsyncThunk<any, { city: string }>(
   "orders/getLocations",
   async (params) => {
@@ -63,7 +56,7 @@ export const getLocations = createAsyncThunk<any, { city: string }>(
       `https://nominatim.openstreetmap.org/search?countrycodes=UA&city=${params.city}&format=json&limit=30`,
       {
         headers: {
-          'Accept-Language': 'uk-UA', 
+          "Accept-Language": "uk-UA",
         },
       }
     );
@@ -71,28 +64,27 @@ export const getLocations = createAsyncThunk<any, { city: string }>(
   }
 );
 
-export const getStreets = createAsyncThunk<any, { city: string, searchValue: string }>(
-  "orders/getStreets",
-  async (params) => {
-    const { city } = params;
-    const query = encodeURIComponent(city);
-    const { data } = await axios.get<any>(
-      `https://nominatim.openstreetmap.org/search?country=Ukraine&city=${params.city}&street=${params.searchValue}&format=json&limit=30`,
-      {
-        headers: {
-          'Accept-Language': 'uk-UA', 
-        },
-      }
-    );
-    return data;
-  }
-);
+export const getStreets = createAsyncThunk<
+  any,
+  { city: string; searchValue: string }
+>("orders/getStreets", async (params) => {
+  const { city } = params;
+  const query = encodeURIComponent(city);
+  const { data } = await axios.get<any>(
+    `https://nominatim.openstreetmap.org/search?country=Ukraine&city=${params.city}&street=${params.searchValue}&format=json&limit=30`,
+    {
+      headers: {
+        "Accept-Language": "uk-UA",
+      },
+    }
+  );
+  return data;
+});
 
 export const getNovaPoshtaLocations = createAsyncThunk<
   any,
   { city: string; searchValue: string }
 >("orders/getNovaPoshtaLocations", async (params) => {
-  
   const { data } = await axios.post("https://api.novaposhta.ua/v2.0/json/", {
     apiKey: "5d01301bf2df2e22fdad66e5428dba0d",
     modelName: "AddressGeneral",

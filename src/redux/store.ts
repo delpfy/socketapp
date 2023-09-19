@@ -16,7 +16,6 @@ const store = configureStore({
     reviews: reviewReduser,
     orders: orderReduser,
     posts: postReduser,
-    
   },
 });
 

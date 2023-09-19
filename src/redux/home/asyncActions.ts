@@ -2,14 +2,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
 import { Category, Items, ItemsDisplay, TShippingItems } from "../types";
 
-
 export const UploadItemImage = createAsyncThunk<[any], FormData>(
   "home/UploadItemImage",
   async function (formData) {
     const { data } = await axios.post<[any]>(`/upload`, formData, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
-        "Content-Type": "multipart/form-data", 
+        "Content-Type": "multipart/form-data",
       },
     });
 

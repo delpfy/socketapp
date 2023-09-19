@@ -243,7 +243,7 @@ export type Category = {
 export type Attribute = {
   _id: any;
   category: string;
-  attributes: {name: string, value: string}[];
+  attributes: { name: string; value: string }[];
 };
 
 export type AdminProcesses =
@@ -263,8 +263,7 @@ export type AdminProcesses =
   | "add-one-user"
   | "edit-one-user"
   | "show-many-orders"
-  | "show-one-order"
-;
+  | "show-one-order";
 
 export interface SelectedSortParams {
   [paramName: string]: string[];
@@ -291,7 +290,7 @@ export interface HomeState {
   itemsSortedParams: ItemsDisplay;
   itemsCategory: any;
   uniqueItemFieldsNames: any;
-uniqueItemFieldsValues: any;
+  uniqueItemFieldsValues: any;
   itemsSorted: ItemsDisplay;
 
   itemsComparison: any;

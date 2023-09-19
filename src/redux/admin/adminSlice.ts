@@ -40,6 +40,7 @@ const adminSlice = createSlice({
     _currentOrder: [] as any,
     _reviews: [] as any[],
     _attributes: {} as Attribute,
+
     categoryImage: "",
     subcategoryImage: "",
     selectedItem: {},
@@ -63,8 +64,8 @@ const adminSlice = createSlice({
       state.categoryImage = action.payload;
     },
 
-    clearAttributes(state){
-      state._attributes = {} as Attribute
+    clearAttributes(state) {
+      state._attributes = {} as Attribute;
     },
   },
   extraReducers: (builder) => {
@@ -164,18 +165,16 @@ const adminSlice = createSlice({
     builder
       .addCase(getAttributesByCategory.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        
+
         state._attributes._id = action.payload.items[0]
-        ? action.payload.items[0]._id
-        : '';
+          ? action.payload.items[0]._id
+          : "";
         state._attributes.category = action.payload.items[0]
           ? action.payload.items[0].category
           : "";
         state._attributes.attributes = action.payload.items[0]
           ? action.payload.items[0].attributes
           : [];
-         
-        
       })
       .addCase(getAttributesByCategory.pending, (state) => {
         state.status = "pending";
@@ -209,10 +208,10 @@ const adminSlice = createSlice({
         state.status = "rejected";
       });
 
-      builder
+    builder
       .addCase(getAllUsers.fulfilled, (state, action) => {
         state._users = action.payload.users;
-        console.log(action.payload.users)
+        console.log(action.payload.users);
         state.status = "fulfilled";
       })
       .addCase(getAllUsers.pending, (state) => {
@@ -223,10 +222,10 @@ const adminSlice = createSlice({
         state.status = "rejected";
       });
 
-      builder
+    builder
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state._orders = action.payload.orders;
-        console.log(action.payload.orders)
+        console.log(action.payload.orders);
         state.status = "fulfilled";
       })
       .addCase(getAllOrders.pending, (state) => {
@@ -236,11 +235,11 @@ const adminSlice = createSlice({
       .addCase(getAllOrders.rejected, (state, action) => {
         state.status = "rejected";
       });
-      
-      builder
+
+    builder
       .addCase(getOrderById.fulfilled, (state, action) => {
         state._currentOrder = action.payload.order;
-        console.log(action.payload)
+        console.log(action.payload);
         state.status = "fulfilled";
       })
       .addCase(getOrderById.pending, (state) => {
@@ -251,11 +250,10 @@ const adminSlice = createSlice({
         state.status = "rejected";
       });
 
-      
-      builder
+    builder
       .addCase(getUserById.fulfilled, (state, action) => {
         state._currentUser = action.payload;
-        console.log(action.payload)
+        console.log(action.payload);
         state.status = "fulfilled";
       })
       .addCase(getUserById.pending, (state) => {
@@ -265,8 +263,8 @@ const adminSlice = createSlice({
       .addCase(getUserById.rejected, (state, action) => {
         state.status = "rejected";
       });
-      
-      builder
+
+    builder
       .addCase(createUser.fulfilled, (state, action) => {
         state.status = "fulfilled";
       })

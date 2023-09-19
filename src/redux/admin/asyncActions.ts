@@ -120,7 +120,7 @@ export const getAllUsers = createAsyncThunk<any>(
   }
 );
 
-export const getUserById = createAsyncThunk<any, {userId: string}>(
+export const getUserById = createAsyncThunk<any, { userId: string }>(
   "users/getUserById",
   async (params) => {
     const { data } = await axios.get<any>(`/users/${params.userId}`, {
@@ -132,18 +132,22 @@ export const getUserById = createAsyncThunk<any, {userId: string}>(
   }
 );
 
-export const updateUserById = createAsyncThunk<any, {userId: string, userData: any}>(
-  "home/updateUserById",
-  async function (params) {
-    const { data } = await axios.patch<any>(`/update/${params.userId}`, params.userData, {
+export const updateUserById = createAsyncThunk<
+  any,
+  { userId: string; userData: any }
+>("home/updateUserById", async function (params) {
+  const { data } = await axios.patch<any>(
+    `/update/${params.userId}`,
+    params.userData,
+    {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
       },
-    });
+    }
+  );
 
-    return data;
-  }
-);
+  return data;
+});
 
 export const deleteUser = createAsyncThunk<any, { userId: string }>(
   "users/deleteUser",
@@ -163,7 +167,8 @@ export const createUser = createAsyncThunk<any, any>(
     const { data } = await axios.post<any>(`/users`, params, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
-      }});
+      },
+    });
 
     return data;
   }
@@ -181,14 +186,13 @@ export const getAllOrders = createAsyncThunk<any>(
   }
 );
 
-export const getOrderById = createAsyncThunk<any, {orderId: string}>(
+export const getOrderById = createAsyncThunk<any, { orderId: string }>(
   "home/getOrderById",
   async function (params) {
     const { data } = await axios.get<any>(`/orders/${params.orderId}`);
     return data;
   }
 );
-
 
 export const getAttributesByCategory = createAsyncThunk<
   any,
