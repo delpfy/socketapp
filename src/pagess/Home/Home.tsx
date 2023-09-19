@@ -19,7 +19,7 @@ import {
   setAfterOrder,
   synchronizeBasket,
 } from "../../redux/basket/basketSlice";
-import { SetSubcategory, setEditItemMode } from "../../redux/home/homeSlice";
+import { SetCategory, SetSubcategory, setEditItemMode } from "../../redux/home/homeSlice";
 import Carousel from "react-material-ui-carousel";
 import PromotionalOffers from "../../componentss/PromotionalOffers";
 import NewItems from "../../componentss/NewItems";
@@ -74,6 +74,8 @@ export const Home = () => {
   }
 
   function CategoryDialog_close() {
+    dispatch(SetCategory(""));
+    dispatch(SetSubcategory(""));
     setOpenCategory(false);
   }
 
@@ -103,6 +105,7 @@ export const Home = () => {
     if (editItemMode) {
       dispatch(setEditItemMode(false));
     }
+    dispatch(SetCategory(""));
   }, []);
 
   return (

@@ -14,6 +14,7 @@ import Card from "../../componentss/categories/CategoryTile";
 import { useAppSelector } from "../../redux/hooks";
 import { useState } from "react";
 import { Category } from "../../redux/types";
+import SubcategoryCard from "../categories/SubcategoryTile";
 type Props = {
   openCategory: boolean;
   CategoryDialog_close: () => void;
@@ -26,7 +27,7 @@ export default function CategoryDialog({
   const {
     categories,
 
-    subcategory,
+    category,
   } = useAppSelector((state) => state.home);
 
   const [scroll] = useState<DialogProps["scroll"]>("paper");
@@ -84,7 +85,7 @@ export default function CategoryDialog({
                 spacing={{ xs: 1, sm: 3, md: 4 }}
                 columns={{ xs: 6, sm: 2, md: 16, lg: 20, xl: 20 }}
               >
-                {categories.find((item: Category) => item.name === subcategory)
+                {categories.find((item: Category) => item.name === category)
                   ?.subcategories === undefined
                   ? categories.map((item: Category) => (
                       <Grid
@@ -109,7 +110,7 @@ export default function CategoryDialog({
                       </Grid>
                     ))
                   : categories
-                      .find((item: Category) => item.name === subcategory)
+                      .find((item: Category) => item.name === category)
                       ?.subcategories.map((item: Category) => (
                         <Grid
                           item
@@ -129,7 +130,7 @@ export default function CategoryDialog({
                           xl={4}
                           key={item._id}
                         >
-                          <Card category={item} />
+                          <SubcategoryCard category={item} />
                         </Grid>
                       ))}
               </Grid>

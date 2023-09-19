@@ -256,7 +256,7 @@ const homeSlice = createSlice({
     builder.addCase(getItemsByCategory.fulfilled, (state, action) => {
       state.status = "success";
       state.itemsCategory = action.payload;
-      state.uniqueItemFieldsNames = action.payload.items[0].fields.map(
+      state.uniqueItemFieldsNames = action.payload.items[0]?.fields.map(
         (fieldName: any, index: number) =>
           Array.from(
             new Set(
@@ -266,7 +266,7 @@ const homeSlice = createSlice({
             )
           )
       );
-      state.uniqueItemFieldsValues = action.payload.items[0].fields.map(
+      state.uniqueItemFieldsValues = action.payload.items[0]?.fields.map(
         (fieldName: any, index: number) =>
           Array.from(
             new Set(

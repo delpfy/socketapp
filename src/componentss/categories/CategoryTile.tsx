@@ -22,24 +22,39 @@ export default function CategoryCard(_category: any) {
     
     dispatch(SetCategory(_category.category.name));
     if (_category.category.subcategories !== undefined) {
+      
       if(_category.category.subcategories.length !== 0){
         if (window.innerWidth > 600) {
           navigate("/subcategories");
         }
+        else{
+          dispatch(SetSubcategory(_category.category.name))
+        }
       }
       else {
+        
         dispatch(getItemsByCategory(_category.category.name)).then((result:any) => {
+         
           if(result.meta.requestStatus === 'fulfilled'){
-            navigate("/catalog");
+            
+            if(result.payload.items.length !== 0){
+              navigate("/catalog");
+            }
+            
           }
         })
       }
     } 
     else {
+      console.log('fff')
       dispatch(SetSubcategory(""));
       dispatch(getItemsByCategory(_category.category.name)).then((result:any) => {
+        
         if(result.meta.requestStatus === 'fulfilled'){
-          navigate("/catalog");
+          
+          if(result.payload.items.length !== 0){
+            navigate("/catalog");
+          }
         }
       })
      
