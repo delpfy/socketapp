@@ -17,6 +17,7 @@ import {
   updateItemFields,
   UploadItemImage,
   getAllCategories,
+  searchCategories,
 } from "./asyncActions";
 import { actualizeData } from "../../utils/actuilizeLocalStorageData";
 import { actualizeFirstRender } from "../../utils/actualizeFirstLoad";
@@ -256,6 +257,7 @@ const homeSlice = createSlice({
     builder.addCase(getItemsByCategory.fulfilled, (state, action) => {
       state.status = "success";
       state.itemsCategory = action.payload;
+      console.log(action.payload)
       state.uniqueItemFieldsNames = action.payload.items[0]?.fields.map(
         (fieldName: any, index: number) =>
           Array.from(
@@ -307,6 +309,19 @@ const homeSlice = createSlice({
       state.itemsDisplay = {} as ItemsDisplay;
     });
 
+
+    builder.addCase(searchCategories.fulfilled, (state, action) => {
+      state.status = "success";
+      state.categoriesDisplay = action.payload;
+    });
+    builder.addCase(searchCategories.pending, (state) => {
+      state.status = "pending";
+      state.categoriesDisplay = [] as Category[];
+    });
+    builder.addCase(searchCategories.rejected, (state) => {
+      state.status = "error";
+      state.categoriesDisplay = [] as Category[];
+    });
     // get item by id.
     builder.addCase(getItemById.fulfilled, (state, action) => {
       state.itemCurrent = action.payload;

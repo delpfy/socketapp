@@ -10,7 +10,11 @@ import {
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setProcess } from "../../redux/admin/adminSlice";
-import { deleteUser, getAllUsers,  getUserById } from "../../redux/admin/asyncActions";
+import {
+  deleteUser,
+  getAllUsers,
+  getUserById,
+} from "../../redux/admin/asyncActions";
 import { useState } from "react";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 
@@ -27,14 +31,20 @@ export default function ShowUsers() {
   }
   return (
     <>
-    <InfoDialog
+      <InfoDialog
         openInfo={openInfo}
         InfoDialog_close={InfoDialog_close}
         infoMessage={infoMessage}
       />
-      <Button onClick={() => dispatch(setProcess("add-one-user"))}>
+      <Button
+        onClick={() => dispatch(setProcess("add-one-user"))}
+        variant="outlined"
+        sx={{ margin: 5, marginLeft: 0, width: 200, justifySelf: "flex-start" }}
+      >
+        {" "}
         Додати користувача
       </Button>
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -58,42 +68,43 @@ export default function ShowUsers() {
                     ) : (
                       <Button
                         onClick={() =>
-                          
-                            dispatch(deleteUser({ userId: _user._id })).then((result: any) => {
-                            if (result.meta.requestStatus === "fulfilled") {
-                              InfoDialog_open();
-                              setInfoMessage("Успішно видалено");
-                              dispatch(getAllUsers());
+                          dispatch(deleteUser({ userId: _user._id })).then(
+                            (result: any) => {
+                              if (result.meta.requestStatus === "fulfilled") {
+                                InfoDialog_open();
+                                setInfoMessage("Успішно видалено");
+                                dispatch(getAllUsers());
+                              }
+                              if (result.meta.requestStatus === "rejected") {
+                                InfoDialog_open();
+                                setInfoMessage("Не успішно видалено");
+                                dispatch(getAllUsers());
+                              }
                             }
-                            if (result.meta.requestStatus === "rejected") {
-                              InfoDialog_open();
-                              setInfoMessage("Не успішно видалено");
-                              dispatch(getAllUsers());
-                            }
-                          })
+                          )
                         }
                       >
                         Видалити
                       </Button>
                     )}
-                  
-                  {_user.role === "admin" ? (
+
+                    {_user.role === "admin" ? (
                       <></>
                     ) : (
                       <Button
                         onClick={() =>
-                          
-                            dispatch(getUserById({ userId: _user._id })).then((result: any) => {
-                            if (result.meta.requestStatus === "fulfilled") {
-                              
-                              dispatch(setProcess('edit-one-user'));
+                          dispatch(getUserById({ userId: _user._id })).then(
+                            (result: any) => {
+                              if (result.meta.requestStatus === "fulfilled") {
+                                dispatch(setProcess("edit-one-user"));
+                              }
+                              if (result.meta.requestStatus === "rejected") {
+                                InfoDialog_open();
+                                setInfoMessage("Не знайдено");
+                                dispatch(getAllUsers());
+                              }
                             }
-                            if (result.meta.requestStatus === "rejected") {
-                              InfoDialog_open();
-                              setInfoMessage("Не знайдено");
-                              dispatch(getAllUsers());
-                            }
-                          })
+                          )
                         }
                       >
                         Редагувати

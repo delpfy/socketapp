@@ -5,6 +5,7 @@ import {
   Attribute,
   Category,
   Status,
+  TOrder,
   UserDisplay,
 } from "../types";
 import {
@@ -22,6 +23,7 @@ import {
   getUserById,
   updateAttributes,
   updateCategory,
+  updateOrder,
   uploadCategoryImage,
   uploadSubcategoryImage,
 } from "./asyncActions";
@@ -37,7 +39,7 @@ const adminSlice = createSlice({
     _users: [] as any[],
     _currentUser: {} as any,
     _orders: [] as any[],
-    _currentOrder: [] as any,
+    _currentOrder: {} as TOrder,
     _reviews: [] as any[],
     _attributes: {} as Attribute,
 
@@ -225,7 +227,7 @@ const adminSlice = createSlice({
     builder
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state._orders = action.payload.orders;
-        console.log(action.payload.orders);
+        
         state.status = "fulfilled";
       })
       .addCase(getAllOrders.pending, (state) => {
@@ -239,7 +241,7 @@ const adminSlice = createSlice({
     builder
       .addCase(getOrderById.fulfilled, (state, action) => {
         state._currentOrder = action.payload.order;
-        console.log(action.payload);
+       
         state.status = "fulfilled";
       })
       .addCase(getOrderById.pending, (state) => {
@@ -247,6 +249,19 @@ const adminSlice = createSlice({
       })
 
       .addCase(getOrderById.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+      builder
+      .addCase(updateOrder.fulfilled, (state, action) => {
+        state._orders = action.payload.orders;
+        state.status = "fulfilled";
+      })
+      .addCase(updateOrder.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(updateOrder.rejected, (state, action) => {
         state.status = "rejected";
       });
 

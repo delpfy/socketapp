@@ -11,6 +11,8 @@ import {
   InputAdornment,
   IconButton,
   CircularProgress,
+  InputLabel,
+  Box,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import {
@@ -132,99 +134,145 @@ export default function LoginDialog({
   return (
     <>
       <Dialog open={openLogin} onClose={LoginDialog_close}>
-        <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
+        <DialogTitle
+          sx={{
+            fontFamily: "Comfortaa",
+            fontSize: 20,
+            borderBottom: "2px solid black",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           Авторизація
+          <IconButton onClick={LoginDialog_close}>
+            <img
+              src={require("../../img/crossIcon.png")}
+              style={{ width: 15, height: 15 }}
+              alt="sdf"
+            />
+          </IconButton>
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText
-            display={"flex"}
-            flexDirection={"row"}
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+        <DialogContent
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            padding: 5,
+            marginTop: 5,
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: { xs: "100%", md: 430 },
+            }}
           >
-            Ще не маєш аккаунт?
-            <Typography
-              color={"#1976d2"}
-              onClick={RegisterDialog_open}
-              sx={{
-                cursor: "pointer",
-                paddingLeft: "0.6%",
-                fontFamily: "Comfortaa",
-                fontSize: 15,
-              }}
-            >
-              Реєструйся!
-            </Typography>
-          </DialogContentText>
-          <TextField
-            margin="dense"
-            label="Пошта"
-            type="email"
-            name="email"
-            value={loginForm.email}
-            fullWidth
-            variant="standard"
-            onChange={handleLoginFormChange}
-          />
+            <Typography>Пошта</Typography>
+            <OutlinedInput
+              margin="dense"
+              type="email"
+              name="email"
+              value={loginForm.email}
+              sx={{ width: "100%", marginBottom: 2 }}
+              size="small"
+              onChange={handleLoginFormChange}
+            />
+          </Box>
 
-          <OutlinedInput
-            autoFocus
-            margin="dense"
-            id="password"
-            sx={{ marginTop: 2, marginBottom: 2 }}
-            placeholder="Пароль"
-            value={loginForm.password}
-            name="password"
-            fullWidth
-            type={passVisible ? "password" : "text"}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  edge="end"
-                >
-                  {passVisible ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            onChange={handleLoginFormChange}
-          />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: { xs: "100%", md: 430 },
+            }}
+          >
+            <Typography>Пароль</Typography>
+
+            <OutlinedInput
+              autoFocus
+              margin="dense"
+              id="password"
+              size="small"
+              sx={{ marginBottom: 2, width: "100%" }}
+              value={loginForm.password}
+              name="password"
+              type={passVisible ? "password" : "text"}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {passVisible ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              onChange={handleLoginFormChange}
+            />
+          </Box>
           {status === "pending" ? (
             <CircularProgress size={20} />
           ) : (
             <Typography
-              color={"error"}
               onClick={TokenDialog_open}
               sx={{
                 cursor: "pointer",
-                paddingLeft: "0.6%",
+                marginLeft: "75%",
                 fontFamily: "Comfortaa",
+                marginTop: 1.7,
+                marginBottom: 1.7,
                 fontSize: 15,
+                textAlign: "right",
               }}
             >
               Забув пароль?
             </Typography>
           )}
-        </DialogContent>
-        <DialogActions>
           {user_status === "pending" ? (
             <CircularProgress size={20} />
           ) : (
             <Button
-              sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+              sx={{
+                fontFamily: "Comfortaa",
+                fontSize: 15,
+                paddingLeft: 8,
+                paddingRight: 8,
+                background: "black",
+                color: "white",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+              variant="contained"
+              size="small"
               onClick={RedirectLogin}
             >
-              Продовжити
+              Вхід
             </Button>
           )}
-
-          <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-            onClick={LoginDialog_close}
+          <Typography
+            onClick={() => {
+              
+              RegisterDialog_open(true)
+              LoginDialog_close();
+            }}
+            sx={{
+              cursor: "pointer",
+              paddingLeft: "0.6%",
+              fontFamily: "Comfortaa",
+              fontSize: 15,
+              marginTop: 3,
+            }}
           >
-            Вийти
-          </Button>
-        </DialogActions>
+            Зареєструватися
+          </Typography>
+        </DialogContent>
       </Dialog>
 
       <TokenDialog

@@ -16,13 +16,13 @@ import {
   IconButton,
   OutlinedInput,
   CircularProgress,
+  Box,
 } from "@mui/material";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Register } from "../../redux/user/asyncActions";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { NullifyToken } from "../../redux/user/userSlice";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
 
 type Props = {
   ErrorDialog_open: Dispatch<SetStateAction<any>>;
@@ -96,11 +96,9 @@ export default function RegisterDialog({
       return;
     }
 
-    
-
     try {
       dispatch(NullifyToken());
-      
+
       dispatch(
         Register({
           email: registerForm.email,
@@ -133,60 +131,90 @@ export default function RegisterDialog({
 
   return (
     <Dialog open={openRegister} onClose={closeRegisterDialog}>
-      <DialogTitle sx={{ fontFamily: "Comfortaa", fontSize: 15 }}>
-        Регистрація
+      <DialogTitle
+        sx={{
+          fontFamily: "Comfortaa",
+          fontSize: 20,
+          borderBottom: "2px solid black",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        Реєстрація
+        <IconButton onClick={closeRegisterDialog}>
+          <img
+            src={require("../../img/crossIcon.png")}
+            style={{ width: 15, height: 15 }}
+            alt="sdf"
+          />
+        </IconButton>
       </DialogTitle>
-      <DialogContent>
-        <DialogContentText
-          sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          display={"flex"}
-          flexDirection={"row"}
+      <DialogContent
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: 5,
+          paddingBottom: 1,
+          marginTop: 5,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            width: { xs: "100%", md: 430 },
+          }}
         >
-          Маєш аккаунт?
-          <Typography
-            color={"#1976d2"}
-            onClick={LoginDialog_open}
-            sx={{
-              cursor: "pointer",
-              paddingLeft: "0.6%",
-              fontFamily: "Comfortaa",
-              fontSize: 15,
-            }}
-          >
-            Заходь!
-          </Typography>
-        </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="email"
-          label="Пошта"
-          type="email"
-          name="email"
-          value={registerForm.email}
-          fullWidth
-          variant="standard"
-          onChange={handleRegisterFormChange}
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="fullName"
-          label="Ваше гарне ім'я"
-          type="name"
+          <Typography>Пошта</Typography>
+          <OutlinedInput
+            margin="dense"
+            type="email"
+            name="email"
+            value={registerForm.email}
+            onChange={handleRegisterFormChange}
+            sx={{ width: "100%", marginBottom: 2 }}
+            size="small"
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            width: { xs: "100%", md: 430 },
+          }}
+        >
+          <Typography>Ваше ім`я</Typography>
+          <OutlinedInput
+            margin="dense"
+            type="name"
           name="fullName"
           value={registerForm.fullName}
-          fullWidth
-          variant="standard"
-          onChange={handleRegisterFormChange}
-        />
+            onChange={handleRegisterFormChange}
+            sx={{ width: "100%", marginBottom: 2 }}
+            size="small"
+          />
+        </Box>
+        
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            width: { xs: "100%", md: 430 },
+          }}
+        >
+          <Typography>Пароль</Typography>
 
-        <OutlinedInput
+          <OutlinedInput
           autoFocus
           margin="dense"
           id="password"
-          sx={{ marginTop: 2, marginBottom: 2 }}
-          placeholder="Пароль"
+          sx={{ marginBottom: 2, width: "100%" }}
+          size="small"
           value={registerForm.passFirst}
           name="passFirst"
           fullWidth
@@ -205,12 +233,25 @@ export default function RegisterDialog({
           onChange={handleRegisterFormChange}
           error={passError}
         />
-        <OutlinedInput
+        
+          
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            width: { xs: "100%", md: 430 },
+          }}
+        >
+          <Typography>Підтвердити пароль</Typography>
+          
+          <OutlinedInput
           autoFocus
           margin="dense"
           id="password"
-          sx={{ marginTop: 2, marginBottom: 2 }}
-          placeholder="Пароль"
+          sx={{ marginBottom: 2, width: "100%" }}
+          size="small"
           value={registerForm.passSecond}
           name="passSecond"
           fullWidth
@@ -229,27 +270,52 @@ export default function RegisterDialog({
           onChange={handleRegisterFormChange}
           error={passError}
         />
+          
+        </Box>
         
-      </DialogContent>
-      <DialogActions>
         {confirmEmail_status === "pending" ? (
           <CircularProgress size={20} />
         ) : (
           <Button
-            sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+            sx={{
+              fontFamily: "Comfortaa",
+              fontSize: 15,
+              marginTop: 3,
+              paddingLeft: 8,
+              paddingRight: 8,
+              background: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
+            }}
+            variant="contained"
+            size="small"
             onClick={RedirectRegister}
           >
-            Продовжити
+            Зареєструватися
           </Button>
         )}
-
-        <Button
-          sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-          onClick={closeRegisterDialog}
+        <Typography
+          onClick={LoginDialog_open}
+          sx={{
+            cursor: "pointer",
+            paddingLeft: "0.6%",
+            fontFamily: "Comfortaa",
+            fontSize: 15,
+            marginTop: 3,
+          }}
         >
-          Вийти
-        </Button>
-      </DialogActions>
+          Я вже маю акаунт
+        </Typography>
+      </DialogContent>
+      <DialogContent>
+        
+
+        
+      </DialogContent>
+      
     </Dialog>
   );
 }

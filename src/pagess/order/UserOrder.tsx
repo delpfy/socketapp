@@ -18,6 +18,7 @@ export default function UserOrder() {
     items,
     total,
     numberOfOrder,
+    status
   } = current_order;
 
   return (
@@ -159,6 +160,7 @@ export default function UserOrder() {
         <Grid item xs={12}>
           <Paper elevation={3} style={{ padding: "20px" }}>
             <Typography variant="h6">Загальна сума: {total} ₴</Typography>
+            <Typography variant="h6">Статус: {status}</Typography>
           </Paper>
         </Grid>
       </Grid>

@@ -28,6 +28,7 @@ import {
   uploadCategoryImage,
   uploadSubcategoryImage,
 } from "../../redux/admin/asyncActions";
+import InfoDialog from "../../componentss/dialogs/InfoDialog";
 
 export default function ShowCategories() {
   const {
@@ -43,10 +44,16 @@ export default function ShowCategories() {
     subcategories: [] as Category[],
   });
 
-  const [newSubcategory, setNewSubcategory] = useState<any>(
-    {} as any
-  );
+  const [newSubcategory, setNewSubcategory] = useState<any>({} as any);
+  const [openInfo, setOpenInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
+  function InfoDialog_open() {
+    setOpenInfo(true);
+  }
 
+  function InfoDialog_close() {
+    setOpenInfo(false);
+  }
   function handleEditCategory(categoryId: string) {
     dispatch(getCategoryById({ categoryId })).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
@@ -60,9 +67,9 @@ export default function ShowCategories() {
     });
   }
 
-  function handleEditSubcategory(subcategory: Category){
-    dispatch(setThirdProcess("edit-subcategory"))
-    setNewSubcategory(subcategory)
+  function handleEditSubcategory(subcategory: Category) {
+    dispatch(setThirdProcess("edit-subcategory"));
+    setNewSubcategory(subcategory);
   }
 
   function handleChangeNewCategory(e: any) {
@@ -123,6 +130,16 @@ export default function ShowCategories() {
   }
 
   function handleAddCategory() {
+    if (newCategory.name === "" || newCategory.name === undefined) {
+      InfoDialog_open();
+      setInfoMessage("Ви не вказали ім'я категорії");
+      return;
+    }
+    if (categoryImage === "" || categoryImage === undefined) {
+      InfoDialog_open();
+      setInfoMessage("Ви не вказали зображення категорії");
+      return;
+    }
     switch (second_process) {
       case "add-category":
         dispatch(
@@ -161,7 +178,19 @@ export default function ShowCategories() {
   }
 
   function handleAddSubcategory() {
-    console.log(third_process)
+    console.log(newSubcategory.name);
+    console.log(subcategoryImage);
+
+    if (newSubcategory.name === "" || newSubcategory.name === undefined) {
+      InfoDialog_open();
+      setInfoMessage("Ви не вказали ім'я підкатегорії");
+      return;
+    }
+    if (subcategoryImage === "" || subcategoryImage === undefined) {
+      InfoDialog_open();
+      setInfoMessage("Ви не вказали зображення підкатегорії");
+      return;
+    }
     switch (third_process) {
       case "add-subcategory":
         setNewCategory({
@@ -173,7 +202,7 @@ export default function ShowCategories() {
         const itemIndex = newCategory.subcategories.findIndex(
           (item: any) => item._id === newSubcategory._id
         );
-        console.log(itemIndex)
+        console.log(itemIndex);
         setNewCategory({
           ...newCategory,
           subcategories: [
@@ -194,6 +223,11 @@ export default function ShowCategories() {
 
   return (
     <>
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
       <Button
         onClick={() =>
           dispatch(
@@ -206,6 +240,8 @@ export default function ShowCategories() {
             )
           )
         }
+        variant="outlined"
+        sx={{ margin: 5, marginLeft: 0, width: 200, justifySelf: "flex-start" }}
       >
         {" "}
         {second_process === "add-category" ? (
@@ -216,10 +252,11 @@ export default function ShowCategories() {
           <>Додати категорію</>
         )}{" "}
       </Button>
+
       {second_process === "add-category" ||
       second_process === "edit-category" ? (
         <>
-          <Box padding={2}>
+          <Box padding={2} paddingLeft={0}>
             <Typography>Нова Категорія</Typography>
             <Box>
               <TextField
@@ -246,7 +283,7 @@ export default function ShowCategories() {
                 {categoryImage !== undefined ? (
                   <img
                     src={`https://www.sidebyside-tech.com${categoryImage}`}
-                    style={{  height: 60 }}
+                    style={{ height: 60 }}
                     alt=""
                   />
                 ) : (
@@ -289,11 +326,19 @@ export default function ShowCategories() {
                 <Typography>Підкатегорії</Typography>
                 <Button
                   onClick={() => dispatch(setThirdProcess("add-subcategory"))}
+                  variant="outlined"
+                  sx={{
+                    margin: 5,
+                    marginLeft: 0,
+                    width: 200,
+                    justifySelf: "flex-start",
+                  }}
                 >
                   Додати підкатегорію
                 </Button>
               </Box>
-              {third_process === "add-subcategory" || third_process === "edit-subcategory"? (
+              {third_process === "add-subcategory" ||
+              third_process === "edit-subcategory" ? (
                 <>
                   <Typography>Нова Підкатегорія</Typography>
                   <Box>
@@ -317,7 +362,7 @@ export default function ShowCategories() {
                     >
                       Зображення:
                     </Typography>
-                    <Box maxWidth={500} padding={4}>
+                    <Box maxWidth={500}>
                       {subcategoryImage !== undefined ? (
                         <img
                           src={`https://www.sidebyside-tech.com${newSubcategory.image}`}
@@ -367,7 +412,18 @@ export default function ShowCategories() {
                           Очистити
                         </Button>
                       </Box>
-                      <Button onClick={handleAddSubcategory}>Готово</Button>
+                      <Button
+                        onClick={handleAddSubcategory}
+                        variant="outlined"
+                        sx={{
+                          margin: 5,
+                          marginLeft: 0,
+                          width: 200,
+                          justifySelf: "flex-start",
+                        }}
+                      >
+                        Підтвердити підкатегорію
+                      </Button>
                     </Box>
                   </Box>
                 </>
@@ -421,7 +477,18 @@ export default function ShowCategories() {
                 </Table>
               </TableContainer>
             </Box>
-            <Button onClick={handleAddCategory}>Готово</Button>
+            <Button
+              onClick={handleAddCategory}
+              variant="outlined"
+              sx={{
+                margin: 5,
+                marginLeft: 0,
+                width: 200,
+                justifySelf: "flex-start",
+              }}
+            >
+              Підтвердити категорію
+            </Button>
           </Box>
         </>
       ) : (
@@ -446,15 +513,17 @@ export default function ShowCategories() {
                   <img
                     src={`https://www.sidebyside-tech.com${category.image}`}
                     alt={category.name}
-                    style={{  height: 50 }}
+                    style={{ height: 50 }}
                   />
                 </TableCell>
                 <TableCell>
                   <Button
                     onClick={() =>
-                      dispatch(deleteCategory({ categoryId: category._id })).then((result:any) => {
-                        if(result.meta.requestStatus === 'fulfilled'){
-                          dispatch(getAllCategories())
+                      dispatch(
+                        deleteCategory({ categoryId: category._id })
+                      ).then((result: any) => {
+                        if (result.meta.requestStatus === "fulfilled") {
+                          dispatch(getAllCategories());
                         }
                       })
                     }

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { Attribute, Category, UserRegister } from "../types";
+import { Attribute, Category, TOrder, TOrders, UserRegister } from "../types";
 
 export const uploadCategoryImage = createAsyncThunk<any, FormData>(
   "category/uploadCategoryImage",
@@ -190,6 +190,19 @@ export const getOrderById = createAsyncThunk<any, { orderId: string }>(
   "home/getOrderById",
   async function (params) {
     const { data } = await axios.get<any>(`/orders/${params.orderId}`);
+    return data;
+  }
+);
+
+export const updateOrder = createAsyncThunk<any, {orderId: string, order : TOrder} >(
+  "home/updateOrder",
+  async (params) => {
+    
+    const { data } = await axios.patch(`/orders/${params.orderId}`, params.order, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
     return data;
   }
 );

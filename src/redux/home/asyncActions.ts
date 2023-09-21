@@ -40,6 +40,14 @@ export const searchItems = createAsyncThunk<ItemsDisplay, string>(
   }
 );
 
+export const searchCategories = createAsyncThunk<any, string>(
+  "home/searchCategories",
+  async function (params) {
+    const { data } = await axios.get<any>(`/categories/search/${params}`);
+    return data;
+  }
+);
+
 export const getItemsByCategory = createAsyncThunk<ItemsDisplay, string>(
   "home/getItemsByCategory",
   async (params) => {

@@ -1,4 +1,4 @@
-import { ItemsDisplay, Status } from "../redux/types";
+import { Category, ItemsDisplay, Status } from "../redux/types";
 
 export const InitialiseHome = () => {
   const categories = [] as any[];
@@ -32,9 +32,10 @@ export const InitialiseHome = () => {
     currentImages: [] as any,
     differencesMode: false,
     categories,
+    categoriesDisplay: [] as Category[],
     computerPartsSubcategory,
     gamingSubcategory,
-    category: "",
+    category: "Монітори",
     subcategory: "",
     reset: false,
   };

@@ -233,7 +233,10 @@ export default function ItemsAccords() {
             <Button
               variant="contained"
               size="small"
-              sx={{ justifySelf: "flex-end", margin: 3, background: "black" }}
+              sx={{ justifySelf: "flex-end", margin: 3, background: "black", "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              }, }}
               onClick={() => {
                 setSelectedSortParams({});
                 dispatch(setReset(true));

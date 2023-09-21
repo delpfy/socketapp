@@ -227,7 +227,10 @@ export type TOrder = {
   items: Items[];
   total: number;
   numberOfOrder: string;
+  status: TOrderStatus;
 };
+
+export type TOrderStatus = 'В обробці' | 'Погоджено' | 'Скасовано';
 
 export type TOrders = {
   orders: TOrder[];
@@ -306,6 +309,7 @@ export interface HomeState {
   itemCurrent: any;
   currentImages: any;
   categories: Category[];
+  categoriesDisplay: any;
 
   subcategory: string;
   category: string;

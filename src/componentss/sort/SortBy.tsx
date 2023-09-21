@@ -307,7 +307,10 @@ export default function SortBy() {
                   />
                   <Button
                     variant="contained"
-                    sx={{ background: "black" }}
+                    sx={{ background: "black", "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },}}
                     size="small"
                     color="primary"
                     onClick={handleRelevanceOkButtonClick}
