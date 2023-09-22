@@ -15,22 +15,8 @@ import {
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Category } from "../../redux/types";
-import {
-  clearCurrentImages,
-  setProcess,
-  setSecondProcess,
-  setThirdProcess,
-} from "../../redux/admin/adminSlice";
+import { setProcess } from "../../redux/admin/adminSlice";
 import { useEffect, useRef, useState } from "react";
-import {
-  createCategory,
-  deleteCategory,
-  getAllCategories,
-  getCategoryById,
-  updateCategory,
-  uploadCategoryImage,
-  uploadSubcategoryImage,
-} from "../../redux/admin/asyncActions";
 import {
   deleteItem,
   getAllItems,
@@ -42,21 +28,19 @@ import SearchReviewsByItems from "../../componentss/menuu/search/SearchReviewsBy
 
 export default function ShowItems() {
   const { itemsDisplay, itemsCategory } = useAppSelector((state) => state.home);
-  const { _categories} = useAppSelector((state) => state.admin);
-  const [itemsOnScreen, setItemsOnScreen] = useState(itemsDisplay);
+  const { _categories } = useAppSelector((state) => state.admin);
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubcategory, setSelectedSubcategory] = useState("");
-const handleSubcategoryChange = (event: any) => {
+  const handleSubcategoryChange = (event: any) => {
     const subcategory = event.target.value;
     setSelectedSubcategory(subcategory);
   };
-const handleCategoryChange = (event: any) => {
+  const handleCategoryChange = (event: any) => {
     const category = event.target.value;
     setSelectedCategory(category);
     dispatch(getItemsByCategory(category));
-    
   };
   function InfoDialog_open() {
     setOpenInfo(true);
@@ -103,19 +87,18 @@ const handleCategoryChange = (event: any) => {
         InfoDialog_close={InfoDialog_close}
         infoMessage={infoMessage}
       />
-      <SearchReviewsByItems/>
+      <SearchReviewsByItems />
       <Select
         value={selectedCategory}
         onChange={handleCategoryChange}
         label="Категорія"
-        sx={{width: 500}}
+        sx={{ width: 500 }}
       >
         {_categories.map((category) => (
           <MenuItem key={category._id} value={category.name}>
             {category.name}
           </MenuItem>
         ))}
-        
       </Select>
       {selectedCategory &&
       _categories.find((cat) => cat.name === selectedCategory)?.subcategories
@@ -124,7 +107,7 @@ const handleCategoryChange = (event: any) => {
           value={selectedSubcategory}
           onChange={handleSubcategoryChange}
           label="Підкатегория"
-          sx={{width: 500}}
+          sx={{ width: 500 }}
         >
           {_categories
             .find((cat) => cat.name === selectedCategory)
@@ -136,9 +119,15 @@ const handleCategoryChange = (event: any) => {
         </Select>
       ) : (
         <></>
-        )}
+      )}
 
-      <Button onClick={handleAddItem} variant="outlined" sx = {{margin: 5, marginLeft: 0, width: 200, justifySelf: 'flex-start'}}>Додати товар</Button>
+      <Button
+        onClick={handleAddItem}
+        variant="outlined"
+        sx={{ margin: 5, marginLeft: 0, width: 200, justifySelf: "flex-start" }}
+      >
+        Додати товар
+      </Button>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -152,42 +141,41 @@ const handleCategoryChange = (event: any) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {
-              itemsCategory?.items?.length === 0
-              ?
+            {itemsCategory?.items?.length === 0 ? (
               <Typography>Товарів з цієї категорії ще немає</Typography>
-              :
-            itemsCategory?.items?.map((item: any) => (
-              <TableRow>
-                <TableCell>
-                  <Typography width={200} overflow={"hidden"}>
-                    {item.name}
-                  </Typography>
-                </TableCell>
-                <TableCell>
-                  {item.image.map((image: string) => {
-                    return (
-                      <img
-                        src={`https://www.sidebyside-tech.com${image}`}
-                        alt={item.name}
-                        style={{ height: 50 }}
-                      />
-                    );
-                  })}
-                </TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>{item.price}</TableCell>
-                <TableCell>{item.sale} %</TableCell>
-                <TableCell>
-                  <Button onClick={() => selectItemToDelete(item._id, item)}>
-                    Видалити
-                  </Button>
-                  <Button onClick={() => selectItemToEdit(item._id)}>
-                    Редагувати
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            ) : (
+              itemsCategory?.items?.map((item: any) => (
+                <TableRow>
+                  <TableCell>
+                    <Typography width={200} overflow={"hidden"}>
+                      {item.name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    {item.image.map((image: string) => {
+                      return (
+                        <img
+                          src={`https://www.sidebyside-tech.com${image}`}
+                          alt={item.name}
+                          style={{ height: 50 }}
+                        />
+                      );
+                    })}
+                  </TableCell>
+                  <TableCell>{item.category}</TableCell>
+                  <TableCell>{item.price}</TableCell>
+                  <TableCell>{item.sale} %</TableCell>
+                  <TableCell>
+                    <Button onClick={() => selectItemToDelete(item._id, item)}>
+                      Видалити
+                    </Button>
+                    <Button onClick={() => selectItemToEdit(item._id)}>
+                      Редагувати
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
           </TableBody>
         </Table>
       </TableContainer>

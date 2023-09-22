@@ -11,7 +11,7 @@ import {
 import { useAppDispatch} from "../../redux/hooks";
 import { setProcess } from "../../redux/admin/adminSlice";
 import { getAllItems } from "../../redux/home/asyncActions";
-import { getAllOrders, getAllUsers } from "../../redux/admin/asyncActions";
+import { getAllBanners, getAllOrders, getAllUsers } from "../../redux/admin/asyncActions";
 
 export default function AdminPanel() {
   const dispatch = useAppDispatch();
@@ -148,6 +148,31 @@ export default function AdminPanel() {
                 
               >
                 Усі замовлення
+              </Button>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel2a-content"
+              id="panel2a-header"
+            >
+              <Typography>Банери</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Button
+              onClick=
+              {() => {
+              
+                dispatch(getAllBanners()).then((result: any) => {
+                  if(result.meta.requestStatus === 'fulfilled'){
+                    dispatch(setProcess("show-many-banners"))
+                  }
+                })
+              }}
+                
+              >
+                Редагувати банери
               </Button>
             </AccordionDetails>
           </Accordion>

@@ -16,6 +16,76 @@ export const uploadCategoryImage = createAsyncThunk<any, FormData>(
   }
 );
 
+export const uploadBannerImage = createAsyncThunk<any, FormData>(
+  "category/uploadBannerImage",
+  async function (formData) {
+    const { data } = await axios.post<any>(`/upload-banner-image`, formData, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return data;
+  }
+);
+
+export const createBanner = createAsyncThunk<
+  any,
+  { bannerData: { image: string } }
+>("category/createBanner", async (params) => {
+  const { data } = await axios.post<any>("/banners", params.bannerData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+  return data;
+});
+
+export const getAllBanners = createAsyncThunk<any[]>(
+  "category/getAllBanners",
+  async (params) => {
+    const { data } = await axios.get<any[]>("/banners");
+    return data;
+  }
+);
+
+export const getBannerById = createAsyncThunk<any, { bannerId: string }>(
+  "category/getBannerById",
+  async (params) => {
+    const { data } = await axios.get<any>(`/banners/${params.bannerId}`);
+    return data;
+  }
+);
+
+export const updateBanner = createAsyncThunk<
+  any,
+  { bannerId: string; bannerData: Partial<any> }
+>("category/updateBanner", async (params) => {
+  const { data } = await axios.patch<any>(
+    `/banners/${params.bannerId}`,
+    params.bannerData,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
+  return data;
+});
+
+export const deleteBanner = createAsyncThunk<string, { bannerId: string }>(
+  "category/deleteBanner",
+  async (params) => {
+    const { data } = await axios.delete(`/banners/${params.bannerId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
 export const uploadSubcategoryImage = createAsyncThunk<any, FormData>(
   "category/uploadSubcategoryImage",
   async function (formData) {
@@ -194,18 +264,21 @@ export const getOrderById = createAsyncThunk<any, { orderId: string }>(
   }
 );
 
-export const updateOrder = createAsyncThunk<any, {orderId: string, order : TOrder} >(
-  "home/updateOrder",
-  async (params) => {
-    
-    const { data } = await axios.patch(`/orders/${params.orderId}`, params.order, {
+export const updateOrder = createAsyncThunk<
+  any,
+  { orderId: string; order: TOrder }
+>("home/updateOrder", async (params) => {
+  const { data } = await axios.patch(
+    `/orders/${params.orderId}`,
+    params.order,
+    {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
       },
-    });
-    return data;
-  }
-);
+    }
+  );
+  return data;
+});
 
 export const getAttributesByCategory = createAsyncThunk<
   any,

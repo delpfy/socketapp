@@ -79,12 +79,10 @@ export default function ShowItem() {
   useEffect(() => {
     if (process === "edit-one-item") {
       dispatch(setCurrentImages(itemCurrent.items.image));
-      
     }
   }, []);
 
   useEffect(() => {
-    
     if (selectedCategory || process === "edit-one-item") {
       dispatch(
         getAttributesByCategory({
@@ -111,7 +109,7 @@ export default function ShowItem() {
   };
   const handleAttributeChange = (event: any, index: number) => {
     const { name, value } = event.target;
-    console.log(value)
+    console.log(value);
     const attributeName = _attributes.attributes[index].name;
 
     const updatedAttributeValues = [...attributeValues];
@@ -124,8 +122,6 @@ export default function ShowItem() {
   };
 
   function handleDefaultAttribChange(event: any) {
-    
-    
     setNewItem({
       ...newItem,
       [event.target.name]: event.target.value,
@@ -354,7 +350,11 @@ export default function ShowItem() {
                                 </Typography>
                                 <TextField
                                   name={attr.name}
-                                  value={attributeValues[index] === undefined ? "" : attributeValues[index][attr?.name]}
+                                  value={
+                                    attributeValues[index] === undefined
+                                      ? ""
+                                      : attributeValues[index][attr?.name]
+                                  }
                                   size="small"
                                   onChange={(e: any) =>
                                     handleAttributeChange(e, index)
@@ -367,7 +367,7 @@ export default function ShowItem() {
                       </>
                     ) : (
                       <TextField
-                      onChange={handleDefaultAttribChange}
+                        onChange={handleDefaultAttribChange}
                         name={key}
                         label={key}
                         sx={{ width: 300 }}
@@ -501,7 +501,7 @@ export default function ShowItem() {
                     </>
                   ) : (
                     <TextField
-                    onChange={handleDefaultAttribChange}
+                      onChange={handleDefaultAttribChange}
                       label={Object.keys(newItem)[index]}
                       name={Object.keys(newItem)[index]}
                       sx={{ width: 300 }}

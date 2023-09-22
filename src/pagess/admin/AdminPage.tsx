@@ -16,6 +16,7 @@ import ShowReviews from "./ShowReviews";
 import AddOneUser from "./AddOneUser";
 import EditOneUser from "./EditOneUser";
 import ShowOneOrder from "./ShowOneOrder";
+import ShowBanners from "./ShowBanners";
 
 export default function AdminPage() {
   const { user } = useAppSelector((state) => state.user);
@@ -32,7 +33,8 @@ export default function AdminPage() {
     switch (process) {
       case "show-many-categories":
         return <ShowCategories />;
-
+        case "show-many-banners":
+          return <ShowBanners />;
       case "show-many-items":
         return <ShowItems />;
       case "edit-one-item":

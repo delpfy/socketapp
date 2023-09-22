@@ -230,7 +230,7 @@ export type TOrder = {
   status: TOrderStatus;
 };
 
-export type TOrderStatus = 'В обробці' | 'Погоджено' | 'Скасовано';
+export type TOrderStatus = "В обробці" | "Погоджено" | "Скасовано";
 
 export type TOrders = {
   orders: TOrder[];
@@ -252,6 +252,7 @@ export type Attribute = {
 export type AdminProcesses =
   | "none"
   | "add-category"
+  | "add-banner"
   | "add-subcategory"
   | "edit-subcategory"
   | "edit-category"
@@ -261,6 +262,9 @@ export type AdminProcesses =
   | "add-one-item"
   | "show-many-attributes"
   | "show-many-categories"
+  | "show-many-banners"
+  | "show-one-banner"
+  | "edit-banner"
   | "show-many-reviews"
   | "show-many-users"
   | "add-one-user"

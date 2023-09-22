@@ -14,7 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Category } from "../../redux/types";
 import {
-  clearCurrentImages,
+  clearCurrentCategoryImages,
   setSecondProcess,
   setThirdProcess,
 } from "../../redux/admin/adminSlice";
@@ -316,7 +316,7 @@ export default function ShowCategories() {
                     color="error"
                     variant="contained"
                     sx={{ fontFamily: "Comfortaa", fontSize: 15, marginTop: 6 }}
-                    onClick={() => dispatch(clearCurrentImages())}
+                    onClick={() => dispatch(clearCurrentCategoryImages())}
                   >
                     Очистити
                   </Button>
@@ -407,7 +407,7 @@ export default function ShowCategories() {
                             fontSize: 15,
                             marginTop: 6,
                           }}
-                          onClick={() => dispatch(clearCurrentImages())}
+                          onClick={() => dispatch(clearCurrentCategoryImages())}
                         >
                           Очистити
                         </Button>

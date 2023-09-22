@@ -7,10 +7,8 @@ import {
   Typography,
 } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {
-  clearAttributes,
-} from "../../redux/admin/adminSlice";
-import { useEffect,  useState } from "react";
+import { clearAttributes } from "../../redux/admin/adminSlice";
+import { useEffect, useState } from "react";
 import {
   createAttributes,
   getAttributesByCategory,

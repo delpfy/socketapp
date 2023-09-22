@@ -14,7 +14,7 @@ export default function ShowOneOrder() {
     items,
     total,
     numberOfOrder,
-    status
+    status,
   } = _currentOrder;
 
   return (
@@ -157,7 +157,6 @@ export default function ShowOneOrder() {
           <Paper elevation={3} style={{ padding: "20px" }}>
             <Typography variant="h6">Загальна сума: {total} ₴</Typography>
             <Typography variant="h6">Статус: {status}</Typography>
-
           </Paper>
         </Grid>
       </Grid>

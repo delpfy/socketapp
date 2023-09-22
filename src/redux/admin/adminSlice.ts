@@ -10,20 +10,26 @@ import {
 } from "../types";
 import {
   createAttributes,
+  createBanner,
   createCategory,
   createUser,
   deleteAttributes,
+  deleteBanner,
   deleteCategory,
+  getAllBanners,
   getAllCategories,
   getAllOrders,
   getAllUsers,
   getAttributesByCategory,
+  getBannerById,
   getCategoryById,
   getOrderById,
   getUserById,
   updateAttributes,
+  updateBanner,
   updateCategory,
   updateOrder,
+  uploadBannerImage,
   uploadCategoryImage,
   uploadSubcategoryImage,
 } from "./asyncActions";
@@ -42,11 +48,13 @@ const adminSlice = createSlice({
     _currentOrder: {} as TOrder,
     _reviews: [] as any[],
     _attributes: {} as Attribute,
-
+    _banners: [] as any[],
+    bannerImage: "",
     categoryImage: "",
     subcategoryImage: "",
     selectedItem: {},
     selectedCategory: {} as Category,
+    selectedBanner: {} as Category,
   },
   reducers: {
     setProcess(state, action: PayloadAction<AdminProcesses>) {
@@ -59,10 +67,14 @@ const adminSlice = createSlice({
       state.third_process = action.payload;
     },
 
-    clearCurrentImages(state) {
+    clearCurrentCategoryImages(state) {
       state.categoryImage = "";
     },
-    setCurrentImages(state, action: PayloadAction<string>) {
+
+    clearCurrentBannerImages(state) {
+      state.bannerImage = "";
+    },
+    setCurrentCategoryImages(state, action: PayloadAction<string>) {
       state.categoryImage = action.payload;
     },
 
@@ -84,6 +96,79 @@ const adminSlice = createSlice({
     });
     builder.addCase(uploadSubcategoryImage.pending, (state) => {});
     builder.addCase(uploadSubcategoryImage.rejected, (state, action) => {});
+
+    builder.addCase(uploadBannerImage.fulfilled, (state, action) => {
+      /* state.avatarFile = action.payload.url; */
+      state.bannerImage = action.payload.url;
+    });
+    builder.addCase(uploadBannerImage.pending, (state) => {});
+    builder.addCase(uploadBannerImage.rejected, (state, action) => {});
+
+    builder
+      .addCase(createBanner.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.process = "show-many-banners";
+        state._banners.push(action.payload);
+      })
+      .addCase(createBanner.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(createBanner.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+    builder
+      .addCase(getAllBanners.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.process = "show-many-banners";
+        state._banners = action.payload;
+      })
+      .addCase(getAllBanners.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getAllBanners.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+    builder
+      .addCase(getBannerById.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.selectedBanner = action.payload;
+        state.bannerImage = action.payload.image;
+      })
+      .addCase(getBannerById.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getBannerById.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+    builder
+      .addCase(updateBanner.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+      })
+      .addCase(updateBanner.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(updateBanner.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+    builder
+      .addCase(deleteBanner.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+      })
+      .addCase(deleteBanner.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(deleteBanner.rejected, (state, action) => {
+        state.status = "rejected";
+      });
 
     builder
       .addCase(createCategory.fulfilled, (state, action) => {
@@ -227,7 +312,7 @@ const adminSlice = createSlice({
     builder
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state._orders = action.payload.orders;
-        
+
         state.status = "fulfilled";
       })
       .addCase(getAllOrders.pending, (state) => {
@@ -241,7 +326,7 @@ const adminSlice = createSlice({
     builder
       .addCase(getOrderById.fulfilled, (state, action) => {
         state._currentOrder = action.payload.order;
-       
+
         state.status = "fulfilled";
       })
       .addCase(getOrderById.pending, (state) => {
@@ -252,7 +337,7 @@ const adminSlice = createSlice({
         state.status = "rejected";
       });
 
-      builder
+    builder
       .addCase(updateOrder.fulfilled, (state, action) => {
         state._orders = action.payload.orders;
         state.status = "fulfilled";
@@ -298,7 +383,8 @@ export const {
   clearAttributes,
   setSecondProcess,
   setThirdProcess,
-  clearCurrentImages,
-  setCurrentImages,
+  clearCurrentCategoryImages,
+  setCurrentCategoryImages,
+  clearCurrentBannerImages,
 } = adminSlice.actions;
 export default adminSlice.reducer;

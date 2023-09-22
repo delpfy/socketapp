@@ -8,7 +8,11 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { createUser, getAllUsers, updateUserById } from "../../redux/admin/asyncActions";
+import {
+  createUser,
+  getAllUsers,
+  updateUserById,
+} from "../../redux/admin/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { setProcess } from "../../redux/admin/adminSlice";
 import { Update } from "../../redux/user/asyncActions";
@@ -60,11 +64,10 @@ export default function EditOneUser() {
     ).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(getAllUsers()).then((result: any) => {
-          if(result.meta.requestStatus === 'fulfilled'){
-            dispatch(setProcess("show-many-users"))
+          if (result.meta.requestStatus === "fulfilled") {
+            dispatch(setProcess("show-many-users"));
           }
-        })
-        
+        });
       }
       if (result.meta.requestStatus === "rejected") {
         InfoDialog_open();

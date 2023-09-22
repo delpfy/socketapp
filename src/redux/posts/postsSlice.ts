@@ -40,7 +40,7 @@ const postsSlice = createSlice({
     //Get post by Id
     builder.addCase(getPostById.fulfilled, (state, action) => {
       state.currentPost = action.payload.post;
-      console.log(state.currentPost)
+      console.log(state.currentPost);
       state.loading = false;
       state.error = false;
     });

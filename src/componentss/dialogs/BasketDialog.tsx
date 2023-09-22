@@ -194,17 +194,20 @@ export default function BasketDialog({
             <></>
           ) : (
             <Button
-              sx={{
-                width: {
-                  xs: 170,
-                  md: 225,
-                },
-                fontSize: {
-                  xs: 12,
-                  md: 14,
-                },
-              }}
-              variant="contained"
+            sx={{
+              fontFamily: "Comfortaa",
+              fontSize: 15,
+              paddingLeft: 5,
+              paddingRight: 5,
+              background: "black",
+              color: "white",
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
+            }}
+            variant="contained"
+            size="small"
               onClick={handleMakeAnOrder}
             >
               Оформити замовлення

@@ -14,7 +14,7 @@ export const getPostById = createAsyncThunk<TPostGET, string>(
   "posts/getPostById",
   async (params) => {
     const { data } = await axios.get<TPostGET>(`/posts/${params}`);
-    console.log(data)
+    console.log(data);
     return data;
   }
 );
@@ -50,11 +50,14 @@ export const createPost = createAsyncThunk<TPostDisplay, TPostPOST>(
 export const deletePost = createAsyncThunk<TPostDisplay, { itemId: string }>(
   "posts/deletePost",
   async (params) => {
-    const { data } = await axios.delete<TPostDisplay>(`/posts/${params.itemId}`, {
-      headers: {
-        authorization: `Bearer ${window.localStorage.getItem("token")}`,
-      },
-    });
+    const { data } = await axios.delete<TPostDisplay>(
+      `/posts/${params.itemId}`,
+      {
+        headers: {
+          authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        },
+      }
+    );
     return data;
   }
 );

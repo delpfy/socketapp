@@ -87,7 +87,7 @@ const orderSlice = createSlice({
       items: [] as Items[],
       total: 0,
       numberOfOrder: "",
-      status: 'В обробці' as TOrderStatus,
+      status: "В обробці" as TOrderStatus,
     },
 
     stages_of_order: {
@@ -281,8 +281,6 @@ const orderSlice = createSlice({
     });
     builder.addCase(addOrder.pending, (state) => {});
     builder.addCase(addOrder.rejected, (state) => {});
-
-    
 
     builder.addCase(getOrdersByUser.fulfilled, (state, action) => {
       state.user_orders = action.payload;
