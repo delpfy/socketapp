@@ -28,7 +28,7 @@ import { getAllItems } from "./redux/home/asyncActions";
 import ReviewsPage from "./pagess/items/ReviewsPage";
 import AdminPage from "./pagess/admin/AdminPage";
 import AdminAuthorize from "./pagess/admin/AdminAuthorize";
-import { getAllCategories } from "./redux/admin/asyncActions";
+import { getAllBanners, getAllCategories } from "./redux/admin/asyncActions";
 import ShowSubcategories from "./pagess/subcategories/ShowSubcategories";
 
 function App() {
@@ -48,6 +48,7 @@ function App() {
 
   useEffect(() => {
     dispatch(getAllItems());
+    dispatch(getAllBanners());
     dispatch(checkAuthorization());
     dispatch(getAllCategories()).then((result: any) => {
       if(result.meta.requestStatus === 'fulfilled'){

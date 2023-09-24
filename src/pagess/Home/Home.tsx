@@ -66,6 +66,7 @@ import { useNavigate } from "react-router-dom";
 export const Home = () => {
   const { categories, editItemMode } = useAppSelector((state) => state.home);
   const { afterOrder } = useAppSelector((state) => state.basket);
+  const { _banners } = useAppSelector((state) => state.admin);
   const theme = useTheme();
   const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
@@ -118,75 +119,61 @@ export const Home = () => {
         openCategory={openCategory}
         CategoryDialog_close={CategoryDialog_close}
       />
-      <Box
-        display={"flex"}
-        flexDirection={"column"}
-        alignItems={"center"}
-        justifyContent={"center"}
-        margin={"auto"}
-        top={127}
-        padding={"2%"}
-        alignSelf={"center"}
+
+      <Carousel
+        navButtonsAlwaysVisible
+        navButtonsProps={{
+          style: {
+            backgroundColor: isXsScreen ? "black" : "transparent",
+            borderRadius: 0,
+            display: isXsScreen ? "none" : "block",
+          },
+        }}
+        NextIcon={
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <img
+              style={{ width: 40, height: 40 }}
+              src={require("../../img/swipeRightIcon.png")}
+            />
+          </Box>
+        }
+        PrevIcon={
+          <Box sx={{ display: { xs: "none", md: "block" } }}>
+            <img
+              style={{ width: 40, height: 40 }}
+              src={require("../../img/swipeLeftIcon.png")}
+            />
+          </Box>
+        }
         sx={{
+          color: "#fff",
+          top: 127,
+
           height: {
-            xs: 160,
-            md: 460,
+            xs: window.innerWidth - window.innerWidth / 1.6,
+            md: window.innerWidth - window.innerWidth / 1.43,
           },
           width: {
-            xs: "85%",
+            xs: "90%",
             md: "75%",
           },
-          background: " black",
-          backgroundAttachment: "fixed",
+
           backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
+
+          margin: "auto",
         }}
       >
-        <Carousel
-          navButtonsAlwaysVisible
-          navButtonsProps={{
-            style: {
-              backgroundColor: isXsScreen ? "black" : "transparent",
-              borderRadius: 0,
-              display: isXsScreen ? "none" : "block",
-            },
-          }}
-          NextIcon={
-            <Box sx={{ display: { xs: "none", md: "block" } }}>
-              <img
-                style={{ width: 40, height: 40 }}
-                src={require("../../img/swipeRightIcon.png")}
-              />
-            </Box>
-          }
-          PrevIcon={
-            <Box sx={{ display: { xs: "none", md: "block" } }}>
-              <img
-                style={{ width: 40, height: 40 }}
-                src={require("../../img/swipeLeftIcon.png")}
-              />
-            </Box>
-          }
-          sx={{
-            color: "#fff",
-            width: {
-              xs: "100%",
-              lg: "100%",
-            },
-            height: {
-              xs: 160,
-              md: 460,
-            },
-            display: "flex",
-            alignItems: "center",
-            textAlign: "left",
-            justifyContent: "space-around",
-            flexDirection: "column",
-            margin: "auto",
-            boxSizing: "border-box",
-          }}
-        >
-          <Box
+        {_banners?.map((banner: any) => {
+          console.log(banner);
+          return (
+            <img
+              src={`https://www.sidebyside-tech.com${banner.image}`}
+              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              alt=""
+            />
+          );
+        })}
+        {/* <Box
             sx={{
               color: "#fff",
               width: {
@@ -290,115 +277,10 @@ export const Home = () => {
                 />
               </Box>
             </Box>
-          </Box>
-          <Box
-            sx={{
-              color: "#fff",
-              width: {
-                xs: "90%",
-                lg: "80%",
-              },
-              height: {
-                xs: 160,
-                md: 460,
-              },
-              display: "flex",
-              alignItems: "center",
-              textAlign: "left",
-              justifyContent: "space-around",
-              flexDirection: "column",
-              margin: "auto",
-              boxSizing: "border-box",
-            }}
-          >
-            <Box
-              display={"flex"}
-              sx={{
-                margin: "0 auto",
-              }}
-              width={"100%"}
-              flexDirection={"row"}
-              justifyContent={"space-between"}
-              alignItems={"flex-start"}
-            >
-              <Box
-                sx={{
-                  height: {
-                    xs: "50%",
-                    md: "30%",
-                  },
-                  paddingTop: {
-                    xs: "0%",
-                    md: "5%",
-                  },
-                }}
-                display={"flex"}
-                alignItems={"flex-start"}
-                flexDirection={"column"}
-                justifyContent={"space-between"}
-              >
-                <Typography
-                  variant={"h3"}
-                  sx={{
-                    fontSize: {
-                      xs: 14,
-                      md: 36,
-                    },
-                    height: {
-                      xs: 35,
-                      md: 36,
-                    },
-                  }}
-                  fontFamily={"Comfortaa"}
-                >
-                  Отримай кешбек <br /> 1% вартості товару
-                </Typography>
-                <Typography
-                  variant={"h3"}
-                  display={"flex"}
-                  alignItems={"center"}
-                  sx={{
-                    fontSize: {
-                      xs: 10,
-                      md: 16,
-                    },
-                    height: {
-                      xs: 35,
-                      md: 35,
-                    },
-                  }}
-                  fontFamily={"Comfortaa"}
-                >
-                  кешбек 1% при <br /> оплаті карткою Приват24
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  height: {
-                    xs: 135,
-                    md: 460,
-                  },
-                  width: {
-                    xs: 135,
-                    md: 460,
-                  },
-                }}
-              >
-                <img
-                  src={require("../../img/socketHandImage.png")}
-                  style={{
-                    width: "inherit",
-                    height: "inherit",
-                    objectFit: "cover",
-                  }}
-                  alt="sdf"
-                />
-              </Box>
-            </Box>
-          </Box>
-        </Carousel>
+          </Box> */}
+      </Carousel>
 
-        {/* <Box marginTop={10} onClick={() => executeScroll()}>
+      {/* <Box marginTop={10} onClick={() => executeScroll()}>
           <div className="bouncing-icon-container">
             <ExpandMoreIcon
               color="info"
@@ -406,7 +288,7 @@ export const Home = () => {
             />
           </div>
         </Box> */}
-      </Box>
+
       <Box
         width={"90%"}
         margin={"0 auto"}
