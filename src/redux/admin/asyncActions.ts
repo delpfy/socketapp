@@ -202,6 +202,18 @@ export const getUserById = createAsyncThunk<any, { userId: string }>(
   }
 );
 
+export const createNewsletter = createAsyncThunk<any, {new_message: string}>(
+  "newsletter/createNewsletter",
+  async (params) => {
+    const { data } = await axios.post<any>(`/send-urgent-newsletter`, params, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
 export const updateUserById = createAsyncThunk<
   any,
   { userId: string; userData: any }

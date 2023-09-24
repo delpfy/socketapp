@@ -52,6 +52,7 @@ export default function ShowUsers() {
               <TableCell>Вказане ім'я</TableCell>
               <TableCell>Пошта</TableCell>
               <TableCell>Роль</TableCell>
+              <TableCell>Підписка на розсилку</TableCell>
               <TableCell>Функції</TableCell>
             </TableRow>
           </TableHead>
@@ -62,6 +63,7 @@ export default function ShowUsers() {
                   <TableCell>{_user.fullName}</TableCell>
                   <TableCell>{_user.email}</TableCell>
                   <TableCell>{_user.role}</TableCell>
+                  <TableCell>{_user.newsletterSub ? "Так" : "Ні"}</TableCell>
                   <TableCell>
                     {_user.role === "admin" ? (
                       <></>

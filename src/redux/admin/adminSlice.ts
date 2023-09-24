@@ -38,7 +38,7 @@ const adminSlice = createSlice({
   name: "admin",
   initialState: {
     status: "pending",
-    process: "none" as AdminProcesses,
+    process: "show-many-categories" as AdminProcesses,
     second_process: "none" as AdminProcesses,
     third_process: "none" as AdminProcesses,
     _categories: [] as any[],

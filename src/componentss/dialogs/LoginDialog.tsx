@@ -215,6 +215,7 @@ export default function LoginDialog({
               onChange={handleLoginFormChange}
             />
           </Box>
+          
           {status === "pending" ? (
             <CircularProgress size={20} />
           ) : (

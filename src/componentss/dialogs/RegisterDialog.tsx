@@ -17,6 +17,7 @@ import {
   OutlinedInput,
   CircularProgress,
   Box,
+  Checkbox,
 } from "@mui/material";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Register } from "../../redux/user/asyncActions";
@@ -50,6 +51,7 @@ export default function RegisterDialog({
   });
 
   const [passVisible, setPassVisible] = useState(true);
+  const [newsletterSub, setNewsletterSub] = useState(false);
   const { confirmEmail_status } = useAppSelector((state) => state.user);
   const [passError, setPassError] = useState(false);
 
@@ -107,6 +109,7 @@ export default function RegisterDialog({
           password: registerForm.passFirst,
           avatarUrl: "",
           expences: 0,
+          newsletterSub,
         })
       ).then((result: any) => {
         console.log("result.status " + result.meta.requestStatus);
@@ -270,7 +273,17 @@ export default function RegisterDialog({
           onChange={handleRegisterFormChange}
           error={passError}
         />
-          
+          <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={newsletterSub}
+                    onChange={() =>
+                      setNewsletterSub(!newsletterSub)
+                    }
+                  />
+                }
+                label="Підписатися на розсилку"
+              />
         </Box>
         
         {confirmEmail_status === "pending" ? (

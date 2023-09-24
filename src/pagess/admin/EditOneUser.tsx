@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Checkbox,
+  FormControlLabel,
   MenuItem,
   Select,
   TextField,
@@ -19,6 +21,7 @@ import { Update } from "../../redux/user/asyncActions";
 
 export default function EditOneUser() {
   const { _currentUser } = useAppSelector((state) => state.admin);
+  const [newsletterSub, setNewsletterSub] = useState(_currentUser.newsletterSub);
   const [newUser, setNewUser] = useState({
     fullName: _currentUser.fullName,
     email: _currentUser.email,
@@ -59,6 +62,7 @@ export default function EditOneUser() {
           fullName: newUser.fullName,
           email: newUser.email,
           role: newUser.role,
+          newsletterSub
         },
       })
     ).then((result: any) => {
@@ -118,6 +122,18 @@ export default function EditOneUser() {
             </MenuItem>
           ))}
         </Select>
+        
+<FormControlLabel
+                control={
+                  <Checkbox
+                    checked={newsletterSub}
+                    onChange={() =>
+                      setNewsletterSub(!newsletterSub)
+                    }
+                  />
+                }
+                label="Підписатися на розсилку"
+              />
       </Box>
       <Button variant="outlined" onClick={updateSelectedUser}>
         Оновити

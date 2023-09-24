@@ -1,6 +1,8 @@
 import {
   Box,
   Button,
+  Checkbox,
+  FormControlLabel,
   MenuItem,
   Select,
   TextField,
@@ -13,6 +15,7 @@ import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import { setProcess } from "../../redux/admin/adminSlice";
 
 export default function AddOneUser() {
+  const [newsletterSub, setNewsletterSub] = useState(false);
   const [newUser, setNewUser] = useState({
     fullName: "",
     email: "",
@@ -56,6 +59,7 @@ export default function AddOneUser() {
         role: newUser.role,
         avatarUrl: "",
         expences: 0,
+        newsletterSub,
       })
     ).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
@@ -120,6 +124,18 @@ export default function AddOneUser() {
             </MenuItem>
           ))}
         </Select>
+        
+<FormControlLabel
+                control={
+                  <Checkbox
+                    checked={newsletterSub}
+                    onChange={() =>
+                      setNewsletterSub(!newsletterSub)
+                    }
+                  />
+                }
+                label="Підписатися на розсилку"
+              />
       </Box>
       <Button variant="outlined" onClick={addNewUserToDatabase}>
         Створити

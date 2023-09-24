@@ -132,6 +132,7 @@ export type UserRegister = {
   password: string;
   expences: number;
   avatarUrl: string;
+  newsletterSub: boolean;
 };
 
 export type Status = "success" | "pending" | "error";
@@ -252,6 +253,7 @@ export type Attribute = {
 export type AdminProcesses =
   | "none"
   | "add-category"
+  | "add-newsletter"
   | "add-banner"
   | "add-subcategory"
   | "edit-subcategory"

@@ -186,8 +186,10 @@ export default function ItemsAccords() {
               key={val}
             >
               <FormControlLabel
+               sx={{color: 'black'}}
                 control={
                   <Checkbox
+                   sx={{color: 'black'}}
                     checked={
                       selectedSortParams[
                         uniqueItemFieldsNames[index]
@@ -195,7 +197,7 @@ export default function ItemsAccords() {
                         ? true
                         : false
                     }
-                    onChange={() =>
+                    onChange={() => 
                       performSort(uniqueItemFieldsNames[index], val)
                     }
                   />

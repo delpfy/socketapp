@@ -176,6 +176,24 @@ export default function AdminPanel() {
               </Button>
             </AccordionDetails>
           </Accordion>
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel2a-content"
+              id="panel2a-header"
+            >
+              <Typography>Розсилка</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Button
+              onClick=
+              {() => dispatch(setProcess("add-newsletter"))}
+                
+              >
+                Створити повідомлення
+              </Button>
+            </AccordionDetails>
+          </Accordion>
         </Box>
       </Box>
     </Box>

@@ -17,6 +17,7 @@ import AddOneUser from "./AddOneUser";
 import EditOneUser from "./EditOneUser";
 import ShowOneOrder from "./ShowOneOrder";
 import ShowBanners from "./ShowBanners";
+import SendUrgentNewsletter from "./SendUrgentNewsletter";
 
 export default function AdminPage() {
   const { user } = useAppSelector((state) => state.user);
@@ -33,6 +34,8 @@ export default function AdminPage() {
     switch (process) {
       case "show-many-categories":
         return <ShowCategories />;
+        case "add-newsletter":
+        return <SendUrgentNewsletter />;
         case "show-many-banners":
           return <ShowBanners />;
       case "show-many-items":
