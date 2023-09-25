@@ -48,6 +48,7 @@ import {
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { getItemReviews } from "../../redux/review/asyncActions";
+import CategoryItems from "../../componentss/CategoryItems";
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
@@ -974,7 +975,7 @@ export const ItemPage = () => {
               md: "row",
             },
           }}
-          paddingBottom={10}
+          paddingBottom={4}
           justifyContent={"space-between"}
           display={"flex"}
           margin={"0 auto"}
@@ -1192,6 +1193,7 @@ export const ItemPage = () => {
             </Typography>
           </Box>
         </Box>
+        <CategoryItems/>
         <InfoDialog
           openInfo={openInfo}
           InfoDialog_close={InfoDialog_close}
