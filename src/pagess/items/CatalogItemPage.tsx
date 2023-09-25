@@ -1185,6 +1185,7 @@ export const ItemPage = () => {
                 paddingRight: 2,
                 paddingBottom: 2,
                 textAlign: "justify",
+                fontSize: { xs: 13, md: 16 },
               }}
             >
               {itemCurrent.items.description}
