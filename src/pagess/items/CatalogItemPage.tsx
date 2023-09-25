@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Carousel from "react-material-ui-carousel";
 import { TShippingItems, Status } from "../../redux/types";
@@ -48,9 +48,6 @@ import {
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { getItemReviews } from "../../redux/review/asyncActions";
-const font = {
-  fontFamily: "Ubuntu",
-};
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
@@ -69,6 +66,17 @@ export const ItemPage = () => {
 
   const { afterOrder, items } = useAppSelector((state) => state.basket);
 
+  const attributesRef = useRef<HTMLDivElement | null>(null);
+
+  const executeScroll = () => {
+    console.log("myRef.current " + attributesRef.current);
+    if (attributesRef.current) {
+      attributesRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
   const { user } = useAppSelector((state) => state.user);
 
   const [openInfo, setOpenInfo] = useState(false);
@@ -315,6 +323,7 @@ export const ItemPage = () => {
               variant={"h3"}
               fontSize={16}
               fontFamily={"Comfortaa"}
+              onClick={() => executeScroll()}
             >
               Характеристики
             </Typography>
@@ -956,77 +965,235 @@ export const ItemPage = () => {
               )}
             </Box>
              */}
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            flexDirection: {
+              xs: "column-reverse",
+              md: "row",
+            },
+          }}
+          paddingBottom={10}
+          justifyContent={"space-between"}
+          display={"flex"}
+          margin={"0 auto"}
+          width={"87%"}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
 
+              alignItems: "flex-start",
+              border: "2px solid black",
+              borderRadius: 1.5,
+              marginBottom: 3,
+              marginLeft: {
+                xs: "auto",
+                md: 0,
+              },
+              marginRight: {
+                xs: "auto",
+                md: 0,
+              },
+              width: {
+                xs: "100%",
+                md: "45%",
+              },
+              overflowY: "auto",
+              overflowX: "none",
+
+              "&::-webkit-scrollbar": {
+                width: "10px",
+                height: "10px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#000000",
+                borderRadius: "5px",
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "#D9D9D9",
+                borderRadius: "5px",
+              },
+              height: "100%",
+              maxHeight: 400,
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+
+                padding: 2,
+              }}
+            >
+              <Typography
+                width={window.innerWidth > 600 ? 206 : 155}
+                fontSize={window.innerWidth > 600 ? 17 : 13}
+                alignItems={"flex-end"}
+                display={"flex"}
+                justifyContent={"space-between"}
+              >
+                <Typography
+                  ref={attributesRef}
+                  variant={"h3"}
+                  fontSize={window.innerWidth > 600 ? 20 : 15}
+                  height={window.innerWidth > 600 ? 20 : 15}
+                  fontWeight={"bold"}
+                  /* paddingTop={1} */
+                  fontFamily={"'Roboto light', sans-serif"}
+                >
+                  Характеристики
+                </Typography>
+              </Typography>
+            </Box>
+            <Box
+              component={Paper}
+              sx={{ width: "100%", alignSelf: "center", paddingBottom: 4 }}
+            >
+              <Box>
+                <Box sx={{ width: { xs: "90%", md: "95%" } }} margin={"0 auto"}>
+                  {Object.values(itemCurrent.items.fields).map((field: any) => {
+                    return (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "flex-end",
+                          maxWidth: 550,
+                          width: {
+                            xs: 280,
+                            md: 550,
+                          },
+                          marginBottom: 2,
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            paddingRight: { xs: 1, md: 2 },
+                            fontSize: { xs: 13, md: 16 },
+                          }}
+                        >
+                          {Object.keys(field)[0]}
+                        </Typography>
+
+                        <div
+                          style={{
+                            flex: 1,
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div
+                            style={{
+                              flex: 1,
+                              borderBottom: "2px solid black",
+                            }}
+                          ></div>
+                        </div>
+
+                        <Typography
+                          textAlign={"left"}
+                          sx={{
+                            paddingLeft: { xs: 1, md: 2 },
+                            fontSize: { xs: 13, md: 16 },
+                          }}
+                        >
+                          {Object.values(field)[0] as string}
+                        </Typography>
+                      </Box>
+                    );
+                  })}
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+
+              alignItems: "flex-start",
+              border: "2px solid black",
+              borderRadius: 1.5,
+              marginBottom: 3,
+              marginLeft: {
+                xs: "auto",
+                md: 0,
+              },
+              marginRight: {
+                xs: "auto",
+                md: 0,
+              },
+              width: {
+                xs: "100%",
+                md: "50%",
+              },
+              overflowY: "auto",
+              overflowX: "none",
+
+              "&::-webkit-scrollbar": {
+                width: "10px",
+                height: "10px",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "#000000",
+                borderRadius: "5px",
+              },
+              "&::-webkit-scrollbar-track": {
+                backgroundColor: "#D9D9D9",
+                borderRadius: "5px",
+              },
+              height: "100%",
+              maxHeight: 400,
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "flex-start",
+
+                padding: 2,
+              }}
+            >
+              <Typography
+                width={window.innerWidth > 600 ? 206 : 155}
+                fontSize={window.innerWidth > 600 ? 17 : 13}
+                alignItems={"flex-end"}
+                display={"flex"}
+                justifyContent={"space-between"}
+              >
+                <Typography
+                  variant={"h3"}
+                  fontSize={window.innerWidth > 600 ? 20 : 15}
+                  height={window.innerWidth > 600 ? 20 : 15}
+                  fontWeight={"bold"}
+                  /* paddingTop={1} */
+                  fontFamily={"'Roboto light', sans-serif"}
+                >
+                  Опис
+                </Typography>
+              </Typography>
+            </Box>
             <Typography
               fontFamily={"Comfortaa"}
-              sx={{ paddingLeft: 0.3, paddingTop: 3 }}
+              sx={{
+                paddingLeft: 2,
+                paddingRight: 2,
+                paddingBottom: 2,
+                textAlign: "justify",
+              }}
             >
               {itemCurrent.items.description}
             </Typography>
           </Box>
         </Box>
-        <TableContainer
-          component={Paper}
-          sx={{ width: "50%", alignSelf: "center", paddingBottom: 4 }}
-        >
-          <Table>
-            <TableBody>
-              {Object.values(itemCurrent.items.fields).map((field: any) => {
-                return (
-                  <TableRow>
-                    <TableCell style={font}>{Object.keys(field)[0]}</TableCell>
-                    <TableCell>{Object.values(field)[0] as string}</TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <Box
-          display={"flex"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          width={"100%"}
-          flexDirection={"row"}
-        >
-          {itemCurrent.items.user === user.id ? (
-            <Box
-              display={"flex"}
-              alignSelf={"center"}
-              justifyContent={"space-between"}
-              alignItems={"flex-end"}
-              flexDirection={"row"}
-            >
-              <IconButton
-                onClick={() => {
-                  dispatch(deleteItem({ itemId: itemCurrent.items._id })).then(
-                    (result: any) => {
-                      if (result.meta.requestStatus === "fulfilled") {
-                        dispatch(getItemsByCategory(category));
-                        navigate("/catalog");
-                      }
-                    }
-                  );
-                }}
-              >
-                <DeleteForeverIcon
-                  color="error"
-                  sx={{ width: 40, height: 40 }}
-                />
-              </IconButton>
-              {itemAppendingId === itemCurrent.items._id ? (
-                <CircularProgress size={20} />
-              ) : (
-                <IconButton onClick={redirectToAddItemPage}>
-                  <EditIcon color="warning" sx={{ width: 40, height: 40 }} />
-                </IconButton>
-              )}
-            </Box>
-          ) : (
-            <></>
-          )}
-        </Box>
-
         <InfoDialog
           openInfo={openInfo}
           InfoDialog_close={InfoDialog_close}

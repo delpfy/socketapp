@@ -1,4 +1,11 @@
-import { Box, Button, Rating, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  OutlinedInput,
+  Rating,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { createReview, getItemReviews } from "../../redux/review/asyncActions";
@@ -115,78 +122,133 @@ export default function ReviewForm(props: Items | TShippingItems) {
     <Box
       display={"flex"}
       justifyContent={"center"}
-      alignItems={"center"}
+      alignItems={"flex-start"}
       flexDirection={"column"}
+      sx={{ border: "2px solid black", borderRadius: 1.5 }}
+      margin={"0 auto"}
+      width={"85%"}
     >
-      <Typography fontFamily={"Comfortaa"} fontSize={20}>
-        Напишіть ваш відгук
+      <Typography
+        variant={"h3"}
+        fontSize={window.innerWidth > 600 ? 20 : 15}
+        height={window.innerWidth > 600 ? 20 : 15}
+        fontWeight={"bold"}
+        padding={1.5}
+        paddingBottom={0.5}
+        fontFamily={"'Roboto light', sans-serif"}
+      >
+        Залиште відгук
       </Typography>
       <Box
-        padding={5}
+        padding={3}
         display={"flex"}
         flexDirection={"column"}
         justifyContent={"space-between"}
         height={350}
+        margin={"0 auto"}
         sx={{
-          width: {
-            xs: 400,
-            md: 700,
-          },
+          width: "95%",
         }}
       >
         <Box
           display={"flex"}
           sx={{
-            flexDirection: {
-              xs: "column",
-              md: "row",
-            },
+            flexDirection: "column",
           }}
           justifyContent={"space-between"}
-          alignItems={"flex-end"}
+          alignItems={"center"}
+          width={"100%"}
         >
-          <TextField
-            id="outlined-multiline-static"
-            label="Опис"
-            fullWidth
-            value={description}
-            multiline
-            rows={4}
-            onChange={(e) => setDescription(e.target.value)}
-          />
           <Rating
             name="simple-controlled"
             value={rating}
-            sx={{ marginLeft: 10 }}
+            size="large"
+            sx={{ color: "black", marginBottom: 3 }}
             onChange={handleRatingChange}
           />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: "100%",
+            }}
+          >
+            <Typography>Коментар</Typography>
+            <OutlinedInput
+              id="outlined-multiline-static"
+              fullWidth
+              value={description}
+              multiline
+              rows={4}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "flex-start",
+            width: "100%",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: "100%",
+              padding: 1,
+              paddingLeft: 0,
+            }}
+          >
+            <Typography>Переваги</Typography>
+            <OutlinedInput
+              margin="dense"
+              value={advantages}
+              fullWidth
+              onChange={(e) => setAdvantages(e.target.value)}
+            />
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: "100%",
+              padding: 1,
+              paddingRight: 0,
+            }}
+          >
+            <Typography>Недоліки</Typography>
+            <OutlinedInput
+              margin="dense"
+              value={disadvantages}
+              fullWidth
+              onChange={(e) => setDisadvantages(e.target.value)}
+            />
+          </Box>
         </Box>
 
-        <TextField
-          margin="dense"
-          label="Переваги"
-          value={advantages}
-          fullWidth
-          variant="standard"
-          onChange={(e) => setAdvantages(e.target.value)}
-        />
-        <TextField
-          margin="dense"
-          label="Недоліки"
-          value={disadvantages}
-          fullWidth
-          variant="standard"
-          onChange={(e) => setDisadvantages(e.target.value)}
-        />
         <Button
-          color="warning"
-          variant="contained"
           sx={{
-            fontFamily: "Comfortaa",
-            fontSize: 15,
             width: 300,
+            marginTop: 3,
             alignSelf: "flex-end",
+            fontSize: 15,
+            paddingLeft: 8,
+            paddingRight: 8,
+            background: "black",
+            color: "white",
+            "&:hover": {
+              backgroundColor: "black",
+              color: "white",
+            },
           }}
+          variant="contained"
+          size="small"
           onClick={review_POST}
         >
           Додати відгук

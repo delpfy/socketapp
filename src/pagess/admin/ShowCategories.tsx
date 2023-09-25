@@ -284,7 +284,7 @@ export default function ShowCategories() {
                   <img
                     src={`https://www.sidebyside-tech.com${categoryImage}`}
                     style={{ height: 60 }}
-                    alt=""
+                    alt={categoryImage}
                   />
                 ) : (
                   <></>
@@ -367,7 +367,7 @@ export default function ShowCategories() {
                         <img
                           src={`https://www.sidebyside-tech.com${newSubcategory.image}`}
                           style={{ height: 60 }}
-                          alt=""
+                          alt={subcategoryImage}
                         />
                       ) : (
                         <></>

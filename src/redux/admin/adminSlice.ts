@@ -59,6 +59,7 @@ const adminSlice = createSlice({
   reducers: {
     setProcess(state, action: PayloadAction<AdminProcesses>) {
       state.process = action.payload;
+      
     },
     setSecondProcess(state, action: PayloadAction<AdminProcesses>) {
       state.second_process = action.payload;
@@ -121,7 +122,7 @@ const adminSlice = createSlice({
     builder
       .addCase(getAllBanners.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        state.process = "show-many-banners";
+        
         state._banners = action.payload;
       })
       .addCase(getAllBanners.pending, (state) => {
@@ -187,7 +188,7 @@ const adminSlice = createSlice({
     builder
       .addCase(getAllCategories.fulfilled, (state, action) => {
         state.status = "fulfilled";
-        state.process = "show-many-categories";
+        
         state._categories = action.payload;
       })
       .addCase(getAllCategories.pending, (state) => {

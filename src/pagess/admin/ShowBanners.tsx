@@ -172,7 +172,7 @@ export default function ShowBanners() {
                   <img
                     src={`https://www.sidebyside-tech.com${bannerImage}`}
                     style={{ height: 60 }}
-                    alt=""
+                    alt={bannerImage}
                   />
                 ) : (
                   <></>

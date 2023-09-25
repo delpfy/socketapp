@@ -27,6 +27,11 @@ export default function ReviewsPage() {
           );
           if (reviews.reviews.length === 0) {
             dispatch(setRatingAmount(0));
+            return (
+              <Typography fontFamily={"Comfortaa"} padding={1.5} fontSize={20}>
+                Пусто...
+              </Typography>
+            );
           }
           return reviews.reviews
             .slice()
@@ -51,12 +56,14 @@ export default function ReviewsPage() {
         <CircularProgress />;
         return "";
       case "error":
+        navigate("/catalog");
         return (
           <Typography fontFamily={"Comfortaa"} fontSize={20}>
             Пусто...
           </Typography>
         );
       default:
+        navigate("/catalog");
         return (
           <Typography fontFamily={"Comfortaa"} fontSize={20}>
             Пусто...
@@ -135,16 +142,31 @@ export default function ReviewsPage() {
         </Box>
       </Box>
 
-      <Box paddingTop={10}>
-        <Typography
-          fontFamily={"Comfortaa"}
-          sx={{ textAlign: "center" }}
-          fontSize={25}
-        >
-          Відгуки
-        </Typography>
+      <Box paddingTop={5}>
         <ReviewForm {...itemCurrent.items} />
-        <Box>{StatusReviewHandler(status_review)}</Box>
+        <Box
+          sx={{
+            border: "2px solid black",
+            borderRadius: 1.5,
+            marginTop: 3,
+            marginBottom: 10,
+          }}
+          margin={"0 auto"}
+          width={"85%"}
+        >
+          <Typography
+            variant={"h3"}
+            fontSize={window.innerWidth > 600 ? 20 : 15}
+            height={window.innerWidth > 600 ? 20 : 15}
+            fontWeight={"bold"}
+            padding={1.5}
+            paddingBottom={0.5}
+            fontFamily={"'Roboto light', sans-serif"}
+          >
+            Відгуки
+          </Typography>
+          <Box>{StatusReviewHandler(status_review)}</Box>
+        </Box>
       </Box>
     </>
   );
