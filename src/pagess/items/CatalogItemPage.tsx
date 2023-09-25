@@ -1063,10 +1063,7 @@ export const ItemPage = () => {
                           display: "flex",
                           alignItems: "flex-end",
                           maxWidth: 550,
-                          width: {
-                            xs: 280,
-                            md: 550,
-                          },
+                          width: '100%',
                           marginBottom: 2,
                           flexDirection: "row",
                           justifyContent: "space-between",
