@@ -231,7 +231,7 @@ export type TOrder = {
   status: TOrderStatus;
 };
 
-export type TOrderStatus = "В обробці" | "Погоджено" | "Скасовано";
+export type TOrderStatus = "В обробці" | "Доставлено" | "Скасовано";
 
 export type TOrders = {
   orders: TOrder[];

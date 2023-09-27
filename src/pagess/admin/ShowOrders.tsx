@@ -100,7 +100,7 @@ export default function ShowOrders() {
                   onChange={(e) => setSelectedOrderStatus(e.target.value)}
                   label="Категорія"
                 >
-                  {["В обробці", "Погоджено", "Скасовано"].map(
+                  {["В обробці", "Доставлено", "Скасовано"].map(
                     (_status: any) => (
                       <MenuItem key={_status} value={_status}>
                         {_status}
@@ -143,7 +143,7 @@ export default function ShowOrders() {
                         onChange={(e) => handleOrderStatusChange(e, _order)}
                         label="Категорія"
                       >
-                        {["В обробці", "Погоджено", "Скасовано"].map(
+                        {["В обробці", "Доставлено", "Скасовано"].map(
                           (_status: any) => (
                             <MenuItem key={_status} value={_status}>
                               {_status}
