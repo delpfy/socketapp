@@ -18,6 +18,7 @@ import {
   UploadItemImage,
   getAllCategories,
   searchCategories,
+  getItemBySlug,
 } from "./asyncActions";
 import { actualizeData } from "../../utils/actuilizeLocalStorageData";
 import { actualizeFirstRender } from "../../utils/actualizeFirstLoad";
@@ -31,6 +32,9 @@ const homeSlice = createSlice({
   reducers: {
     SetCategory(state, action: PayloadAction<string>) {
       state.category = action.payload;
+    },
+    SetCategorySlug(state, action: PayloadAction<string>) {
+      state.category_slug = action.payload;
     },
     SetSubcategory(state, action: PayloadAction<string>) {
       state.subcategory = action.payload;
@@ -339,6 +343,23 @@ const homeSlice = createSlice({
       state.itemFavoritesId = "";
     });
 
+    builder.addCase(getItemBySlug.fulfilled, (state, action) => {
+      state.itemCurrent = action.payload;
+      state.itemAppendingId = "";
+      state.itemCompareId = "";
+      state.itemFavoritesId = "";
+      state.item_status = "success";
+    });
+    builder.addCase(getItemBySlug.pending, (state, action) => {
+      state.item_status = "pending";
+    });
+    builder.addCase(getItemBySlug.rejected, (state) => {
+      state.item_status = "error";
+      state.itemAppendingId = "";
+      state.itemCompareId = "";
+      state.itemFavoritesId = "";
+    });
+
     builder.addCase(checkItemById.fulfilled, (state, action) => {
       state.itemAppendingId = "";
       state.itemCompareId = "";
@@ -412,6 +433,7 @@ const homeSlice = createSlice({
 export const {
   SetCategory,
   SetSubcategory,
+  SetCategorySlug,
   setReset,
   clearCurrentImages,
   setCurrentImages,

@@ -12,19 +12,24 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { deletePost, updatePost } from "../../redux/posts/asyncActions";
-import { useNavigate } from "react-router-dom";
+import {
+  deletePost,
+  getPostBySlug,
+  updatePost,
+} from "../../redux/posts/asyncActions";
+import { useNavigate, useParams } from "react-router-dom";
+import slugify from "slugify";
 
 export default function PostPage() {
   const { user } = useAppSelector((state) => state.user);
   const { currentPost, loading, error } = useAppSelector(
     (state) => state.posts
   );
-  const [editorContent, setEditorContent] = useState(currentPost.content);
-  const [editorTitle, setEditorTitle] = useState(currentPost.title);
-  const [editorDescription, setEditorDescription] = useState(
-    currentPost.description
-  );
+  const [editorContent, setEditorContent] = useState("");
+  const [editorTitle, setEditorTitle] = useState("");
+  const [editorDescription, setEditorDescription] = useState("");
+
+  const { post_slug } = useParams();
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -33,12 +38,19 @@ export default function PostPage() {
   );
   useEffect(() => {
     window.scrollTo(0, 0);
-    setEditorContent(currentPost.content);
-    setEditorTitle(currentPost.title);
-    setEditorDescription(currentPost.description);
-  }, [currentPost]);
+    dispatch(getPostBySlug(post_slug as string)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        setEditorContent(result.payload.content);
+        setEditorTitle(result.payload.title);
+        setEditorDescription(result.payload.description);
+      }
+    });
+  }, []);
 
   function handleSavePost() {
+    console.log(
+      editorTitle ? slugify(editorTitle) : slugify(currentPost.title)
+    );
     dispatch(
       updatePost({
         itemId: currentPost._id,
@@ -48,6 +60,9 @@ export default function PostPage() {
             ? editorDescription
             : currentPost.description,
           title: editorTitle ? editorTitle : currentPost.title,
+          slugString: editorTitle
+            ? slugify(editorTitle)
+            : slugify(currentPost.title),
         },
       })
     );
@@ -71,7 +86,7 @@ export default function PostPage() {
       >
         {loading || error ? (
           <CircularProgress />
-        ) : user.role === "manager" ? (
+        ) : user.role === "manager" || user.role === "admin" ? (
           <>
             <Box minWidth={"90%"}>
               <Typography
@@ -84,8 +99,7 @@ export default function PostPage() {
                 Назва статті:
               </Typography>
               <TextField
-              fullWidth
-              
+                fullWidth
                 value={editorTitle}
                 onChange={(event: any) => {
                   setEditorTitle(event.target.value);
@@ -103,15 +117,14 @@ export default function PostPage() {
                 Опис статті:
               </Typography>
               <TextField
-              multiline
-              rows={4}
-              fullWidth
+                multiline
+                rows={4}
+                fullWidth
                 value={editorDescription}
                 onChange={(event: any) => {
                   setEditorDescription(event.target.value);
                 }}
               />
-              
             </Box>
             <Box width={"90%"}>
               <Typography

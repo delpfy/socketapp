@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { getAllPosts, getPostById } from "../../redux/posts/asyncActions";
 import { formatDate } from "../../utils/usefulFunc";
+import { TPost, TPostPOST } from "../../redux/types";
 
 export default function Posts() {
   const { posts, loading, error } = useAppSelector((state) => state.posts);
@@ -22,15 +23,13 @@ export default function Posts() {
     localStorage.getItem("recentlyReviewed") || "{}"
   );
 
-  function handlePostClick(postId: string) {
-    dispatch(getPostById(postId));
-    navigate("/post");
+  function handlePostClick(post: TPost) {
+    dispatch(getPostById(post._id));
+    navigate(`/posts/${post.slugString}`);
   }
   function handleAddPostClick() {
     navigate("/addpost");
   }
-
-  
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -69,7 +68,7 @@ export default function Posts() {
               <CircularProgress />
             ) : (
               <>
-                {user.role === "manager" ? (
+                {user.role === "manager" || user.role === "admin" ? (
                   <Button
                     color="warning"
                     variant="contained"
@@ -82,68 +81,70 @@ export default function Posts() {
                   <></>
                 )}
 
-                {posts.slice().reverse().map((post) => {
-                  return (
-                    <Box
-                      key={post._id}
-                      width={"80%"}
-                      sx={{ cursor: "pointer" }}
-                      alignSelf={"center"}
-                      onClick={() => handlePostClick(post._id)}
-                    >
-                      <Box sx = {{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between'
-                      }}>
-                      <Typography
-                        variant="h1"
-                        paddingBottom={5}
-                        fontSize={30}
-                        fontFamily={"Ubuntu"}
+                {posts
+                  .slice()
+                  .reverse()
+                  .map((post) => {
+                    return (
+                      <Box
+                        key={post._id}
+                        width={"80%"}
+                        sx={{ cursor: "pointer" }}
+                        alignSelf={"center"}
+                        onClick={() => handlePostClick(post)}
                       >
-                        {post.title}
-                      </Typography>
-                      <Typography
-                        variant="h1"
-                        paddingBottom={5}
-                        fontSize={24}
-                        fontFamily={"Ubuntu"}
-                      >
-                        {post.createdAt !== post.updatedAt
-              ? 
-                "Оновлено " +
-                formatDate(post.updatedAt) +
-                " "
-              : formatDate(post.createdAt)}
-                      </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Typography
+                            variant="h1"
+                            paddingBottom={5}
+                            fontSize={30}
+                            fontFamily={"Ubuntu"}
+                          >
+                            {post.title}
+                          </Typography>
+                          <Typography
+                            variant="h1"
+                            paddingBottom={5}
+                            fontSize={24}
+                            fontFamily={"Ubuntu"}
+                          >
+                            {post.createdAt !== post.updatedAt
+                              ? "Оновлено " + formatDate(post.updatedAt) + " "
+                              : formatDate(post.createdAt)}
+                          </Typography>
+                        </Box>
+
+                        <Paper
+                          elevation={5}
+                          sx={{
+                            marginBottom: 2,
+                            height: 400,
+                            width: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          banner
+                        </Paper>
+                        <Typography
+                          variant="h1"
+                          paddingBottom={5}
+                          fontSize={22}
+                          fontFamily={"Ubuntu"}
+                        >
+                          {post.description}
+                        </Typography>
                       </Box>
-                      
-                      <Paper
-                        elevation={5}
-                        sx={{
-                          marginBottom: 2,
-                          height: 400,
-                          width: "100%",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        banner
-                      </Paper>
-                      <Typography
-                        variant="h1"
-                        paddingBottom={5}
-                        fontSize={22}
-                        fontFamily={"Ubuntu"}
-                      >
-                        {post.description}
-                      </Typography>
-                    </Box>
-                  );
-                })}
+                    );
+                  })}
               </>
             )}
           </Box>

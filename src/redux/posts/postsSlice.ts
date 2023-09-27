@@ -5,6 +5,7 @@ import {
   deletePost,
   getAllPosts,
   getPostById,
+  getPostBySlug,
   updatePost,
 } from "./asyncActions";
 
@@ -48,6 +49,18 @@ const postsSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(getPostById.rejected, (state) => {
+      state.error = true;
+    });
+
+    builder.addCase(getPostBySlug.fulfilled, (state, action) => {
+      state.currentPost = action.payload.post;
+      state.loading = false;
+      state.error = false;
+    });
+    builder.addCase(getPostBySlug.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getPostBySlug.rejected, (state) => {
       state.error = true;
     });
 

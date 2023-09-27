@@ -19,7 +19,7 @@ import { useAppDispatch } from "../../../redux/hooks";
 import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
 
-import { getItemById } from "../../../redux/home/asyncActions";
+import { getItemById, getItemBySlug } from "../../../redux/home/asyncActions";
 import { getItemReviews } from "../../../redux/review/asyncActions";
 import InfoDialog from "../../dialogs/InfoDialog";
 
@@ -39,11 +39,11 @@ export default function BasketItemBlock(props: TShippingItems) {
   }
 
   function getCurrentItem() {
-    dispatch(getItemById(props._id)).then((result: any) => {
+    dispatch(getItemBySlug(props.slugString)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(getItemReviews(props._id)).then((result: any) => {
           if (result.meta.requestStatus === "fulfilled") {
-            navigate("/catalog/item");
+            navigate(`/catalog/${props.slugString}`);
           }
         });
       }
@@ -208,11 +208,11 @@ export default function BasketItemBlock(props: TShippingItems) {
           minHeight: 120,
           maxHeight: 120,
           display: "flex",
-          flexDirection: "row", 
+          flexDirection: "row",
           justifyContent: "space-between",
-          alignItems: 'center',
+          alignItems: "center",
           padding: "2%",
-          borderBottom: '2px solid black'
+          borderBottom: "2px solid black",
         }}
       >
         <CardMedia
@@ -224,19 +224,21 @@ export default function BasketItemBlock(props: TShippingItems) {
             minWidth: 80,
             objectFit: "contain",
             overflow: "hidden",
-            cursor: 'pointer',
+            cursor: "pointer",
           }}
           image={`https://www.sidebyside-tech.com${props.image[0]}`}
           title={props.name}
           onClick={getCurrentItem}
         />
 
-        <CardContent   onClick={getCurrentItem} sx={{ paddingBottom: 1, width: '100%', cursor: 'pointer'}}>
+        <CardContent
+          onClick={getCurrentItem}
+          sx={{ paddingBottom: 1, width: "100%", cursor: "pointer" }}
+        >
           <Typography
             gutterBottom
             variant="h5"
             component="div"
-            
             fontSize={16}
             overflow={"hidden"}
             fontFamily={"Comfortaa"}
@@ -258,7 +260,13 @@ export default function BasketItemBlock(props: TShippingItems) {
             paddingRight: "16px",
           }}
         >
-          <Box display={"flex"} height={120} justifyContent={'space-between'} alignItems={'flex-end'} flexDirection={"column"}>
+          <Box
+            display={"flex"}
+            height={120}
+            justifyContent={"space-between"}
+            alignItems={"flex-end"}
+            flexDirection={"column"}
+          >
             <IconButton
               sx={{ width: 37, height: 37 }}
               onClick={() => basketItem_DELETE(props._id)}

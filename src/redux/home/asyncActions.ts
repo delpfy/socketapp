@@ -64,6 +64,22 @@ export const getItemById = createAsyncThunk<Items, string>(
   }
 );
 
+export const getItemBySlug = createAsyncThunk<Items, string>(
+  "home/getItemBySlug",
+  async (params) => {
+    const { data } = await axios.get<Items>(`/items/slug/${params}`);
+    return data;
+  }
+);
+
+export const getCategoryBySlug = createAsyncThunk<Items, string>(
+  "home/getCategoryBySlug",
+  async (params) => {
+    const { data } = await axios.get<Items>(`/categories/slug/${params}`);
+    return data;
+  }
+);
+
 export const checkItemById = createAsyncThunk<Items, string>(
   "home/checkItemById",
   async (params) => {

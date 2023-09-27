@@ -66,6 +66,7 @@ export default function ShowOrders() {
       })
     ).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
+        //письмо о статусе
         InfoDialog_open();
         setInfoMessage("Успіх");
       }

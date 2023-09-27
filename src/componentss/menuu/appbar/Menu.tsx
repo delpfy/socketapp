@@ -29,8 +29,6 @@ import { Category } from "../../../redux/types";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
-
-
 export default function AppBarMenu() {
   const CATEGORIES = useAppSelector((state) => state.home.categories);
   const [active, setActive] = React.useState(false);
@@ -39,7 +37,7 @@ export default function AppBarMenu() {
 
   function handleCategoryChange(category: Category) {
     dispatch(SetCategory(category.name));
-    navigate("/catalog");
+    navigate(`/${category.slugString}`);
   }
 
   useEffect(() => {
@@ -113,7 +111,6 @@ export default function AppBarMenu() {
           width={"95%"}
           height={"90%"}
           margin={"0 auto"}
-          
           display={"flex"}
           flexDirection={"row"}
           alignItems={"center"}
@@ -121,22 +118,20 @@ export default function AppBarMenu() {
         >
           <Box
             display={"flex"}
-           
-            sx = {{
+            sx={{
               width: {
-                xs: '15%',
-                md: '23%',
+                xs: "15%",
+                md: "23%",
               },
               margin: {
-                xs: '0 auto',
-                md: 0
+                xs: "0 auto",
+                md: 0,
               },
               justifyContent: {
-                xs: 'center',
-                md: "space-evenly"
-              }
+                xs: "center",
+                md: "space-evenly",
+              },
             }}
-            
             flexDirection={"row"}
             alignItems={"center"}
           >
@@ -144,7 +139,7 @@ export default function AppBarMenu() {
               size="large"
               edge="start"
               aria-label="menu"
-              sx = {{display: {xs: 'flex', md: 'none'}}}
+              sx={{ display: { xs: "flex", md: "none" } }}
               onClick={toggleDrawer("left", true)}
             >
               <MenuIcon
@@ -164,18 +159,16 @@ export default function AppBarMenu() {
           <Search />
           <Box
             display={"flex"}
-            
-            sx = {{
+            sx={{
               width: {
-                xs: '15%',
-                md: '32%'
+                xs: "15%",
+                md: "32%",
               },
             }}
             flexDirection={"row"}
             alignItems={"center"}
             justifyContent={"space-evenly"}
           >
-           
             {/* <ContactUs/> */}
 
             <Basket />

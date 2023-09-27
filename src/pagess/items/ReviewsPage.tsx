@@ -9,6 +9,7 @@ import { Status } from "../../redux/types";
 import ReviewForm from "../../componentss/reviews/ReviewForm";
 import { useNavigate } from "react-router-dom";
 import { getItemById } from "../../redux/home/asyncActions";
+import slugify from "slugify";
 
 export default function ReviewsPage() {
   const { itemCurrent, category, subcategory } = useAppSelector(
@@ -56,14 +57,14 @@ export default function ReviewsPage() {
         <CircularProgress />;
         return "";
       case "error":
-        navigate("/catalog");
+        navigate(`${slugify(itemCurrent.items.category)}`);
         return (
           <Typography fontFamily={"Comfortaa"} fontSize={20}>
             Пусто...
           </Typography>
         );
       default:
-        navigate("/catalog");
+        navigate(`${slugify(itemCurrent.items.category)}`);
         return (
           <Typography fontFamily={"Comfortaa"} fontSize={20}>
             Пусто...
@@ -76,7 +77,11 @@ export default function ReviewsPage() {
     if (window.location.pathname.includes("/reviews")) {
       dispatch(getItemById(itemCurrent.items._id)).then((result: any) => {
         if (result.meta.requestStatus === "fulfilled") {
-          navigate("/catalog/item");
+          navigate(
+            `/${slugify(itemCurrent.items.category)}/${
+              itemCurrent.items.slugString
+            }`
+          );
         }
       });
     }
@@ -135,7 +140,13 @@ export default function ReviewsPage() {
             variant={"h3"}
             fontSize={16}
             fontFamily={"Comfortaa"}
-            onClick={() => navigate("/catalog/item/reviews")}
+            onClick={() =>
+              navigate(
+                `/${slugify(itemCurrent.items.category)}/${
+                  itemCurrent.items.slugString
+                }/reviews`
+              )
+            }
           >
             Відгуки
           </Typography>

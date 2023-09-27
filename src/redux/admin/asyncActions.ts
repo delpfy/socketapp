@@ -102,7 +102,14 @@ export const uploadSubcategoryImage = createAsyncThunk<any, FormData>(
 
 export const createCategory = createAsyncThunk<
   Category,
-  { categoryData: { name: string; image: string; subcategories: any[] } }
+  {
+    categoryData: {
+      name: string;
+      image: string;
+      slugString: string;
+      subcategories: any[];
+    };
+  }
 >("category/createCategory", async (params) => {
   const { data } = await axios.post<Category>(
     "/categories",
@@ -202,7 +209,7 @@ export const getUserById = createAsyncThunk<any, { userId: string }>(
   }
 );
 
-export const createNewsletter = createAsyncThunk<any, {new_message: string}>(
+export const createNewsletter = createAsyncThunk<any, { new_message: string }>(
   "newsletter/createNewsletter",
   async (params) => {
     const { data } = await axios.post<any>(`/send-urgent-newsletter`, params, {

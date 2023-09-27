@@ -23,7 +23,7 @@ import {
   synchronizeBasket,
 } from "../../redux/basket/basketSlice";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Review from "../../componentss/reviews/Review";
 import ReviewForm from "../../componentss/reviews/ReviewForm";
 import {
@@ -43,16 +43,19 @@ import {
   checkItemById,
   deleteItem,
   getItemById,
+  getItemBySlug,
   getItemsByCategory,
 } from "../../redux/home/asyncActions";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
 import { getItemReviews } from "../../redux/review/asyncActions";
 import CategoryItems from "../../componentss/CategoryItems";
+import slugify from "slugify";
 
 export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { item_slug } = useParams();
 
   const {
     category,
@@ -65,12 +68,51 @@ export const ItemPage = () => {
     itemsFavorites,
   } = useAppSelector((state) => state.home);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    dispatch(getItemBySlug(item_slug as string)).then((result: any) => {
+      if (result.meta.requestStatus === "rejected") {
+        setInfoMessage("Такого товару вже нема");
+        InfoDialog_open();
+        const recentlyReviewed = JSON.parse(
+          localStorage.getItem("recentlyReviewed") || "{}"
+        );
+        const basketItems = JSON.parse(
+          localStorage.getItem("basketItems") || "{}"
+        );
+        localStorage.setItem(
+          "recentlyReviewed",
+          JSON.stringify(
+            recentlyReviewed.filter(
+              (item: any) => item._id !== itemCurrent.items._id
+            )
+          )
+        );
+        localStorage.setItem(
+          "basketItems",
+          JSON.stringify(
+            basketItems.filter(
+              (item: any) => item._id !== itemCurrent.items._id
+            )
+          )
+        );
+      }
+    });
+    if (afterOrder) {
+      dispatch(synchronizeBasket());
+      dispatch(setAfterOrder(false));
+    }
+    if (editItemMode) {
+      dispatch(setEditItemMode(false));
+    }
+  }, [dispatch]);
+
   const { afterOrder, items } = useAppSelector((state) => state.basket);
 
   const attributesRef = useRef<HTMLDivElement | null>(null);
 
   const executeScroll = () => {
-    console.log("myRef.current " + attributesRef.current);
     if (attributesRef.current) {
       attributesRef.current.scrollIntoView({
         behavior: "smooth",
@@ -83,16 +125,6 @@ export const ItemPage = () => {
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
 
-  function redirectToAddItemPage() {
-    dispatch(setEditItemMode(true));
-    dispatch(setSearchedId(itemCurrent.items._id));
-    dispatch(getItemById(itemCurrent.items._id)).then((result: any) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        navigate("/add-item");
-      }
-    });
-  }
-
   function InfoDialog_open() {
     setOpenInfo(true);
   }
@@ -100,18 +132,6 @@ export const ItemPage = () => {
   function InfoDialog_close() {
     setOpenInfo(false);
   }
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-
-    if (afterOrder) {
-      dispatch(synchronizeBasket());
-      dispatch(setAfterOrder(false));
-    }
-    if (editItemMode) {
-      dispatch(setEditItemMode(false));
-    }
-  }, [dispatch]);
 
   function adjustPrice() {
     if (itemCurrent.items.sale === 0) {
@@ -264,7 +284,11 @@ export const ItemPage = () => {
   function RedirectToReviews() {
     dispatch(getItemReviews(itemCurrent.items._id)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
-        navigate("/catalog/item/reviews");
+        navigate(
+          `/${slugify(itemCurrent.items.category)}/${
+            itemCurrent.items.slugString
+          }/reviews`
+        );
       }
     });
   }
@@ -979,7 +1003,6 @@ export const ItemPage = () => {
           justifyContent={"space-between"}
           display={"flex"}
           margin={"0 auto"}
-          
           width={"87%"}
         >
           <Box
@@ -1065,7 +1088,7 @@ export const ItemPage = () => {
                           display: "flex",
                           alignItems: "flex-end",
                           maxWidth: 550,
-                          width: '100%',
+                          width: "100%",
                           marginBottom: 2,
                           flexDirection: "row",
                           justifyContent: "space-between",
@@ -1194,7 +1217,7 @@ export const ItemPage = () => {
             </Typography>
           </Box>
         </Box>
-        <CategoryItems/>
+        <CategoryItems />
         <InfoDialog
           openInfo={openInfo}
           InfoDialog_close={InfoDialog_close}
@@ -1210,16 +1233,16 @@ export const ItemPage = () => {
         if (itemCurrent.items !== undefined) {
           return <Item />;
         } else {
-          navigate("/catalog");
+          navigate(`${slugify(category)}`);
           return <NotFoundPage />;
         }
       case "pending":
         return <LoadingPage />;
       case "error":
-        navigate("/catalog");
+        navigate(`${slugify(category)}`);
         return <NotFoundPage />;
       default:
-        navigate("/catalog");
+        navigate(`${slugify(category)}`);
         return <NotFoundPage />;
     }
   }

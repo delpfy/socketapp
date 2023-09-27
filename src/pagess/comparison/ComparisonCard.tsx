@@ -41,6 +41,7 @@ import {
   synchronizeFavorites,
 } from "../../redux/home/homeSlice";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
+import slugify from "slugify";
 
 export default function ComparisonCard(props: Items) {
   const { user } = useAppSelector((state) => state.user);
@@ -106,7 +107,7 @@ export default function ComparisonCard(props: Items) {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(getItemReviews(props._id)).then((result: any) => {
           if (result.meta.requestStatus === "fulfilled") {
-            navigate("/catalog/item");
+            navigate(`/${slugify(props.category)}/${props.slugString}`);
             setAsRecentlyReviewed();
           }
         });

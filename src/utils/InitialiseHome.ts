@@ -35,7 +35,8 @@ export const InitialiseHome = () => {
     categoriesDisplay: [] as Category[],
     computerPartsSubcategory,
     gamingSubcategory,
-    category: "Монітори",
+    category: "",
+    category_slug: "",
     subcategory: "",
     reset: false,
   };

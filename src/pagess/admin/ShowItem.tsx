@@ -19,6 +19,9 @@ import {
   clearCurrentImages,
   setCurrentImages,
 } from "../../redux/home/homeSlice";
+import slugify from "slugify";
+
+
 
 export default function ShowItem() {
   const { itemCurrent, currentImages } = useAppSelector((state) => state.home);
@@ -149,6 +152,7 @@ export default function ShowItem() {
         image: itemImages,
         rating: 0,
         reviewsAmount: 0,
+        slugString: slugify(newItem.Назва),
         fields: attributeValues,
       })
     ).then((result: any) => {
@@ -175,6 +179,7 @@ export default function ShowItem() {
           price: newItem.Ціна,
           quantity: newItem.Кількість,
           image: itemImages,
+          slugString: slugify(newItem.Назва),
           fields: attributeValues,
         },
       })

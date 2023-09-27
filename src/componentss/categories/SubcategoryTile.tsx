@@ -23,14 +23,14 @@ export default function SubcategoryCard(_category: any) {
     if (_category.category.subcategories !== undefined) {
       if (_category.category.subcategories.length !== 0) {
         if (window.innerWidth > 600) {
-          navigate("/subcategories");
+          navigate(`/${_category.category.slugString}/subcategories`);
         }
       } else {
         dispatch(getItemsByCategory(_category.category.name)).then(
           (result: any) => {
             if (result.meta.requestStatus === "fulfilled") {
               if (result.payload.items.length !== 0) {
-                navigate("/catalog");
+                navigate(`/${_category.category.slugString}`);
               }
             }
           }
@@ -42,7 +42,7 @@ export default function SubcategoryCard(_category: any) {
         (result: any) => {
           if (result.meta.requestStatus === "fulfilled") {
             if (result.payload.items.length !== 0) {
-              navigate("/catalog");
+              navigate(`/${_category.category.slugString}`);
             }
           }
         }

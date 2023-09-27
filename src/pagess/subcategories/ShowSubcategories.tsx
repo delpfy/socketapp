@@ -1,18 +1,35 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import AllItems from "../../componentss/AllItems";
 import { Category } from "../../redux/types";
 import SubcategoryCard from "../../componentss/categories/SubcategoryTile";
+import {
+  getCategoryBySlug,
+  getItemsByCategory,
+} from "../../redux/home/asyncActions";
+import { useParams } from "react-router-dom";
+import { SetCategory, SetCategorySlug } from "../../redux/home/homeSlice";
 
 export default function ShowSubcategories() {
   const { categories, subcategory, category } = useAppSelector(
     (state) => state.home
   );
 
+  const { category_slug } = useParams();
+
+  const dispatch = useAppDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
+    dispatch(getCategoryBySlug(category_slug as string)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        console.log(result.payload);
+        dispatch(SetCategory(result.payload.name));
+        dispatch(SetCategorySlug(category_slug as string));
+        dispatch(getItemsByCategory(result.payload.name));
+      }
+    });
   }, []);
 
   return (

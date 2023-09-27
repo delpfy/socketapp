@@ -21,6 +21,7 @@ import BasketDialog from "../../componentss/dialogs/BasketDialog";
 import { ORDER_setItems } from "../../redux/order/orderSlice";
 import { getItemById } from "../../redux/home/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
+import slugify from "slugify";
 
 export default function OrderProducts() {
   
@@ -54,7 +55,7 @@ export default function OrderProducts() {
       if(result.meta.requestStatus === "fulfilled"){
         dispatch(getItemReviews(item._id)).then((result: any) => {
           if(result.meta.requestStatus === "fulfilled"){
-            navigate("/catalog/item");
+            navigate(`/${slugify(item.category)}/${item.slugString}`);
           }
         });
       }

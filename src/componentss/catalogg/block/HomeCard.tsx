@@ -36,11 +36,12 @@ import {
   synchronizeComparison,
   synchronizeFavorites,
 } from "../../../redux/home/homeSlice";
+import slugify from "slugify";
 
 export default function HomeCard(props: Items) {
   const { items } = useAppSelector((state) => state.basket);
   const {
-    category,
+    category_slug,
     itemAppendingId,
     itemCompareId,
     itemFavoritesId,
@@ -102,39 +103,8 @@ export default function HomeCard(props: Items) {
   }
 
   function getCurrentItem() {
-    dispatch(getItemById(props._id)).then((result: any) => {
-      if (result.meta.requestStatus === "fulfilled") {
-        dispatch(getItemReviews(props._id)).then((result: any) => {
-          if (result.meta.requestStatus === "fulfilled") {
-            navigate("/catalog/item");
-            setAsRecentlyReviewed();
-          }
-        });
-      }
-
-      if (result.meta.requestStatus === "rejected") {
-        setInfoMessage("Такого товару вже нема");
-        InfoDialog_open();
-        const recentlyReviewed = JSON.parse(
-          localStorage.getItem("recentlyReviewed") || "{}"
-        );
-        const basketItems = JSON.parse(
-          localStorage.getItem("basketItems") || "{}"
-        );
-        localStorage.setItem(
-          "recentlyReviewed",
-          JSON.stringify(
-            recentlyReviewed.filter((item: any) => item._id !== props._id)
-          )
-        );
-        localStorage.setItem(
-          "basketItems",
-          JSON.stringify(
-            basketItems.filter((item: any) => item._id !== props._id)
-          )
-        );
-      }
-    });
+    navigate(`/${category_slug}/${props.slugString}`);
+    setAsRecentlyReviewed();
   }
 
   function adjustPrice(item: any) {
@@ -566,7 +536,7 @@ export default function HomeCard(props: Items) {
               justifyContent={"flex-start"}
             >
               <Rating
-                sx={{ paddingBottom: 1, color: 'black' }}
+                sx={{ paddingBottom: 1, color: "black" }}
                 name="read-only"
                 value={props.rating}
                 size={"small"}

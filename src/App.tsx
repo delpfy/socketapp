@@ -74,11 +74,11 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/admin-auth" element={<AdminAuthorize />} />
 
-          <Route path="/catalog" element={<Catalog />} />
-          <Route path="/catalog/item" element={<ItemPage />} />
-          <Route path="/catalog/item/reviews" element={<ReviewsPage />} />
+          <Route path="/:category_slug" element={<Catalog />} />
+          <Route path="/:category_slug/:item_slug" element={<ItemPage />} />
+          <Route path="/:category_slug/:item_slug/reviews" element={<ReviewsPage />} />
 
-          <Route path="/subcategories" element={<ShowSubcategories />} />
+          <Route path="/:category_slug/subcategories" element={<ShowSubcategories />} />
 
           <Route path="/user" element={<User />} />
           <Route path="/user-order" element={<UserOrder />} />
@@ -95,7 +95,7 @@ function App() {
           <Route path="/return" element={<Return />} />
           <Route path="/delivery" element={<DeliveryInfo />} />
           <Route path="/posts" element={<Posts />} />
-          <Route path="/post" element={<PostPage />} />
+          <Route path="/posts/:post_slug" element={<PostPage />} />
           <Route path="/addpost" element={<AddPostPage />} />
           <Route path="/quarantees" element={<Guarantees />} />
 

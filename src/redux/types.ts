@@ -54,6 +54,7 @@ export type Items = {
   reviewsAmount: number;
   image: string[];
   description: string;
+  slugString: string;
   fields: any;
   createdAt: string;
 };
@@ -81,6 +82,7 @@ export type TShippingItems = {
   amount: number;
   image: string[];
   description: string;
+  slugString: string;
   fields: any;
 };
 
@@ -153,6 +155,7 @@ export type TPost = {
   image: string;
   description: string;
   content: any;
+  slugString: any;
   createdAt: string;
   updatedAt: string;
 };
@@ -164,6 +167,7 @@ export type TPostGET = {
     image: string;
     description: string;
     content: any;
+    slugString: any;
     createdAt: string;
     updatedAt: string;
   };
@@ -172,6 +176,7 @@ export type TPostPOST = {
   title: string;
   image: string;
   description: string;
+  slugString: any;
   content: any;
 };
 
@@ -241,6 +246,7 @@ export type Category = {
   _id: string;
   name: string;
   image: string;
+  slugString: string;
   subcategories: Category[];
 };
 
@@ -319,4 +325,5 @@ export interface HomeState {
 
   subcategory: string;
   category: string;
+  category_slug: string;
 }

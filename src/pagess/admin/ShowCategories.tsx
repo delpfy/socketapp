@@ -29,6 +29,7 @@ import {
   uploadSubcategoryImage,
 } from "../../redux/admin/asyncActions";
 import InfoDialog from "../../componentss/dialogs/InfoDialog";
+import slugify from "slugify";
 
 export default function ShowCategories() {
   const {
@@ -41,6 +42,7 @@ export default function ShowCategories() {
   } = useAppSelector((state) => state.admin);
   const [newCategory, setNewCategory] = useState({
     name: "",
+    slugString: "",
     subcategories: [] as Category[],
   });
 
@@ -82,6 +84,7 @@ export default function ShowCategories() {
   function handleChangeNewSubategory(e: any) {
     setNewSubcategory({
       ...newSubcategory,
+      slugString: slugify(newSubcategory.name),
       [e.target.name]: e.target.value,
     });
   }
@@ -147,6 +150,7 @@ export default function ShowCategories() {
             categoryData: {
               name: newCategory.name,
               image: categoryImage,
+              slugString: slugify(newCategory.name),
               subcategories: newCategory.subcategories,
             },
           })
@@ -164,6 +168,7 @@ export default function ShowCategories() {
             categoryData: {
               name: newCategory.name,
               image: categoryImage,
+              slugString: slugify(newCategory.name),
               subcategories: newCategory.subcategories,
             },
           })

@@ -11,17 +11,24 @@ import {
 import React, { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { Items, Status } from "../../../redux/types";
-import { getItemsByCategory } from "../../../redux/home/asyncActions";
+import {
+  getCategoryBySlug,
+  getItemsByCategory,
+} from "../../../redux/home/asyncActions";
 
 import Card from "../block/CatalogCard";
 import Skeleton from "../block/CatalogSkeleton";
 import NotFoundPage from "../../../pagess/PageAbsence";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   setAfterOrder,
   synchronizeBasket,
 } from "../../../redux/basket/basketSlice";
-import { setEditItemMode } from "../../../redux/home/homeSlice";
+import {
+  SetCategory,
+  SetCategorySlug,
+  setEditItemMode,
+} from "../../../redux/home/homeSlice";
 import HomeCard from "../block/HomeCard";
 import SortBy from "../../sort/SortBy";
 import HomeSkeleton from "../block/HomeSkeleton";
@@ -32,8 +39,8 @@ export const CatalogField = () => {
   const { category, status, editItemMode } = useAppSelector(
     (state) => state.home
   );
-  const { user } = useAppSelector((state) => state.user);
   const { afterOrder } = useAppSelector((state) => state.basket);
+  const { category_slug } = useParams();
   const [active, setActive] = React.useState(false);
   // ItemsDisplay has {items: [{...}]} field in it, so we trying to get
   // exactly that field.
@@ -60,20 +67,21 @@ export const CatalogField = () => {
     };
 
   const list = (anchor: Anchor) => (
-    
-      
-<Box paddingLeft={2} paddingTop={4} width={310}>
-
-  <SortBy />
-</Box>
-      
-
-   
+    <Box paddingLeft={2} paddingTop={4} width={310}>
+      <SortBy />
+    </Box>
   );
 
   // Trying to make request to get items from same category.
   useEffect(() => {
-    dispatch(getItemsByCategory(category));
+    dispatch(getCategoryBySlug(category_slug as string)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        console.log(result.payload);
+        dispatch(SetCategory(result.payload.name));
+        dispatch(SetCategorySlug(category_slug as string));
+        dispatch(getItemsByCategory(result.payload.name));
+      }
+    });
   }, [category, dispatch]);
 
   useEffect(() => {
@@ -115,7 +123,6 @@ export const CatalogField = () => {
             <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
               {category}
             </Typography>
-            
           </Box>
         </Box>
         <Box
@@ -167,18 +174,17 @@ export const CatalogField = () => {
         ) {
           return (
             <>
-            <React.Fragment>
-        <SwipeableDrawer
-          anchor={"left"}
-          open={active}
-          onClose={toggleDrawer("left", false)}
-          onOpen={toggleDrawer("left", true)}
-        >
-          {list("left")}
-        </SwipeableDrawer>
-      </React.Fragment>
+              <React.Fragment>
+                <SwipeableDrawer
+                  anchor={"left"}
+                  open={active}
+                  onClose={toggleDrawer("left", false)}
+                  onOpen={toggleDrawer("left", true)}
+                >
+                  {list("left")}
+                </SwipeableDrawer>
+              </React.Fragment>
               <Box width={"100%"}>
-              
                 <Box
                   display={"flex"}
                   justifyContent={"flex-end"}
@@ -209,16 +215,6 @@ export const CatalogField = () => {
                     >
                       {category}
                     </Typography>
-                    {user.role === "manager" ? (
-                      <Button
-                        variant="contained"
-                        onClick={redirectToAddItemPage}
-                      >
-                        Додати товар
-                      </Button>
-                    ) : (
-                      <></>
-                    )}
                   </Box>
                   <Box
                     width={"100%"}

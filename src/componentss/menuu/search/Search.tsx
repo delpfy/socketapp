@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { getItemById, searchItems } from "../../../redux/home/asyncActions";
 import { useNavigate } from "react-router-dom";
 import { getItemReviews } from "../../../redux/review/asyncActions";
+import slugify from "slugify";
 
 export default function Search() {
   const { itemsDisplay } = useAppSelector((state) => state.home);
@@ -106,7 +107,9 @@ export default function Search() {
                   dispatch(getItemReviews(value._id)).then((result: any) => {
                     if (result.meta.requestStatus === "fulfilled") {
                       setAsRecentlyReviewed(value);
-                      navigate("/catalog/item");
+                      navigate(
+                        `/${slugify(value.category)}/${value.slugString}`
+                      );
                     }
                   });
                 }
