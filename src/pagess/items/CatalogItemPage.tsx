@@ -979,6 +979,7 @@ export const ItemPage = () => {
           justifyContent={"space-between"}
           display={"flex"}
           margin={"0 auto"}
+          
           width={"87%"}
         >
           <Box

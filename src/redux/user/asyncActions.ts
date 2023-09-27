@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
 
-import { UserDisplay, UserLogin, UserRegister, UserUpdate } from "../types";
+import { User, UserDisplay, UserLogin, UserRegister, UserUpdate } from "../types";
 
 export const checkAuthorization = createAsyncThunk<UserDisplay>(
   "home/checkAuthorization",
@@ -50,6 +50,15 @@ export const Register = createAsyncThunk<
   }>(`/register`, params);
 
   return data;
+});
+
+export const newsletterUnsub = createAsyncThunk<
+any,
+any
+>("home/newsletterUnsub", async function (params) {
+const { data } = await axios.post<any>(`/unsubscribe`, params);
+
+return data;
 });
 
 export const ResetPassword = createAsyncThunk<

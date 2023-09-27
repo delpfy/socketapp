@@ -22,7 +22,10 @@ import UserOrder from "./pagess/order/UserOrder";
 import ConfirmEmail from "./pagess/ConfirmEmail";
 import Layout from "./componentss/Layout";
 import Guarantees from "./pagess/footerPages/Guarantees";
-import { synchronizeComparison, synchronizeFavorites } from "./redux/home/homeSlice";
+import {
+  synchronizeComparison,
+  synchronizeFavorites,
+} from "./redux/home/homeSlice";
 import { getAllItems } from "./redux/home/asyncActions";
 
 import ReviewsPage from "./pagess/items/ReviewsPage";
@@ -30,6 +33,7 @@ import AdminPage from "./pagess/admin/AdminPage";
 import AdminAuthorize from "./pagess/admin/AdminAuthorize";
 import { getAllBanners, getAllCategories } from "./redux/admin/asyncActions";
 import ShowSubcategories from "./pagess/subcategories/ShowSubcategories";
+import NewsletterUnsubscribe from "./pagess/UnsubscribeNewsletter";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -51,13 +55,11 @@ function App() {
     dispatch(getAllBanners());
     dispatch(checkAuthorization());
     dispatch(getAllCategories()).then((result: any) => {
-      if(result.meta.requestStatus === 'fulfilled'){
-        
+      if (result.meta.requestStatus === "fulfilled") {
       }
-    })
+    });
   }, []);
- 
-  
+
   React.useEffect(() => {
     dispatch(synchronizeBasket());
     dispatch(synchronizeFavorites());
@@ -72,18 +74,19 @@ function App() {
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/admin-auth" element={<AdminAuthorize />} />
 
-
           <Route path="/catalog" element={<Catalog />} />
           <Route path="/catalog/item" element={<ItemPage />} />
           <Route path="/catalog/item/reviews" element={<ReviewsPage />} />
-         
+
           <Route path="/subcategories" element={<ShowSubcategories />} />
-          
-         
 
           <Route path="/user" element={<User />} />
           <Route path="/user-order" element={<UserOrder />} />
           <Route path="/confirm-email/:token" element={<ConfirmEmail />} />
+          <Route
+            path="/newsletter-unsubscribe/:params_id"
+            element={<NewsletterUnsubscribe />}
+          />
 
           <Route path="/order" element={<OrderPage />} />
 
@@ -95,8 +98,6 @@ function App() {
           <Route path="/post" element={<PostPage />} />
           <Route path="/addpost" element={<AddPostPage />} />
           <Route path="/quarantees" element={<Guarantees />} />
-
-          
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>

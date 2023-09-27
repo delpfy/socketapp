@@ -26,6 +26,7 @@ const userSlice = createSlice({
       authorized_admin: false,
       expences: 0,
       emailConfirmed: false,
+      newsletterSub: false,
     },
     token: "",
     emailConfirmationToken: "",
