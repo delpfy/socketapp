@@ -229,7 +229,7 @@ export default function Payment() {
     >
       <Typography sx={{ paddingBottom: 1 }}>Варіанти оплати </Typography>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <FormControl component="fieldset" sx={{ padding: 2 }}>
+        <FormControl component="fieldset" sx={{ padding: 2, paddingLeft: 0 }}>
           <RadioGroup
             aria-label="payment-options"
             value={selectedOption}
