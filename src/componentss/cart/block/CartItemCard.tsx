@@ -199,6 +199,7 @@ export default function BasketItemBlock(props: TShippingItems) {
 
     dispatch(synchronizeBasket());
   }
+
   return (
     <>
       <Box

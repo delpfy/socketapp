@@ -24,7 +24,6 @@ import InfoDialog from "../../componentss/dialogs/InfoDialog";
 import slugify from "slugify";
 
 export default function OrderProducts() {
-  
   const { user_orders } = useAppSelector((state) => state.orders);
   const { items } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.user);
@@ -34,7 +33,7 @@ export default function OrderProducts() {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  
+
   function InfoDialog_open() {
     setOpenInfo(true);
   }
@@ -52,9 +51,9 @@ export default function OrderProducts() {
 
   function getCurrentItem(item: TShippingItems) {
     dispatch(getItemById(item._id)).then((result: any) => {
-      if(result.meta.requestStatus === "fulfilled"){
+      if (result.meta.requestStatus === "fulfilled") {
         dispatch(getItemReviews(item._id)).then((result: any) => {
-          if(result.meta.requestStatus === "fulfilled"){
+          if (result.meta.requestStatus === "fulfilled") {
             navigate(`/${slugify(item.category)}/${item.slugString}`);
           }
         });
@@ -67,36 +66,53 @@ export default function OrderProducts() {
         );
         localStorage.setItem(
           "recentlyReviewed",
-          JSON.stringify(recentlyReviewed.filter((recent: any) => recent._id !== item._id))
+          JSON.stringify(
+            recentlyReviewed.filter((recent: any) => recent._id !== item._id)
+          )
         );
       }
     });
-    
   }
 
   useEffect(() => {
-    dispatch(ORDER_setItems(items))
-  }, [items])
+    dispatch(ORDER_setItems(items));
+  }, [items]);
 
   return (
     <>
-      <Paper elevation={5} sx={{ marginBottom: 5 }}>
+      <Box
+        sx={{
+          marginBottom: 5,
+          borderBottom: "2px solid black",
+          paddingBottom: 1,
+        }}
+      >
         <Box
           sx={{
             paddingTop: 2,
-
+            paddingBottom: 1,
+            borderBottom: "2px solid black",
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
           }}
         >
-          <Typography fontSize={20}>Замовлення № {user_orders.orders !== undefined ? user_orders.orders.length + 1 : 1}</Typography>
+          <Typography>
+            Замовлення №{" "}
+            {user_orders.orders !== undefined
+              ? user_orders.orders.length + 1
+              : 1}
+          </Typography>
 
-          <Typography fontSize={20}>на суму: {items &&
-                items.reduce((sum: number, item: TShippingItems) => {
-                  return (sum += item.price * item.amount);
-                }, 0)} ₴</Typography>
+          <Typography>
+            на суму:{" "}
+            {items &&
+              items.reduce((sum: number, item: TShippingItems) => {
+                return (sum += item.price * item.amount);
+              }, 0)}{" "}
+            ₴
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -108,28 +124,23 @@ export default function OrderProducts() {
           <Button onClick={CartDialog_open}>Редагувати</Button>
         </Box>
 
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Товар</TableCell>
-                <TableCell align="right">Ціна</TableCell>
-                <TableCell align="right">Кількість</TableCell>
-                <TableCell align="right">Сума</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
+        <Box>
+          <Box sx={{ width: "100%" }} aria-label="simple table">
+            <Box>
               {items === undefined ? (
                 <CircularProgress size={50} />
               ) : (
                 items.map((item) => (
-                  <TableRow
+                  <Box
                     key={item.name}
                     sx={{
-                      "&:last-child td, &:last-child th": { border: 0 },
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      alignItems: "center",
                     }}
                   >
-                    <TableCell component="th" scope="row">
+                    <Box width={"30%"}>
                       <Link
                         onClick={() => getCurrentItem(item)}
                         sx={{
@@ -142,24 +153,30 @@ export default function OrderProducts() {
                         <img
                           src={`https://www.sidebyside-tech.com${item.image[0]}`}
                           alt={item.name}
-                          style={{ height: 50, width: 50 }}
+                          style={{ height: 125, width: 125 }}
                         />
-
-                        <Box marginLeft={3}>{item.name}</Box>
                       </Link>
-                    </TableCell>
-                    <TableCell align="right">{item.price} ₴</TableCell>
-                    <TableCell align="right">{item.amount}</TableCell>
-                    <TableCell align="right">
-                      {item.price * item.amount} ₴
-                    </TableCell>
-                  </TableRow>
+                    </Box>
+                    <Box width={"70%"} textAlign={"center"}>
+                      {item.name}
+                    </Box>
+                    <Box width={"30%"} textAlign={"center"}>
+                      <Typography>Ціна</Typography>
+                      <Typography color={"error"} fontSize={18}>
+                        {item.price} ₴
+                      </Typography>
+                    </Box>
+                    <Box width={"30%"} textAlign={"center"}>
+                      <Typography>Кількість</Typography>
+                      <Typography>{item.amount}</Typography>
+                    </Box>
+                  </Box>
                 ))
               )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
       <BasketDialog
         openBasket={openBasket}
         CartDialog_close={CartDialog_close}

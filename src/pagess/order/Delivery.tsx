@@ -274,9 +274,9 @@ export default function Delivery() {
   }, []);
 
   return (
-    <Paper elevation={5} sx={{ marginBottom: 5 }}>
-      <FormControl component="fieldset" sx={{ padding: 2 }}>
-        <FormLabel component="legend">Доставка</FormLabel>
+    <Box sx={{ marginBottom: 5, borderBottom: "2px solid black" }}>
+      <Typography sx={{ paddingBottom: 1 }}>Доставка </Typography>
+      <FormControl component="fieldset" sx={{ padding: 2, paddingLeft: 0 }}>
         <RadioGroup
           aria-label="payment-options"
           value={selectedOption}
@@ -290,13 +290,22 @@ export default function Delivery() {
           >
             <FormControlLabel
               value="pickupFromOurStores"
-              control={<Radio color="success" />}
+              control={
+                <Radio
+                  sx={{
+                    color: "black",
+                    "&.Mui-checked": {
+                      color: "black",
+                    },
+                  }}
+                />
+              }
               label="Самовивіз з наших магазинів"
             />
             <Typography color={"#2e7d32"}>Безкоштовно</Typography>
           </Box>
           {selectedOption === "pickupFromOurStores" && (
-            <Box sx={{ padding: 5 }}>
+            <Box sx={{ padding: 5, paddingLeft: 0, paddingRight: 0 }}>
               <Autocomplete
                 size="small"
                 disablePortal
@@ -324,16 +333,25 @@ export default function Delivery() {
           >
             <FormControlLabel
               value="courier"
-              control={<Radio color="success" />}
+              control={
+                <Radio
+                  sx={{
+                    color: "black",
+                    "&.Mui-checked": {
+                      color: "black",
+                    },
+                  }}
+                />
+              }
               label="Кур'єр на вашу адресу"
             />
             <Typography>199 ₴</Typography>
           </Box>
           {selectedOption === "courier" && (
-            <Box sx={{ padding: 5 }}>
+            <Box sx={{ padding: 5, paddingLeft: 0, paddingRight: 0 }}>
               <Box
                 display={"flex"}
-                justifyContent={"space-around"}
+                justifyContent={"space-between"}
                 flexDirection={"row"}
                 paddingBottom={3}
               >
@@ -349,7 +367,7 @@ export default function Delivery() {
                   }}
                   noOptionsText={"(·_·)"}
                   options={streetOptions === undefined ? [] : streetOptions}
-                  sx={{ width: 300 }}
+                  sx={{ width: "40%" }}
                   getOptionLabel={(option) => option || ""}
                   renderInput={(params) => (
                     <TextField {...params} label="Введіть назву вулиці" />
@@ -360,7 +378,7 @@ export default function Delivery() {
                   label="Будинок"
                   id="outlined-size-small"
                   size="small"
-                  sx={{ width: 200 }}
+                  sx={{ width: "25%" }}
                   value={houseNumber}
                   onChange={handleHouseNumberChange}
                   error={houseNumberError}
@@ -372,7 +390,7 @@ export default function Delivery() {
                   label="Квартира"
                   id="outlined-size-small"
                   size="small"
-                  sx={{ width: 200 }}
+                  sx={{ width: "25%" }}
                   value={apartmentNumber}
                   onChange={handleApartmentNumberChange}
                   error={apartmentNumberError}
@@ -383,21 +401,21 @@ export default function Delivery() {
               </Box>
               <Box
                 display="flex"
-                justifyContent="space-around"
+                justifyContent="space-between"
                 flexDirection="row"
               >
                 <TextField
                   label="Поверх"
                   id="outlined-size-small"
                   size="small"
-                  sx={{ width: 350 }}
+                  sx={{ width: "48%" }}
                   value={floor}
                   onChange={handleFloorChange}
                   error={floorError}
                   helperText={floorError && "Введіть правильний номер поверху"}
                 />
                 <Autocomplete
-                  sx={{ width: 350 }}
+                  sx={{ width: "48%" }}
                   size="small"
                   disablePortal
                   id="combo-box-demo"
@@ -416,7 +434,16 @@ export default function Delivery() {
 
               <FormGroup sx={{ marginTop: 3 }}>
                 <FormControlLabel
-                  control={<Checkbox color="success" />}
+                  control={
+                    <Checkbox
+                      sx={{
+                        color: "black",
+                        "&.Mui-checked": {
+                          color: "black",
+                        },
+                      }}
+                    />
+                  }
                   disabled={floor === "" || apartmentNumber === ""}
                   label="Підняти на поверх (+ 11₴)"
                   checked={isLiftRequired}
@@ -433,7 +460,9 @@ export default function Delivery() {
           >
             <FormControlLabel
               value="pickupFromUrk"
-              control={<Radio color="success" />}
+              control={<Radio  sx={{color: 'black', '&.Mui-checked': {
+                color: 'black'
+              }}} />}
               label="Самовивіз з Укр Пошти"
             />
             <Typography>149 ₴</Typography>
@@ -465,13 +494,22 @@ export default function Delivery() {
           >
             <FormControlLabel
               value="pickupFromNova"
-              control={<Radio color="success" />}
+              control={
+                <Radio
+                  sx={{
+                    color: "black",
+                    "&.Mui-checked": {
+                      color: "black",
+                    },
+                  }}
+                />
+              }
               label="Самовивіз з Нової Пошти"
             />
             <Typography>149 ₴</Typography>
           </Box>
           {selectedOption === "pickupFromNova" && (
-            <Box sx={{ padding: 5 }}>
+            <Box sx={{ padding: 5, paddingLeft: 0, paddingRight: 0 }}>
               <Autocomplete
                 size="small"
                 disablePortal
@@ -515,6 +553,6 @@ export default function Delivery() {
           )}
         </RadioGroup>
       </FormControl>
-    </Paper>
+    </Box>
   );
 }

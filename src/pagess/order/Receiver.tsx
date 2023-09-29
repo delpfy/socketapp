@@ -8,6 +8,7 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Typography,
 } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -102,9 +103,15 @@ export default function Receiver() {
   }
 
   return (
-    <Paper elevation={5} sx={{ marginBottom: 5 }}>
+    <Box
+      sx={{
+        marginBottom: 5,
+        borderBottom: "2px solid black",
+        paddingBottom: 1,
+      }}
+    >
+      <Typography sx={{ paddingBottom: 1 }}>Отримувач</Typography>
       <FormControl component="fieldset" sx={{ padding: 2, width: "95%" }}>
-        <FormLabel component="legend">Отримувач</FormLabel>
         <RadioGroup
           aria-label="payment-options"
           value={selectedOption}
@@ -112,14 +119,32 @@ export default function Receiver() {
         >
           <FormControlLabel
             value="me"
-            control={<Radio color="success" />}
+            control={
+              <Radio
+                sx={{
+                  color: "black",
+                  "&.Mui-checked": {
+                    color: "black",
+                  },
+                }}
+              />
+            }
             label="Я"
             onClick={handleUserIsReceiver}
           />
 
           <FormControlLabel
             value="Receiver"
-            control={<Radio color="success" />}
+            control={
+              <Radio
+                sx={{
+                  color: "black",
+                  "&.Mui-checked": {
+                    color: "black",
+                  },
+                }}
+              />
+            }
             label="Інша людина"
           />
 
@@ -133,63 +158,117 @@ export default function Receiver() {
             >
               <Box
                 display={"flex"}
-                justifyContent={"space-around"}
+                justifyContent={"space-between"}
                 flexDirection={"row"}
                 alignItems={"center"}
               >
-                <TextField
-                  label="Прізвище"
-                  id="outlined-size-small"
-                  value={surname}
-                  onChange={(e: any) => setSurame(e.target.value.trim())}
-                  size="small"
-                  sx={{ width: 350 }}
-                />
-                <TextField
-                  label="Ім'я"
-                  id="outlined-size-small"
-                  value={name}
-                  onChange={(e: any) => setName(e.target.value.trim())}
-                  size="small"
-                  sx={{ width: 350 }}
-                />
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    width: "48%",
+                  }}
+                >
+                  <Typography>Прізвище</Typography>
+                  <TextField
+                    id="outlined-size-small"
+                    value={surname}
+                    onChange={(e: any) => {
+                      setSurame(e.target.value.trim());
+                    }}
+                    size="small"
+                    sx={{ width: "100%" }}
+                  />
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    width: "48%",
+                  }}
+                >
+                  <Typography>Ім'я</Typography>
+                  <TextField
+                    id="outlined-size-small"
+                    value={name}
+                    onChange={(e: any) => {
+                      setName(e.target.value.trim());
+                    }}
+                    size="small"
+                    sx={{ width: "100%" }}
+                  />
+                </Box>
               </Box>
               <Box
                 display={"flex"}
-                justifyContent={"space-around"}
+                justifyContent={"space-between"}
                 flexDirection={"row"}
                 alignItems={"center"}
               >
-                <TextField
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">+380</InputAdornment>
-                    ),
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    width: "48%",
                   }}
-                  label="Мобільний телефон"
-                  id="outlined-size-small"
-                  value={phone}
-                  onChange={handlePhoneChange}
-                  size="small"
-                  error={phoneError}
-                  helperText={phoneError ? "Некоректний номер телефону" : ""}
-                  sx={{ width: 350 }}
-                />
-                <TextField
-                  label="Електронна пошта "
-                  id="outlined-size-small"
-                  value={email}
-                  onChange={(e: any) => setEmail(e.target.value.trim())}
-                  size="small"
-                  error={emailError}
-                  helperText={emailError ? "Некоректна пошта" : ""}
-                  sx={{ width: 350 }}
-                />
+                >
+                  {phoneError ? (
+                    <Typography color={"error"}>
+                      Некоректний номер телефону
+                    </Typography>
+                  ) : (
+                    <Typography>Мобільний телефон</Typography>
+                  )}
+
+                  <TextField
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">+380</InputAdornment>
+                      ),
+                    }}
+                    id="outlined-size-small"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    size="small"
+                    error={phoneError}
+                    sx={{ width: "100%" }}
+                  />
+                </Box>
+
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "flex-start",
+                    width: "48%",
+                  }}
+                >
+                  {emailError ? (
+                    <Typography color={"error"}>Некоректна пошта</Typography>
+                  ) : (
+                    <Typography>Електронна пошта</Typography>
+                  )}
+
+                  <TextField
+                    id="outlined-size-small"
+                    value={email}
+                    onChange={(e: any) => {
+                      setEmail(e.target.value.trim());
+                    }}
+                    size="small"
+                    error={emailError}
+                    sx={{ width: "100%" }}
+                  />
+                </Box>
               </Box>
             </Box>
           )}
         </RadioGroup>
       </FormControl>
-    </Paper>
+    </Box>
   );
 }

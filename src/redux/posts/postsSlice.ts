@@ -53,7 +53,7 @@ const postsSlice = createSlice({
     });
 
     builder.addCase(getPostBySlug.fulfilled, (state, action) => {
-      state.currentPost = action.payload.post;
+      state.currentPost = action.payload as TPost;
       state.loading = false;
       state.error = false;
     });

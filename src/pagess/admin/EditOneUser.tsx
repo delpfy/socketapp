@@ -126,6 +126,9 @@ export default function EditOneUser() {
 <FormControlLabel
                 control={
                   <Checkbox
+                  sx={{color: 'black', '&.Mui-checked': {
+                    color: 'black'
+                  }}}
                     checked={newsletterSub}
                     onChange={() =>
                       setNewsletterSub(!newsletterSub)

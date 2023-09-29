@@ -184,7 +184,9 @@ export default function SortBy() {
                   <FormControlLabel
                     value="asc"
                     checked={reset ? false : costValue === "asc" ? true : false}
-                    control={<Radio color="success" />}
+                    control={<Radio  sx={{color: 'black', '&.Mui-checked': {
+                color: 'black'
+              }}} />}
                     label="Від дешевих до дорогих"
                   />
                   <FormControlLabel
@@ -192,7 +194,9 @@ export default function SortBy() {
                     checked={
                       reset ? false : costValue === "desc" ? true : false
                     }
-                    control={<Radio color="success" />}
+                    control={<Radio  sx={{color: 'black', '&.Mui-checked': {
+                color: 'black'
+              }}} />}
                     label="Від дорогих до дешевих"
                   />
                 </RadioGroup>
@@ -263,7 +267,9 @@ export default function SortBy() {
                     checked={
                       reset ? false : relevanceValue === "desc" ? true : false
                     }
-                    control={<Radio color="success" />}
+                    control={<Radio  sx={{color: 'black', '&.Mui-checked': {
+                color: 'black'
+              }}} />}
                     label="За збільшенням"
                   />
                   <FormControlLabel
@@ -271,7 +277,9 @@ export default function SortBy() {
                     checked={
                       reset ? false : relevanceValue === "asc" ? true : false
                     }
-                    control={<Radio color="success" />}
+                    control={<Radio  sx={{color: 'black', '&.Mui-checked': {
+                color: 'black'
+              }}} />}
                     label="За зменшенням"
                   />
                 </RadioGroup>

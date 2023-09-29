@@ -157,7 +157,7 @@ export default function ReviewsPage() {
         <ReviewForm {...itemCurrent.items} />
         <Box
           sx={{
-            border: "2px solid black",
+           
             borderRadius: 1.5,
             marginTop: 3,
             marginBottom: 10,

@@ -36,9 +36,9 @@ export default function Payment() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    setSelectedOption("")
-  } , [items])
-  
+    setSelectedOption("");
+  }, [items]);
+
   const marks = [
     { value: 2, label: "2" },
     { value: 3, label: "3" },
@@ -142,6 +142,16 @@ export default function Payment() {
       .toString()
       .padStart(2, "0");
 
+    if(cvv.trim().length !== 3){
+      setCvvError(true);
+      return false
+    }
+
+    if(cardNumber.trim().length !== 16){
+      setCardNumberError(true);
+      return false
+    }
+
     if (
       expiryMonth < "01" ||
       expiryMonth > "12" ||
@@ -210,10 +220,16 @@ export default function Payment() {
   };
 
   return (
-    <Paper elevation={5} sx={{ marginBottom: 5 }}>
+    <Box
+      sx={{
+        marginBottom: 5,
+        borderBottom: "2px solid black",
+        paddingBottom: 1,
+      }}
+    >
+      <Typography sx={{ paddingBottom: 1 }}>Варіанти оплати </Typography>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <FormControl component="fieldset" sx={{ padding: 2 }}>
-          <FormLabel component="legend">Варіанти оплати</FormLabel>
           <RadioGroup
             aria-label="payment-options"
             value={selectedOption}
@@ -221,7 +237,16 @@ export default function Payment() {
           >
             <FormControlLabel
               value="payOnDelivery"
-              control={<Radio color="success" />}
+              control={
+                <Radio
+                  sx={{
+                    color: "black",
+                    "&.Mui-checked": {
+                      color: "black",
+                    },
+                  }}
+                />
+              }
               label="Оплата під час отримання товару"
             />
             {selectedOption === "payOnDelivery" && (
@@ -233,14 +258,32 @@ export default function Payment() {
                 >
                   <FormControlLabel
                     value="card"
-                    control={<Radio color="success" />}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "black",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
                     label="Картою"
                     onClick={handleCardUponReceipt}
                   />
 
                   <FormControlLabel
                     value="cash"
-                    control={<Radio color="success" />}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "black",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
                     label="Готівкою"
                     onClick={handleCashUponReceipt}
                   />
@@ -249,7 +292,16 @@ export default function Payment() {
             )}
             <FormControlLabel
               value="online"
-              control={<Radio color="success" />}
+              control={
+                <Radio
+                  sx={{
+                    color: "black",
+                    "&.Mui-checked": {
+                      color: "black",
+                    },
+                  }}
+                />
+              }
               label="Оплатити онлайн"
             />
             {selectedOption === "online" && (
@@ -261,49 +313,132 @@ export default function Payment() {
                 >
                   <FormControlLabel
                     value="addCard"
-                    control={<Radio color="success" />}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "black",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
                     label="Додати картку"
                   />
                   {selectedSecondaryOption === "addCard" && (
                     <Box
                       sx={{
                         ml: 4,
+                        width: "100%",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "flex-start",
                         flexDirection: "column",
                       }}
                     >
-                      <TextField
-                        label="Номер карти"
-                        sx={{ width: 300 }}
-                        value={formatCardNumber(cardNumber)}
-                        onChange={handleCardNumberChange}
-                        error={cardNumberError}
-                        helperText={cardNumberError && "Введіть 16 цифр карти"}
-                      />
-                      <TextField
-                        label="Термін дії (MMYY)"
-                        sx={{ width: 300 }}
-                        value={expiryDate}
-                        onChange={handleExpiryDateChange}
-                        error={expiryDateError}
-                        helperText={
-                          expiryDateError && "Введіть дійсний термін дії"
-                        }
-                      />
-                      <TextField
-                        label="CVV"
-                        sx={{ width: 300 }}
-                        value={cvv}
-                        onChange={handleCvvChange}
-                        error={cvvError}
-                        helperText={cvvError && "Введіть 3 цифри CVV"}
-                      />
+                      <Box
+                        display={"flex"}
+                        justifyContent={"space-between"}
+                        flexDirection={"row"}
+                        width={"100%"}
+                        alignItems={"center"}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            width: "48%",
+                          }}
+                        >
+                          {cvvError ? (
+                            <Typography color={"error"}>
+                              Введіть 3 цифри CVV
+                            </Typography>
+                          ) : (
+                            <Typography>CVV</Typography>
+                          )}
+
+                          <TextField
+                            sx={{ width: "100%" }}
+                            value={cvv}
+                            onChange={handleCvvChange}
+                            error={cvvError}
+                          />
+                          
+                        </Box>
+
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            width: "48%",
+                          }}
+                        >
+                          {expiryDateError ? (
+                            <Typography color={"error"}>
+                              Введіть дійсний термін дії
+                            </Typography>
+                          ) : (
+                            <Typography>Термін дії (MMYY)</Typography>
+                          )}
+
+                          <TextField
+                            sx={{ width: "100%" }}
+                            value={expiryDate}
+                            onChange={handleExpiryDateChange}
+                            error={expiryDateError}
+                          />
+                        </Box>
+                      </Box>
+
+                      <Box
+                        display={"flex"}
+                        justifyContent={"space-between"}
+                        flexDirection={"row"}
+                        alignItems={"center"}
+                        width={"100%"}
+                      >
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "flex-start",
+                            width: "100%",
+                          }}
+                        >
+                          {cardNumberError ? (
+                            <Typography color={"error"}>
+                              Введіть 16 цифр карти
+                            </Typography>
+                          ) : (
+                            <Typography>Номер карти</Typography>
+                          )}
+
+                          <TextField
+                            sx={{ width: "100%" }}
+                            value={formatCardNumber(cardNumber)}
+                            onChange={handleCardNumberChange}
+                            error={cardNumberError}
+                          />
+                        </Box>
+                      </Box>
+
                       <Box mt={2}>
                         <Button
                           variant="contained"
+                          size="large"
                           color="success"
+                          sx={{
+                            justifySelf: "center",
+                            background: "black",
+                            color: "white",
+                            "&:hover": {
+                              backgroundColor: "black",
+                              color: "white",
+                            },
+                          }}
                           onClick={handleAddCard}
                         >
                           {cardButtonMessage}
@@ -316,7 +451,16 @@ export default function Payment() {
             )}
             <FormControlLabel
               value="partPay"
-              control={<Radio color="success" />}
+              control={
+                <Radio
+                  sx={{
+                    color: "black",
+                    "&.Mui-checked": {
+                      color: "black",
+                    },
+                  }}
+                />
+              }
               label="Оплата частинами"
             />
             {selectedOption === "partPay" && (
@@ -352,6 +496,6 @@ export default function Payment() {
           </Typography>
         </Box>
       </Box>
-    </Paper>
+    </Box>
   );
 }

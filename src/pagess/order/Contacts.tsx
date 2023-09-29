@@ -65,77 +65,130 @@ export default function Contacts() {
   }, [phone, name, surname, email]);
 
   return (
-    <Paper elevation={5} sx={{ marginBottom: 5, height: 360 }}>
-      <Typography>Ваші контактні дані </Typography>
+    <Box sx={{ marginBottom: 5, paddingBottom: 2, height: 360, borderBottom: "2px solid black" }}>
+      <Typography sx={{ borderBottom: "2px solid black", paddingBottom: 1 }}>
+        Ваші контактні дані{" "}
+      </Typography>
       <Box
         display={"flex"}
         justifyContent={"space-around"}
         flexDirection={"column"}
         height={200}
+        marginTop={2}
+        marginBottom={2}
       >
         <Box
           display={"flex"}
-          justifyContent={"space-around"}
+          justifyContent={"space-between"}
           flexDirection={"row"}
           alignItems={"center"}
+         
         >
-          <TextField
-            label="Прізвище"
-            id="outlined-size-small"
-            value={surname}
-            onChange={(e: any) => {
-              setSurame(e.target.value.trim());
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: '48%',
             }}
-            size="small"
-            sx={{ width: 350 }}
-          />
-          <TextField
-            label="Ім'я"
-            id="outlined-size-small"
-            value={name}
-            onChange={(e: any) => {
-              setName(e.target.value.trim());
+          >
+            <Typography>Прізвище</Typography>
+            <TextField
+              id="outlined-size-small"
+              value={surname}
+              onChange={(e: any) => {
+                setSurame(e.target.value.trim());
+              }}
+              size="small"
+              sx={{ width: '100%' }}
+            />
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: '48%'
             }}
-            size="small"
-            sx={{ width: 350 }}
-          />
+          >
+            <Typography>Ім'я</Typography>
+            <TextField
+              id="outlined-size-small"
+              value={name}
+              onChange={(e: any) => {
+                setName(e.target.value.trim());
+              }}
+              size="small"
+              sx={{ width: '100%' }}
+            />
+          </Box>
         </Box>
         <Box
           display={"flex"}
-          justifyContent={"space-around"}
+          justifyContent={"space-between"}
           flexDirection={"row"}
           alignItems={"center"}
         >
-          <TextField
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">+380</InputAdornment>
-              ),
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: '48%',
             }}
-            label="Мобільний телефон"
-            id="outlined-size-small"
-            value={phone}
-            onChange={handlePhoneChange}
-            size="small"
-            error={phoneError}
-            helperText={phoneError ? "Некоректний номер телефону" : ""}
-            sx={{ width: 350 }}
-          />
-          <TextField
-            label="Електронна пошта "
-            id="outlined-size-small"
-            value={email}
-            onChange={(e: any) => {
-              setEmail(e.target.value.trim());
+          >
+            {
+              phoneError ? 
+              <Typography color={'error'}>Некоректний номер телефону</Typography>  : 
+              <Typography>Мобільний телефон</Typography>
+            }
+              
+            <TextField
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">+380</InputAdornment>
+                ),
+              }}
+              id="outlined-size-small"
+              value={phone}
+              onChange={handlePhoneChange}
+              size="small"
+              error={phoneError}
+              
+              sx={{ width: '100%' }}
+            />
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: '48%',
             }}
-            size="small"
-            error={emailError}
-            helperText={emailError ? "Некоректна пошта" : ""}
-            sx={{ width: 350 }}
-          />
+          >
+            {
+              emailError ? 
+              <Typography color={'error'}>Некоректна пошта</Typography>  : 
+              <Typography>Електронна пошта</Typography>
+            }
+            
+            <TextField
+              id="outlined-size-small"
+              value={email}
+              onChange={(e: any) => {
+                setEmail(e.target.value.trim());
+              }}
+              size="small"
+              error={emailError}
+              
+              sx={{ width: '100%' }}
+            />
+          </Box>
         </Box>
       </Box>
       <CitySelectionButton />
-    </Paper>
+    </Box>
   );
 }

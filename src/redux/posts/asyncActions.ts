@@ -19,10 +19,10 @@ export const getPostById = createAsyncThunk<TPostGET, string>(
   }
 );
 
-export const getPostBySlug = createAsyncThunk<TPostGET, string>(
+export const getPostBySlug = createAsyncThunk<TPost, string>(
   "posts/getPostBySlug",
   async (params) => {
-    const { data } = await axios.get<TPostGET>(`/posts/slug/${params}`);
+    const { data } = await axios.get<TPost>(`/posts/slug/${params}`);
     console.log(data);
     return data;
   }

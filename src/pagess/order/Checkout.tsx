@@ -26,8 +26,6 @@ import { addOrder, getOrdersByUser } from "../../redux/order/asyncActions";
 import { updateItem } from "../../redux/home/asyncActions";
 import { setAfterOrder } from "../../redux/basket/basketSlice";
 
-
-
 export default function OrderPage() {
   const { items } = useAppSelector((state) => state.basket);
   const { user } = useAppSelector((state) => state.user);
@@ -35,7 +33,6 @@ export default function OrderPage() {
 
   const [openInfo, setOpenInfo] = useState(false);
   const [infoMessage, setInfoMessage] = useState<string>("Some info");
-
 
   const contact_ref = useRef<HTMLDivElement>(null);
   const payment_ref = useRef<HTMLDivElement | null>(null);
@@ -92,7 +89,7 @@ export default function OrderPage() {
     if (!stages_of_order.stage_city) {
       InfoDialog_open();
       setInfoMessage("Ви не вказали міста");
-      
+
       return;
     }
     if (!stages_of_order.stage_delivery) {
@@ -124,19 +121,20 @@ export default function OrderPage() {
             quantity: -item.amount,
           },
         })
-      )
-    })
+      );
+    });
     InfoDialog_open();
-      setInfoMessage("Заказ було офомлено! Історія заказів в вашому особистому кабінеті.");
-      
+    setInfoMessage(
+      "Заказ було офомлено! Історія заказів в вашому особистому кабінеті."
+    );
+
     dispatch(addOrder(_order)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(getOrdersByUser(user.id));
         localStorage.setItem("basketItems", JSON.stringify([]));
-        dispatch(setAfterOrder(true))
+        dispatch(setAfterOrder(true));
       }
     });
-    
   }
 
   const pointOn_Contacts = () => {
@@ -199,22 +197,32 @@ export default function OrderPage() {
     dispatch(getOrdersByUser(user.id));
   }, []);
 
-  
   return (
     <>
-      {items === undefined  ? (
+      {items === undefined ? (
         navigate("/")
       ) : items.length === 0 ? (
         navigate("/")
       ) : (
         <Box paddingTop={15}>
-          <Typography variant="h1" fontSize={30} fontFamily={"Comfortaa"}>
+          <Typography
+            width={"82%"}
+            margin={"0 auto"}
+            display={"flex"}
+            justifyContent={"flex-start"}
+            variant="h1"
+            fontSize={30}
+            fontFamily={"Comfortaa"}
+          >
             Замовлення
           </Typography>
           <Box
             padding={5}
+            width={"82%"}
+            margin={'0 auto'}
             display={"flex"}
-            justifyContent={"space-evenly"}
+            justifyContent={"space-between"}
+            alignItems={'flex-start'}
             flexDirection={"row-reverse"}
           >
             <Paper
@@ -314,7 +322,15 @@ export default function OrderPage() {
                 variant="contained"
                 size="large"
                 color="success"
-                sx={{ justifySelf: "center" }}
+                sx={{
+                  justifySelf: "center",
+                  background: "black",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
+                }}
                 onClick={handleOrderReady}
               >
                 Замовлення підтверджую
@@ -337,7 +353,8 @@ export default function OrderPage() {
             </Paper>
 
             <Box
-              padding={5}
+              
+              paddingTop={0}
               display={"flex"}
               justifyContent={"space-between"}
               flexDirection={"column"}
@@ -360,7 +377,7 @@ export default function OrderPage() {
           </Box>
         </Box>
       )}
-      
+
       <InfoDialog
         openInfo={openInfo}
         InfoDialog_close={InfoDialog_close}

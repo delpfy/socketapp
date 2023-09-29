@@ -109,6 +109,9 @@ export default function ItemsAccords() {
               <FormControlLabel
                 control={
                   <Checkbox
+                  sx={{color: 'black', '&.Mui-checked': {
+                    color: 'black'
+                  }}}
                     checked={
                       selectedSortParams[
                         uniqueItemFieldsNames[index]
@@ -189,7 +192,9 @@ export default function ItemsAccords() {
                sx={{color: 'black'}}
                 control={
                   <Checkbox
-                   sx={{color: 'black'}}
+                  sx={{color: 'black', '&.Mui-checked': {
+                    color: 'black'
+                  }}}
                     checked={
                       selectedSortParams[
                         uniqueItemFieldsNames[index]
