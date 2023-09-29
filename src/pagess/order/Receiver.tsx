@@ -111,7 +111,10 @@ export default function Receiver() {
       }}
     >
       <Typography sx={{ paddingBottom: 1 }}>Отримувач</Typography>
-      <FormControl component="fieldset" sx={{ padding: 2, width: "95%" }}>
+      <FormControl
+        component="fieldset"
+        sx={{ padding: 2, paddingLeft: 0, width: "95%" }}
+      >
         <RadioGroup
           aria-label="payment-options"
           value={selectedOption}

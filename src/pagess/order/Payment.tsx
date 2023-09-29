@@ -142,14 +142,14 @@ export default function Payment() {
       .toString()
       .padStart(2, "0");
 
-    if(cvv.trim().length !== 3){
+    if (cvv.trim().length !== 3) {
       setCvvError(true);
-      return false
+      return false;
     }
 
-    if(cardNumber.trim().length !== 16){
+    if (cardNumber.trim().length !== 16) {
       setCardNumberError(true);
-      return false
+      return false;
     }
 
     if (
@@ -365,7 +365,6 @@ export default function Payment() {
                             onChange={handleCvvChange}
                             error={cvvError}
                           />
-                          
                         </Box>
 
                         <Box
