@@ -64,6 +64,7 @@ export default function CategoryCard(_category: any) {
           },
           minWidth: {
             xs: 150,
+            sm: 150,
             md: 230,
           },
           /* maxWidth: 'calc(100% - 30px)',
@@ -71,10 +72,12 @@ export default function CategoryCard(_category: any) {
 
           minHeight: {
             xs: 180,
+            sm: 180,
             md: 210,
           },
           maxHeight: {
             xs: 180,
+            sm: 180,
             md: 210,
           },
 
@@ -103,18 +106,22 @@ export default function CategoryCard(_category: any) {
             display: "flex",
             maxHeight: {
               xs: 110,
+              sm: 110,
               md: 215,
             },
             minHeight: {
               xs: 110,
+              sm: 110,
               md: 120,
             },
             maxWidth: {
               xs: 140,
+              sm: 140,
               md: 160,
             },
             minWidth: {
               xs: 140,
+              sm: 140,
               md: 160,
             },
             paddingBottom: 4,

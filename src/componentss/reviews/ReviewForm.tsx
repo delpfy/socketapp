@@ -126,34 +126,38 @@ export default function ReviewForm(props: Items | TShippingItems) {
       flexDirection={"column"}
       sx={{ border: "2px solid black", borderRadius: 1.5 }}
       margin={"0 auto"}
-      width={"85%"}
+      width={"87%"}
     >
       <Typography
         variant={"h3"}
-        fontSize={window.innerWidth > 600 ? 20 : 15}
-        height={window.innerWidth > 600 ? 20 : 15}
+        fontSize={window.innerWidth > 1024 ? 20 : 15}
+        height={window.innerWidth > 1024 ? 20 : 15}
         fontWeight={"bold"}
         padding={1.5}
-        paddingBottom={0.5}
+        paddingBottom={2}
         fontFamily={"'Roboto light', sans-serif"}
       >
         Залиште відгук
       </Typography>
       <Box
-        padding={3}
+        paddingBottom={3}
         display={"flex"}
         flexDirection={"column"}
         justifyContent={"space-between"}
-        height={350}
         margin={"0 auto"}
         sx={{
           width: "95%",
+          height: {
+            xs: 440,
+            md: 350,
+          },
         }}
       >
         <Box
           display={"flex"}
           sx={{
             flexDirection: "column",
+            margin: "0 auto",
           }}
           justifyContent={"space-between"}
           alignItems={"center"}
@@ -163,7 +167,7 @@ export default function ReviewForm(props: Items | TShippingItems) {
             name="simple-controlled"
             value={rating}
             size="large"
-            sx={{ color: "black", marginBottom: 3 }}
+            sx={{ color: "black", margin: "0 auto", marginBottom: 3 }}
             onChange={handleRatingChange}
           />
           <Box
@@ -188,7 +192,10 @@ export default function ReviewForm(props: Items | TShippingItems) {
         <Box
           sx={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: {
+              xs: "column",
+              md: "row",
+            },
             alignItems: "flex-start",
             width: "100%",
           }}
@@ -201,6 +208,10 @@ export default function ReviewForm(props: Items | TShippingItems) {
               width: "100%",
               padding: 1,
               paddingLeft: 0,
+              paddingRight: {
+                xs: 0,
+                md: 1,
+              },
             }}
           >
             <Typography>Переваги</Typography>
@@ -219,7 +230,14 @@ export default function ReviewForm(props: Items | TShippingItems) {
               alignItems: "flex-start",
               width: "100%",
               padding: 1,
-              paddingRight: 0,
+              paddingRight: {
+                xs: 1,
+                md: 0,
+              },
+              paddingLeft: {
+                xs: 0,
+                md: 1,
+              },
             }}
           >
             <Typography>Недоліки</Typography>
@@ -234,10 +252,19 @@ export default function ReviewForm(props: Items | TShippingItems) {
 
         <Button
           sx={{
-            width: 300,
+            width: {
+              xs: 240,
+              md: 300,
+            },
             marginTop: 3,
-            alignSelf: "flex-end",
-            fontSize: 15,
+            alignSelf: {
+              xs: "center",
+              md: "flex-end",
+            },
+            fontSize: {
+              xs: 13,
+              md: 15,
+            },
             paddingLeft: 8,
             paddingRight: 8,
             background: "black",

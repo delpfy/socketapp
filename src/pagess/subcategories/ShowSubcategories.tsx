@@ -42,12 +42,17 @@ export default function ShowSubcategories() {
           textAlign={"left"}
           sx={{
             borderBottom: "2px solid black",
-            paddingTop: { xs: "20%", md: "13%", lg: "10%" },
+            paddingTop: { xs: "20%", sm : '18%', md: "13%", lg: "10%" },
           }}
         >
           <Typography
             variant={"h3"}
-            marginBottom={5}
+            
+            sx = {{mb:{
+              xs:5 ,
+              sm: 8,
+              md:5 ,
+            }}}
             fontSize={30}
             fontFamily={"Comfortaa"}
           >
@@ -58,7 +63,7 @@ export default function ShowSubcategories() {
             padding={"2%"}
             justifyContent="center"
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 2, md: 16, lg: 20, xl: 20 }}
+            columns={{ xs: 2, sm: 6, md: 16, lg: 20, xl: 20 }}
           >
             {categories
               .find((item: Category) => item.name === category)

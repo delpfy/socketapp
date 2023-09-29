@@ -108,23 +108,43 @@ export default function AppBarMenu() {
         sx={{ backgroundColor: "black", backgroundAttachment: "fixed" }}
       >
         <Box
-          width={"95%"}
+          
+          
           height={"90%"}
-          margin={"0 auto"}
+          sx={{
+            width: {
+              xs: '95%',
+              sm: '100%',
+              md: '95%',
+            },
+            margin: {
+              xs: "0 auto",
+              sm: "0",
+              md: "0 auto",
+            },
+            justifyContent: {
+              xs: "space-between",
+              sm: "space-evenly",
+              md: "space-between",
+            }
+          }}
           display={"flex"}
           flexDirection={"row"}
           alignItems={"center"}
-          justifyContent={"space-between"}
+          
+
         >
           <Box
             display={"flex"}
             sx={{
               width: {
                 xs: "15%",
+                sm: "15%",
                 md: "23%",
               },
               margin: {
                 xs: "0 auto",
+                sm: 0,
                 md: 0,
               },
               justifyContent: {

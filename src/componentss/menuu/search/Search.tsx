@@ -83,9 +83,18 @@ export default function Search() {
       <Box
         alignItems={"center"}
         sx={{
-          width: { xs: "65%", md: "43%" },
+          width: { xs: "65%", sm : '40%', md: "43%" },
           alignSelf: "flex-start",
-          margin: "0 auto",
+          margin: {
+            xs: "0 auto",
+            sm: "0",
+            md: "0 auto",
+          } ,
+          marginLeft: {
+            xs: "0 ",
+            sm: 2,
+            md: "0 ",
+          } ,
         }}
       >
         <Autocomplete
@@ -95,6 +104,7 @@ export default function Search() {
             marginTop: 2,
             backgroundColor: "white",
             borderRadius: 2,
+            
             fontFamily: "'Roboto light', sans-serif!important",
           }}
           options={searchResults === undefined ? [] : searchResults}

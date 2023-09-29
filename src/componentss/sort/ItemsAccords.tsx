@@ -71,7 +71,7 @@ export default function ItemsAccords() {
   }
 
   function ParameterAccord({ name, index }: { name: string; index: number }) {
-    return window.innerWidth > 600 ? (
+    return window.innerWidth > 1024 ? (
       <Box>
         <Box>
           <Typography

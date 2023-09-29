@@ -7,35 +7,34 @@ export const Logo = () => {
   const navigate = useNavigate();
   return (
     <Box
-      
       flexDirection={"row"}
       justifyContent={"space-between"}
       alignItems={"center"}
       color={"black"}
       width={137}
-    
       /* paddingBottom={1} */
       onClick={() => navigate("/")}
-      sx={{ cursor: "pointer", color: "white", transition: "transform 0.3s ease",
-      "&:hover": {
-        transform: "translateY(-3px)",
-      },
-      "&:active": {
-        transform: "translateY(0)",
-      },
-      
-      display: {
-        xs: 'none',
-        md: 'flex'
-      }
-    }}
-      
+      sx={{
+        cursor: "pointer",
+        color: "white",
+        transition: "transform 0.3s ease",
+        "&:hover": {
+          transform: "translateY(-3px)",
+        },
+        "&:active": {
+          transform: "translateY(0)",
+        },
+
+        display: {
+          xs: "none",
+          sm: "flex",
+        },
+      }}
     >
       <Typography
         variant={"h3"}
         fontSize={30}
         height={30}
-      
         /* paddingTop={1} */
         fontFamily={"'Roboto light', sans-serif"}
       >

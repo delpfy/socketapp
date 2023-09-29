@@ -27,7 +27,7 @@ export default function AllItems() {
             padding={"2%"}
             justifyContent="center"
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 4, sm: 2, md: 16, lg: 20, xl: 25 }}
+            columns={{ xs: 4, sm: 6, md: 16, lg: 20, xl: 25 }}
           >
             {itemsDisplay.items !== undefined && status === "success"
               ? itemsDisplay.items?.slice(0, 20).map((item: Items) => (

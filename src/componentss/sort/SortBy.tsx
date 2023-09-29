@@ -135,7 +135,7 @@ export default function SortBy() {
   };
 
   function showFieldsSort() {
-    return ;
+    return;
   }
 
   return (
@@ -155,7 +155,7 @@ export default function SortBy() {
       >
         <Box>
           <Box
-            display={window.innerWidth > 600 ? "none" : "flex"}
+            display={window.innerWidth > 1024 ? "none" : "flex"}
             paddingBottom={2}
             flexDirection={"row"}
             alignItems={"center"}
@@ -184,9 +184,16 @@ export default function SortBy() {
                   <FormControlLabel
                     value="asc"
                     checked={reset ? false : costValue === "asc" ? true : false}
-                    control={<Radio  sx={{color: 'black', '&.Mui-checked': {
-                color: 'black'
-              }}} />}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "black",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
                     label="Від дешевих до дорогих"
                   />
                   <FormControlLabel
@@ -194,9 +201,16 @@ export default function SortBy() {
                     checked={
                       reset ? false : costValue === "desc" ? true : false
                     }
-                    control={<Radio  sx={{color: 'black', '&.Mui-checked': {
-                color: 'black'
-              }}} />}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "black",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
                     label="Від дорогих до дешевих"
                   />
                 </RadioGroup>
@@ -242,7 +256,14 @@ export default function SortBy() {
                   variant="contained"
                   size="small"
                   color="primary"
-                  sx={{ marginRight: 1, background: "black" }}
+                  sx={{
+                    marginRight: 1,
+                    background: "black",
+                    "&:hover": {
+                      backgroundColor: "black",
+                      color: "white",
+                    },
+                  }}
                   onClick={handleCostOkButtonClick}
                 >
                   OK
@@ -267,9 +288,16 @@ export default function SortBy() {
                     checked={
                       reset ? false : relevanceValue === "desc" ? true : false
                     }
-                    control={<Radio  sx={{color: 'black', '&.Mui-checked': {
-                color: 'black'
-              }}} />}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "black",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
                     label="За збільшенням"
                   />
                   <FormControlLabel
@@ -277,9 +305,16 @@ export default function SortBy() {
                     checked={
                       reset ? false : relevanceValue === "asc" ? true : false
                     }
-                    control={<Radio  sx={{color: 'black', '&.Mui-checked': {
-                color: 'black'
-              }}} />}
+                    control={
+                      <Radio
+                        sx={{
+                          color: "black",
+                          "&.Mui-checked": {
+                            color: "black",
+                          },
+                        }}
+                      />
+                    }
                     label="За зменшенням"
                   />
                 </RadioGroup>
@@ -315,10 +350,13 @@ export default function SortBy() {
                   />
                   <Button
                     variant="contained"
-                    sx={{ background: "black", "&:hover": {
-                      backgroundColor: "black",
-                      color: "white",
-                    },}}
+                    sx={{
+                      background: "black",
+                      "&:hover": {
+                        backgroundColor: "black",
+                        color: "white",
+                      },
+                    }}
                     size="small"
                     color="primary"
                     onClick={handleRelevanceOkButtonClick}

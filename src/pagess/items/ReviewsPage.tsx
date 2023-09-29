@@ -7,7 +7,7 @@ import {
 } from "../../redux/review/reviewSlice";
 import { Status } from "../../redux/types";
 import ReviewForm from "../../componentss/reviews/ReviewForm";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getItemById } from "../../redux/home/asyncActions";
 import slugify from "slugify";
 
@@ -16,6 +16,7 @@ export default function ReviewsPage() {
     (state) => state.home
   );
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
+  const {category_slug} = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   function StatusReviewHandler(status_review: Status) {
@@ -64,7 +65,8 @@ export default function ReviewsPage() {
           </Typography>
         );
       default:
-        navigate(`${slugify(itemCurrent.items.category)}`);
+        
+        navigate(`/${category_slug}`);
         return (
           <Typography fontFamily={"Comfortaa"} fontSize={20}>
             Пусто...
@@ -112,7 +114,10 @@ export default function ReviewsPage() {
           sx={{
             display: "flex",
             flexDirection: "row",
-            width: 350,
+            width: {
+              xs: "100%",
+              md: 350,
+            },
             justifyContent: "space-between",
             alignItems: "center",
             marginTop: 3,
@@ -167,8 +172,8 @@ export default function ReviewsPage() {
         >
           <Typography
             variant={"h3"}
-            fontSize={window.innerWidth > 600 ? 20 : 15}
-            height={window.innerWidth > 600 ? 20 : 15}
+            fontSize={window.innerWidth > 1024 ? 20 : 15}
+            height={window.innerWidth > 1024 ? 20 : 15}
             fontWeight={"bold"}
             padding={1.5}
             paddingBottom={0.5}

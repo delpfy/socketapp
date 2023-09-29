@@ -103,7 +103,7 @@ export default function HomeCard(props: Items) {
   }
 
   function getCurrentItem() {
-    navigate(`/${category_slug}/${props.slugString}`);
+    navigate(`/${slugify(props.category)}/${props.slugString}`);
     setAsRecentlyReviewed();
   }
 

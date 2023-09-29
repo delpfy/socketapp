@@ -127,8 +127,8 @@ export default function Review(props: IReviewGET) {
         <Box>
           <Typography
             variant={"h3"}
-            fontSize={window.innerWidth > 600 ? 20 : 15}
-            height={window.innerWidth > 600 ? 20 : 15}
+            fontSize={window.innerWidth > 1024 ? 20 : 15}
+            height={window.innerWidth > 1024 ? 20 : 15}
             fontWeight={"bold"}
             padding={1.5}
             paddingBottom={0.5}
@@ -136,7 +136,7 @@ export default function Review(props: IReviewGET) {
           >
             {props.userName}
           </Typography>
-          <Typography padding={1.5} width={400}>
+          <Typography padding={1.5} sx = {{width: {xs: '100%', md: 400}}} >
             {props.createdAt !== props.updatedAt
               ? formatDate(props.createdAt) +
                 "\n" +
@@ -166,7 +166,7 @@ export default function Review(props: IReviewGET) {
       </Box>
 
       <Box
-        padding={3}
+        paddingBottom={3}
         display={"flex"}
         flexDirection={"column"}
         justifyContent={"space-between"}
@@ -302,7 +302,7 @@ export default function Review(props: IReviewGET) {
 
         <Button
           sx={{
-            width: 300,
+            width:  300,
             marginTop: 3,
             marginBottom: 3,
             alignSelf: "flex-end",
@@ -398,7 +398,7 @@ export default function Review(props: IReviewGET) {
               Відповіді
             </Typography>
 
-            <Box width={600} marginLeft={10} paddingTop={4}>
+            <Box width={'100%'}  paddingTop={4}>
               {props.replies
                 .slice()
                 .reverse()

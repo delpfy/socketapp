@@ -106,6 +106,7 @@ export const CatalogField = () => {
           display={"flex"}
           justifyContent={"flex-end"}
           alignItems={"center"}
+          flexDirection={"column"}
           paddingTop={12}
         >
           <Box
@@ -115,14 +116,57 @@ export const CatalogField = () => {
             paddingBottom={2}
             sx={{
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: {
+                xs: "space-around",
+                md: "space-between",
+              },
               alignItems: "center",
-              borderBottom: "2px solid black",
+              borderBottom:
+                window.innerWidth > 1024 ? "2px solid black" : "none",
             }}
           >
             <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
               {category}
             </Typography>
+          </Box>
+          <Box
+            width={"100%"}
+            alignSelf={"flex-end"}
+            marginBottom={3}
+            paddingBottom={2}
+            sx={{
+              display: {
+                xs: "flex",
+                md: "none",
+              },
+              justifyContent: "center",
+
+              alignItems: "center",
+              borderBottom:
+                window.innerWidth > 1024 ? "2px solid black" : "none",
+            }}
+          >
+            <Button
+              variant="contained"
+              sx={{
+                background: "black",
+                width: 300,
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "flex-start",
+              }}
+              size="small"
+              onClick={toggleDrawer("left", true)}
+            >
+              <img
+                src={require("../../../img/fitersIcon.png")}
+                style={{ width: 7, height: 9, marginLeft: 14 }}
+                alt="sdf"
+              />
+              <Typography width={"100%"} fontSize={10} sx={{ marginRight: 3 }}>
+                Фільри
+              </Typography>
+            </Button>
           </Box>
         </Box>
         <Box
@@ -134,13 +178,11 @@ export const CatalogField = () => {
           <Box sx={{ display: { xs: "none", md: "inherit" } }}>
             <SortBy />
           </Box>
-
           <Grid
             container
-            padding={"2%"}
             paddingTop={0}
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 4, sm: 2, md: 16, lg: 16, xl: 20 }}
+            columns={{ xs: 4, sm: 6, md: 16, lg: 16, xl: 20 }}
           >
             {Array.from({ length: 6 }, (param, index) => (
               <Grid
@@ -195,18 +237,25 @@ export const CatalogField = () => {
                   <Box
                     width={"100%"}
                     alignSelf={"flex-end"}
-                    marginBottom={3}
-                    paddingBottom={2}
+                    
+                    paddingBottom={3}
                     sx={{
                       display: "flex",
                       justifyContent: {
                         xs: "space-around",
                         md: "space-between",
                       },
+                      margin: {
+                        xs: '0 auto',
+                        sm: '0 auto',
+                        md: '0',
+                      },
+                      marginBottom: 3,
                       alignItems: "center",
                       borderBottom:
-                        window.innerWidth > 600 ? "2px solid black" : "none",
+                        window.innerWidth > 1024 ? "2px solid black" : "none",
                     }}
+                    
                   >
                     <Typography
                       variant={"h3"}
@@ -230,17 +279,22 @@ export const CatalogField = () => {
 
                       alignItems: "center",
                       borderBottom:
-                        window.innerWidth > 600 ? "2px solid black" : "none",
+                        window.innerWidth > 1024 ? "2px solid black" : "none",
                     }}
                   >
                     <Button
                       variant="contained"
                       sx={{
-                        background: "black",
                         width: 300,
                         textAlign: "center",
                         display: "flex",
                         justifyContent: "flex-start",
+                        background: "black",
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: "black",
+                          color: "white",
+                        },
                       }}
                       size="small"
                       onClick={toggleDrawer("left", true)}
@@ -273,7 +327,7 @@ export const CatalogField = () => {
                     container
                     paddingTop={0}
                     spacing={{ xs: 1, sm: 3, md: 4 }}
-                    columns={{ xs: 4, sm: 2, md: 16, lg: 16, xl: 20 }}
+                    columns={{ xs: 4, sm: 12, md: 16, lg: 16, xl: 20 }}
                   >
                     {sorted
                       ? itemsSorted.items.map((item: Items) => (
@@ -284,7 +338,7 @@ export const CatalogField = () => {
                             alignItems={"center"}
                             paddingBottom={2}
                             xs={2}
-                            sm={2}
+                            sm={4}
                             md={4}
                             lg={4}
                             xl={5}

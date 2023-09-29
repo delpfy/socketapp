@@ -293,7 +293,7 @@ export const Home = () => {
         width={"90%"}
         margin={"0 auto"}
         sx={{
-          display: { xs: "flex", md: "none" },
+          display: { xs: "flex", sm: "none" },
           marginTop: {
             xs: "43%",
           },
@@ -336,10 +336,11 @@ export const Home = () => {
           sx={{
             display: {
               xs: "none",
-              md: "flex",
+              sm: "flex",
             },
             marginTop: {
               xs: 3,
+              sm: "25%",
               md: "16%",
             },
           }}
@@ -348,8 +349,8 @@ export const Home = () => {
             container
             padding={"2%"}
             justifyContent="center"
-            spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 2, md: 16, lg: 20, xl: 20 }}
+            spacing={{ xs: 1, sm: 2, md: 4 }}
+            columns={{ xs: 2, sm:12, md: 16, lg: 20, xl: 20 }}
           >
             {categories.map((item: any) => (
               <Grid
@@ -364,7 +365,7 @@ export const Home = () => {
                   },
                 }}
                 xs={2}
-                sm={2}
+                sm={3}
                 md={4}
                 lg={4}
                 xl={4}

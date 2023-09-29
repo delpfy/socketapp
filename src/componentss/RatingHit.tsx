@@ -27,7 +27,7 @@ export default function SalesHit() {
             padding={"2%"}
             justifyContent="center"
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 4, sm: 2, md: 16, lg: 20, xl: 25 }}
+            columns={{ xs: 4, sm: 6, md: 16, lg: 20, xl: 25 }}
           >
             {itemsTopRating !== undefined && status === "success"
               ? itemsTopRating?.slice(0, 20).map((item: Items) => (

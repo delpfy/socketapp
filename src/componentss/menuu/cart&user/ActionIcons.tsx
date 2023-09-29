@@ -169,6 +169,7 @@ export const ActionIcons = () => {
         sx={{
           paddingRight: {
             xs: '0',
+            sm: 7,
             md: 3
           }
         }}
@@ -181,6 +182,7 @@ export const ActionIcons = () => {
           sx={{
             paddingRight: {
               xs: '0',
+              sm: '0',
               md: 8
             }
           }}
@@ -192,7 +194,7 @@ export const ActionIcons = () => {
             sx={{
               display: {
                 xs: 'none',
-                md: 'flex'
+                sm: 'flex'
               },
               transition: "transform 0.3s ease",
               "&:hover": {
@@ -253,7 +255,7 @@ export const ActionIcons = () => {
             sx={{
               display: {
                 xs: 'none',
-                md: 'flex'
+                sm: 'flex'
               },
               transition: "transform 0.3s ease",
               "&:hover": {
@@ -392,7 +394,7 @@ export const ActionIcons = () => {
           <Box sx = {{
             display: {
               xs: 'none',
-              md: 'flex'
+              sm: 'flex'
             },
           }}>
             <IconButton sx={{

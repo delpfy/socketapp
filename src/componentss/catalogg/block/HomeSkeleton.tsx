@@ -8,19 +8,18 @@ export default function HomeSkeleton() {
           sx={{
             maxWidth: {
               xs: 160,
-              md: 200,
+              md: 186,
             },
             minWidth: {
-              xs: 160,
-              md: 200,
+              xs: 125,
+              md: 186,
             },
             minHeight: 320,
             maxHeight: 320,
             display: "flex",
             flexDirection: "column",
-            alignItems: 'center',
-            justifyContent: "center",
-            padding: "11%",
+            justifyContent: "space-between",
+            padding: 3.5,
           }}
         >
             <CircularProgress size={50} sx = {{margin: '0 auto'}} />

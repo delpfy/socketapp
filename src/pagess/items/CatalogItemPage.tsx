@@ -32,6 +32,8 @@ import {
 } from "../../redux/review/reviewSlice";
 import LoadingPage from "../LoadingPage";
 import {
+  SetCategory,
+  SetCategorySlug,
   setComparisonId,
   setEditItemMode,
   setFavoritesId,
@@ -42,6 +44,7 @@ import {
 import {
   checkItemById,
   deleteItem,
+  getCategoryBySlug,
   getItemById,
   getItemBySlug,
   getItemsByCategory,
@@ -56,6 +59,7 @@ export const ItemPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { item_slug } = useParams();
+  const { category_slug } = useParams();
 
   const {
     category,
@@ -70,7 +74,14 @@ export const ItemPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
+    dispatch(getCategoryBySlug(category_slug as string)).then((result: any) => {
+      if (result.meta.requestStatus === "fulfilled") {
+        console.log(result.payload);
+        dispatch(SetCategory(result.payload.name));
+        dispatch(SetCategorySlug(category_slug as string));
+        dispatch(getItemsByCategory(result.payload.name));
+      }
+    });
     dispatch(getItemBySlug(item_slug as string)).then((result: any) => {
       if (result.meta.requestStatus === "rejected") {
         setInfoMessage("Такого товару вже нема");
@@ -486,8 +497,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 206 : 155}
-                    fontSize={window.innerWidth > 600 ? 17 : 13}
+                    width={window.innerWidth > 1024 ? 206 : 155}
+                    fontSize={window.innerWidth > 1024 ? 17 : 13}
                     alignItems={"flex-end"}
                     display={"flex"}
                     justifyContent={"space-between"}
@@ -510,8 +521,8 @@ export const ItemPage = () => {
                     >
                       <Typography
                         variant={"h3"}
-                        fontSize={window.innerWidth > 600 ? 20 : 15}
-                        height={window.innerWidth > 600 ? 20 : 15}
+                        fontSize={window.innerWidth > 1024 ? 20 : 15}
+                        height={window.innerWidth > 1024 ? 20 : 15}
                         fontWeight={"bold"}
                         /* paddingTop={1} */
                         fontFamily={"'Roboto light', sans-serif"}
@@ -520,10 +531,10 @@ export const ItemPage = () => {
                       </Typography>
                       <Typography
                         variant={"h3"}
-                        fontSize={window.innerWidth > 600 ? 14 : 12}
-                        height={window.innerWidth > 600 ? 14 : 12}
+                        fontSize={window.innerWidth > 1024 ? 14 : 12}
+                        height={window.innerWidth > 1024 ? 14 : 12}
                         fontWeight={"bold"}
-                        paddingBottom={window.innerWidth > 600 ? 2.2 : 1.6}
+                        paddingBottom={window.innerWidth > 1024 ? 2.2 : 1.6}
                         fontFamily={"'Roboto light', sans-serif"}
                       >
                         .store
@@ -602,7 +613,7 @@ export const ItemPage = () => {
                           <Typography
                             paddingLeft={0.3}
                             paddingTop={0}
-                            fontSize={window.innerWidth > 600 ? 24 : 20}
+                            fontSize={window.innerWidth > 1024 ? 24 : 20}
                             fontFamily={"Comfortaa"}
                             color={"error"}
                           >
@@ -690,7 +701,7 @@ export const ItemPage = () => {
                 {itemCurrent.items.quantity <= 10 ? (
                   <Typography
                     paddingLeft={2}
-                    fontSize={window.innerWidth > 600 ? 15 : 14}
+                    fontSize={window.innerWidth > 1024 ? 15 : 14}
                     sx={{ background: "#fdfacf" }}
                   >
                     Товар закінчується! Залишилось: {itemCurrent.items.quantity}
@@ -699,7 +710,7 @@ export const ItemPage = () => {
                   <Typography
                     fontFamily={"Comfortaa"}
                     paddingLeft={2}
-                    fontSize={window.innerWidth > 600 ? 15 : 14}
+                    fontSize={window.innerWidth > 1024 ? 15 : 14}
                   >
                     Є в наявності
                   </Typography>
@@ -735,7 +746,7 @@ export const ItemPage = () => {
                     display={"flex"}
                     flexDirection={"row"}
                     justifyContent={"space-between"}
-                    width={window.innerWidth > 600 ? 165 : 130}
+                    width={window.innerWidth > 1024 ? 165 : 130}
                   >
                     <Box>
                       <img
@@ -745,8 +756,8 @@ export const ItemPage = () => {
                       />
                     </Box>
                     <Typography
-                      width={window.innerWidth > 600 ? 135 : 105}
-                      fontSize={window.innerWidth > 600 ? 17 : 13}
+                      width={window.innerWidth > 1024 ? 135 : 105}
+                      fontSize={window.innerWidth > 1024 ? 17 : 13}
                       height={20}
                       alignItems={"flex-center"}
                       display={"flex"}
@@ -770,7 +781,7 @@ export const ItemPage = () => {
                       >
                         <Typography
                           variant={"h3"}
-                          fontSize={window.innerWidth > 600 ? 17 : 13}
+                          fontSize={window.innerWidth > 1024 ? 17 : 13}
                           height={17}
                           fontWeight={"bold"}
                           /* paddingTop={1} */
@@ -795,8 +806,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 250 : 220}
-                    fontSize={window.innerWidth > 600 ? 14 : 12}
+                    width={window.innerWidth > 1024 ? 250 : 220}
+                    fontSize={window.innerWidth > 1024 ? 14 : 12}
                     height={20}
                     alignItems={"center"}
                     display={"flex"}
@@ -823,8 +834,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 331 : 290}
-                    fontSize={window.innerWidth > 600 ? 14 : 12}
+                    width={window.innerWidth > 1024 ? 331 : 290}
+                    fontSize={window.innerWidth > 1024 ? 14 : 12}
                     height={20}
                     alignItems={"center"}
                     display={"flex"}
@@ -852,7 +863,7 @@ export const ItemPage = () => {
                 border: "2px solid black",
                 borderRadius: 1.5,
                 marginBottom: 3,
-                height: window.innerWidth > 600 ? 125 : 135,
+                height: window.innerWidth > 1024 ? 125 : 135,
               }}
             >
               <Box width={"100%"}>
@@ -869,8 +880,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 320 : 285}
-                    fontSize={window.innerWidth > 600 ? 14 : 12}
+                    width={window.innerWidth > 1024 ? 320 : 285}
+                    fontSize={window.innerWidth > 1024 ? 14 : 12}
                     height={20}
                     alignItems={"center"}
                     display={"flex"}
@@ -886,7 +897,7 @@ export const ItemPage = () => {
 
                     <Typography
                       marginLeft={1}
-                      fontSize={window.innerWidth > 600 ? 14 : 12}
+                      fontSize={window.innerWidth > 1024 ? 14 : 12}
                       fontWeight={"bold"}
                     >
                       Оплата.
@@ -894,7 +905,7 @@ export const ItemPage = () => {
 
                     <Typography
                       marginRight={1}
-                      fontSize={window.innerWidth > 600 ? 14 : 12}
+                      fontSize={window.innerWidth > 1024 ? 14 : 12}
                     >
                       Оплата карткою Visa/MasterCard
                     </Typography>
@@ -913,8 +924,8 @@ export const ItemPage = () => {
                   }}
                 >
                   <Typography
-                    width={window.innerWidth > 600 ? 463 : 265}
-                    fontSize={window.innerWidth > 600 ? 14 : 12}
+                    width={window.innerWidth > 1024 ? 463 : 265}
+                    fontSize={window.innerWidth > 1024 ? 14 : 12}
                     height={20}
                     paddingLeft={0.3}
                     alignItems={"center"}
@@ -931,7 +942,7 @@ export const ItemPage = () => {
 
                     <Typography
                       marginLeft={1}
-                      fontSize={window.innerWidth > 600 ? 14 : 12}
+                      fontSize={window.innerWidth > 1024 ? 14 : 12}
                       fontWeight={"bold"}
                     >
                       Гарантія.
@@ -939,9 +950,9 @@ export const ItemPage = () => {
 
                     <Typography
                       marginRight={1}
-                      textAlign={window.innerWidth > 600 ? "inherit" : "center"}
-                      paddingTop={window.innerWidth > 600 ? 0 : 2.1}
-                      fontSize={window.innerWidth > 600 ? 14 : 12}
+                      textAlign={window.innerWidth > 1024 ? "inherit" : "center"}
+                      paddingTop={window.innerWidth > 1024 ? 0 : 2.1}
+                      fontSize={window.innerWidth > 1024 ? 14 : 12}
                     >
                       24 місяці Обмін/повернення
                       {window.innerWidth < 600 ? <br /> : <></>} товару протягом
@@ -1056,8 +1067,8 @@ export const ItemPage = () => {
               }}
             >
               <Typography
-                width={window.innerWidth > 600 ? 206 : 155}
-                fontSize={window.innerWidth > 600 ? 17 : 13}
+                width={window.innerWidth > 1024 ? 206 : 155}
+                fontSize={window.innerWidth > 1024 ? 17 : 13}
                 alignItems={"flex-end"}
                 display={"flex"}
                 justifyContent={"space-between"}
@@ -1065,8 +1076,8 @@ export const ItemPage = () => {
                 <Typography
                   ref={attributesRef}
                   variant={"h3"}
-                  fontSize={window.innerWidth > 600 ? 20 : 15}
-                  height={window.innerWidth > 600 ? 20 : 15}
+                  fontSize={window.innerWidth > 1024 ? 20 : 15}
+                  height={window.innerWidth > 1024 ? 20 : 15}
                   fontWeight={"bold"}
                   /* paddingTop={1} */
                   fontFamily={"'Roboto light', sans-serif"}
@@ -1185,16 +1196,16 @@ export const ItemPage = () => {
               }}
             >
               <Typography
-                width={window.innerWidth > 600 ? 206 : 155}
-                fontSize={window.innerWidth > 600 ? 17 : 13}
+                width={window.innerWidth > 1024 ? 206 : 155}
+                fontSize={window.innerWidth > 1024 ? 17 : 13}
                 alignItems={"flex-end"}
                 display={"flex"}
                 justifyContent={"space-between"}
               >
                 <Typography
                   variant={"h3"}
-                  fontSize={window.innerWidth > 600 ? 20 : 15}
-                  height={window.innerWidth > 600 ? 20 : 15}
+                  fontSize={window.innerWidth > 1024 ? 20 : 15}
+                  height={window.innerWidth > 1024 ? 20 : 15}
                   fontWeight={"bold"}
                   /* paddingTop={1} */
                   fontFamily={"'Roboto light', sans-serif"}
@@ -1217,6 +1228,7 @@ export const ItemPage = () => {
             </Typography>
           </Box>
         </Box>
+        <ReviewForm {...itemCurrent.items} />
         <CategoryItems />
         <InfoDialog
           openInfo={openInfo}
