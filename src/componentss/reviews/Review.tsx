@@ -338,7 +338,7 @@ export default function Review(props: IReviewGET) {
           justifyContent={"flex-end"}
           
         >
-          {user.id === props.user  && !editMode ? (
+          {user.id !== props.user  && !editMode ? (
             <Button
               sx={{
                 width: 300,
