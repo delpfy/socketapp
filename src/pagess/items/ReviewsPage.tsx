@@ -166,9 +166,13 @@ export default function ReviewsPage() {
             borderRadius: 1.5,
             marginTop: 3,
             marginBottom: 10,
+            width: {
+              xs: '90%',
+              sm: '85%'
+            }
           }}
           margin={"0 auto"}
-          width={"85%"}
+          
         >
           <Typography
             variant={"h3"}

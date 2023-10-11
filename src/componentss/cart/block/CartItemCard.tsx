@@ -192,7 +192,6 @@ export default function BasketItemBlock(props: TShippingItems) {
       const itemIndex = basketItems.findIndex(
         (item: TShippingItems) => item._id === props._id
       );
-      console.log("itemId " + props._id);
       basketItems.splice(itemIndex, 1);
       localStorage.setItem("basketItems", JSON.stringify(basketItems));
     }

@@ -131,6 +131,7 @@ export default function User() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0,0);
     dispatch(getOrdersByUser(user.id)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         console.log(user_orders);

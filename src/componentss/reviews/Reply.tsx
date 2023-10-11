@@ -1,4 +1,11 @@
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  OutlinedInput,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { TReplyGET, IReviewGET, IReviewPOST } from "../../redux/types";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -8,6 +15,7 @@ import { useEffect, useState } from "react";
 import { getItemReviews, updateReview } from "../../redux/review/asyncActions";
 import ErrorDialog from "../dialogs/ErrorDialog";
 import { formatDate } from "../../utils/usefulFunc";
+import DeleteDialog from "../dialogs/DeleteDialog";
 
 type ReplyProps = {
   reply: TReplyGET;
@@ -53,7 +61,7 @@ export default function Reply({ reply, review }: ReplyProps) {
       {
         _id: reply._id,
         user: user.id,
-        userName: userName,
+        userName: user.name,
         description: description,
         createdAt: new Date(reply.createdAt),
         updatedAt: new Date(),
@@ -76,7 +84,7 @@ export default function Reply({ reply, review }: ReplyProps) {
       return;
     }
 
-    if (description === "" && execute_POST) {
+    if (description.trim() === "" && execute_POST) {
       ErrorDialog_open();
       setErrorMessage("Ви не написали повідомлення");
       return;
@@ -103,35 +111,37 @@ export default function Reply({ reply, review }: ReplyProps) {
     }
   }, [replies]);
 
+  const [openDelete, setOpenDelete] = useState(false);
+  function DeleteDialog_close() {
+    setOpenDelete(false);
+  }
+  function DeleteDialog_open() {
+    setOpenDelete(true);
+  }
+
   return (
     <Box
-      sx={{ background: "#DDE6ED" }}
       display={"flex"}
+      justifyContent={"flex-start"}
+      alignItems={"flex-start"}
       flexDirection={"column"}
-      justifyContent={"space-between"}
-      marginBottom={editMode ? 5 : 2}
-      height={editMode ? 200 : 100}
+      sx={{ border: "2px solid black", borderRadius: 1.5 }}
+      margin={"0 auto"}
+      marginTop={4}
+      marginBottom={4}
+      height={"100%"}
+      width={"96%"}
     >
       <Box
         display={"flex"}
         flexDirection={"column"}
         justifyContent={"space-between"}
         alignItems={"flex-start"}
-        width={100}
+        width={300}
+        padding={2}
       >
-        {editMode ? (
-          <TextField
-            id="outlined-multiline-static"
-            label="Iм'я"
-            fullWidth
-            value={userName}
-            size="small"
-            onChange={(e) => setUserName(e.target.value)}
-          />
-        ) : (
-          <Typography>{reply.userName}</Typography>
-        )}
-        <Typography width={400}>
+        <Typography fontWeight={"bold"}>{reply.userName}</Typography>
+        <Typography width={"100%"}>
           {reply.createdAt !== reply.updatedAt
             ? formatDate(reply.createdAt.toString()) +
               "\n" +
@@ -143,18 +153,38 @@ export default function Reply({ reply, review }: ReplyProps) {
       </Box>
 
       {editMode ? (
-        <TextField
-          id="outlined-multiline-static"
-          label="Опис"
-          fullWidth
-          value={description}
-          multiline
-          size="small"
-          rows={3}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+        <Box
+          padding={2}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            margin: "0 auto",
+            width: {
+              xs: '90%',
+              sm: '96%'
+            },
+          }}
+        >
+          <Typography> {editMode ? "Коментар" : ""}</Typography>
+          {editMode ? (
+            <OutlinedInput
+              id="outlined-multiline-static"
+              fullWidth
+              value={editMode ? description : reply.description}
+              disabled={editMode ? false : true}
+              multiline
+              rows={4}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          ) : (
+            <Box padding={2}>
+              <Typography>{reply.description}</Typography>
+            </Box>
+          )}
+        </Box>
       ) : (
-        <Typography paddingBottom={user.id === reply.user ? 0 : 5}>
+        <Typography paddingLeft={2} paddingBottom={2}>
           {reply.description}
         </Typography>
       )}
@@ -165,6 +195,9 @@ export default function Reply({ reply, review }: ReplyProps) {
           flexDirection={"row"}
           alignItems={"center"}
           justifyContent={"flex-end"}
+          width={"100%"}
+          padding={1}
+          paddingLeft={0}
         >
           {editMode ? (
             <>
@@ -173,55 +206,94 @@ export default function Reply({ reply, review }: ReplyProps) {
                 variant="contained"
                 sx={{
                   marginRight: 2,
+                  marginLeft: {
+                    xs: 2,
+                    sm: 0
+                  },
                   fontFamily: "Comfortaa",
                   fontSize: 15,
                   width: 200,
                   height: 30,
                   alignSelf: "flex-end",
+                  fontWeight: "bold",
+                  background: "white",
+                  border: "1px solid black",
+                  color: "black",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
                 }}
                 onClick={executeReply_PATCH}
               >
                 зберігти
               </Button>
-              <IconButton
+              <Button
+                onClick={() => handleEditCall()}
                 sx={{
-                  marginRight: 2,
-                  backgroundColor: "#fca258",
                   width: 40,
                   height: 40,
-                  "&:hover": { backgroundColor: "#fc8019" },
+
+                  background: "white",
+                  border: "1px solid black",
+                  "&:hover": {
+                    background: "white",
+                  },
                 }}
-                onClick={handleEditCall}
+                variant="contained"
               >
-                <CloseIcon />
-              </IconButton>
+                <img
+                  src={require("../../img/cross_sign.png")}
+                  style={{ width: 15, height: 15 }}
+                  alt="sdf"
+                />
+              </Button>
             </>
           ) : (
-            <IconButton
+            <Button
+              onClick={() => handleEditCall()}
               sx={{
-                marginRight: 2,
-                backgroundColor: "#fca258",
                 width: 40,
                 height: 40,
-                "&:hover": { backgroundColor: "#fc8019" },
+                marginLeft: 2,
+
+                background: "white",
+                border: "1px solid black",
+                "&:hover": {
+                  background: "white",
+                },
               }}
-              onClick={handleEditCall}
+              variant="contained"
             >
-              <EditIcon />
-            </IconButton>
+              <img
+                src={require("../../img/editBlackIcon.png")}
+                style={{ width: 20, height: 20 }}
+                alt="sdf"
+              />
+            </Button>
           )}
 
-          <IconButton
+          <Button
+            onClick={() => DeleteDialog_open()}
             sx={{
-              backgroundColor: "#e83a3a",
               width: 40,
               height: 40,
-              "&:hover": { backgroundColor: "#eb0909" },
+              marginLeft: 2,
+              marginRight: 2,
+              background: "white",
+              border: "1px solid black",
+              "&:hover": {
+                background: "white",
+              },
             }}
-            onClick={executeReply_DELETE}
+            variant="contained"
           >
-            <DeleteIcon />
-          </IconButton>
+            <img
+              src={require("../../img/basket/trashIcon.png")}
+              style={{ width: 15, height: 20 }}
+              alt="sdf"
+            />
+          </Button>
         </Box>
       ) : (
         ""
@@ -230,6 +302,11 @@ export default function Reply({ reply, review }: ReplyProps) {
         openError={openError}
         ErrorDialog_close={ErrorDialog_close}
         errorMessage={errorMessage}
+      />
+      <DeleteDialog
+        openDelete={openDelete}
+        DeleteDialog_close={DeleteDialog_close}
+        DeleteFunc={executeReply_DELETE}
       />
     </Box>
   );

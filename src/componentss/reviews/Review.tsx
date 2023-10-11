@@ -24,11 +24,12 @@ import Reply from "./Reply";
 import { formatDate } from "../../utils/usefulFunc";
 import ErrorDialog from "../dialogs/ErrorDialog";
 import InfoDialog from "../dialogs/InfoDialog";
+import DeleteDialog from "../dialogs/DeleteDialog";
 
 export default function Review(props: IReviewGET) {
   const { user } = useAppSelector((state) => state.user);
   const [editMode, setEditMode] = useState(false);
-  const [replyMode, setreplyMode] = useState(false);
+  const [replyMode, setReplyMode] = useState(false);
   const [description, setDescription] = useState<string>(props.description);
   const [advantages, setAdvantages] = useState<string>(props.advantages);
   const [disadvantages, setDisadvantages] = useState<string>(
@@ -47,6 +48,7 @@ export default function Review(props: IReviewGET) {
 
   function handleEditCall() {
     setEditMode(!editMode);
+    setReplyMode(false);
     if (editMode === false) {
       discardChanges();
     }
@@ -99,9 +101,19 @@ export default function Review(props: IReviewGET) {
     setRating(e.target.value);
   }
 
-  function handlereplyMode() {
-    setreplyMode(!replyMode);
+  function handleReplyMode() {
+    setReplyMode(!replyMode);
+    
   }
+
+  const [openDelete, setOpenDelete] = useState(false);
+  function DeleteDialog_close() {
+    setOpenDelete(false);
+  }
+  function DeleteDialog_open() {
+    setOpenDelete(true);
+  }
+
 
   return (
     <Box
@@ -136,7 +148,7 @@ export default function Review(props: IReviewGET) {
           >
             {props.userName}
           </Typography>
-          <Typography padding={1.5} sx = {{width: {xs: '100%', md: 400}}} >
+          <Typography padding={1.5} sx={{ width: { xs: "100%", md: 400 } }}>
             {props.createdAt !== props.updatedAt
               ? formatDate(props.createdAt) +
                 "\n" +
@@ -150,7 +162,7 @@ export default function Review(props: IReviewGET) {
           <Rating
             name="simple-controlled"
             value={rating}
-            size="large"
+            size={window.innerWidth < 600 ? 'medium' : 'large'}
             sx={{ color: "black", marginBottom: 3 }}
             onChange={handleRatingChange}
           />
@@ -203,7 +215,7 @@ export default function Review(props: IReviewGET) {
                   value={editMode ? description : props.description}
                   disabled={editMode ? false : true}
                   multiline
-                  rows={4}
+                  
                   onChange={(e) => setDescription(e.target.value)}
                 />
               ) : (
@@ -217,7 +229,10 @@ export default function Review(props: IReviewGET) {
         <Box
           sx={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: {
+              xs: 'column',
+              sm: 'row'
+            },
             alignItems: "flex-start",
             width: "100%",
           }}
@@ -232,7 +247,14 @@ export default function Review(props: IReviewGET) {
                 alignItems: "flex-start",
                 width: "100%",
                 padding: 1,
-                paddingLeft: 0,
+                paddingLeft:{
+                  xs: 0,
+                  sm: 1
+                } ,
+                paddingRight:{
+                  xs: 0,
+                  sm: 1
+                } ,
               }}
             >
               <Typography>{editMode ? "Переваги" : ""}</Typography>
@@ -241,6 +263,7 @@ export default function Review(props: IReviewGET) {
                   margin="dense"
                   value={advantages}
                   disabled={editMode ? false : true}
+                  multiline
                   fullWidth
                   onChange={(e) => setAdvantages(e.target.value)}
                 />
@@ -271,7 +294,14 @@ export default function Review(props: IReviewGET) {
                 alignItems: "flex-start",
                 width: "100%",
                 padding: 1,
-                paddingRight: 0,
+                paddingRight:{
+                  xs: 0,
+                  sm: 1
+                } ,
+                paddingLeft:{
+                  xs: 0,
+                  sm: 1
+                } ,
               }}
             >
               <Typography>{editMode ? "Недоліки" : ""}</Typography>
@@ -279,6 +309,7 @@ export default function Review(props: IReviewGET) {
                 <OutlinedInput
                   margin="dense"
                   value={disadvantages}
+                  multiline
                   fullWidth
                   onChange={(e) => setDisadvantages(e.target.value)}
                 />
@@ -299,97 +330,152 @@ export default function Review(props: IReviewGET) {
             </Box>
           )}
         </Box>
-
-        <Button
-          sx={{
-            width:  300,
-            marginTop: 3,
-            marginBottom: 3,
-            alignSelf: "flex-end",
-            fontSize: 15,
-            paddingLeft: 8,
-            paddingRight: 8,
-            background: "black",
-            color: "white",
-            "&:hover": {
-              backgroundColor: "black",
-              color: "white",
-            },
-          }}
-          variant="contained"
-          size="small"
-          onClick={handlereplyMode}
+        {replyMode && !editMode ? <ReplyForm {...props} /> : ""}
+        <Box
+          display={"flex"}
+          flexDirection={"row"}
+          alignItems={"center"}
+          justifyContent={"flex-end"}
+          
         >
-          {replyMode ? "Відмінити" : "Відповісти"}
-        </Button>
-        {user.id === props.user || user.role === "admin" ? (
-          <Box
-            display={"flex"}
-            flexDirection={"row"}
-            alignItems={"center"}
-            justifyContent={"flex-end"}
-          >
-            {editMode ? (
-              <>
+          {user.id === props.user  && !editMode ? (
+            <Button
+              sx={{
+                width: 300,
+                marginTop: 3,
+                marginBottom: 3,
+                alignSelf: "flex-end",
+                fontSize: 15,
+                paddingLeft: 8,
+                paddingRight: 8,
+                fontWeight: "bold",
+                background: "white",
+                border: "1px solid black",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
+              }}
+              variant="contained"
+              size="small"
+              onClick={handleReplyMode}
+            >
+              {replyMode ? "Відмінити" : "Відповісти"}
+            </Button>
+          ) : (
+            <></>
+          )}
+
+          {(user.id === props.user || user.role === "admin") && !replyMode ? (
+            <Box
+              display={"flex"}
+              flexDirection={"row"}
+              alignItems={"center"}
+              justifyContent={"flex-end"}
+              
+            >
+              {editMode ? (
+                <>
+                  <Button
+                    color="warning"
+                    variant="contained"
+                    sx={{
+                      marginRight: 2,
+                      fontFamily: "Comfortaa",
+                      fontSize: 15,
+                      width: {
+                        xs: 120,
+                        sm: 200
+                      },
+                      height: 30,
+                      alignSelf: "flex-end",
+                      fontWeight: "bold",
+                      background: "white",
+                      border: "1px solid black",
+                      color: "black",
+                      "&:hover": {
+                        backgroundColor: "black",
+                        color: "white",
+                      },
+                    }}
+                    onClick={handleSaveChangesCall}
+                  >
+                    зберігти
+                  </Button>
+
+                  <Button
+                    onClick={() => handleEditCall()}
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      marginLeft: 2,
+                      marginRight: 2,
+                      background: "white",
+                      border: "1px solid black",
+                      "&:hover": {
+                        background: "white",
+                      },
+                    }}
+                    variant="contained"
+                  >
+                    <img
+                      src={require("../../img/cross_sign.png")}
+                      style={{ width: 15, height: 15 }}
+                      alt="sdf"
+                    />
+                  </Button>
+                </>
+              ) : (
                 <Button
-                  color="warning"
-                  variant="contained"
+                  onClick={() => handleEditCall()}
                   sx={{
-                    marginRight: 2,
-                    fontFamily: "Comfortaa",
-                    fontSize: 15,
-                    width: 200,
-                    height: 30,
-                    alignSelf: "flex-end",
-                  }}
-                  onClick={handleSaveChangesCall}
-                >
-                  зберігти
-                </Button>
-                <IconButton
-                  sx={{
-                    marginRight: 2,
-                    backgroundColor: "#fca258",
                     width: 40,
                     height: 40,
-                    "&:hover": { backgroundColor: "#fc8019" },
+                    marginLeft: 2,
+                    marginRight: 2,
+                    background: "white",
+                    border: "1px solid black",
+                    "&:hover": {
+                      background: "white",
+                    },
                   }}
-                  onClick={handleEditCall}
+                  variant="contained"
                 >
-                  <CloseIcon />
-                </IconButton>
-              </>
-            ) : (
-              <IconButton
+                  <img
+                    src={require("../../img/editBlackIcon.png")}
+                    style={{ width: 20, height: 20 }}
+                    alt="sdf"
+                  />
+                </Button>
+              )}
+
+              <Button
+                onClick={() => DeleteDialog_open()}
                 sx={{
-                  marginRight: 2,
-                  backgroundColor: "#fca258",
                   width: 40,
                   height: 40,
-                  "&:hover": { backgroundColor: "#fc8019" },
-                }}
-                onClick={handleEditCall}
-              >
-                <EditIcon />
-              </IconButton>
-            )}
 
-            <IconButton
-              sx={{
-                backgroundColor: "#e83a3a",
-                width: 40,
-                height: 40,
-                "&:hover": { backgroundColor: "#eb0909" },
-              }}
-              onClick={handleDeleteCall}
-            >
-              <DeleteIcon />
-            </IconButton>
-          </Box>
-        ) : (
-          ""
-        )}
-        {replyMode ? <ReplyForm {...props} /> : ""}
+                  background: "white",
+                  border: "1px solid black",
+                  "&:hover": {
+                    background: "white",
+                  },
+                }}
+                variant="contained"
+              >
+                <img
+                  src={require("../../img/basket/trashIcon.png")}
+                  style={{ width: 15, height: 20 }}
+                  alt="sdf"
+                />
+              </Button>
+            </Box>
+          ) : (
+            ""
+          )}
+        </Box>
+        
         {props.replies.length === 0 ? (
           ""
         ) : (
@@ -398,7 +484,7 @@ export default function Review(props: IReviewGET) {
               Відповіді
             </Typography>
 
-            <Box width={'100%'}  paddingTop={4}>
+            <Box width={"100%"} paddingTop={4}>
               {props.replies
                 .slice()
                 .reverse()
@@ -409,6 +495,11 @@ export default function Review(props: IReviewGET) {
           </Box>
         )}
       </Box>
+      <DeleteDialog
+      openDelete={openDelete}
+      DeleteDialog_close={DeleteDialog_close}
+      DeleteFunc={handleDeleteCall}
+    />
     </Box>
   );
 }

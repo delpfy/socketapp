@@ -1,9 +1,10 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, OutlinedInput, TextField, Typography } from "@mui/material";
 import { TReplyPOST, IReviewGET, IReviewPOST } from "../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect, useState } from "react";
 import { getItemReviews, updateReview } from "../../redux/review/asyncActions";
 import ErrorDialog from "../dialogs/ErrorDialog";
+import DeleteDialog from "../dialogs/DeleteDialog";
 
 export default function ReplyForm(review: IReviewGET) {
   const { user } = useAppSelector((state) => state.user);
@@ -25,6 +26,7 @@ export default function ReplyForm(review: IReviewGET) {
     setOpenError(true);
   }
 
+  
   function executeReply_POST() {
     if(user.authorized){
       setExecute_POST(true);
@@ -32,7 +34,7 @@ export default function ReplyForm(review: IReviewGET) {
         ...current,
         {
           user: user.id,
-          userName: userName,
+          userName: user.name,
           description: description,
         },
       ]);
@@ -51,7 +53,7 @@ export default function ReplyForm(review: IReviewGET) {
       return;
     }
 
-    if (description === "" && execute_POST) {
+    if (description.trim() === "" && execute_POST) {
       ErrorDialog_open();
       setErrorMessage("Ви не написали повідомлення");
       return;
@@ -87,39 +89,33 @@ export default function ReplyForm(review: IReviewGET) {
         alignItems={"space-between"}
         marginBottom={2}
         paddingTop={2}
-        height={180}
+        height={190}
       >
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          justifyContent={"space-between"}
-          alignItems={"flex-start"}
-          width={100}
-        >
-          <TextField
-            id="outlined-multiline-static"
-            label="Iм'я"
-            fullWidth
-            value={userName}
-            size="small"
-            onChange={(e) => setUserName(e.target.value.replace(/\s+/g, ""))}
-          />
-        </Box>
+        
 
-        <TextField
-          id="outlined-multiline-static"
-          label="Опис"
-          fullWidth
-          value={description}
-          multiline
-          size="small"
-          rows={3}
-          onChange={(e) => setDescription(e.target.value.replace(/\s+/g, " "))}
-        />
+        <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+              width: "100%",
+            }}
+          >
+            <Typography>Коментар</Typography>
+            <OutlinedInput
+              id="outlined-multiline-static"
+              fullWidth
+              value={description}
+              multiline
+              rows={4}
+              onChange={(e) => setDescription(e.target.value.replace(/\s+/g, " "))}
+            />
+          </Box>
+        
 
         <Box display={"flex"} flexDirection={"row"} justifyContent={"flex-end"}>
           <Button
-            color="warning"
+            
             variant="contained"
             sx={{
               marginRight: 2,
@@ -128,6 +124,14 @@ export default function ReplyForm(review: IReviewGET) {
               width: 200,
               height: 30,
               alignSelf: "flex-end",
+              fontWeight: "bold",
+                background: "white",
+                border: "1px solid black",
+                color: "black",
+                "&:hover": {
+                  backgroundColor: "black",
+                  color: "white",
+                },
             }}
             onClick={executeReply_POST}
           >
@@ -140,6 +144,7 @@ export default function ReplyForm(review: IReviewGET) {
         ErrorDialog_close={ErrorDialog_close}
         errorMessage={errorMessage}
       />
+      
     </>
   );
 }

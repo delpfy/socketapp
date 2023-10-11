@@ -74,6 +74,7 @@ export const CatalogField = () => {
 
   // Trying to make request to get items from same category.
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(getCategoryBySlug(category_slug as string)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         console.log(result.payload);
@@ -101,109 +102,304 @@ export const CatalogField = () => {
 
   const CatalogSkeletons = () => {
     return (
-      <Box width={"100%"}>
-        <Box
-          display={"flex"}
-          justifyContent={"flex-end"}
-          alignItems={"center"}
-          flexDirection={"column"}
-          paddingTop={12}
-        >
-          <Box
-            width={"100%"}
-            alignSelf={"flex-end"}
-            marginBottom={3}
-            paddingBottom={2}
-            sx={{
-              display: "flex",
-              justifyContent: {
-                xs: "space-around",
-                md: "space-between",
-              },
-              alignItems: "center",
-              borderBottom:
-                window.innerWidth > 1024 ? "2px solid black" : "none",
-            }}
+      <>
+        <React.Fragment>
+          <SwipeableDrawer
+            anchor={"left"}
+            open={active}
+            onClose={toggleDrawer("left", false)}
+            onOpen={toggleDrawer("left", true)}
           >
-            <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
-              {category}
-            </Typography>
-          </Box>
+            {list("left")}
+          </SwipeableDrawer>
+        </React.Fragment>
+        <Box width={"100%"}>
           <Box
-            width={"100%"}
-            alignSelf={"flex-end"}
-            marginBottom={3}
-            paddingBottom={2}
-            sx={{
-              display: {
-                xs: "flex",
-                md: "none",
-              },
-              justifyContent: "center",
-
-              alignItems: "center",
-              borderBottom:
-                window.innerWidth > 1024 ? "2px solid black" : "none",
-            }}
+            display={"flex"}
+            justifyContent={"flex-end"}
+            alignItems={"center"}
+            flexDirection={"column"}
+            paddingTop={12}
           >
-            <Button
-              variant="contained"
+            <Box
+              width={"100%"}
+              alignSelf={"flex-end"}
+              paddingBottom={3}
               sx={{
-                background: "black",
-                width: 300,
-                textAlign: "center",
                 display: "flex",
-                justifyContent: "flex-start",
+                justifyContent: {
+                  xs: "space-around",
+                  md: "space-between",
+                },
+                margin: {
+                  xs: "0 auto",
+                  sm: "0 auto",
+                  md: "0",
+                },
+                marginBottom: 3,
+                alignItems: "center",
+                borderBottom:
+                  window.innerWidth > 1024 ? "2px solid black" : "none",
               }}
-              size="small"
-              onClick={toggleDrawer("left", true)}
             >
-              <img
-                src={require("../../../img/fitersIcon.png")}
-                style={{ width: 7, height: 9, marginLeft: 14 }}
-                alt="sdf"
-              />
-              <Typography width={"100%"} fontSize={10} sx={{ marginRight: 3 }}>
-                Фільри
+              <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
+                {category}
               </Typography>
-            </Button>
-          </Box>
-        </Box>
-        <Box
-          display={"flex"}
-          flexDirection={"row"}
-          justifyContent={"space-between"}
-          alignItems={"flex-start"}
-        >
-          <Box sx={{ display: { xs: "none", md: "inherit" } }}>
-            <SortBy />
-          </Box>
-          <Grid
-            container
-            paddingTop={0}
-            spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 4, sm: 6, md: 16, lg: 16, xl: 20 }}
-          >
-            {Array.from({ length: 6 }, (param, index) => (
-              <Grid
-                item
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                paddingBottom={2}
-                xs={2}
-                sm={2}
-                md={4}
-                lg={4}
-                xl={5}
-                key={index}
+            </Box>
+            <Box
+              width={"100%"}
+              alignSelf={"flex-end"}
+              marginBottom={3}
+              paddingBottom={2}
+              sx={{
+                display: {
+                  xs: "flex",
+                  md: "none",
+                },
+                justifyContent: "center",
+
+                alignItems: "center",
+                borderBottom:
+                  window.innerWidth > 1024 ? "2px solid black" : "none",
+              }}
+            >
+              <Button
+                variant="contained"
+                sx={{
+                  width: 300,
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  background: "black",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
+                }}
+                size="small"
+                onClick={toggleDrawer("left", true)}
               >
-                <HomeSkeleton key={index} />
-              </Grid>
-            ))}
-          </Grid>
+                <img
+                  src={require("../../../img/fitersIcon.png")}
+                  style={{ width: 7, height: 9, marginLeft: 14 }}
+                  alt="sdf"
+                />
+                <Typography
+                  width={"100%"}
+                  fontSize={10}
+                  sx={{ marginRight: 3 }}
+                >
+                  Фільри
+                </Typography>
+              </Button>
+            </Box>
+          </Box>
+          <Box
+            display={"flex"}
+            flexDirection={"row"}
+            justifyContent={"space-between"}
+            alignItems={"flex-start"}
+          >
+            <Box sx={{ display: { xs: "none", md: "inherit" } }}>
+              <SortBy />
+            </Box>
+            <Grid
+              container
+              paddingTop={0}
+              spacing={{ xs: 1, sm: 3, md: 4 }}
+              columns={{ xs: 4, sm: 12, md: 16, lg: 16, xl: 20 }}
+            >
+              {Array.from({ length: 6 }, (param, index) => (
+                <Grid
+                  item
+                  display={"flex"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  paddingBottom={2}
+                  xs={2}
+                  sm={4}
+                  md={4}
+                  lg={4}
+                  xl={5}
+                  key={index}
+                >
+                  <HomeSkeleton key={index} />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+          <Box
+            sx={{
+              marginTop: 5,
+
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Accordion
+              sx={{
+                color: "white",
+                background: "black",
+                marginBottom: 2,
+
+                width: "85%",
+                display: {
+                  xs: "!none",
+                  md: "none",
+                },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={
+                  <img
+                    src={require("../../../img/footerPagesOpenIcon.png")}
+                    style={{ width: 20, height: 20 }}
+                    alt="sdf"
+                  />
+                }
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Компанія</Typography>
+              </AccordionSummary>
+              <AccordionDetails
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "rgba(255,255,255,.5)",
+                    cursor: "pointer",
+                    "&:hover": { color: "#fff" },
+                    transition: "color .2s ease",
+                    paddingBottom: 1,
+                  }}
+                  fontFamily={"Comfortaa"}
+                  color="white"
+                  onClick={() => navigate("/about")}
+                >
+                  О компанії
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "rgba(255,255,255,.5)",
+                    cursor: "pointer",
+                    "&:hover": { color: "#fff" },
+                    transition: "color .2s ease",
+                    paddingBottom: 1,
+                  }}
+                  fontFamily={"Comfortaa"}
+                  color="white"
+                  onClick={() => navigate("/posts")}
+                >
+                  Статті
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "rgba(255,255,255,.5)",
+                    cursor: "pointer",
+                    "&:hover": { color: "#fff" },
+                    transition: "color .2s ease",
+                    paddingBottom: 1,
+                  }}
+                  fontFamily={"Comfortaa"}
+                  color="white"
+                  onClick={() => navigate("/contact")}
+                >
+                  Контакти
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+            <Accordion
+              sx={{
+                color: "white",
+                background: "black",
+                marginBottom: 2,
+
+                width: "85%",
+                display: {
+                  xs: "!none",
+                  md: "none",
+                },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={
+                  <img
+                    src={require("../../../img/footerPagesOpenIcon.png")}
+                    style={{ width: 20, height: 20 }}
+                    alt="sdf"
+                  />
+                }
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>Покупцям</Typography>
+              </AccordionSummary>
+              <AccordionDetails
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: "rgba(255,255,255,.5)",
+                    cursor: "pointer",
+                    "&:hover": { color: "#fff" },
+                    transition: "color .2s ease",
+                    paddingBottom: 1,
+                  }}
+                  fontFamily={"Comfortaa"}
+                  color="white"
+                  onClick={() => navigate("/return")}
+                >
+                  Повернення товару
+                </Typography>
+                <Typography
+                  sx={{
+                    color: "rgba(255,255,255,.5)",
+                    cursor: "pointer",
+                    "&:hover": { color: "#fff" },
+                    transition: "color .2s ease",
+                    paddingBottom: 1,
+                  }}
+                  fontFamily={"Comfortaa"}
+                  color="white"
+                  onClick={() => navigate("/delivery")}
+                >
+                  Доставка
+                </Typography>
+
+                <Typography
+                  sx={{
+                    color: "rgba(255,255,255,.5)",
+                    cursor: "pointer",
+                    "&:hover": { color: "#fff" },
+                    transition: "color .2s ease",
+                    paddingBottom: 1,
+                  }}
+                  fontFamily={"Comfortaa"}
+                  color="white"
+                  onClick={() => navigate("/quarantees")}
+                >
+                  Гарантії
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
         </Box>
-      </Box>
+      </>
     );
   };
 
@@ -237,7 +433,6 @@ export const CatalogField = () => {
                   <Box
                     width={"100%"}
                     alignSelf={"flex-end"}
-                    
                     paddingBottom={3}
                     sx={{
                       display: "flex",
@@ -246,16 +441,15 @@ export const CatalogField = () => {
                         md: "space-between",
                       },
                       margin: {
-                        xs: '0 auto',
-                        sm: '0 auto',
-                        md: '0',
+                        xs: "0 auto",
+                        sm: "0 auto",
+                        md: "0",
                       },
                       marginBottom: 3,
                       alignItems: "center",
                       borderBottom:
                         window.innerWidth > 1024 ? "2px solid black" : "none",
                     }}
-                    
                   >
                     <Typography
                       variant={"h3"}

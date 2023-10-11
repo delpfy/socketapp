@@ -4,7 +4,9 @@ import {
   AccordionSummary,
   Box,
   Button,
+  CircularProgress,
   Grid,
+  Skeleton,
   Typography,
   useMediaQuery,
   useTheme,
@@ -87,17 +89,8 @@ export const Home = () => {
   const recentlyReviewed = JSON.parse(
     localStorage.getItem("recentlyReviewed") || "{}"
   );
-  const myRef = useRef<HTMLDivElement | null>(null);
-
-  const executeScroll = () => {
-    console.log("myRef.current " + myRef.current);
-    if (myRef.current) {
-      myRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-  };
+  
+  
 
   const navigate = useNavigate();
 
@@ -112,68 +105,100 @@ export const Home = () => {
     }
     dispatch(SetCategory(""));
   }, []);
-
+  console.log(_banners);
   return (
     <>
       <CategoryDialog
         openCategory={openCategory}
         CategoryDialog_close={CategoryDialog_close}
       />
+      {_banners.length === 0 ? (
+        <Box
+          sx={{
+            color: "#fff",
+            top: {
+              xs: 80,
+              sm: 30,
+              lg: 0,
+            },
 
-      <Carousel
-        navButtonsAlwaysVisible
-        navButtonsProps={{
-          style: {
-            backgroundColor: isXsScreen ? "black" : "transparent",
-            borderRadius: 0,
-            display: isXsScreen ? "none" : "block",
-          },
-        }}
-        NextIcon={
-          <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <img
-              style={{ width: 40, height: 40 }}
-              src={require("../../img/swipeRightIcon.png")}
-            />
-          </Box>
-        }
-        PrevIcon={
-          <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <img
-              style={{ width: 40, height: 40 }}
-              src={require("../../img/swipeLeftIcon.png")}
-            />
-          </Box>
-        }
-        sx={{
-          color: "#fff",
-          top: 127,
+            height: {
+              xs: window.innerWidth - window.innerWidth / 1.6,
+              md: window.innerWidth - window.innerWidth / 1.43,
+            },
+            width: {
+              xs: "90%",
+              md: "75%",
+            },
 
-          height: {
-            xs: window.innerWidth - window.innerWidth / 1.6,
-            md: window.innerWidth - window.innerWidth / 1.43,
-          },
-          width: {
-            xs: "90%",
-            md: "75%",
-          },
+            backgroundRepeat: "no-repeat",
 
-          backgroundRepeat: "no-repeat",
+            margin: "auto",
+          }}
+        >
+          <Skeleton
+            sx = {{height: {
+              xs: window.innerWidth - window.innerWidth / 2.2 ,
+              md: window.innerWidth - window.innerWidth / 1.7,
+              lg: window.innerWidth - window.innerWidth / 1.75
+            },}}
+          />
+        </Box>
+      ) : (
+        <Carousel
+          navButtonsAlwaysVisible
+          navButtonsProps={{
+            style: {
+              backgroundColor: isXsScreen ? "black" : "transparent",
+              borderRadius: 0,
+              display: isXsScreen ? "none" : "block",
+            },
+          }}
+          NextIcon={
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <img
+                style={{ width: 40, height: 40 }}
+                src={require("../../img/swipeRightIcon.png")}
+              />
+            </Box>
+          }
+          PrevIcon={
+            <Box sx={{ display: { xs: "none", md: "block" } }}>
+              <img
+                style={{ width: 40, height: 40 }}
+                src={require("../../img/swipeLeftIcon.png")}
+              />
+            </Box>
+          }
+          sx={{
+            background: "#fff",
+            top: 127,
 
-          margin: "auto",
-        }}
-      >
-        {_banners?.map((banner: any) => {
-          console.log(banner);
-          return (
-            <img
-              src={`https://www.sidebyside-tech.com${banner.image}`}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-              alt=""
-            />
-          );
-        })}
-        {/* <Box
+            height: {
+              xs: window.innerWidth - window.innerWidth / 1.6,
+              md: window.innerWidth - window.innerWidth / 1.43,
+            },
+            width: {
+              xs: "90%",
+              md: "75%",
+            },
+
+            backgroundRepeat: "no-repeat",
+
+            margin: "auto",
+          }}
+        >
+          {_banners?.map((banner: any) => {
+            console.log(banner);
+            return (
+              <img
+                src={`https://www.sidebyside-tech.com${banner.image}`}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                alt=""
+              />
+            );
+          })}
+          {/* <Box
             sx={{
               color: "#fff",
               width: {
@@ -278,8 +303,8 @@ export const Home = () => {
               </Box>
             </Box>
           </Box> */}
-      </Carousel>
-
+        </Carousel>
+      )}
       {/* <Box marginTop={10} onClick={() => executeScroll()}>
           <div className="bouncing-icon-container">
             <ExpandMoreIcon
@@ -350,7 +375,7 @@ export const Home = () => {
             padding={"2%"}
             justifyContent="center"
             spacing={{ xs: 1, sm: 2, md: 4 }}
-            columns={{ xs: 2, sm:12, md: 16, lg: 20, xl: 20 }}
+            columns={{ xs: 2, sm: 12, md: 16, lg: 20, xl: 20 }}
           >
             {categories.map((item: any) => (
               <Grid

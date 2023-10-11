@@ -267,7 +267,9 @@ export default function ReviewForm(props: Items | TShippingItems) {
             },
             paddingLeft: 8,
             paddingRight: 8,
+            fontWeight: 'bold',
             background: "black",
+            
             color: "white",
             "&:hover": {
               backgroundColor: "black",
