@@ -118,9 +118,19 @@ export default function ReplyForm(review: IReviewGET) {
             
             variant="contained"
             sx={{
-              marginRight: 2,
+              marginRight: {
+                xs: 'auto',
+                sm: 2
+              },
+              marginLeft: {
+                xs: 'auto',
+                sm: 0
+              },
               fontFamily: "Comfortaa",
-              fontSize: 15,
+              fontSize: {
+                xs: 13,
+                md: 15,
+              },
               width: 200,
               height: 30,
               alignSelf: "flex-end",

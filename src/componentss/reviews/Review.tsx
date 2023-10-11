@@ -342,10 +342,21 @@ export default function Review(props: IReviewGET) {
             <Button
               sx={{
                 width: 300,
+                marginLeft: {
+                  xs: 'auto',
+                  sm: 0,
+                },
+                marginRight: {
+                  xs: 'auto',
+                  sm: 0,
+                },
                 marginTop: 3,
                 marginBottom: 3,
                 alignSelf: "flex-end",
-                fontSize: 15,
+                fontSize: {
+                  xs: 13,
+                  md: 15,
+                },
                 paddingLeft: 8,
                 paddingRight: 8,
                 fontWeight: "bold",
@@ -383,7 +394,10 @@ export default function Review(props: IReviewGET) {
                     sx={{
                       marginRight: 2,
                       fontFamily: "Comfortaa",
-                      fontSize: 15,
+                      fontSize: {
+                        xs: 13,
+                        md: 15,
+                      },
                       width: {
                         xs: 120,
                         sm: 200

@@ -211,7 +211,10 @@ export default function Reply({ reply, review }: ReplyProps) {
                     sm: 0
                   },
                   fontFamily: "Comfortaa",
-                  fontSize: 15,
+                  fontSize: {
+                    xs: 13,
+                    md: 15,
+                  },
                   width: 200,
                   height: 30,
                   alignSelf: "flex-end",
