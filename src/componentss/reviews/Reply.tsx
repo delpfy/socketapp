@@ -161,8 +161,8 @@ export default function Reply({ reply, review }: ReplyProps) {
             alignItems: "flex-start",
             margin: "0 auto",
             width: {
-              xs: '90%',
-              sm: '96%'
+              xs: "90%",
+              sm: "96%",
             },
           }}
         >
@@ -208,7 +208,7 @@ export default function Reply({ reply, review }: ReplyProps) {
                   marginRight: 2,
                   marginLeft: {
                     xs: 2,
-                    sm: 0
+                    sm: 0,
                   },
                   fontFamily: "Comfortaa",
                   fontSize: {

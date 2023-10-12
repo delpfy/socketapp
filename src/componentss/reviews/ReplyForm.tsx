@@ -1,4 +1,10 @@
-import { Box, Button, OutlinedInput, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  OutlinedInput,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { TReplyPOST, IReviewGET, IReviewPOST } from "../../redux/types";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useEffect, useState } from "react";
@@ -26,9 +32,8 @@ export default function ReplyForm(review: IReviewGET) {
     setOpenError(true);
   }
 
-  
   function executeReply_POST() {
-    if(user.authorized){
+    if (user.authorized) {
       setExecute_POST(true);
       setReplies((current) => [
         ...current,
@@ -38,12 +43,10 @@ export default function ReplyForm(review: IReviewGET) {
           description: description,
         },
       ]);
-    }
-    else{
+    } else {
       ErrorDialog_open();
       setErrorMessage("Авторизуйтесь для того, щоб відповісти на відгук");
     }
-   
   }
 
   useEffect(() => {
@@ -91,40 +94,38 @@ export default function ReplyForm(review: IReviewGET) {
         paddingTop={2}
         height={190}
       >
-        
-
         <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-              width: "100%",
-            }}
-          >
-            <Typography>Коментар</Typography>
-            <OutlinedInput
-              id="outlined-multiline-static"
-              fullWidth
-              value={description}
-              multiline
-              rows={4}
-              onChange={(e) => setDescription(e.target.value.replace(/\s+/g, " "))}
-            />
-          </Box>
-        
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            width: "100%",
+          }}
+        >
+          <Typography>Коментар</Typography>
+          <OutlinedInput
+            id="outlined-multiline-static"
+            fullWidth
+            value={description}
+            multiline
+            rows={4}
+            onChange={(e) =>
+              setDescription(e.target.value.replace(/\s+/g, " "))
+            }
+          />
+        </Box>
 
         <Box display={"flex"} flexDirection={"row"} justifyContent={"flex-end"}>
           <Button
-            
             variant="contained"
             sx={{
               marginRight: {
-                xs: 'auto',
-                sm: 2
+                xs: "auto",
+                sm: 2,
               },
               marginLeft: {
-                xs: 'auto',
-                sm: 0
+                xs: "auto",
+                sm: 0,
               },
               fontFamily: "Comfortaa",
               fontSize: {
@@ -135,13 +136,13 @@ export default function ReplyForm(review: IReviewGET) {
               height: 30,
               alignSelf: "flex-end",
               fontWeight: "bold",
-                background: "white",
-                border: "1px solid black",
-                color: "black",
-                "&:hover": {
-                  backgroundColor: "black",
-                  color: "white",
-                },
+              background: "white",
+              border: "1px solid black",
+              color: "black",
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              },
             }}
             onClick={executeReply_POST}
           >
@@ -154,7 +155,6 @@ export default function ReplyForm(review: IReviewGET) {
         ErrorDialog_close={ErrorDialog_close}
         errorMessage={errorMessage}
       />
-      
     </>
   );
 }

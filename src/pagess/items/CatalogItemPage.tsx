@@ -950,7 +950,9 @@ export const ItemPage = () => {
 
                     <Typography
                       marginRight={1}
-                      textAlign={window.innerWidth > 1024 ? "inherit" : "center"}
+                      textAlign={
+                        window.innerWidth > 1024 ? "inherit" : "center"
+                      }
                       paddingTop={window.innerWidth > 1024 ? 0 : 2.1}
                       fontSize={window.innerWidth > 1024 ? 14 : 12}
                     >

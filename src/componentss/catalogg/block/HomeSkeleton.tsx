@@ -21,7 +21,7 @@ export default function HomeSkeleton() {
       }}
     >
       <Skeleton
-      variant="rectangular"
+        variant="rectangular"
         sx={{
           paddingTop: 0,
           maxHeight: {
@@ -32,7 +32,7 @@ export default function HomeSkeleton() {
             xs: 130,
             md: 180,
           },
-          width: '100%',
+          width: "100%",
           objectFit: "contain",
           overflow: "hidden",
         }}
@@ -68,51 +68,51 @@ export default function HomeSkeleton() {
           objectFit: "contain",
           overflow: "hidden",
         }}
-        
       />
-      <Box sx = {{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-      <Skeleton
+      <Box
         sx={{
-          paddingTop: 0,
-          maxHeight: {
-            xs: 40,
-            md: 40,
-          },
-          minHeight: {
-            xs: 40,
-            md: 40,
-          },
-          minWidth: 50,
-          maxWidth: 50,
-          objectFit: "contain",
-          overflow: "hidden",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
+      >
+        <Skeleton
+          sx={{
+            paddingTop: 0,
+            maxHeight: {
+              xs: 40,
+              md: 40,
+            },
+            minHeight: {
+              xs: 40,
+              md: 40,
+            },
+            minWidth: 50,
+            maxWidth: 50,
+            objectFit: "contain",
+            overflow: "hidden",
+          }}
         />
         <Skeleton
-        variant="circular"
-        sx={{
-          paddingTop: 0,
-          maxHeight: {
-            xs: 30,
-            md: 30,
-          },
-          minHeight: {
-            xs: 30,
-            md: 30,
-          },
+          variant="circular"
+          sx={{
+            paddingTop: 0,
+            maxHeight: {
+              xs: 30,
+              md: 30,
+            },
+            minHeight: {
+              xs: 30,
+              md: 30,
+            },
 
-          minWidth: 30,
-          maxWidth: 30,
-          objectFit: "contain",
-          overflow: "hidden",
-        }}
+            minWidth: 30,
+            maxWidth: 30,
+            objectFit: "contain",
+            overflow: "hidden",
+          }}
         />
       </Box>
-      
     </Box>
   );
 }

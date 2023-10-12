@@ -103,7 +103,6 @@ export default function Review(props: IReviewGET) {
 
   function handleReplyMode() {
     setReplyMode(!replyMode);
-    
   }
 
   const [openDelete, setOpenDelete] = useState(false);
@@ -113,7 +112,6 @@ export default function Review(props: IReviewGET) {
   function DeleteDialog_open() {
     setOpenDelete(true);
   }
-
 
   return (
     <Box
@@ -162,7 +160,7 @@ export default function Review(props: IReviewGET) {
           <Rating
             name="simple-controlled"
             value={rating}
-            size={window.innerWidth < 600 ? 'medium' : 'large'}
+            size={window.innerWidth < 600 ? "medium" : "large"}
             sx={{ color: "black", marginBottom: 3 }}
             onChange={handleRatingChange}
           />
@@ -215,7 +213,6 @@ export default function Review(props: IReviewGET) {
                   value={editMode ? description : props.description}
                   disabled={editMode ? false : true}
                   multiline
-                  
                   onChange={(e) => setDescription(e.target.value)}
                 />
               ) : (
@@ -230,8 +227,8 @@ export default function Review(props: IReviewGET) {
           sx={{
             display: "flex",
             flexDirection: {
-              xs: 'column',
-              sm: 'row'
+              xs: "column",
+              sm: "row",
             },
             alignItems: "flex-start",
             width: "100%",
@@ -247,14 +244,14 @@ export default function Review(props: IReviewGET) {
                 alignItems: "flex-start",
                 width: "100%",
                 padding: 1,
-                paddingLeft:{
+                paddingLeft: {
                   xs: 0,
-                  sm: 1
-                } ,
-                paddingRight:{
+                  sm: 1,
+                },
+                paddingRight: {
                   xs: 0,
-                  sm: 1
-                } ,
+                  sm: 1,
+                },
               }}
             >
               <Typography>{editMode ? "Переваги" : ""}</Typography>
@@ -294,14 +291,14 @@ export default function Review(props: IReviewGET) {
                 alignItems: "flex-start",
                 width: "100%",
                 padding: 1,
-                paddingRight:{
+                paddingRight: {
                   xs: 0,
-                  sm: 1
-                } ,
-                paddingLeft:{
+                  sm: 1,
+                },
+                paddingLeft: {
                   xs: 0,
-                  sm: 1
-                } ,
+                  sm: 1,
+                },
               }}
             >
               <Typography>{editMode ? "Недоліки" : ""}</Typography>
@@ -336,18 +333,17 @@ export default function Review(props: IReviewGET) {
           flexDirection={"row"}
           alignItems={"center"}
           justifyContent={"flex-end"}
-          
         >
-          {user.id !== props.user  && !editMode ? (
+          {user.id !== props.user && !editMode ? (
             <Button
               sx={{
                 width: 300,
                 marginLeft: {
-                  xs: 'auto',
+                  xs: "auto",
                   sm: 0,
                 },
                 marginRight: {
-                  xs: 'auto',
+                  xs: "auto",
                   sm: 0,
                 },
                 marginTop: 3,
@@ -384,7 +380,6 @@ export default function Review(props: IReviewGET) {
               flexDirection={"row"}
               alignItems={"center"}
               justifyContent={"flex-end"}
-              
             >
               {editMode ? (
                 <>
@@ -400,7 +395,7 @@ export default function Review(props: IReviewGET) {
                       },
                       width: {
                         xs: 120,
-                        sm: 200
+                        sm: 200,
                       },
                       height: 30,
                       alignSelf: "flex-end",
@@ -489,7 +484,7 @@ export default function Review(props: IReviewGET) {
             ""
           )}
         </Box>
-        
+
         {props.replies.length === 0 ? (
           ""
         ) : (
@@ -510,10 +505,10 @@ export default function Review(props: IReviewGET) {
         )}
       </Box>
       <DeleteDialog
-      openDelete={openDelete}
-      DeleteDialog_close={DeleteDialog_close}
-      DeleteFunc={handleDeleteCall}
-    />
+        openDelete={openDelete}
+        DeleteDialog_close={DeleteDialog_close}
+        DeleteFunc={handleDeleteCall}
+      />
     </Box>
   );
 }
