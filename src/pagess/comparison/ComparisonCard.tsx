@@ -617,15 +617,15 @@ export default function ComparisonCard(props: Items) {
                       </TableCell>
                       <TableCell>
                         {differencesMode
-                          ? itemsComparison.map((item: any) => {
-                              console.log(Object.values(item.fields[index])[0]);
-                              if (
-                                Object.values(item.fields[index])[0] !==
-                                Object.values(field)[0]
-                              ) {
-                                return Object.values(field)[0];
-                              }
-                            })
+                          ? itemsComparison.length > 1
+                            ? itemsComparison.some(
+                                (item: any) =>
+                                  Object.values(field)[0] !==
+                                  Object.values(item.fields[index])[0]
+                              )
+                              ? (Object.values(field)[0] as string)
+                              : " "
+                            : (Object.values(field)[0] as string)
                           : (Object.values(field)[0] as string)}
                       </TableCell>
                     </TableRow>
