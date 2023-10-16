@@ -1,4 +1,15 @@
-import { Box, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Paper,
+  TableContainer,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Link,
+} from "@mui/material";
 import RecentlyReviewed from "../../componentss/RecentlyReviewed";
 import { useEffect } from "react";
 
@@ -12,15 +23,36 @@ export default function About() {
   return (
     <>
       <Box paddingTop={15}>
-        <Typography
-          variant="h1"
-          textAlign={"center"}
-          paddingBottom={5}
-          fontSize={30}
-          fontFamily={"Ubuntu"}
+        <Box
+          display={"flex"}
+          margin={"0 auto"}
+          width={"70%"}
+          justifyContent={"flex-start"}
+          alignItems={"center"}
         >
-          О компанії
-        </Typography>
+          <Typography
+            variant="h1"
+            textAlign={"center"}
+            paddingBottom={5}
+            fontSize={25}
+            fontFamily={"Ubuntu"}
+            fontWeight={"bold"}
+          >
+            {"<"}
+          </Typography>
+          <Typography
+            variant="h1"
+            textAlign={"center"}
+            paddingBottom={5}
+            fontSize={30}
+            fontFamily={"Ubuntu"}
+            fontWeight={"bold"}
+            paddingLeft={4}
+          >
+            О компанії
+          </Typography>
+        </Box>
+
         <Box
           sx={{
             display: "flex",
@@ -29,187 +61,331 @@ export default function About() {
             justifyContent: "center",
           }}
         >
-          <Paper
-            elevation={5}
+          <Box
             sx={{
-              width: "90%",
+              width: "70%",
               padding: 2,
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
             }}
           >
-            <Paper
-              elevation={5}
-              sx={{
-                marginBottom: 5,
-                height: 400,
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              banner
-            </Paper>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={30}
-              fontFamily={"Ubuntu"}
-            >
-              Інтернет-магазин "Сокет" - надійний партнер у світі електроніки та
-              побутової техніки в Україні.
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={22}
-              fontFamily={"Ubuntu"}
-            >
-              "Сокет" - це одна з найбільших торгових мереж в Україні, яка
-              заслужено користується довіру споживачів завдяки своїй якості
-              обслуговування та широкому асортименту товарів. Наша мета -
-              зробити процес покупки електроніки та побутової техніки
-              максимально комфортним і приємним для кожного клієнта.{" "}
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={22}
-              fontFamily={"Ubuntu"}
-            >
-              Заснована у 1994 році, "Сокет" з початку своєї діяльності ставить
-              на перше місце задоволення потреб клієнтів. За 29 років роботи ми
-              змогли значно розширити мережу магазинів і на даний момент
-              налічуємо вже 162 заклади з загальною площею торгових приміщень
-              154 тис. кв. м. Наші магазини розташовані у 90 обласних та
-              районних центрах по всій Україні, наближаючи зручність покупки
-              кожному клієнту.
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={22}
-              fontFamily={"Ubuntu"}
-            >
-              Ми прагнемо створювати не просто магазини електроніки, але і
-              справжні місця, де кожен покупець може знайти все необхідне для
-              комфортного та сучасного життя. Ми віримо, що доступ до новітніх
-              технологій та інновацій має бути легким і зрозумілим, тому ми
-              докладаємо максимум зусиль, щоб забезпечити вас тільки якісними та
-              перевіреними товарами.
-            </Typography>
-            <Paper
-              elevation={5}
-              sx={{
-                marginBottom: 5,
-                height: 400,
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-              image
-            </Paper>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={22}
-              fontFamily={"Ubuntu"}
-            >
-              Компанія "Сокет" продовжує активно розвиватися та займати провідні
-              позиції на ринку електроніки та побутової техніки в Україні.
-              Інновації та сучасні технології завжди перебувають в центрі нашої
-              уваги, і ми пишаємося, що можемо пропонувати нашим клієнтам лише
-              найкраще.
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={22}
-              fontFamily={"Ubuntu"}
-            >
-              Ребрендинг "Сокет" в 2019-2020 роках став важливим етапом в
-              історії компанії. З призивом "Оновлюйся!" ми змінили
-              позиціонування та візуальний стиль, покращили комунікацію зі
-              споживачами та зробили покупки у наших магазинах ще приємнішими.
-              Перші магазини нового формату відкрилися в Броварах, а починаючи з
-              цього часу, ми поступово змінюємо обличчя більшості магазинів
-              нашої мережі.
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={22}
-              fontFamily={"Ubuntu"}
-            >
-              "Сокет" завжди прагне залишатися на злагоді з часом, тому ми
-              активно диджиталізуємо бізнес-процеси та комунікацію зі
-              споживачами. Наша програма лояльності "Фокс Клуб" нараховує вже
-              10,8 мільйонів учасників, які отримують спеціальні пропозиції та
-              першочерговий доступ до новинок.
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={22}
-              fontFamily={"Ubuntu"}
-            >
-              Ми пишаємося, що компанія "Сокет" не лише вирізняється як
-              провідний ритейлер електроніки та техніки, але й служить прикладом
-              корпоративної соціальної відповідальності. Проекти "Зелений офіс"
-              та "ЕКОклас" свідчать про наш прагнення зменшити вплив на
-              навколишнє середовище та забезпечити екологічну грамотність. Наша
-              участь у проекті "Школа безпеки" допомагає підвищити безпеку дітей
-              в різних сферах життя.
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={22}
-              fontFamily={"Ubuntu"}
-            >
-              Наш бренд "Сокет" займає провідну позицію в рейтингах найкращих
-              компаній-роботодавців в Україні. Ми віримо, що найціннішим
-              ресурсом є наші співробітники, тому надаємо їм всі можливості для
-              розвитку та самореалізації.
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={22}
-              fontFamily={"Ubuntu"}
-            >
-              "Сокет" - це не просто торгова мережа, це спільнота людей, які
-              прагнуть вдосконалюватися, рости та змінювати світ навколо себе.
-              Ми продовжуємо розвиватися та впроваджувати інновації, дбаючи про
-              задоволення наших клієнтів та зберігаючи наші лідерські позиції на
-              ринку. Дякуємо вам за те, що обираєте "Сокет" - вашу надійну
-              платформу для покупки електроніки та побутової техніки.{" "}
-            </Typography>
-          </Paper>
-          <Box width={"100%"}>
-            {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
-              <></>
-            ) : (
-              <>
-                <Typography
-                  variant={"h3"}
-                  fontSize={37}
-                  fontFamily={"Ubuntu"}
-                  paddingTop={7}
-                  paddingBottom={4}
-                  textAlign={"center"}
-                >
-                  Було переглянуто
-                </Typography>
-                <RecentlyReviewed />
-              </>
-            )}
+            <Box>
+              <Box>
+                <Box width={"100%"}>
+                  <Typography
+                    fontSize={20}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    gutterBottom
+                  >
+                    Socket.store – найбільший онлайн-рітейлер у країні. З 2005
+                    року ми втілюємо маленькі мрії та грандіозні плани мільйонів
+                    людей. В нас можна знайти буквально все. Ми продаємо за
+                    справедливою ціною та надаємо гарантію, оскільки вважаємо,
+                    що онлайн-шопінг має бути максимально зручним та безпечним.
+                    І щоразу, коли хтось натискає «Купити», ми розуміємо, що
+                    робимо потрібну справу.
+                  </Typography>
+                  <Box
+                    flexDirection={"row"}
+                    justifyContent={"center"}
+                    marginLeft={"auto"}
+                    marginRight={"auto"}
+                    marginTop={10}
+                    marginBottom={10}
+                    alignItems={"center"}
+                    color={"black"}
+                    /* paddingBottom={1} */
+
+                    sx={{
+                      cursor: "pointer",
+                      color: "black",
+                      transition: "transform 0.3s ease",
+
+                      display: "flex",
+                    }}
+                  >
+                    <Typography
+                      variant={"h3"}
+                      fontSize={70}
+                      height={40}
+                      fontWeight={"bold"}
+                      /* paddingTop={1} */
+                      fontFamily={"'Roboto light', sans-serif"}
+                    >
+                      Socket
+                    </Typography>
+                    <Typography
+                      variant={"h3"}
+                      fontSize={34}
+                      height={34}
+                      fontWeight={"bold"}
+                      paddingBottom={2.2}
+                      fontFamily={"'Roboto light', sans-serif"}
+                    >
+                      .store
+                    </Typography>
+                  </Box>
+                  <Typography
+                    fontSize={24}
+                    marginBottom={3}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    fontWeight={"bold"}
+                    gutterBottom
+                  >
+                    <br />
+                    <br />
+                    Наша мета – бути корисними
+                  </Typography>
+                  <Typography
+                    fontSize={20}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    gutterBottom
+                  >
+                    Ми віримо, що речі існують для того, щоб робити життя
+                    простішим, приємнішим і добрішим. Тому і пошук тієї самої
+                    речі має бути швидким, зручним та приємним. Ми не просто
+                    продаємо побутову техніку, електроніку, прикраси чи вино. Ми
+                    допомагаємо знайти саме те, що потрібно, в одному місці та
+                    без зайвих хвилювань, щоб ви не витрачали життя на пошуки, а
+                    просто жили щасливо. Rozetka – це універсальна відповідь на
+                    будь-який запит, початок пошуку та його кінцева зупинка,
+                    справжній помічник. Ми назавжди позбавляємо своїх покупців
+                    неприємних компромісів, виконуємо бажання і дозволяємо
+                    мріяти сміливіше. Завдяки розумному пошуку та чесному
+                    сервісу ми робимо життя наших клієнтів трішки кращими прямо
+                    зараз.
+                  </Typography>
+                  <Typography
+                    fontSize={24}
+                    marginBottom={3}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    fontWeight={"bold"}
+                    gutterBottom
+                  >
+                    <br />
+                    <br />
+                    Щастя починається з простих речей
+                  </Typography>
+                  <Typography
+                    fontSize={20}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    gutterBottom
+                  >
+                    І ми допомагаємо знайти ці речі: закоханим нагадуємо, чим
+                    здивувати один одного; спортивних мотивуємо ніколи не
+                    здаватися та швидше прогресувати; господарським даємо
+                    можливість створити справжній затишок. Ми хочемо, щоб ви
+                    знали, що шукаєте, і могли б аргументувати свій вибір. Для
+                    цього ми знімаємо відеоогляди, пишемо статті та відстежуємо
+                    новинки.
+                  </Typography>
+                  <Typography
+                    fontSize={24}
+                    marginBottom={3}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    fontWeight={"bold"}
+                    gutterBottom
+                  >
+                    <br />
+                    <br />
+                    Щоб мрії здійснювалися легко
+                  </Typography>
+                  <Typography
+                    fontSize={20}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    gutterBottom
+                  >
+                    Ми відкриваємо величезні офлайн-магазини, щоб ви могли
+                    прийти, потримати в руках і протестувати продукт, що
+                    сподобався. Ми хочемо, щоб у нас був найкращий у світі
+                    сервіс, тому навчаємо співробітників не лише технічній
+                    стороні роботи, а й роботі з клієнтом.
+                  </Typography>
+                  <Box>
+                    <Box
+                      display={"flex"}
+                      flexDirection={"row"}
+                      justifyContent={"center"}
+                    >
+                      <Box width={300}>
+                        <Typography
+                          fontSize={35}
+                          marginBottom={1}
+                          fontFamily={"Ubuntu"}
+                          variant="h4"
+                          fontWeight={"bold"}
+                          gutterBottom
+                        >
+                          <br />
+                          <br />
+                          3.9 млн
+                        </Typography>
+                        <Typography
+                          fontSize={20}
+                          fontFamily={"Ubuntu"}
+                          variant="h4"
+                          gutterBottom
+                        >
+                          доступних до купівлі товарів
+                        </Typography>
+                      </Box>
+                      <Box marginLeft={3} width={300}>
+                        <Typography
+                          fontSize={35}
+                          marginBottom={1}
+                          fontFamily={"Ubuntu"}
+                          variant="h4"
+                          fontWeight={"bold"}
+                          gutterBottom
+                        >
+                          <br />
+                          <br />
+                          789 млн
+                        </Typography>
+                        <Typography
+                          fontSize={20}
+                          fontFamily={"Ubuntu"}
+                          variant="h4"
+                          gutterBottom
+                        >
+                          користувачів відвідали Socket.store у 2018 році
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box
+                      display={"flex"}
+                      flexDirection={"row"}
+                      justifyContent={"center"}
+                    >
+                      <Box width={300}>
+                        <Typography
+                          fontSize={35}
+                          marginBottom={1}
+                          fontFamily={"Ubuntu"}
+                          variant="h4"
+                          fontWeight={"bold"}
+                          gutterBottom
+                        >
+                          <br />
+                          <br />
+                          81%
+                        </Typography>
+                        <Typography
+                          fontSize={20}
+                          fontFamily={"Ubuntu"}
+                          variant="h4"
+                          gutterBottom
+                        >
+                          наших покупців повертаються
+                        </Typography>
+                      </Box>
+                      <Box marginLeft={3} width={300}>
+                        <Typography
+                          fontSize={35}
+                          marginBottom={1}
+                          fontFamily={"Ubuntu"}
+                          variant="h4"
+                          fontWeight={"bold"}
+                          gutterBottom
+                        >
+                          <br />
+                          <br />
+                          2.5 млн
+                        </Typography>
+                        <Typography
+                          fontSize={20}
+                          fontFamily={"Ubuntu"}
+                          variant="h4"
+                          gutterBottom
+                        >
+                          відвідувачів на день
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Typography
+                    fontSize={24}
+                    marginBottom={3}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    fontWeight={"bold"}
+                    gutterBottom
+                  >
+                    <br />
+                    <br />
+                    Зручна доставка
+                  </Typography>
+                  <Typography
+                    fontSize={20}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    gutterBottom
+                  >
+                    І звісно, будь-який товар можна замовити з доставкою. Ми
+                    доставляємо Києвом протягом одного дня, а Україною —
+                    наступного дня. Все – без передоплати, якщо потрібно – у
+                    кредит. Оплата готівкова чи безготівкова – як вам зручніше.
+                  </Typography>
+
+                  <Typography
+                    fontSize={24}
+                    marginBottom={3}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    fontWeight={"bold"}
+                    gutterBottom
+                  >
+                    <br />
+                    <br />
+                    Дальше більше
+                  </Typography>
+                  <Typography
+                    fontSize={20}
+                    fontFamily={"Ubuntu"}
+                    variant="h4"
+                    gutterBottom
+                  >
+                    Ми хочемо, щоб у наших клієнтів взагалі ніколи не виникало
+                    питання «де знайти щось потрібне». Тому тепер ми не лише
+                    найбільший онлайн-рітейлер, але ще й майданчик для
+                    продавців. Хтось почне з нами свій перший бізнес (або
+                    розширить існуючий), а хтось привезе в Україну продукти,
+                    яких поки що немає. Це вигідно всім: і покупцям, і
+                    продавцям, і навіть нам — адже так ми допоможемо більшій
+                    кількості людей стати трохи щасливішими.
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
           </Box>
         </Box>
+      </Box>
+      <Box width={"100%"}>
+        {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
+          <></>
+        ) : (
+          <>
+            <Typography
+              variant={"h3"}
+              fontSize={37}
+              fontFamily={"Ubuntu"}
+              paddingTop={7}
+              paddingBottom={4}
+              textAlign={"center"}
+            >
+              Було переглянуто
+            </Typography>
+            <RecentlyReviewed />
+          </>
+        )}
       </Box>
     </>
   );
