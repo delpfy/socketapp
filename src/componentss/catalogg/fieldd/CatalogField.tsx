@@ -3,8 +3,10 @@ import {
   AccordionDetails,
   AccordionSummary,
   Box,
+  Breadcrumbs,
   Button,
   Grid,
+  Link,
   SwipeableDrawer,
   Typography,
 } from "@mui/material";
@@ -142,9 +144,19 @@ export const CatalogField = () => {
                   window.innerWidth > 1024 ? "2px solid black" : "none",
               }}
             >
-              <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
+               <Breadcrumbs aria-label="breadcrumb">
+            <Link fontSize={20} underline="hover" color="inherit" href="/">
+              Головна
+            </Link>
+            <Link
+                fontSize={20}
+                underline="hover"
+                color="inherit"
+                
+              >
                 {category}
-              </Typography>
+              </Link>
+            </Breadcrumbs>
             </Box>
             <Box
               width={"100%"}
@@ -451,13 +463,19 @@ export const CatalogField = () => {
                         window.innerWidth > 1024 ? "2px solid black" : "none",
                     }}
                   >
-                    <Typography
-                      variant={"h3"}
-                      fontSize={30}
-                      fontFamily={"Comfortaa"}
-                    >
-                      {category}
-                    </Typography>
+                   <Breadcrumbs aria-label="breadcrumb">
+            <Link fontSize={20} underline="hover" color="inherit" href="/">
+              Головна
+            </Link>
+            <Link
+                fontSize={20}
+                underline="hover"
+                color="inherit"
+                
+              >
+                {category}
+              </Link>
+            </Breadcrumbs>
                   </Box>
                   <Box
                     width={"100%"}

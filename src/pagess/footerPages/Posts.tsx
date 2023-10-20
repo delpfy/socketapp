@@ -89,7 +89,7 @@ export default function Posts() {
                       <Box
                         key={post._id}
                         width={"80%"}
-                        sx={{ cursor: "pointer" }}
+                        sx={{ cursor: "pointer", border: '1px solid black', padding: 2, margin: 2, borderRadius: 1}}
                         alignSelf={"center"}
                         onClick={() => handlePostClick(post)}
                       >
@@ -121,19 +121,7 @@ export default function Posts() {
                           </Typography>
                         </Box>
 
-                        <Paper
-                          elevation={5}
-                          sx={{
-                            marginBottom: 2,
-                            height: 400,
-                            width: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          banner
-                        </Paper>
+                        
                         <Typography
                           variant="h1"
                           paddingBottom={5}

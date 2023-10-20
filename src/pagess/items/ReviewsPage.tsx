@@ -1,4 +1,10 @@
-import { Box, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  CircularProgress,
+  Link,
+  Typography,
+} from "@mui/material";
 import Review from "../../componentss/reviews/Review";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -16,7 +22,7 @@ export default function ReviewsPage() {
     (state) => state.home
   );
   const { reviews, status_review } = useAppSelector((state) => state.reviews);
-  const {category_slug} = useParams();
+  const { category_slug } = useParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   function StatusReviewHandler(status_review: Status) {
@@ -65,7 +71,6 @@ export default function ReviewsPage() {
           </Typography>
         );
       default:
-        
         navigate(`/${category_slug}`);
         return (
           <Typography fontFamily={"Comfortaa"} fontSize={20}>
@@ -107,9 +112,49 @@ export default function ReviewsPage() {
           borderBottom: "2px solid black",
         }}
       >
-        <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
-          {subcategory === "" ? category : category + "/" + subcategory}
-        </Typography>
+        <Breadcrumbs aria-label="breadcrumb">
+          <Link fontSize={20} underline="hover" color="inherit" href="/">
+            Головна
+          </Link>
+          {subcategory === "" ? (
+            <Link
+              fontSize={20}
+              underline="hover"
+              color="inherit"
+              href={`/${slugify(category)}`}
+            >
+              {category}
+            </Link>
+          ) : (
+            <>
+              <Link
+                fontSize={20}
+                underline="hover"
+                color="inherit"
+                href={`/${slugify(category)}/subcategories`}
+              >
+                {category}
+              </Link>
+              <Link
+                fontSize={20}
+                underline="hover"
+                color="inherit"
+                href={`/${slugify(subcategory)}`}
+              >
+                {subcategory}
+              </Link>
+            </>
+            
+          )}
+          <Link
+            fontSize={20}
+            underline="hover"
+            color="inherit"
+            
+          >
+            {itemCurrent.items.name}
+          </Link>
+        </Breadcrumbs>
         <Box
           sx={{
             display: "flex",
@@ -162,17 +207,15 @@ export default function ReviewsPage() {
         <ReviewForm {...itemCurrent.items} />
         <Box
           sx={{
-           
             borderRadius: 1.5,
             marginTop: 3,
             marginBottom: 10,
             width: {
-              xs: '90%',
-              sm: '85%'
-            }
+              xs: "90%",
+              sm: "85%",
+            },
           }}
           margin={"0 auto"}
-          
         >
           <Typography
             variant={"h3"}

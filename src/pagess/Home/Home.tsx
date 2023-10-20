@@ -459,7 +459,9 @@ export const Home = () => {
         </Typography>
         <RatingHit />
       </Box>
-      <Box width={"100%"}>
+      <Box width={"100%"} 
+      
+      >
         {recentlyReviewed === undefined || recentlyReviewed.length === 0 ? (
           <></>
         ) : (

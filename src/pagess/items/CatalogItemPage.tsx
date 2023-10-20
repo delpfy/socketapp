@@ -5,6 +5,7 @@ import { TShippingItems, Status } from "../../redux/types";
 
 import {
   Box,
+  Breadcrumbs,
   Button,
   CircularProgress,
   IconButton,
@@ -16,6 +17,7 @@ import {
   TableContainer,
   TableRow,
   Typography,
+  Link,
 } from "@mui/material";
 import { NotFoundPage } from "../PageAbsence";
 import {
@@ -330,9 +332,48 @@ export const ItemPage = () => {
             borderBottom: "2px solid black",
           }}
         >
-          <Typography variant={"h3"} fontSize={30} fontFamily={"Comfortaa"}>
-            {subcategory === "" ? category : category + "/" + subcategory}
-          </Typography>
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link fontSize={20} underline="hover" color="inherit" href="/">
+              Головна
+            </Link>
+            {subcategory === "" ? (
+              <Link
+                fontSize={20}
+                underline="hover"
+                color="inherit"
+                href={`/${slugify(category)}`}
+              >
+                {category}
+              </Link>
+            ) : (
+              <>
+                <Link
+                  fontSize={20}
+                  underline="hover"
+                  color="inherit"
+                  href={`/${slugify(category)}/subcategories`}
+                >
+                  {category}
+                </Link>
+                <Link
+                  fontSize={20}
+                  underline="hover"
+                  color="inherit"
+                  href={`/${slugify(subcategory)}`}
+                >
+                  {subcategory}
+                </Link>
+              </>
+            )}
+            <Link
+            fontSize={20}
+            underline="hover"
+            color="inherit"
+            
+          >
+            {itemCurrent.items.name}
+          </Link>
+          </Breadcrumbs>
           <Box
             sx={{
               display: "flex",
