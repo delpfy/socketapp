@@ -1,4 +1,11 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Breadcrumbs,
+  Button,
+  Grid,
+  Link,
+  Typography,
+} from "@mui/material";
 import React, { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -42,22 +49,26 @@ export default function ShowSubcategories() {
           textAlign={"left"}
           sx={{
             borderBottom: "2px solid black",
-            paddingTop: { xs: "20%", sm : '18%', md: "13%", lg: "10%" },
+            paddingTop: { xs: "20%", sm: "18%", md: "13%", lg: "10%" },
           }}
         >
-          <Typography
-            variant={"h3"}
-            
-            sx = {{mb:{
-              xs:5 ,
-              sm: 8,
-              md:5 ,
-            }}}
-            fontSize={30}
-            fontFamily={"Comfortaa"}
+          <Breadcrumbs
+            sx={{
+              mb: {
+                xs: 5,
+                sm: 8,
+                md: 5,
+              },
+            }}
+            aria-label="breadcrumb"
           >
-            {category}
-          </Typography>
+            <Link fontSize={20} underline="hover" color="inherit" href="/">
+              Головна
+            </Link>
+            <Link fontSize={20} underline="hover" color="inherit">
+              {category}
+            </Link>
+          </Breadcrumbs>
           <Grid
             container
             padding={"2%"}

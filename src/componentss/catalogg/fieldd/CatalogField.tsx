@@ -144,19 +144,14 @@ export const CatalogField = () => {
                   window.innerWidth > 1024 ? "2px solid black" : "none",
               }}
             >
-               <Breadcrumbs aria-label="breadcrumb">
-            <Link fontSize={20} underline="hover" color="inherit" href="/">
-              Головна
-            </Link>
-            <Link
-                fontSize={20}
-                underline="hover"
-                color="inherit"
-                
-              >
-                {category}
-              </Link>
-            </Breadcrumbs>
+              <Breadcrumbs aria-label="breadcrumb">
+                <Link fontSize={20} underline="hover" color="inherit" href="/">
+                  Головна
+                </Link>
+                <Link fontSize={20} underline="hover" color="inherit">
+                  {category}
+                </Link>
+              </Breadcrumbs>
             </Box>
             <Box
               width={"100%"}
@@ -463,19 +458,19 @@ export const CatalogField = () => {
                         window.innerWidth > 1024 ? "2px solid black" : "none",
                     }}
                   >
-                   <Breadcrumbs aria-label="breadcrumb">
-            <Link fontSize={20} underline="hover" color="inherit" href="/">
-              Головна
-            </Link>
-            <Link
-                fontSize={20}
-                underline="hover"
-                color="inherit"
-                
-              >
-                {category}
-              </Link>
-            </Breadcrumbs>
+                    <Breadcrumbs aria-label="breadcrumb">
+                      <Link
+                        fontSize={20}
+                        underline="hover"
+                        color="inherit"
+                        href="/"
+                      >
+                        Головна
+                      </Link>
+                      <Link fontSize={20} underline="hover" color="inherit">
+                        {category}
+                      </Link>
+                    </Breadcrumbs>
                   </Box>
                   <Box
                     width={"100%"}
