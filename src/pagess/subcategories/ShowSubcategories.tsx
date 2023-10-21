@@ -46,14 +46,19 @@ export default function ShowSubcategories() {
           width={"100%"}
           flexDirection={"column"}
           alignItems={"center"}
-          textAlign={"left"}
+          paddingTop={12}
+          textAlign={"center"}
           sx={{
             borderBottom: "2px solid black",
-            paddingTop: { xs: "20%", sm: "18%", md: "13%", lg: "10%" },
           }}
         >
           <Breadcrumbs
             sx={{
+              margin: {
+                xs: "0 auto",
+                sm: "0 auto",
+                md: "0",
+              },
               mb: {
                 xs: 5,
                 sm: 8,
