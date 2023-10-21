@@ -183,14 +183,14 @@ export default function AppBarMenu() {
               }}
             >
               <img
-                src={require("../../../img/inIcon.png")}
+                src={require("../../../img/inBlackIcon.png")}
                 style={{ width: 25, height: 23 }}
                 alt="sdf"
               />
             </IconButton>
 
             <Typography fontSize={15} minWidth={50} maxWidth={50}>
-              Linkedin
+              LinkedIn
             </Typography>
           </Link>
 
@@ -219,8 +219,8 @@ export default function AppBarMenu() {
               }}
             >
               <img
-                src={require("../../../img/instaIcon.png")}
-                style={{ width: 25, height: 23 }}
+                src={require("../../../img/instaBlackIcon.png")}
+                style={{ width: 24, height: 23 }}
                 alt="sdf"
               />
             </IconButton>

@@ -1,8 +1,28 @@
 import { Box, Typography } from "@mui/material";
+import { useAppDispatch } from "../../redux/hooks";
+import { SetCategory, SetSubcategory } from "../../redux/home/homeSlice";
+import CategoryDialog from "../dialogs/CategoryDialog";
+import { useState } from "react";
 
 export default function CatalogButton() {
+  const dispatch = useAppDispatch();
+  const [openCategory, setOpenCategory] = useState(false);
+
+  function CategoryDialog_open() {
+    setOpenCategory(true);
+  }
+
+  function CategoryDialog_close() {
+    dispatch(SetCategory(""));
+    dispatch(SetSubcategory(""));
+    setOpenCategory(false);
+  }
   return (
     <>
+    <CategoryDialog
+        openCategory={openCategory}
+        CategoryDialog_close={CategoryDialog_close}
+      />
       <Box
         width={200}
         sx={{
@@ -21,6 +41,10 @@ export default function CatalogButton() {
           },
         }}
         paddingRight={2}
+        onClick={() => {
+          dispatch(SetSubcategory(""));
+          CategoryDialog_open();
+        }}
       >
         <img
           src={require(window.innerWidth > 1024

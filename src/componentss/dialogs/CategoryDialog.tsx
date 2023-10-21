@@ -64,26 +64,45 @@ export default function CategoryDialog({
           />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent sx = {{ overflowY: "auto",
+            overflowX: "hidden",
+            marginBottom: 1,
+            marginRight: 1,
+           
+            "&::-webkit-scrollbar": {
+              width: "10px",
+              height: "10px",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "#000000",
+              borderRadius: "5px",
+            },
+            "&::-webkit-scrollbar-track": {
+              backgroundColor: "#D9D9D9",
+              borderRadius: "5px",
+            },}}>
         <DialogContentText
           display={"flex"}
           flexDirection={"row"}
-          sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+          sx={{ fontFamily: "Comfortaa", fontSize: 15 , }}
+           
         >
-          <Box width={"100%"} margin={"0 auto"} alignSelf={"center"}>
+          <Box width={"100%"} margin={"0 auto"} alignSelf={"center"} marginRight={2}>
             <Box
               width={"100%"}
               height={"100%"}
               flexDirection={"column"}
               alignItems={"center"}
               textAlign={"center"}
+              
             >
               <Grid
+              
                 container
                 paddingTop={"15%"}
                 justifyContent="center"
                 spacing={{ xs: 1, sm: 3, md: 4 }}
-                columns={{ xs: 6, sm: 2, md: 16, lg: 20, xl: 20 }}
+                columns={{ xs: 6, sm: 7, md: 16, lg: 20, xl: 20 }}
               >
                 {categories.find((item: Category) => item.name === category)
                   ?.subcategories === undefined
