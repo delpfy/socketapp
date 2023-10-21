@@ -1,4 +1,4 @@
-import { Box, Link, Paper, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import RecentlyReviewed from "../../componentss/RecentlyReviewed";
 import { useEffect } from "react";
 import { Facebook, Instagram, Telegram, YouTube } from "@mui/icons-material";
@@ -12,30 +12,51 @@ export default function Contact() {
   }, []);
   return (
     <>
-      <Box paddingTop={15} marginBottom = {4}>
-        <Typography
-          variant="h1"
-          textAlign={"center"}
-          paddingBottom={5}
-          fontSize={30}
-          fontFamily={"Ubuntu"}
+      <Box paddingTop={15} marginBottom={4}>
+        <Box
+          display={"flex"}
+          margin={"0 auto"}
+          width={"70%"}
+          justifyContent={"flex-start"}
+          alignItems={"center"}
         >
-          Контакти
-        </Typography>
+          <Typography
+            variant="h1"
+            textAlign={"center"}
+            paddingBottom={5}
+            fontSize={25}
+            fontFamily={"Ubuntu"}
+            fontWeight={"bold"}
+          >
+            {"<"}
+          </Typography>
+          <Typography
+            variant="h1"
+            textAlign={"center"}
+            paddingBottom={5}
+            fontSize={30}
+            fontFamily={"Ubuntu"}
+            fontWeight={"bold"}
+            paddingLeft={4}
+          >
+            Контакти
+          </Typography>
+        </Box>
         <Box
           sx={{
-            width: "100%",
+            width: "73%",
+            margin: "0 auto",
             display: "flex",
             flexDirection: "row",
             alignItems: "flex-start",
             justifyContent: "space-around",
           }}
         >
-          <Paper
-            elevation={5}
+          <Box
+            border={"1px solid black"}
             sx={{
               width: "40%",
-              
+
               padding: 2,
               paddingBottom: 8,
               display: "flex",
@@ -75,89 +96,100 @@ export default function Contact() {
             >
               Безкоштовно зі стаціонарних і мобільних телефонів в Україні
             </Typography>
-            
-          </Paper>
+          </Box>
           <Box
             sx={{
-                width: "40%",
+              width: "50%",
+
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "space-around",
             }}
           >
-            <Paper
-              elevation={5}
+            <Box
+              border={"1px solid black"}
               sx={{
                 width: "100%",
-                marginBottom: 4,
+
+                marginBottom: 1,
                 padding: 2,
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
               }}
             >
-                <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={30}
-              fontFamily={"Ubuntu"}
-            >
-              Контакти прес-служби: email@gmail.com
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={20}
-              fontFamily={"Ubuntu"}
-            >
-              Прес-служба торгової мережі Сокет дякує вам за виявлений інтерес.
-Ми завжди раді своєчасно відповісти на ваш запит і розвивати ефективну співпрацю з усіх питань, пов’язаних із наданням актуальних матеріалів, офіційних коментарів спікерів і експертів компанії, інших публікацій у засобах масової інформації.
-            </Typography>
-            </Paper>
-            <Paper
-              elevation={5}
-              sx={{
-                width: "100%",
-                padding: 2,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
-                <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={30}
-              fontFamily={"Ubuntu"}
-            >
-              Ми в соцмережах
-            </Typography>
-            <Box sx={{
-              display: "flex",
-              width: "70%",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-            }}>
-              <Link href="https://web.telegram.org/">
-              <Telegram color="info" sx= {{paddingRight: 2}}/>
-              </Link>
-              <Link href="https://www.instagram.com/">
-              <Instagram color="info" sx= {{paddingRight: 2}}/>
-              </Link>
-              <Link href="https://www.youtube.com/">
-              <YouTube color="info" sx= {{paddingRight: 2}}/>
-              </Link>
-              <Link href="https://www.facebook.com/">
-              <Facebook color="info" sx= {{paddingRight: 2}}/>
-              </Link>
-              <Link href="https://www.viber.com/">
-              <img src="https://cdn-icons-png.flaticon.com/512/3938/3938039.png" alt="" style={{width: 25, height: 25}}/>
-              </Link>
-             
+              <Typography
+                variant="h1"
+                paddingBottom={5}
+                fontSize={30}
+                fontFamily={"Ubuntu"}
+              >
+                Контакти прес-служби: email@gmail.com
+              </Typography>
+              <Typography
+                variant="h1"
+                paddingBottom={5}
+                fontSize={20}
+                fontFamily={"Ubuntu"}
+              >
+                Прес-служба торгової мережі Сокет дякує вам за виявлений
+                інтерес. Ми завжди раді своєчасно відповісти на ваш запит і
+                розвивати ефективну співпрацю з усіх питань, пов’язаних із
+                наданням актуальних матеріалів, офіційних коментарів спікерів і
+                експертів компанії, інших публікацій у засобах масової
+                інформації.
+              </Typography>
             </Box>
-            </Paper>
+            <Box
+              border={"1px solid black"}
+              sx={{
+                width: "100%",
+                padding: 2,
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography
+                variant="h1"
+                paddingBottom={2}
+                fontSize={30}
+                fontFamily={"Ubuntu"}
+              >
+                Ми в соцмережах
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "50%",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <Link href="https://web.telegram.org/">
+                  <Telegram color="info" sx={{ paddingRight: 2 }} />
+                </Link>
+                <Link href="https://www.instagram.com/">
+                  <Instagram color="info" sx={{ paddingRight: 2 }} />
+                </Link>
+                <Link href="https://www.youtube.com/">
+                  <YouTube color="info" sx={{ paddingRight: 2 }} />
+                </Link>
+                <Link href="https://www.facebook.com/">
+                  <Facebook color="info" sx={{ paddingRight: 2 }} />
+                </Link>
+                <Link href="https://www.viber.com/">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/3938/3938039.png"
+                    alt=""
+                    style={{ width: 25, height: 25 }}
+                  />
+                </Link>
+              </Box>
+            </Box>
           </Box>
         </Box>
       </Box>

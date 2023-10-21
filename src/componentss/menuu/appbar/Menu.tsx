@@ -18,6 +18,8 @@ import {
   ListItemIcon,
   ListItemText,
   SwipeableDrawer,
+  Typography,
+  Link,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
@@ -26,6 +28,7 @@ import SortBy from "../../sort/SortBy";
 import ContactUs from "../ContactUs";
 import { checkAuthorization } from "../../../redux/user/asyncActions";
 import { Category } from "../../../redux/types";
+import CatalogButton from "../CatalogButton";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -65,14 +68,264 @@ export default function AppBarMenu() {
         onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}
       >
-        {CATEGORIES.map((category: Category) => (
-          <ListItem key={category._id} disablePadding>
-            <ListItemButton onClick={() => handleCategoryChange(category)}>
-              <ListItemIcon></ListItemIcon>
-              <ListItemText primary={category.name} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <Box
+          paddingLeft={3}
+          marginTop={2}
+          paddingBottom={3}
+          width={"100%"}
+          borderBottom={"1px solid black"}
+        >
+          <CatalogButton />
+        </Box>
+        <Box
+          paddingLeft={3}
+          marginTop={2}
+          paddingBottom={2}
+          width={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"space-between"}
+          borderBottom={"1px solid black"}
+        >
+          <Link
+            marginBottom={2}
+            underline="none"
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            minWidth={95}
+            maxWidth={95}
+            color={"black"}
+            href="https://www.facebook.com/"
+          >
+            <IconButton
+              sx={{
+                paddingLeft: 0,
+                transition: "transform 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                },
+                "&:active": {
+                  transform: "translateY(0)",
+                },
+              }}
+            >
+              <img
+                src={require("../../../img/facebookBlackIcon.png")}
+                style={{ width: 13, height: 26 }}
+                alt="sdf"
+              />
+            </IconButton>
+            <Typography fontSize={15} minWidth={50} maxWidth={50}>
+              Facebook
+            </Typography>
+          </Link>
+
+          <Link
+            marginBottom={2}
+            underline="none"
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            minWidth={95}
+            maxWidth={95}
+            color={"black"}
+            href="https://twitter.com/"
+          >
+            <IconButton
+              sx={{
+                paddingLeft: 0,
+                transition: "transform 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                },
+                "&:active": {
+                  transform: "translateY(0)",
+                },
+              }}
+            >
+              <img
+                src={require("../../../img/twitterBlackIcon.png")}
+                style={{ width: 28, height: 23 }}
+                alt="sdf"
+              />
+            </IconButton>
+
+            <Typography fontSize={15} minWidth={50} maxWidth={50}>
+              Twitter
+            </Typography>
+          </Link>
+
+          <Link
+            marginBottom={2}
+            underline="none"
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            minWidth={95}
+            maxWidth={95}
+            color={"black"}
+            href="https://www.linkedin.com"
+          >
+            <IconButton
+              sx={{
+                paddingLeft: 0,
+                transition: "transform 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                },
+                "&:active": {
+                  transform: "translateY(0)",
+                },
+              }}
+            >
+              <img
+                src={require("../../../img/inIcon.png")}
+                style={{ width: 25, height: 23 }}
+                alt="sdf"
+              />
+            </IconButton>
+
+            <Typography fontSize={15} minWidth={50} maxWidth={50}>
+              Linkedin
+            </Typography>
+          </Link>
+
+          <Link
+            marginBottom={2}
+            underline="none"
+            display={"flex"}
+            flexDirection={"row"}
+            alignItems={"center"}
+            justifyContent={"space-between"}
+            minWidth={95}
+            maxWidth={95}
+            color={"black"}
+            href="https://www.instagram.com/"
+          >
+            <IconButton
+              sx={{
+                paddingLeft: 0,
+                transition: "transform 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                },
+                "&:active": {
+                  transform: "translateY(0)",
+                },
+              }}
+            >
+              <img
+                src={require("../../../img/instaIcon.png")}
+                style={{ width: 25, height: 23 }}
+                alt="sdf"
+              />
+            </IconButton>
+            <Typography fontSize={15} minWidth={50} maxWidth={50}>
+              Instagram
+            </Typography>
+          </Link>
+        </Box>
+        <Box
+          paddingLeft={3}
+          marginTop={2}
+          paddingBottom={2}
+          width={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"space-between"}
+          borderBottom={"1px solid black"}
+        >
+          <Typography fontSize={17} fontWeight={"bold"} paddingBottom={2}>
+            Компанія
+          </Typography>
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"space-between"}
+            marginTop={2}
+          >
+            <Typography
+              sx={{
+                paddingBottom: 2,
+              }}
+              fontFamily={"Comfortaa"}
+              onClick={() => navigate("/about")}
+            >
+              О компанії
+            </Typography>
+            <Typography
+              sx={{
+                paddingBottom: 2,
+              }}
+              fontFamily={"Comfortaa"}
+              onClick={() => navigate("/posts")}
+            >
+              Статті
+            </Typography>
+            <Typography
+              sx={{
+                paddingBottom: 2,
+              }}
+              fontFamily={"Comfortaa"}
+              onClick={() => navigate("/contact")}
+            >
+              Контакти
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          paddingLeft={3}
+          marginTop={2}
+          paddingBottom={2}
+          width={"100%"}
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"space-between"}
+          
+        >
+          <Typography fontSize={17} fontWeight={"bold"} paddingBottom={2}>
+            Покупцям
+          </Typography>
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"space-between"}
+            marginTop={2}
+          >
+            <Typography
+              sx={{
+                paddingBottom: 2,
+              }}
+              fontFamily={"Comfortaa"}
+              onClick={() => navigate("/return")}
+            >
+              Повернення товару
+            </Typography>
+            <Typography
+              sx={{
+                paddingBottom: 2,
+              }}
+              fontFamily={"Comfortaa"}
+              onClick={() => navigate("/delivery")}
+            >
+              Доставка
+            </Typography>
+
+            <Typography
+              sx={{
+                paddingBottom: 2,
+              }}
+              fontFamily={"Comfortaa"}
+              onClick={() => navigate("/quarantees")}
+            >
+              Гарантії
+            </Typography>
+          </Box>
+        </Box>
       </List>
       {/* <Divider />
       <Box sx={{ width: "100%" }}>
@@ -108,14 +361,12 @@ export default function AppBarMenu() {
         sx={{ backgroundColor: "black", backgroundAttachment: "fixed" }}
       >
         <Box
-          
-          
           height={"90%"}
           sx={{
             width: {
-              xs: '95%',
-              sm: '100%',
-              md: '95%',
+              xs: "95%",
+              sm: "100%",
+              md: "95%",
             },
             margin: {
               xs: "0 auto",
@@ -126,13 +377,11 @@ export default function AppBarMenu() {
               xs: "space-between",
               sm: "space-evenly",
               md: "space-between",
-            }
+            },
           }}
           display={"flex"}
           flexDirection={"row"}
           alignItems={"center"}
-          
-
         >
           <Box
             display={"flex"}
@@ -167,7 +416,6 @@ export default function AppBarMenu() {
                 sx={{
                   color: "white",
                   height: 35,
-
                   width: 35,
                 }}
               />
@@ -176,6 +424,18 @@ export default function AppBarMenu() {
               <Logo />
             </Box>
           </Box>
+          <Box
+            sx={{
+              display: {
+                xs: "none",
+                sm: "none",
+                md: "flex",
+              },
+            }}
+          >
+            <CatalogButton />
+          </Box>
+
           <Search />
           <Box
             display={"flex"}

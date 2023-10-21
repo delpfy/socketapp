@@ -11,7 +11,7 @@ export const Logo = () => {
       justifyContent={"space-between"}
       alignItems={"center"}
       color={"black"}
-      width={137}
+      width={120}
       /* paddingBottom={1} */
       onClick={() => navigate("/")}
       sx={{
