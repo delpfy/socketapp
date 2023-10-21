@@ -75,14 +75,15 @@ export const Home = () => {
   const dispatch = useAppDispatch();
 
   const [openCategory, setOpenCategory] = useState(false);
-
+  const [dialogKey, setDialogKey] = useState(0);
   function CategoryDialog_open() {
     setOpenCategory(true);
   }
 
   function CategoryDialog_close() {
-    dispatch(SetCategory(""));
-    dispatch(SetSubcategory(""));
+    setDialogKey(dialogKey + 1)
+    dispatch(SetCategory(''));
+    dispatch(SetSubcategory(''));
     setOpenCategory(false);
   }
 
@@ -111,6 +112,7 @@ export const Home = () => {
       <CategoryDialog
         openCategory={openCategory}
         CategoryDialog_close={CategoryDialog_close}
+        dialogKey = {dialogKey}
       />
       {_banners.length === 0 ? (
         <Box

@@ -74,7 +74,7 @@ export default function ShowSubcategories() {
             padding={"2%"}
             justifyContent="center"
             spacing={{ xs: 1, sm: 3, md: 4 }}
-            columns={{ xs: 2, sm: 6, md: 16, lg: 20, xl: 20 }}
+            columns={{ xs: 4, sm: 12, md: 16, lg: 16, xl: 20 }}
           >
             {categories
               .find((item: Category) => item.name === category)

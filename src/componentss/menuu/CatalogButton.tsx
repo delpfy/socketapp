@@ -7,14 +7,13 @@ import { useState } from "react";
 export default function CatalogButton() {
   const dispatch = useAppDispatch();
   const [openCategory, setOpenCategory] = useState(false);
-
+  const [dialogKey, setDialogKey] = useState(0);
   function CategoryDialog_open() {
     setOpenCategory(true);
   }
 
   function CategoryDialog_close() {
-    dispatch(SetCategory(""));
-    dispatch(SetSubcategory(""));
+    setDialogKey(dialogKey + 1)
     setOpenCategory(false);
   }
   return (
@@ -22,6 +21,7 @@ export default function CatalogButton() {
     <CategoryDialog
         openCategory={openCategory}
         CategoryDialog_close={CategoryDialog_close}
+        dialogKey = {dialogKey}
       />
       <Box
         width={200}

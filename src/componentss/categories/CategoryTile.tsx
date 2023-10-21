@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Card,
@@ -13,18 +13,22 @@ import { SetCategory, SetSubcategory } from "../../redux/home/homeSlice";
 import { useNavigate } from "react-router-dom";
 import { Category } from "../../redux/types";
 import { getItemsByCategory } from "../../redux/home/asyncActions";
+import CategoryDialog from "../dialogs/CategoryDialog";
+
+
 
 export default function CategoryCard(_category: any) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   function RedirectToCatalog() {
+    
     dispatch(SetCategory(_category.category.name));
     if (_category.category.subcategories !== undefined) {
       if (_category.category.subcategories.length !== 0) {
         if (window.innerWidth > 600) {
           navigate(`/${_category.category.slugString}/subcategories`);
-        } else {
+        } else {navigate(`/${_category.category.slugString}/subcategories`);
           dispatch(SetSubcategory(_category.category.name));
         }
       } else {
