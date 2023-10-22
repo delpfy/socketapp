@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Box, IconButton, Link, Typography } from "@mui/material";
 import RecentlyReviewed from "../../componentss/RecentlyReviewed";
 import { useEffect } from "react";
 import { Facebook, Instagram, Telegram, YouTube } from "@mui/icons-material";
@@ -44,62 +44,108 @@ export default function Contact() {
         </Box>
         <Box
           sx={{
-            width: "73%",
+            width: {
+              xs: "80%",
+              sm: "73%",
+            },
             margin: "0 auto",
             display: "flex",
-            flexDirection: "row",
-            alignItems: "flex-start",
+            flexDirection: {
+              xs: "column",
+              sm: "column",
+              md: "row",
+            },
+            alignItems: {
+              xs: "center",
+              sm: "center",
+              md: "flex-start",
+            },
             justifyContent: "space-around",
           }}
         >
           <Box
             border={"1px solid black"}
             sx={{
-              width: "40%",
-
+              width: {
+                xs: "100%",
+                sm: "100%",
+                md: "40%",
+              },
+              marginBottom: {
+                xs: 1,
+                sm: 1,
+                md: 0,
+              },
               padding: 2,
-              paddingBottom: 8,
+
               display: "flex",
               flexDirection: "column",
               justifyContent: "space-between",
             }}
           >
-            <Typography
-              variant="h1"
+            <Box
               paddingBottom={5}
-              fontSize={30}
-              fontFamily={"Ubuntu"}
+              width={290}
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"space-between"}
             >
-              Зворотній зв'язок
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={30}
-              fontFamily={"Ubuntu"}
-            >
-              email@gmail.com
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={30}
-              fontFamily={"Ubuntu"}
-            >
-              0 666 666-666
-            </Typography>
-            <Typography
-              variant="h1"
-              paddingBottom={5}
-              fontSize={30}
-              fontFamily={"Ubuntu"}
-            >
+              <img
+                src={require("../../img/feedbackIcon.png")}
+                style={{ width: 35, height: 35 }}
+                alt="sdf"
+              />
+              <Typography
+                fontWeight={"bold"}
+                fontSize={28}
+                fontFamily={"Ubuntu"}
+              >
+                Зворотній зв'язок
+              </Typography>
+            </Box>
+
+            <Box>
+              <Box
+                paddingBottom={2}
+                width={"100%"}
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+              >
+                <Typography fontSize={27} fontFamily={"Ubuntu"}>
+                  Gmail:
+                </Typography>
+                <Typography fontSize={27} fontFamily={"Ubuntu"}>
+                  email@gmail.com
+                </Typography>
+              </Box>
+
+              <Box
+                paddingBottom={17}
+                width={"100%"}
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+              >
+                <Typography fontSize={27} fontFamily={"Ubuntu"}>
+                  Номер телефона:
+                </Typography>
+                <Typography fontSize={27} fontFamily={"Ubuntu"}>
+                  0 666 666-666
+                </Typography>
+              </Box>
+            </Box>
+            <Typography fontWeight={"bold"} fontSize={27} fontFamily={"Ubuntu"}>
               Безкоштовно зі стаціонарних і мобільних телефонів в Україні
             </Typography>
           </Box>
           <Box
             sx={{
-              width: "50%",
+              width: {
+                xs: "100%",
+                sm: "100%",
+                md: "50%",
+              },
 
               display: "flex",
               flexDirection: "column",
@@ -119,17 +165,37 @@ export default function Contact() {
                 justifyContent: "space-between",
               }}
             >
+              <Box
+                paddingBottom={4}
+                width={290}
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+              >
+                <img
+                  src={require("../../img/informationIcon.png")}
+                  style={{ width: 35, height: 35 }}
+                  alt="sdf"
+                />
+                <Typography
+                  fontWeight={"bold"}
+                  fontSize={28}
+                  fontFamily={"Ubuntu"}
+                >
+                  Довідковий центр
+                </Typography>
+              </Box>
               <Typography
                 variant="h1"
-                paddingBottom={5}
-                fontSize={30}
+                paddingBottom={1}
+                fontSize={27}
                 fontFamily={"Ubuntu"}
               >
                 Контакти прес-служби: email@gmail.com
               </Typography>
               <Typography
                 variant="h1"
-                paddingBottom={5}
+                paddingBottom={1}
                 fontSize={20}
                 fontFamily={"Ubuntu"}
               >
@@ -147,7 +213,10 @@ export default function Contact() {
                 width: "100%",
                 padding: 2,
                 display: "flex",
-                flexDirection: "row",
+                flexDirection: {
+                  xs: "column",
+                  sm: "row",
+                },
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
@@ -155,7 +224,7 @@ export default function Contact() {
               <Typography
                 variant="h1"
                 paddingBottom={2}
-                fontSize={30}
+                fontSize={28}
                 fontFamily={"Ubuntu"}
               >
                 Ми в соцмережах
@@ -163,30 +232,89 @@ export default function Contact() {
               <Box
                 sx={{
                   display: "flex",
-                  width: "50%",
+
                   flexDirection: "row",
                   alignItems: "center",
                   justifyContent: "flex-start",
                 }}
               >
-                <Link href="https://web.telegram.org/">
-                  <Telegram color="info" sx={{ paddingRight: 2 }} />
-                </Link>
-                <Link href="https://www.instagram.com/">
-                  <Instagram color="info" sx={{ paddingRight: 2 }} />
-                </Link>
-                <Link href="https://www.youtube.com/">
-                  <YouTube color="info" sx={{ paddingRight: 2 }} />
-                </Link>
                 <Link href="https://www.facebook.com/">
-                  <Facebook color="info" sx={{ paddingRight: 2 }} />
+                  <IconButton
+                    sx={{
+                      transition: "transform 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-3px)",
+                      },
+                      "&:active": {
+                        transform: "translateY(0)",
+                      },
+                    }}
+                  >
+                    <img
+                      src={require("../../img/facebookBlackIcon.png")}
+                      style={{ width: 13, height: 26 }}
+                      alt="sdf"
+                    />
+                  </IconButton>
                 </Link>
-                <Link href="https://www.viber.com/">
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/3938/3938039.png"
-                    alt=""
-                    style={{ width: 25, height: 25 }}
-                  />
+                <Link href="https://twitter.com/">
+                  <IconButton
+                    sx={{
+                      transition: "transform 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-3px)",
+                      },
+                      "&:active": {
+                        transform: "translateY(0)",
+                      },
+                    }}
+                  >
+                    <img
+                      src={require("../../img/twitterBlackIcon.png")}
+                      style={{ width: 28, height: 23 }}
+                      alt="sdf"
+                    />
+                  </IconButton>
+                </Link>
+
+                <Link href="https://www.linkedin.com">
+                  <IconButton
+                    sx={{
+                      transition: "transform 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-3px)",
+                      },
+                      "&:active": {
+                        transform: "translateY(0)",
+                      },
+                    }}
+                  >
+                    <img
+                      src={require("../../img/inBlackIcon.png")}
+                      style={{ width: 25, height: 23 }}
+                      alt="sdf"
+                    />
+                  </IconButton>
+                </Link>
+
+                <Link href="https://www.instagram.com/">
+                  <IconButton
+                    sx={{
+                      transition: "transform 0.3s ease",
+                      "&:hover": {
+                        transform: "translateY(-3px)",
+                      },
+                      "&:active": {
+                        transform: "translateY(0)",
+                      },
+                    }}
+                  >
+                    <img
+                      src={require("../../img/instaBlackIcon.png")}
+                      style={{ width: 25, height: 23 }}
+                      alt="sdf"
+                    />
+                  </IconButton>
                 </Link>
               </Box>
             </Box>
