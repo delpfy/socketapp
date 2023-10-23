@@ -7,6 +7,7 @@ import {
   Input,
   InputAdornment,
   InputLabel,
+  OutlinedInput,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
@@ -131,7 +132,7 @@ export default function User() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
     dispatch(getOrdersByUser(user.id)).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         console.log(user_orders);
@@ -153,63 +154,101 @@ export default function User() {
         navigate("/")
       ) : (
         <Box
-          sx={{ paddingTop: { xs: "25%", md: "15%", lg: "9%" } }}
-          width={"100%"}
+          sx={{
+            paddingTop: 15,
+
+            margin: "0 auto",
+            width: {
+              xs: "95%",
+              sm: "40%",
+              md: "40%",
+            },
+          }}
         >
-          <Typography
-            fontFamily={"Comfortaa"}
-            textAlign={"center"}
-            fontSize={32}
-          >
+          <Typography fontWeight={"bold"} textAlign={"center"} fontSize={32}>
             Особистий кабінет
           </Typography>
-
-          <Box padding={3}>
+          <Box
+            padding={3}
+            display={"flex"}
+            alignItems={"center"}
+            flexDirection={"column"}
+            height={200}
+            justifyContent={"space-around"}
+          >
+            {user.avatar === undefined ? (
+              <Avatar alt="user_avatar" sx={{ width: 100, height: 100 }} />
+            ) : (
+              <Avatar
+                alt="user_avatar"
+                src={user.avatar}
+                sx={{ width: 100, height: 100 }}
+              />
+            )}
+          </Box>
+          <Box  width={'100%'} sx={{ border: "1px solid black", borderRadius: 1, margin: '0 auto', padding: {xs: 0, sm: 3, md: 3} }}>
+          <Typography marginBottom={3}  >Редагування профілю</Typography>
             <Box
-              padding={3}
-              display={"flex"}
-              alignItems={"center"}
-              flexDirection={"column"}
-              height={200}
-              justifyContent={"space-around"}
+            margin={'0 auto'}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                width: { xs: "100%" },
+              }}
             >
-              {user.avatar === undefined ? (
-                <Avatar alt="user_avatar" sx={{ width: 100, height: 100 }} />
-              ) : (
-                <Avatar
-                  alt="user_avatar"
-                  src={user.avatar}
-                  sx={{ width: 100, height: 100 }}
-                />
-              )}
-            </Box>
-            <Box padding={3}>
-              <InputLabel>Iм'я</InputLabel>
-              <Input
+              <Typography>Ім'я</Typography>
+              <OutlinedInput
+                margin="dense"
+                type="text"
+                name="fullName"
                 value={fullName}
+                sx={{ width: "100%", marginBottom: 2, marginTop: 1 }}
+                size="small"
                 onChange={(e) =>
                   setFullName(e.target.value.replace(/\s+/g, " "))
                 }
               />
-              <FormHelperText sx={{ fontSize: 15 }}>
-                Наразі ви - {user.name}
-              </FormHelperText>
             </Box>
 
-            <Box padding={3}>
-              <InputLabel>Пошта</InputLabel>
-              <Input
+            <Box
+            margin={'0 auto'}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                width: { xs: "100%" },
+              }}
+            >
+              <Typography>Пошта</Typography>
+              <OutlinedInput
+                margin="dense"
+                type="email"
+                name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value.replace(/\s+/g, ""))}
+                sx={{ width: "100%", marginBottom: 2, marginTop: 1 }}
+                size="small"
               />
-              <FormHelperText sx={{ fontSize: 15 }}>
-                Ми ніколи не розголошуватимемо вашу електронну пошту.
-              </FormHelperText>
             </Box>
-            <Box padding={3}>
-              <InputLabel>Пароль</InputLabel>
-              <Input
+            <Box
+            margin={'0 auto'}
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                width: { xs: "100%" },
+              }}
+            >
+              <Typography>Пароль</Typography>
+              <OutlinedInput
+                autoFocus
+                margin="dense"
+                id="password"
+                size="small"
+                sx={{ marginBottom: 2, width: "100%" }}
                 value={password}
+                name="password"
                 type={passVisible ? "password" : "text"}
                 endAdornment={
                   <InputAdornment position="end">
@@ -224,38 +263,68 @@ export default function User() {
                 }
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <FormHelperText sx={{ fontSize: 15 }}>
-                Ми ніколи не розголошуватимемо ваш пароль.
-              </FormHelperText>
             </Box>
 
             <Box
               sx={{
                 display: "flex",
                 height: { xs: 170, md: 100 },
-                width: { xs: 300, md: 600 },
+                width: '100%',
                 flexDirection: { xs: "column", md: "row" },
                 alignItems: { xs: "flex-end", md: "center" },
-                justifyContent: "space-around",
+                justifyContent: "flex-end",
               }}
             >
               <Button
                 variant="contained"
-                color="warning"
-                sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+                sx={{
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                  paddingLeft: 4,
+                  paddingRight: 4,
+                  marginRight: {
+                    xs: 0,
+                    md: 2,
+                  },
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  background: "white",
+                  color: "black",
+                  "&:hover": {
+                    backgroundColor: "white",
+                    color: "black",
+                  },
+                }}
+                
+                onClick={LogoutDialog_open}
+              >
+                Вийти з аккаута
+              </Button>
+              <Button
+                variant="contained"
+                sx={{
+                  paddingTop: 1,
+                  paddingBottom: 1,
+                  paddingLeft: 4,
+                  paddingRight: 4,
+                  textAlign: "center",
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  background: "black",
+                  color: "white",
+                  "&:hover": {
+                    backgroundColor: "black",
+                    color: "white",
+                  },
+                }}
+               
                 onClick={handleUserChanges}
               >
                 Зберігти зміни
               </Button>
 
-              <Button
-                variant="contained"
-                color="error"
-                sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-                onClick={LogoutDialog_open}
-              >
-                Вийти з аккаута
-              </Button>
+              
             </Box>
             {user_orders.orders === undefined ? (
               <></>
