@@ -37,6 +37,8 @@ import { checkItemById } from "../../../redux/home/asyncActions";
 import { actualizeBasket } from "../../../utils/actuilizeBasket";
 import ComparisonDialog from "../../dialogs/ComparisonDialog";
 import FavoritesDialog from "../../dialogs/FavoritesDialog";
+import LoginDialog from "../../dialogs/LoginDialog";
+import RegisterDialog from "../../dialogs/RegisterDialog";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -45,7 +47,10 @@ export default function AppBarMenu() {
   const [active, setActive] = useState(false);
 
   const [openRegister, setOpenRegister] = useState(false);
-
+  const [openError, setOpenError] = useState(false);
+  const [openInfo, setOpenInfo] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>("Unhandled error");
+  const [infoMessage, setInfoMessage] = useState<string>("Some info");
   const [openFavorites, setOpenFavorites] = useState(false);
   const [openComparison, setOpenComparison] = useState(false);
 
@@ -89,6 +94,26 @@ export default function AppBarMenu() {
     }
   }
 
+  function closeRegAfterSuccess() {
+    setOpenRegister(false);
+    setInfoMessage(
+      "На вашу пошту було надіслано повідомлення з підтвердженням"
+    );
+    InfoDialog_open();
+  }
+
+  function InfoDialog_open() {
+    setOpenInfo(true);
+  }
+
+  function InfoDialog_close() {
+    setOpenInfo(false);
+  }
+
+  function ErrorDialog_close() {
+    setOpenError(false);
+  }
+
   useEffect(() => {
     dispatch(checkAuthorization());
   }, []);
@@ -110,6 +135,24 @@ export default function AppBarMenu() {
 
   const list = (anchor: Anchor) => (
     <Box width={250} role="presentation">
+      <LoginDialog
+        openLogin={openLogin}
+        LoginDialog_close={LoginDialog_close}
+        ErrorDialog_open={setOpenError}
+        InfoDialog_open={setOpenInfo}
+        RegisterDialog_open={setOpenRegister}
+        LoginDialog_open={setOpenLogin}
+        setErrorMessage={setErrorMessage}
+        setInfoMessage={setInfoMessage}
+      />
+      <RegisterDialog
+        openRegister={openRegister}
+        closeRegisterDialog={RegisterDialog_close}
+        ErrorDialog_open={setOpenError}
+        LoginDialog_open={LoginDialog_open}
+        closeRegAfterSuccess={closeRegAfterSuccess}
+        setErrorMessage={setErrorMessage}
+      />
       <List
         onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}
