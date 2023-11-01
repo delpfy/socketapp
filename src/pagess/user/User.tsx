@@ -27,6 +27,7 @@ import {
   synchronizeBasket,
 } from "../../redux/basket/basketSlice";
 import { setEditItemMode } from "../../redux/home/homeSlice";
+import UserOrdersSkeletons from "../order/UserOrdersSkeletons";
 
 export default function User() {
   const { user } = useAppSelector((state) => state.user);
@@ -161,7 +162,7 @@ export default function User() {
             width: {
               xs: "95%",
               sm: "40%",
-              md: "40%",
+              md: "70%",
             },
           }}
         >
@@ -169,7 +170,6 @@ export default function User() {
             Особистий кабінет
           </Typography>
           <Box
-            padding={3}
             display={"flex"}
             alignItems={"center"}
             flexDirection={"column"}
@@ -177,7 +177,11 @@ export default function User() {
             justifyContent={"space-around"}
           >
             {user.avatar === undefined ? (
-              <Avatar alt="user_avatar" sx={{ width: 100, height: 100 }} />
+              <img
+                src={require("../../img/userBlackIcon.png")}
+                style={{ width: 100, height: 100 }}
+                alt="sdf"
+              />
             ) : (
               <Avatar
                 alt="user_avatar"
@@ -186,15 +190,24 @@ export default function User() {
               />
             )}
           </Box>
-          <Box  width={'100%'} sx={{ border: "1px solid black", borderRadius: 1, margin: '0 auto', padding: {xs: 0, sm: 3, md: 3} }}>
-          <Typography marginBottom={3}  >Редагування профілю</Typography>
+          <Box
+            width={"100%"}
+            sx={{
+              border: "1px solid black",
+              width: { xs: "90%", sm: "100%", md: "60%" },
+              borderRadius: 1,
+              margin: "0 auto",
+              padding: { xs: 0, sm: 3, md: 3 },
+            }}
+          >
+            <Typography marginBottom={3}>Редагування профілю</Typography>
             <Box
-            margin={'0 auto'}
+              margin={"0 auto"}
               sx={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                width: { xs: "100%" },
+                width: { xs: "90%", sm: "90%", md: "100%" },
               }}
             >
               <Typography>Ім'я</Typography>
@@ -212,12 +225,12 @@ export default function User() {
             </Box>
 
             <Box
-            margin={'0 auto'}
+              margin={"0 auto"}
               sx={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                width: { xs: "100%" },
+                width: { xs: "90%", sm: "90%", md: "100%" },
               }}
             >
               <Typography>Пошта</Typography>
@@ -232,12 +245,12 @@ export default function User() {
               />
             </Box>
             <Box
-            margin={'0 auto'}
+              margin={"0 auto"}
               sx={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                width: { xs: "100%" },
+                width: { xs: "90%", sm: "90%", md: "100%" },
               }}
             >
               <Typography>Пароль</Typography>
@@ -269,7 +282,7 @@ export default function User() {
               sx={{
                 display: "flex",
                 height: { xs: 170, md: 100 },
-                width: '100%',
+                width: "100%",
                 flexDirection: { xs: "column", md: "row" },
                 alignItems: { xs: "flex-end", md: "center" },
                 justifyContent: "flex-end",
@@ -296,7 +309,6 @@ export default function User() {
                     color: "black",
                   },
                 }}
-                
                 onClick={LogoutDialog_open}
               >
                 Вийти з аккаута
@@ -318,22 +330,19 @@ export default function User() {
                     color: "white",
                   },
                 }}
-               
                 onClick={handleUserChanges}
               >
                 Зберігти зміни
               </Button>
-
-              
             </Box>
-            {user_orders.orders === undefined ? (
-              <></>
-            ) : user_orders.orders.length === 0 ? (
-              <></>
-            ) : (
-              <UserOrders />
-            )}
           </Box>
+          {user_orders.orders === undefined ? (
+            <UserOrdersSkeletons />
+          ) : user_orders.orders.length === 0 ? (
+            <UserOrdersSkeletons />
+          ) : (
+            <UserOrders />
+          )}
           <LogoutDialog
             openLogout={openLogout}
             LogoutDialog_close={LogoutDialog_close}

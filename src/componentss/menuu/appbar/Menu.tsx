@@ -279,8 +279,8 @@ export default function AppBarMenu() {
               }}
             >
               <img
-                src={require("../../../img/inBlackIcon.png")}
-                style={{ width: 25, height: 23 }}
+                src={require("../../../img/userBlackIcon.png")}
+                style={{ width: 25, height: 25 }}
                 alt="sdf"
               />
             </IconButton>

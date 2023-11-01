@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Box, Typography } from "@mui/material";
+import { Box, Skeleton, Typography } from "@mui/material";
 import { Items, Status, TOrder } from "../../redux/types";
 import { CURRENT_ORDER_setOrder } from "../../redux/order/orderSlice";
 import { useNavigate } from "react-router-dom";
 
-export default function UserOrders() {
+export default function UserOrdersSkeletons() {
   const { user_orders, status } = useAppSelector((state) => state.orders);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -59,10 +59,12 @@ export default function UserOrders() {
                     },
                   }}
                 >
-                  {user_orders.orders.map((order: TOrder, index) => {
+                  {Array.from({ length: 10 }).map(() => {
                     return (
                       <>
-                        <Box
+                        <Skeleton
+                          height={90}
+                          variant="rectangular"
                           sx={{
                             marginTop: 3,
                             marginBottom: 3,
@@ -70,30 +72,11 @@ export default function UserOrders() {
                             marginLeft: "auto",
                             marginRight: "auto",
                             cursor: "pointer",
-                            border: "1px solid black",
-                            borderRadius: 1,
+
                             padding: 1,
                             width: "90%",
                           }}
-                          onClick={() => {
-                            RedirectToOrder(order);
-                          }}
-                        >
-                          <Typography key={order.numberOfOrder}>
-                            Номер {index + 1}: код: {order.numberOfOrder}
-                          </Typography>
-                          <Box>
-                            {order.items.map((item: Items) => {
-                              return (
-                                <img
-                                  src={`https://www.sidebyside-tech.com${item.image[0]}`}
-                                  alt=""
-                                  style={{ width: 50, height: 50 }}
-                                />
-                              );
-                            })}
-                          </Box>
-                        </Box>
+                        />
                       </>
                     );
                   })}

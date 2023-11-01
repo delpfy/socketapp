@@ -144,31 +144,55 @@ export default function PostPage() {
                   setEditorContent(data);
                 }}
               />
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  width: 300,
-                  justifyContent: "space-between",
-                  alignItem: "center",
-                }}
-              >
-                <Button
-                  color="warning"
-                  variant="contained"
-                  sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-                  onClick={() => handleSavePost()}
+              <Box width={"100%"} display={"flex"} justifyContent={"center"}>
+                <Box
+                  sx={{
+                    display: "flex",
+
+                    flexDirection: "row",
+                    width: 300,
+                    marginTop: 2,
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
                 >
-                  Зберігти
-                </Button>
-                <Button
-                  color="error"
-                  variant="contained"
-                  sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
-                  onClick={() => handleDeletePost()}
-                >
-                  Видалити
-                </Button>
+                  <Button
+                    color="warning"
+                    variant="contained"
+                    sx={{
+                      fontFamily: "Comfortaa",
+                      fontSize: 15,
+                      background: "black",
+                      color: "white",
+                      backgroundColor: "black",
+                      "&:hover": {
+                        backgroundColor: "white",
+                        color: "black",
+                      },
+                    }}
+                    onClick={() => handleSavePost()}
+                  >
+                    Зберігти
+                  </Button>
+                  <Button
+                    color="error"
+                    variant="contained"
+                    sx={{
+                      fontFamily: "Comfortaa",
+                      fontSize: 15,
+                      background: "black",
+                      color: "black",
+                      backgroundColor: "white",
+                      "&:hover": {
+                        backgroundColor: "black",
+                        color: "white",
+                      },
+                    }}
+                    onClick={() => handleDeletePost()}
+                  >
+                    Видалити
+                  </Button>
+                </Box>
               </Box>
             </Box>
           </>

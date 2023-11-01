@@ -69,14 +69,36 @@ export default function Posts() {
             ) : (
               <>
                 {user.role === "manager" || user.role === "admin" ? (
-                  <Button
-                    color="warning"
-                    variant="contained"
-                    sx={{ width: 300, fontFamily: "Comfortaa", fontSize: 15 }}
-                    onClick={() => handleAddPostClick()}
+                  <Box
+                    width={"80%"}
+                    margin={"0 auto"}
+                    display={"flex"}
+                    flexDirection={"row"}
+                    justifyContent={"center"}
                   >
-                    Додати статтю
-                  </Button>
+                    <Button
+                      color="warning"
+                      variant="contained"
+                      sx={{
+                        width: {
+                          xs: 200,
+                          sm: 300,
+                          md: 300,
+                        },
+                        fontFamily: "Comfortaa",
+                        fontSize: 15,
+                        background: "black",
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: "black",
+                          color: "white",
+                        },
+                      }}
+                      onClick={() => handleAddPostClick()}
+                    >
+                      Додати статтю
+                    </Button>
+                  </Box>
                 ) : (
                   <></>
                 )}
@@ -89,30 +111,54 @@ export default function Posts() {
                       <Box
                         key={post._id}
                         width={"80%"}
-                        sx={{ cursor: "pointer", border: '1px solid black', padding: 2, margin: 2, borderRadius: 1}}
+                        sx={{ cursor: "pointer", padding: 2, margin: 2 }}
                         alignSelf={"center"}
                         onClick={() => handlePostClick(post)}
                       >
                         <Box
                           sx={{
                             display: "flex",
-                            flexDirection: "row",
+                            flexDirection: {
+                              xs: "column",
+                              md: "row",
+                            },
                             alignItems: "center",
-                            justifyContent: "space-between",
+                            justifyContent: {
+                              xs: "center",
+                              md: "space-between",
+                            },
                           }}
                         >
                           <Typography
                             variant="h1"
-                            paddingBottom={5}
-                            fontSize={30}
+                            sx={{
+                              fontSize: {
+                                xs: 23,
+                                sm: 28,
+                                md: 30,
+                              },
+                              paddingBottom: {
+                                xs: 2,
+                                md: 5,
+                              },
+                            }}
                             fontFamily={"Ubuntu"}
                           >
                             {post.title}
                           </Typography>
                           <Typography
                             variant="h1"
-                            paddingBottom={5}
-                            fontSize={24}
+                            sx={{
+                              fontSize: {
+                                xs: 20,
+                                sm: 22,
+                                md: 24,
+                              },
+                              paddingBottom: {
+                                xs: 2,
+                                md: 5,
+                              },
+                            }}
                             fontFamily={"Ubuntu"}
                           >
                             {post.createdAt !== post.updatedAt
@@ -121,11 +167,11 @@ export default function Posts() {
                           </Typography>
                         </Box>
 
-                        
                         <Typography
                           variant="h1"
                           paddingBottom={5}
                           fontSize={22}
+                          textAlign={"justify"}
                           fontFamily={"Ubuntu"}
                         >
                           {post.description}
