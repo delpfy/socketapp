@@ -39,6 +39,8 @@ import ComparisonDialog from "../../dialogs/ComparisonDialog";
 import FavoritesDialog from "../../dialogs/FavoritesDialog";
 import LoginDialog from "../../dialogs/LoginDialog";
 import RegisterDialog from "../../dialogs/RegisterDialog";
+import ErrorDialog from "../../dialogs/ErrorDialog";
+import InfoDialog from "../../dialogs/InfoDialog";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -135,24 +137,6 @@ export default function AppBarMenu() {
 
   const list = (anchor: Anchor) => (
     <Box width={250} role="presentation">
-      <LoginDialog
-        openLogin={openLogin}
-        LoginDialog_close={LoginDialog_close}
-        ErrorDialog_open={setOpenError}
-        InfoDialog_open={setOpenInfo}
-        RegisterDialog_open={setOpenRegister}
-        LoginDialog_open={setOpenLogin}
-        setErrorMessage={setErrorMessage}
-        setInfoMessage={setInfoMessage}
-      />
-      <RegisterDialog
-        openRegister={openRegister}
-        closeRegisterDialog={RegisterDialog_close}
-        ErrorDialog_open={setOpenError}
-        LoginDialog_open={LoginDialog_open}
-        closeRegAfterSuccess={closeRegAfterSuccess}
-        setErrorMessage={setErrorMessage}
-      />
       <List
         onClick={toggleDrawer(anchor, false)}
         onKeyDown={toggleDrawer(anchor, false)}
@@ -606,6 +590,37 @@ export default function AppBarMenu() {
         openComparison={openComparison}
         ComparisonDialog_close={ComparisonDialog_close}
       />
+
+      <ErrorDialog
+        openError={openError}
+        ErrorDialog_close={ErrorDialog_close}
+        errorMessage={errorMessage}
+      />
+      <InfoDialog
+        openInfo={openInfo}
+        InfoDialog_close={InfoDialog_close}
+        infoMessage={infoMessage}
+      />
+
+      <LoginDialog
+        openLogin={openLogin}
+        LoginDialog_close={LoginDialog_close}
+        ErrorDialog_open={setOpenError}
+        InfoDialog_open={setOpenInfo}
+        RegisterDialog_open={setOpenRegister}
+        LoginDialog_open={setOpenLogin}
+        setErrorMessage={setErrorMessage}
+        setInfoMessage={setInfoMessage}
+      />
+      <RegisterDialog
+        openRegister={openRegister}
+        closeRegisterDialog={RegisterDialog_close}
+        ErrorDialog_open={setOpenError}
+        LoginDialog_open={LoginDialog_open}
+        closeRegAfterSuccess={closeRegAfterSuccess}
+        setErrorMessage={setErrorMessage}
+      />
+
       <React.Fragment>
         <SwipeableDrawer
           anchor={"left"}
