@@ -4,9 +4,11 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   Box,
   FormControl,
+  FormControlLabel,
   Grid,
   InputLabel,
   MenuItem,
+  Radio,
   Select,
   Switch,
   Table,
@@ -70,7 +72,6 @@ export default function ComparisonPage() {
           ) : (
             <>
               <FormControl fullWidth>
-                <InputLabel id="processor-label">Категорія</InputLabel>
                 <Select
                   labelId="processor-label"
                   id="processor-select"
@@ -111,15 +112,23 @@ export default function ComparisonPage() {
                       alignItems={"flex-start"}
                       paddingTop={3}
                     >
-                      <Typography fontFamily={"Ubuntu"} fontSize={18}>
-                        {" "}
-                        Тільки відмінності
-                      </Typography>
-                      <Switch
+                      <FormControlLabel
+                        value="asc"
                         checked={differencesMode}
-                        onChange={(e: any) =>
-                          dispatch(setDifferencesMode(e.target.checked))
+                        control={
+                          <Radio
+                            sx={{
+                              color: "black",
+                              "&.Mui-checked": {
+                                color: "black",
+                              },
+                            }}
+                            onClick={(e: any) =>
+                              dispatch(setDifferencesMode(!differencesMode))
+                            }
+                          />
                         }
+                        label="Тільки відмінності"
                       />
                     </Box>
                     <Box
