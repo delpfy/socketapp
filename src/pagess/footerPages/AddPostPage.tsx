@@ -104,9 +104,14 @@ export default function AddPostPage() {
             }}
           >
             <Button
-              color="warning"
+              
               variant="contained"
-              sx={{ fontFamily: "Comfortaa", fontSize: 15 }}
+              sx={{ fontFamily: "Comfortaa", fontSize: 15, background: "black",
+              color: "white", marginTop: 5,
+              "&:hover": {
+                backgroundColor: "black",
+                color: "white",
+              }, }}
               onClick={() => handleAddPost()}
             >
               Зберігти

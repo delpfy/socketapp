@@ -68,7 +68,7 @@ export default function AdminPage() {
           navigate("/");
         }
         if (!user.authorized_admin) {
-          /* navigate("/admin-auth"); */
+          navigate("/admin-auth");
         }
       }
       if (result.meta.requestStatus === "rejected") {
