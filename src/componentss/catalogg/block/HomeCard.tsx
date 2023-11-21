@@ -89,21 +89,37 @@ export default function HomeCard(props: Items) {
       const itemIndex = recentlyReviewed.findIndex(
         (item: Items) => item.name === props.name
       );
+      
 
       if (itemIndex === -1) {
         recentlyReviewed.push(props);
       } else {
+       
         compareObjects(props, recentlyReviewed[itemIndex]);
       }
-      localStorage.setItem(
-        "recentlyReviewed",
-        JSON.stringify(recentlyReviewed)
-      );
+      dispatch(checkItemById(props._id)).then((result: any) => {
+        if (result.meta.requestStatus === "rejected") {
+          localStorage.setItem(
+            "recentlyReviewed",
+            JSON.stringify(recentlyReviewed.filter((item: any) => item._id !==  props._id))
+          );
+          setInfoMessage("Такого товару вже нема");
+        InfoDialog_open();
+        }
+        else{
+          localStorage.setItem(
+            "recentlyReviewed",
+            JSON.stringify(recentlyReviewed)
+          );
+          navigate(`/${slugify(props.category)}/${slugify(props.name)}`);
+        }
+      })
+      
     }
   }
 
   function getCurrentItem() {
-    navigate(`/${slugify(props.category)}/${props.slugString}`);
+    
     setAsRecentlyReviewed();
   }
 

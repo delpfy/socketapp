@@ -123,7 +123,7 @@ export default function Review(props: IReviewGET) {
       margin={"0 auto"}
       marginTop={4}
       marginBottom={4}
-      height={"100%"}
+      
       width={"96%"}
     >
       <Box

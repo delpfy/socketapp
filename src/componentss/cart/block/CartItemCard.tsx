@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { getItemById, getItemBySlug } from "../../../redux/home/asyncActions";
 import { getItemReviews } from "../../../redux/review/asyncActions";
 import InfoDialog from "../../dialogs/InfoDialog";
+import slugify from "slugify";
 
 export default function BasketItemBlock(props: TShippingItems) {
   const dispatch = useAppDispatch();
@@ -43,7 +44,7 @@ export default function BasketItemBlock(props: TShippingItems) {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(getItemReviews(props._id)).then((result: any) => {
           if (result.meta.requestStatus === "fulfilled") {
-            navigate(`/catalog/${props.slugString}`);
+            navigate(`/${slugify(props.category)}/${props.slugString}`);
           }
         });
       }
