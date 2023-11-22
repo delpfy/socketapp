@@ -40,11 +40,11 @@ export default function BasketItemBlock(props: TShippingItems) {
   }
 
   function getCurrentItem() {
-    dispatch(getItemBySlug(props.slugString)).then((result: any) => {
+    dispatch(getItemBySlug(slugify(props.name))).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
         dispatch(getItemReviews(props._id)).then((result: any) => {
           if (result.meta.requestStatus === "fulfilled") {
-            navigate(`/${slugify(props.category)}/${props.slugString}`);
+            navigate(`/${slugify(props.category)}/${slugify(props.name)}`);
           }
         });
       }
