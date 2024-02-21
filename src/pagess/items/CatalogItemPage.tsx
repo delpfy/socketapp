@@ -457,7 +457,7 @@ export const ItemPage = () => {
                 return (
                   <Box margin={"0 auto"}>
                     <img
-                      src={`https://www.sidebyside-tech.com${url}`}
+                      src={`https://enthusiastic-pear-scarf.cyclic.app${url}`}
                       /* src={itemCurrent.items.image[0]} */
                       alt="img1"
                       style={{

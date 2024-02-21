@@ -155,7 +155,7 @@ export default function ShowItems() {
                     {item.image.map((image: string) => {
                       return (
                         <img
-                          src={`https://www.sidebyside-tech.com${image}`}
+                          src={`https://enthusiastic-pear-scarf.cyclic.app${image}`}
                           alt={item.name}
                           style={{ height: 50 }}
                         />

@@ -170,7 +170,7 @@ export default function ShowBanners() {
               <Box maxWidth={500} padding={4}>
                 {bannerImage !== undefined ? (
                   <img
-                    src={`https://www.sidebyside-tech.com${bannerImage}`}
+                    src={`https://enthusiastic-pear-scarf.cyclic.app${bannerImage}`}
                     style={{ height: 60 }}
                     alt={bannerImage}
                   />
@@ -241,7 +241,7 @@ export default function ShowBanners() {
               <TableRow key={banner._id}>
                 <TableCell>
                   <img
-                    src={`https://www.sidebyside-tech.com${banner.image}`}
+                    src={`https://enthusiastic-pear-scarf.cyclic.app${banner.image}`}
                     alt={banner.name}
                     style={{ height: 50 }}
                   />

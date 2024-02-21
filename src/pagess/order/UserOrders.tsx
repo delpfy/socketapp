@@ -86,7 +86,7 @@ export default function UserOrders() {
                             {order.items.map((item: Items) => {
                               return (
                                 <img
-                                  src={`https://www.sidebyside-tech.com${item.image[0]}`}
+                                  src={`https://enthusiastic-pear-scarf.cyclic.app${item.image[0]}`}
                                   alt=""
                                   style={{ width: 50, height: 50 }}
                                 />

@@ -132,7 +132,7 @@ export default function CategoryCard(_category: any) {
             objectFit: "contain",
             overflow: "hidden",
           }}
-          image={`https://www.sidebyside-tech.com${_category.category.image}`}
+          image={`https://enthusiastic-pear-scarf.cyclic.app${_category.category.image}`}
           title={_category.category.name}
         />
 

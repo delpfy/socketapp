@@ -287,7 +287,7 @@ export default function ShowCategories() {
               <Box maxWidth={500} padding={4}>
                 {categoryImage !== undefined ? (
                   <img
-                    src={`https://www.sidebyside-tech.com${categoryImage}`}
+                    src={`https://enthusiastic-pear-scarf.cyclic.app${categoryImage}`}
                     style={{ height: 60 }}
                     alt={categoryImage}
                   />
@@ -370,7 +370,7 @@ export default function ShowCategories() {
                     <Box maxWidth={500}>
                       {subcategoryImage !== undefined ? (
                         <img
-                          src={`https://www.sidebyside-tech.com${newSubcategory.image}`}
+                          src={`https://enthusiastic-pear-scarf.cyclic.app${newSubcategory.image}`}
                           style={{ height: 60 }}
                           alt={subcategoryImage}
                         />
@@ -452,7 +452,7 @@ export default function ShowCategories() {
                         </TableCell>
                         <TableCell>
                           <img
-                            src={`https://www.sidebyside-tech.com${category.image}`}
+                            src={`https://enthusiastic-pear-scarf.cyclic.app${category.image}`}
                             alt={category.name}
                             style={{ width: 50, height: 50 }}
                           />
@@ -516,7 +516,7 @@ export default function ShowCategories() {
                 </TableCell>
                 <TableCell>
                   <img
-                    src={`https://www.sidebyside-tech.com${category.image}`}
+                    src={`https://enthusiastic-pear-scarf.cyclic.app${category.image}`}
                     alt={category.name}
                     style={{ height: 50 }}
                   />

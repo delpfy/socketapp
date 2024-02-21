@@ -6,8 +6,7 @@ import HomeSkeleton from "./catalogg/block/HomeSkeleton";
 
 export default function NewItems() {
   const { itemsNew, status } = useAppSelector((state) => state.home);
-
-  return (
+   return (
     <>
       <Box
         sx={{ width: { xs: "100%", md: "90%" } }}

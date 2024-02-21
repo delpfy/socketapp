@@ -127,7 +127,7 @@ export default function ShowOrders() {
                       {_order.items.map((item: any) => {
                         return (
                           <img
-                            src={`https://www.sidebyside-tech.com${item.image[0]}`}
+                            src={`https://enthusiastic-pear-scarf.cyclic.app${item.image[0]}`}
                             style={{ width: 50, height: 50 }}
                             alt={item.name}
                           ></img>

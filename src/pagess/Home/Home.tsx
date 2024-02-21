@@ -194,7 +194,7 @@ export const Home = () => {
             console.log(banner);
             return (
               <img
-                src={`https://www.sidebyside-tech.com${banner.image}`}
+                src={`https://enthusiastic-pear-scarf.cyclic.app${banner.image}`}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 alt=""
               />

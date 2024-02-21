@@ -9,6 +9,8 @@ export const UploadItemImage = createAsyncThunk<[any], FormData>(
       headers: {
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
         "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
       },
     });
 
