@@ -21,8 +21,7 @@ import {
   getItemBySlug,
 } from "./asyncActions";
 import { actualizeData } from "../../utils/actuilizeLocalStorageData";
-import { actualizeFirstRender } from "../../utils/actualizeFirstLoad";
-import { actualizeFirstRenderBasket } from "../../utils/actuilizeFirstLoadBasket";
+
 
 const initialState: HomeState = InitialiseHome();
 

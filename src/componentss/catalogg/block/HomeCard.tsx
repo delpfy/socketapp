@@ -10,16 +10,11 @@ import {
   Rating,
   Typography,
 } from "@mui/material";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import EditIcon from "@mui/icons-material/Edit";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ScaleIcon from "@mui/icons-material/Scale";
+
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { TShippingItems, Items } from "../../../redux/types";
 import { synchronizeBasket } from "../../../redux/basket/basketSlice";
 import { useNavigate } from "react-router-dom";
-import { getItemReviews } from "../../../redux/review/asyncActions";
 import {
   checkItemById,
   deleteItem,

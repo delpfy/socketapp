@@ -123,7 +123,6 @@ const orderSlice = createSlice({
 
     CURRENT_ORDER_setOrder(state, action: PayloadAction<TOrder>) {
       state.current_order = action.payload;
-      console.log(state.current_order);
     },
 
     ORDER_setUserLocation(

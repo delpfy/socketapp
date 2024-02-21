@@ -43,6 +43,7 @@ export const removeOrder = createAsyncThunk<"", any>(
         authorization: `Bearer ${window.localStorage.getItem("token")}`,
       },
     });
+
     return data;
   }
 );
