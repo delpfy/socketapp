@@ -275,7 +275,7 @@ export default function ShowItem() {
                       {currentImages.length !== 0 ? (
                         currentImages.map((image: any) => (
                           <img
-                            src={`https://enthusiastic-pear-scarf.cyclic.app${image}`}
+                            src={`https://socket-express-bssu.onrender.com${image}`}
                             style={{ width: 60, height: 60 }}
                             alt=""
                           />
@@ -418,7 +418,7 @@ export default function ShowItem() {
                     {currentImages.length !== 0 ? (
                       currentImages.map((image: any) => (
                         <img
-                          src={`https://enthusiastic-pear-scarf.cyclic.app${image}`}
+                          src={`https://socket-express-bssu.onrender.com${image}`}
                           style={{ width: 60, height: 60 }}
                           alt=""
                         />

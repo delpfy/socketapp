@@ -490,7 +490,7 @@ export default function HomeCard(props: Items) {
               objectFit: "contain",
               overflow: "hidden",
             }}
-            image={`https://enthusiastic-pear-scarf.cyclic.app${props.image[0]}`}
+            image={`https://socket-express-bssu.onrender.com${props.image[0]}`}
             title={props.name}
             onClick={getCurrentItem}
           />

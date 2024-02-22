@@ -194,7 +194,7 @@ export const Home = () => {
             console.log(banner);
             return (
               <img
-                src={`https://enthusiastic-pear-scarf.cyclic.app${banner.image}`}
+                src={`https://socket-express-bssu.onrender.com${banner.image}`}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 alt=""
               />

@@ -151,7 +151,7 @@ export default function OrderProducts() {
                         }}
                       >
                         <img
-                          src={`https://enthusiastic-pear-scarf.cyclic.app${item.image[0]}`}
+                          src={`https://socket-express-bssu.onrender.com${item.image[0]}`}
                           alt={item.name}
                           style={{ height: 125, width: 125 }}
                         />

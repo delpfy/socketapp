@@ -525,7 +525,7 @@ export default function ComparisonCard(props: Items) {
               overflow: "hidden",
               cursor: 'pointer',
             }}
-            image={`https://enthusiastic-pear-scarf.cyclic.app${props.image[0]}`}
+            image={`https://socket-express-bssu.onrender.com${props.image[0]}`}
             title={props.name}
             onClick={getCurrentItem}
           />
