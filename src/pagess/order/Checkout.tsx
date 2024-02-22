@@ -223,15 +223,17 @@ export default function OrderPage() {
             display={"flex"}
             justifyContent={"space-between"}
             alignItems={'flex-start'}
-            flexDirection={"row-reverse"}
+            flexDirection={window.innerWidth > 1450 ? "row-reverse" : "column"}
           >
             <Paper
               elevation={5}
               sx={{
                 marginBottom: 5,
                 height: 510,
-                width: 310,
+                width: window.innerWidth > 1450 ? 310 : "90%",
                 padding: 2,
+                marginLeft: window.innerWidth > 1450 ? 10 :'auto',
+                marginRight: 'auto',
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
@@ -353,7 +355,7 @@ export default function OrderPage() {
             </Paper>
 
             <Box
-              
+              width={ window.innerWidth > 1450 ? 800 : "100%"}
               paddingTop={0}
               display={"flex"}
               justifyContent={"space-between"}

@@ -153,7 +153,7 @@ export default function OrderProducts() {
                         <img
                           src={`https://socket-express-bssu.onrender.com${item.image[0]}`}
                           alt={item.name}
-                          style={{ height: 125, width: 125 }}
+                          style={{ height:  window.innerWidth > 1450 ? 125 : 70, width: window.innerWidth > 1450 ? 125 : 70 }}
                         />
                       </Link>
                     </Box>
@@ -162,7 +162,7 @@ export default function OrderProducts() {
                     </Box>
                     <Box width={"30%"} textAlign={"center"}>
                       <Typography>Ціна</Typography>
-                      <Typography color={"error"} fontSize={18}>
+                      <Typography color={"error"} fontSize={window.innerWidth > 1450 ? 18 : 15}>
                         {item.price} ₴
                       </Typography>
                     </Box>

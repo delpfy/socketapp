@@ -463,7 +463,7 @@ export default function Payment() {
               label="Оплата частинами"
             />
             {selectedOption === "partPay" && (
-              <Box sx={{ paddingLeft: 5, width: 500 }}>
+              <Box sx={{ paddingLeft: 5, width: window.innerWidth > 1450 ? 500 : 250 }}>
                 <Slider
                   aria-label="Small steps"
                   defaultValue={2}

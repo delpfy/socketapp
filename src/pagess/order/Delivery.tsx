@@ -285,7 +285,7 @@ export default function Delivery() {
           <Box
             display={"flex"}
             justifyContent={"space-between"}
-            width={800}
+             width={ window.innerWidth > 1450 ? 800 : "100%"}
             flexDirection={"row"}
           >
             <FormControlLabel
@@ -328,7 +328,7 @@ export default function Delivery() {
           <Box
             display={"flex"}
             justifyContent={"space-between"}
-            width={800}
+             width={ window.innerWidth > 1450 ? 800 : "100%"}
             flexDirection={"row"}
           >
             <FormControlLabel
@@ -489,7 +489,7 @@ export default function Delivery() {
           <Box
             display={"flex"}
             justifyContent={"space-between"}
-            width={800}
+             width={ window.innerWidth > 1450 ? 800 : "100%"}
             flexDirection={"row"}
           >
             <FormControlLabel
