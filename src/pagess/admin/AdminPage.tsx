@@ -18,6 +18,8 @@ import EditOneUser from "./EditOneUser";
 import ShowOneOrder from "./ShowOneOrder";
 import ShowBanners from "./ShowBanners";
 import SendUrgentNewsletter from "./SendUrgentNewsletter";
+import Dashboard from "./Dashboard";
+
 
 export default function AdminPage() {
   const { user } = useAppSelector((state) => state.user);
@@ -34,10 +36,10 @@ export default function AdminPage() {
     switch (process) {
       case "show-many-categories":
         return <ShowCategories />;
-        case "add-newsletter":
+      case "add-newsletter":
         return <SendUrgentNewsletter />;
-        case "show-many-banners":
-          return <ShowBanners />;
+      case "show-many-banners":
+        return <ShowBanners />;
       case "show-many-items":
         return <ShowItems />;
       case "edit-one-item":
@@ -58,6 +60,8 @@ export default function AdminPage() {
         return <ShowOneOrder />;
       case "show-many-reviews":
         return <ShowReviews />;
+      case "show-dashboard":
+        return <Dashboard />;
     }
   }
 

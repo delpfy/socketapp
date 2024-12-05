@@ -31,6 +31,29 @@ export default function AdminPanel() {
         }}
       >
         <Box>
+        <Box
+            sx={{
+              border: "1px solid black",
+              borderRadius: 1,
+              margin: 1,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Box>
+              <Button
+                onClick={() => {
+                  dispatch(getAllUsers()).then((result: any) => {
+                    if (result.meta.requestStatus === "fulfilled") {
+                      dispatch(setProcess("show-dashboard"));
+                    }
+                  });
+                }}
+              >
+                Дашборд
+              </Button>
+            </Box>
+          </Box>
           <Box
             sx={{
               border: "1px solid black",

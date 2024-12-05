@@ -278,6 +278,7 @@ export type AdminProcesses =
   | "add-one-user"
   | "edit-one-user"
   | "show-many-orders"
+  | "show-dashboard"
   | "show-one-order";
 
 export interface SelectedSortParams {
