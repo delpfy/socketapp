@@ -2,6 +2,19 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
 import { Attribute, Category, TOrder, TOrders, UserRegister } from "../types";
 
+
+export const getCurrentUsers = createAsyncThunk<any>(
+  "GET_CURRENT_USERS",
+  async (params) => {
+    const { data } = await axios.get<any>(`/current_users`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
 export const uploadCategoryImage = createAsyncThunk<any, FormData>(
   "category/uploadCategoryImage",
   async function (formData) {

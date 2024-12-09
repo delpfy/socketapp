@@ -23,6 +23,7 @@ import {
   getAttributesByCategory,
   getBannerById,
   getCategoryById,
+  getCurrentUsers,
   getOrderById,
   getUserById,
   updateAttributes,
@@ -55,6 +56,7 @@ const adminSlice = createSlice({
     selectedItem: {},
     selectedCategory: {} as Category,
     selectedBanner: {} as Category,
+    currentUsersAmount: 0
   },
   reducers: {
     setProcess(state, action: PayloadAction<AdminProcesses>) {
@@ -374,6 +376,18 @@ const adminSlice = createSlice({
       })
 
       .addCase(createUser.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+      builder
+      .addCase(getCurrentUsers.fulfilled, (state, action) => {
+        state.currentUsersAmount = action.payload.activeUsers[0].activeUsers;
+        console.log(action.payload.activeUsers[0].activeUsers)
+      })
+      .addCase(getCurrentUsers.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getCurrentUsers.rejected, (state, action) => {
         state.status = "rejected";
       });
   },

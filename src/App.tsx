@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import NotFoundPage from "./pagess/PageAbsence";
 import Catalog from "./pagess/Home/Catalog";
@@ -34,8 +34,12 @@ import AdminAuthorize from "./pagess/admin/AdminAuthorize";
 import { getAllBanners, getAllCategories } from "./redux/admin/asyncActions";
 import ShowSubcategories from "./pagess/subcategories/ShowSubcategories";
 import NewsletterUnsubscribe from "./pagess/UnsubscribeNewsletter";
+import ReactGA from "react-ga4";
 
 function App() {
+  const TRACKING_ID = "G-V2HXTZ59CW";
+  ReactGA.initialize(TRACKING_ID);
+
   const dispatch = useAppDispatch();
   if (!localStorage.getItem("recentlyReviewed")) {
     localStorage.setItem("recentlyReviewed", JSON.stringify([]));
@@ -51,6 +55,7 @@ function App() {
   }
 
   useEffect(() => {
+   
     dispatch(getAllItems());
     dispatch(getAllBanners());
     dispatch(checkAuthorization());
@@ -76,9 +81,15 @@ function App() {
 
           <Route path="/:category_slug" element={<Catalog />} />
           <Route path="/:category_slug/:item_slug" element={<ItemPage />} />
-          <Route path="/:category_slug/:item_slug/reviews" element={<ReviewsPage />} />
+          <Route
+            path="/:category_slug/:item_slug/reviews"
+            element={<ReviewsPage />}
+          />
 
-          <Route path="/:category_slug/subcategories" element={<ShowSubcategories />} />
+          <Route
+            path="/:category_slug/subcategories"
+            element={<ShowSubcategories />}
+          />
 
           <Route path="/user" element={<User />} />
           <Route path="/user-order" element={<UserOrder />} />
