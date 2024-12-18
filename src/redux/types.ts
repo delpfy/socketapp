@@ -285,6 +285,15 @@ export interface SelectedSortParams {
   [paramName: string]: string[];
 }
 
+export type CATEGORY_METRICS = {
+  categoryPageViews: [
+    {
+      category: string;
+      pageViews: number;
+    }
+  ];
+};
+
 export interface BasketState {
   status: Status;
   items: TShippingItems[];

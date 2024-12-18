@@ -4,6 +4,7 @@ import {
   AdminProcesses,
   Attribute,
   Category,
+  CATEGORY_METRICS,
   Status,
   TOrder,
   UserDisplay,
@@ -21,10 +22,14 @@ import {
   getAllOrders,
   getAllUsers,
   getAttributesByCategory,
+  getAVGSessionDuration,
   getBannerById,
+  getCategoriesViews,
   getCategoryById,
   getCurrentUsers,
+  getNewUsersLastMonth,
   getOrderById,
+  getTotalSessions,
   getUserById,
   updateAttributes,
   updateBanner,
@@ -56,7 +61,12 @@ const adminSlice = createSlice({
     selectedItem: {},
     selectedCategory: {} as Category,
     selectedBanner: {} as Category,
-    currentUsersAmount: 0
+    currentUsersAmount: 0,
+    newUsersAmount: 0,
+    avgSessionDuration: 0,
+    totalSessions: 0,
+    _categoryPageViews: [] as any[]
+
   },
   reducers: {
     setProcess(state, action: PayloadAction<AdminProcesses>) {
@@ -315,7 +325,7 @@ const adminSlice = createSlice({
     builder
       .addCase(getAllOrders.fulfilled, (state, action) => {
         state._orders = action.payload.orders;
-
+       
         state.status = "fulfilled";
       })
       .addCase(getAllOrders.pending, (state) => {
@@ -390,6 +400,57 @@ const adminSlice = createSlice({
       .addCase(getCurrentUsers.rejected, (state, action) => {
         state.status = "rejected";
       });
+      builder
+      .addCase(getNewUsersLastMonth.fulfilled, (state, action) => {
+        state.newUsersAmount = action.payload.totalNewUsers;
+        console.log(action.payload.totalNewUsers)
+      })
+      .addCase(getNewUsersLastMonth.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getNewUsersLastMonth.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+      builder
+      .addCase(getAVGSessionDuration.fulfilled, (state, action) => {
+        state.avgSessionDuration = action.payload.averageSessionDuration;
+        console.log(action.payload.averageSessionDuration)
+      })
+      .addCase(getAVGSessionDuration.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getAVGSessionDuration.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+      builder
+      .addCase(getTotalSessions.fulfilled, (state, action) => {
+        state.totalSessions = action.payload.totalSessions;
+        console.log(action.payload.totalSessions)
+      })
+      .addCase(getTotalSessions.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getTotalSessions.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+
+      builder
+      .addCase(getCategoriesViews.fulfilled, (state, action) => {
+        state._categoryPageViews = action.payload.categoryPageViews;
+        console.log(action.payload.categoryPageViews)
+      })
+      .addCase(getCategoriesViews.pending, (state) => {
+        state.status = "pending";
+      })
+
+      .addCase(getCategoriesViews.rejected, (state, action) => {
+        state.status = "rejected";
+      });
+      
   },
 });
 

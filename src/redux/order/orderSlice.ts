@@ -17,10 +17,13 @@ import {
   getUkrPoshtaLocations,
 } from "./asyncActions";
 
+import { log } from "console";
+
 const orderSlice = createSlice({
   name: "reviews",
   initialState: {
     status: "success" as Status,
+
     locations: [
       {
         display_name: "",

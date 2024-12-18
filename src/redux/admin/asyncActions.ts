@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { Attribute, Category, TOrder, TOrders, UserRegister } from "../types";
+import { Attribute, Category, CATEGORY_METRICS, TOrder, TOrders, UserRegister } from "../types";
 
 
 export const getCurrentUsers = createAsyncThunk<any>(
@@ -14,6 +14,54 @@ export const getCurrentUsers = createAsyncThunk<any>(
     return data;
   }
 );
+
+export const getNewUsersLastMonth = createAsyncThunk<any>(
+  "GET_NEW_USERS_LASTMONTH",
+  async (params) => {
+    const { data } = await axios.get<any>(`/users_lastmonth`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+export const getAVGSessionDuration = createAsyncThunk<any>(
+  "GET_AVG_SESSION_DURATION",
+  async (params) => {
+    const { data } = await axios.get<any>(`/session_dur_avg`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
+export const getTotalSessions = createAsyncThunk<any>(
+  "GET_TOTAL_SESSIONS",
+  async (params) => {
+    const { data } = await axios.get<any>(`/session_total`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
+export const getCategoriesViews = createAsyncThunk<CATEGORY_METRICS>(
+  "GET_CATEGORIES_VIEWS",
+  async (params) => {
+    const { data } = await axios.get<CATEGORY_METRICS>(`/category_views`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return data;
+  }
+);
+
 
 export const uploadCategoryImage = createAsyncThunk<any, FormData>(
   "category/uploadCategoryImage",
@@ -284,6 +332,7 @@ export const getAllOrders = createAsyncThunk<any>(
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
+    console.log(data)
     return data;
   }
 );
