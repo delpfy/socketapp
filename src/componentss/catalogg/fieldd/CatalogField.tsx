@@ -17,7 +17,7 @@ import {
   getCategoryBySlug,
   getItemsByCategory,
 } from "../../../redux/home/asyncActions";
-
+import ReactGA from "react-ga4";
 import Card from "../block/CatalogCard";
 import Skeleton from "../block/CatalogSkeleton";
 import NotFoundPage from "../../../pagess/PageAbsence";
@@ -88,6 +88,8 @@ export const CatalogField = () => {
   }, [category, dispatch]);
 
   useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+    
     window.scrollTo(0, 0);
     if (afterOrder) {
       dispatch(synchronizeBasket());
@@ -96,6 +98,7 @@ export const CatalogField = () => {
     if (editItemMode) {
       dispatch(setEditItemMode(false));
     }
+    
   }, []);
 
   function redirectToAddItemPage() {
