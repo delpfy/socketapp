@@ -27,14 +27,20 @@ import {
   CircularProgress,
   SvgIcon,
 } from "@mui/joy";
-import { CATEGORY_METRICS } from "../../redux/types";
+import {
+  CATEGORY_METRICS,
+  SESSIONS_METRICS,
+  USERS_METRICS,
+} from "../../redux/types";
 
 export default function Dashboard() {
   const [_activeUsers, setActiveUsers] = useState(0);
-  const [_newUsersLastMonth, setNewUsersLastMonth] = useState(0);
+  const [_newUsersLastMonth, setNewUsersLastMonth] = useState(
+    {} as USERS_METRICS[]
+  );
   const [_ordersAmount, setOrdersAmount] = useState(0);
   const [_avgSessionDuration, setAvgSessionDuration] = useState(0);
-  const [_totalSessions, setTotalSessions] = useState(0);
+  const [_totalSessions, setTotalSessions] = useState({} as SESSIONS_METRICS[]);
   const [_categoriesViews, setCategoriesViews] = useState(
     {} as CATEGORY_METRICS[]
   );
@@ -72,7 +78,8 @@ export default function Dashboard() {
     });
     dispatch(getTotalSessions()).then((result: any) => {
       if (result.meta.requestStatus === "fulfilled") {
-        console.log("fulfilled " + totalSessions);
+        console.log("fulfilled totalSessions");
+        console.log(totalSessions);
         setTotalSessions(totalSessions);
       }
     });
@@ -102,8 +109,8 @@ export default function Dashboard() {
       flexDirection={"column"}
       alignItems={"center"}
     >
-      <Grid2 container spacing={6} sx={{ paddingTop: 6, paddingBottom: 8 }}>
-        <Grid2 xs={4}>
+      <Grid2 container spacing={7} sx={{ paddingTop: 6, paddingBottom: 8 }}>
+        <Grid2 xs={6}>
           <Card variant="solid" color="primary" invertedColors>
             <CardContent orientation="horizontal">
               <CircularProgress size="lg" determinate value={0}>
@@ -154,7 +161,7 @@ export default function Dashboard() {
             </Typography>
           </Box> */}
         </Grid2>
-        <Grid2 xs={4}>
+        <Grid2 xs={6}>
           <Card variant="solid" invertedColors>
             <CardContent orientation="horizontal">
               <CircularProgress size="lg" determinate value={0}>
@@ -167,7 +174,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </Grid2>
-        <Grid2 xs={4}>
+       {/* <Grid2 xs={4}>
           <Card variant="solid" color="success" invertedColors>
             <CardContent orientation="horizontal">
               <CircularProgress size="lg" determinate value={0}>
@@ -180,7 +187,7 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </Grid2>
-        <Grid2 xs={4}>
+         <Grid2 xs={4}>
           <Card
             variant="solid"
             color={"danger"}
@@ -193,7 +200,7 @@ export default function Dashboard() {
               </CircularProgress>
               <CardContent>
                 <Typography>Нових користувачів за місяць:</Typography>
-                <Typography>{_newUsersLastMonth}</Typography>
+                <Typography>{0}</Typography>
               </CardContent>
             </CardContent>
           </Card>
@@ -206,13 +213,184 @@ export default function Dashboard() {
               </CircularProgress>
               <CardContent>
                 <Typography>Відвідувань за місяць:</Typography>
-                <Typography>{_totalSessions}</Typography>
+                <Typography>{0}</Typography>
               </CardContent>
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid2> */}
       </Grid2>
+
+      {/*   <Grid2 container spacing={7} sx={{ paddingTop: 6, paddingBottom: 8 }}>
+        <Grid2 xs={7}>
+          <Box
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            flexDirection={"column"}
+          >
+            <Typography fontFamily={"Comfortaa"} fontSize={25}>
+              Нових користувачів за місяць
+            </Typography>
+            <BarChart
+              xAxis={[
+                {
+                  scaleType: "band",
+                  data: ["group A", "group B", "group C"],
+                },
+              ]}
+              series={[
+                { data: [4, 3, 5] },
+                { data: [1, 6, 3] },
+                { data: [2, 5, 6] },
+              ]}
+              width={550}
+              height={350}
+            />
+          </Box>
+        </Grid2>
+        <Grid2 xs={7}>
+          <Box
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            flexDirection={"column"}
+          >
+            <Typography fontFamily={"Comfortaa"} fontSize={25}>
+              Кількість замовлень
+            </Typography>
+            <BarChart
+              xAxis={[
+                {
+                  scaleType: "band",
+                  data: ["group A", "group B", "group C"],
+                },
+              ]}
+              series={[
+                { data: [4, 3, 5] },
+                { data: [1, 6, 3] },
+                { data: [2, 5, 6] },
+              ]}
+              width={550}
+              height={350}
+            />
+          </Box>
+        </Grid2>
+        <Grid2 xs={7}>
+          <Box
+            display={"flex"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            flexDirection={"column"}
+          >
+            <Typography fontFamily={"Comfortaa"} fontSize={25}>
+              Відвідувань за місяць
+            </Typography>
+            <BarChart
+              xAxis={[
+                {
+                  scaleType: "band",
+                  data: totalSessions.map((item) => item.month),
+                },
+              ]}
+              series={[
+                {
+                  data: totalSessions.map((item) =>
+                    item.sessions == "0" ? 1 : item.sessions
+                  ),
+                },
+              ]}
+              width={700}
+              height={300}
+            />
+          </Box>
+        </Grid2>
+      </Grid2> */}
       <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+        <Box
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          flexDirection={"column"}
+          width={"100%"}
+        >
+          <Typography fontFamily={"Comfortaa"} fontSize={25}>
+            Нових користувачів за місяць
+          </Typography>
+          <BarChart
+            xAxis={[
+              {
+                scaleType: "band",
+                data: newUsersAmount.map((item) => item.month),
+              },
+            ]}
+            series={[
+              {
+                data: newUsersAmount.map((item) =>
+                  item.sessions == "0" ? 1 : item.sessions
+                ),
+              },
+            ]}
+            width={750}
+            height={400}
+          />
+        </Box>
+        <Box
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          flexDirection={"column"}
+          width={"100%"}
+        >
+          <Typography fontFamily={"Comfortaa"} fontSize={25}>
+            Кількість замовлень
+          </Typography>
+          <BarChart
+            xAxis={[
+              {
+                scaleType: "band",
+                data: newUsersAmount.map((item) => item.month),
+              },
+            ]}
+            series={[
+              {
+                data: newUsersAmount.map((item) =>
+                  item.sessions == "0" ? 1 : item.sessions
+                ),
+              },
+              
+            ]}
+            width={750}
+            height={400}
+          />
+        </Box>
+        <Box
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          flexDirection={"column"}
+          width={"100%"}
+        >
+          <Typography fontFamily={"Comfortaa"} fontSize={25}>
+            Відвідувань за місяць
+          </Typography>
+          <BarChart
+            xAxis={[
+              {
+                scaleType: "band",
+                data: totalSessions.map((item) => item.month),
+              },
+            ]}
+            series={[
+              {
+                data: totalSessions.map((item) =>
+                  item.sessions == "0" ? 1 : item.sessions
+                ),
+              },
+            ]}
+            width={750}
+            height={400}
+          />
+        </Box>
         <Typography
           sx={{ marginRight: 10 }}
           paddingBottom={3}

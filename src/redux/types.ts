@@ -289,7 +289,25 @@ export type CATEGORY_METRICS = {
   categoryPageViews: [
     {
       category: string;
-      pageViews: number;
+      pageViews: string;
+    }
+  ];
+};
+
+export type SESSIONS_METRICS = {
+  monthlySessions: [
+    {
+      month: string;
+      sessions: string;
+    }
+  ];
+};
+
+export type USERS_METRICS = {
+  monthlySessions: [
+    {
+      month: string;
+      sessions: string;
     }
   ];
 };

@@ -62,9 +62,9 @@ const adminSlice = createSlice({
     selectedCategory: {} as Category,
     selectedBanner: {} as Category,
     currentUsersAmount: 0,
-    newUsersAmount: 0,
+    newUsersAmount: [] as any[],
     avgSessionDuration: 0,
-    totalSessions: 0,
+    totalSessions: [] as any[],
     _categoryPageViews: [] as any[]
 
   },
@@ -402,8 +402,8 @@ const adminSlice = createSlice({
       });
       builder
       .addCase(getNewUsersLastMonth.fulfilled, (state, action) => {
-        state.newUsersAmount = action.payload.totalNewUsers;
-        console.log(action.payload.totalNewUsers)
+        state.newUsersAmount = action.payload.monthlyNewUsers;
+        console.log(action.payload.monthlyNewUsers)
       })
       .addCase(getNewUsersLastMonth.pending, (state) => {
         state.status = "pending";
@@ -427,8 +427,9 @@ const adminSlice = createSlice({
 
       builder
       .addCase(getTotalSessions.fulfilled, (state, action) => {
-        state.totalSessions = action.payload.totalSessions;
-        console.log(action.payload.totalSessions)
+        state.totalSessions = action.payload.monthlySessions;
+        
+        console.log(action.payload.monthlySessions)
       })
       .addCase(getTotalSessions.pending, (state) => {
         state.status = "pending";

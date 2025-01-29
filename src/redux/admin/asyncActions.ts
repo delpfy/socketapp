@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../axios";
-import { Attribute, Category, CATEGORY_METRICS, TOrder, TOrders, UserRegister } from "../types";
+import { Attribute, Category, CATEGORY_METRICS, SESSIONS_METRICS, TOrder, TOrders, UserRegister } from "../types";
 
 
 export const getCurrentUsers = createAsyncThunk<any>(
@@ -38,10 +38,10 @@ export const getAVGSessionDuration = createAsyncThunk<any>(
   }
 );
 
-export const getTotalSessions = createAsyncThunk<any>(
+export const getTotalSessions = createAsyncThunk<SESSIONS_METRICS>(
   "GET_TOTAL_SESSIONS",
   async (params) => {
-    const { data } = await axios.get<any>(`/session_total`, {
+    const { data } = await axios.get<SESSIONS_METRICS>(`/session_total`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
